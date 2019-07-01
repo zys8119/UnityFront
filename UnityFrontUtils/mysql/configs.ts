@@ -1,0 +1,11 @@
+import "./options"
+export default {
+    options:<options> {
+        host: 'localhost',
+        user: 'root',
+        password: 'admin123',
+        port: '3306',
+        database: 'test'
+    }
+}
+

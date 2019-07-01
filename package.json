@@ -1,0 +1,6 @@
+{
+  "devDependencies": {
+    "mysql": "^2.17.1",
+    "ncol": "^0.0.7"
+  }
+}
