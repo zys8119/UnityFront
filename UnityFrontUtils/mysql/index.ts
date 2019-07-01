@@ -47,10 +47,21 @@ export default class mysql {
     where(WhereArr:object,showSqlStr?:boolean){
         if(showSqlStr){this.showSqlStrBool = showSqlStr;}
         let whereStr = "";
+        let lng = Object.keys(WhereArr).length;
+        let index = 0;
+        let And = "";
         for (let k in WhereArr){
-            whereStr += `${k} = ${WhereArr[k]} `;
+            if(index > 0 && index < lng){
+                And = "And";
+            }else {
+                And = "";
+            }
+            whereStr += `${And} ${k} = ${WhereArr[k]} `;
+            index += 1;
         }
-        this.selectSql += `WHERE ${whereStr}`;
+        if(lng > 0){
+            this.selectSql += `WHERE ${whereStr}`;
+        }
         return this;
     }
     end(){

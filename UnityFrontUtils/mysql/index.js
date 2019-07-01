@@ -59,10 +59,22 @@ var mysql = /** @class */ (function () {
             this.showSqlStrBool = showSqlStr;
         }
         var whereStr = "";
+        var lng = Object.keys(WhereArr).length;
+        var index = 0;
+        var And = "";
         for (var k in WhereArr) {
-            whereStr += k + " = " + WhereArr[k] + " ";
+            if (index > 0 && index < lng) {
+                And = "And";
+            }
+            else {
+                And = "";
+            }
+            whereStr += And + " " + k + " = " + WhereArr[k] + " ";
+            index += 1;
         }
-        this.selectSql += "WHERE " + whereStr;
+        if (lng > 0) {
+            this.selectSql += "WHERE " + whereStr;
+        }
         return this;
     };
     mysql.prototype.end = function () {
