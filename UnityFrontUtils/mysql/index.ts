@@ -10,12 +10,48 @@ export default class mysql {
         this.connection.connect();
         this.selectSql = '';
     }
+
+    /**
+     * @param data 需要处理的数据
+     */
     private isString(data:any){
         if(typeof data == 'string'){
             return '\''+data+'\'';
         }
         return data;
     }
+
+    /**
+     * 条件格式转换
+     * @param sqlArr 条件数据
+     * @param type 条件符号
+     * @param join 连接符号
+     */
+    private sqlFormat(sqlArr,type = '=',join = "AND"){
+        let sqlStr = ``;
+        switch (typeof  sqlArr) {
+            case "object":
+                sqlStr = `${Object.keys(sqlArr).map(e=>(e + ' '+type+' '+this.isString(sqlArr[e]))).join(' '+join+' ')} `;
+                break;
+            case "string":
+                sqlStr = `${sqlArr} `;
+                break;
+        }
+        return sqlStr;
+    }
+
+    /**
+     *
+     */
+    private end(){
+        this.connection.end();
+    }
+
+    /**
+     *
+     * @param sqlStr sql字符串
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     */
     query(sqlStr?:string,showSqlStr?:boolean){
         if(showSqlStr){this.showSqlStrBool = showSqlStr;}
         let sqlStrs = sqlStr || this.selectSql;
@@ -40,38 +76,88 @@ export default class mysql {
             });
         })
     }
+
+    /**
+     *
+     * @param TableFieldName 选择的字段名称
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     */
     select(TableFieldName:string = "*",showSqlStr?:boolean){
         if(showSqlStr){this.showSqlStrBool = showSqlStr;}
         this.selectSql = `SELECT ${TableFieldName} `;
         return this;
     }
+
+    /**
+     *
+     * @param TableName 表名
+     * @param showSqlStr  是否输出sql字符串，默认不输出
+     */
     from(TableName:string,showSqlStr?:boolean){
         if(showSqlStr){this.showSqlStrBool = showSqlStr;}
         this.selectSql += `FROM ${TableName} `;
         return this;
     }
-    where(WhereArr:object|string,showSqlStr?:boolean){
+
+
+    /**
+     *
+     * @param WhereArr 条件数据
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     * @param type 类型，默认=，精准匹配
+     */
+    where(WhereArr:object|string,showSqlStr?:boolean,type:string = '='){
         if(showSqlStr){this.showSqlStrBool = showSqlStr;}
         switch (typeof  WhereArr) {
             case "object":
-                this.selectSql += `WHERE ${Object.keys(WhereArr).map(e=>(e + ' = '+this.isString(WhereArr[e]))).join(" And ")}`
+                this.selectSql += `WHERE ${this.sqlFormat(WhereArr,type)} `;
                 break;
             case "string":
-                this.selectSql += `WHERE ${WhereArr} `;
+                this.selectSql += `WHERE ${this.sqlFormat(WhereArr,type)} `;
                 break;
         }
-
         return this;
     }
-    insert(TabelName:string,ArrData:any = [],showSqlStr?:boolean){
+
+    /**
+     *
+     * @param TabelName 表名
+     * @param ArrData 需要写入的数据
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     * @param insertMore 是否插入多条数据
+     * @param indexMore  当前多条索引
+     * @param indexMaxMore 总条数
+     */
+    insert(TabelName:string,ArrData:any = [],showSqlStr?:boolean,insertMore?:boolean,indexMore?:number,indexMaxMore?:number){
         if(showSqlStr){this.showSqlStrBool = showSqlStr;}
-        this.selectSql = `INSERT INTO ${TabelName} `;
+        let MoreStr = "";
+        if(insertMore){
+            MoreStr = ","
+            if(indexMaxMore == indexMore+1){
+                MoreStr = "";
+            }
+        }else {
+            this.selectSql = `INSERT INTO ${TabelName} `;
+        };
         switch(Object.prototype.toString.call( ArrData )){
             case "[object Array]":
-                this.selectSql += `VALUES(${ArrData.join(",")}) `;
+                //多条数据
+                if(ArrData.map(e=>typeof e).some(e=>e == 'object')){
+                    ArrData.forEach((e,index)=>this.insert(null,e,false,true, index,ArrData.length))
+                }else {
+                    let keyNames = `VALUES `;
+                    if(insertMore && indexMore > 0){
+                        keyNames = "";
+                    };
+                    this.selectSql += `${keyNames} (${ArrData.map(e=>this.isString(e)).join(",")}) ${MoreStr}`;
+                }
                 break;
             case "[object Object]":
-                this.selectSql += `(${Object.keys(ArrData).join(",")}) VALUES (${Object.keys(ArrData).map(e=>this.isString(ArrData[e])).join(",")}) `;
+                let keyNames = `(${Object.keys(ArrData).join(",")}) VALUES `;
+                if(insertMore && indexMore > 0){
+                    keyNames = "";
+                };
+                this.selectSql += `${keyNames} (${Object.keys(ArrData).map(e=>this.isString(ArrData[e])).join(",")}) ${MoreStr}`;
                 break;
             default:
                 this.selectSql += `${ArrData} `;
@@ -79,9 +165,81 @@ export default class mysql {
         }
         return this;
     }
-    end(){
-        this.connection.end();
+
+    /**
+     *
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     */
+    delete(showSqlStr?:boolean){
+        if(showSqlStr){this.showSqlStrBool = showSqlStr;}
+        this.selectSql = `DELETE `;
+        return this;
     }
+
+    update(TabelName:string,newData?:object|string|[],showSqlStr?:boolean){
+        if(showSqlStr){this.showSqlStrBool = showSqlStr;}
+        this.selectSql = `UPDATE ${TabelName} SET `;
+        if(newData){
+            this.selectSql += this.sqlFormat(newData);
+        }
+        return this;
+    }
+
+    /**
+     *
+     * @param FieldName 需要排序的字段名
+     * @param desc 倒叙或正序
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     */
+    asc(FieldName:string,desc?:boolean,showSqlStr?:boolean){
+        if(showSqlStr){this.showSqlStrBool = showSqlStr;}
+        this.selectSql += `order by ${FieldName} ${(desc)?'desc':'asc'} `;
+        return this;
+    }
+
+    /**
+     *
+     * @param FieldName 字段名称
+     * @param index 需要处理的数量
+     * @param desc 倒叙或正序
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     */
+    limit(FieldName:string,index:string|number = 1,desc?:boolean,showSqlStr?:boolean){
+        if(showSqlStr){this.showSqlStrBool = showSqlStr;}
+        this.asc(FieldName,desc);
+        this.selectSql += ` limit ${index} `;
+        return this;
+    }
+
+    /**
+     *
+     * @param WhereArr 模糊查询条件数据
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     */
+    like(WhereArr:object|string,showSqlStr?:boolean){
+        if(showSqlStr){this.showSqlStrBool = showSqlStr;}
+        this.where(WhereArr,showSqlStr,"LIKE");
+        return this;
+    }
+
+    /**
+     *
+     * @param data
+     * @param showSqlStr
+     */
+    join(data:object|string,showSqlStr?:boolean){
+        if(showSqlStr){this.showSqlStrBool = showSqlStr;}
+        switch (typeof  data) {
+            case "object":
+                this.selectSql += Object.keys(data).map(keyName=>`LEFT JOIN ${keyName} ON ${data[keyName]} `).join("");
+                break;
+            case "string":
+                this.selectSql += data;
+                break;
+        }
+        return this;
+    }
+
 }
 
 

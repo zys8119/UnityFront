@@ -12,12 +12,47 @@ var mysql = /** @class */ (function () {
         this.connection.connect();
         this.selectSql = '';
     }
+    /**
+     * @param data 需要处理的数据
+     */
     mysql.prototype.isString = function (data) {
         if (typeof data == 'string') {
             return '\'' + data + '\'';
         }
         return data;
     };
+    /**
+     * 条件格式转换
+     * @param sqlArr 条件数据
+     * @param type 条件符号
+     * @param join 连接符号
+     */
+    mysql.prototype.sqlFormat = function (sqlArr, type, join) {
+        var _this = this;
+        if (type === void 0) { type = '='; }
+        if (join === void 0) { join = "AND"; }
+        var sqlStr = "";
+        switch (typeof sqlArr) {
+            case "object":
+                sqlStr = Object.keys(sqlArr).map(function (e) { return (e + ' ' + type + ' ' + _this.isString(sqlArr[e])); }).join(' ' + join + ' ') + " ";
+                break;
+            case "string":
+                sqlStr = sqlArr + " ";
+                break;
+        }
+        return sqlStr;
+    };
+    /**
+     *
+     */
+    mysql.prototype.end = function () {
+        this.connection.end();
+    };
+    /**
+     *
+     * @param sqlStr sql字符串
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     */
     mysql.prototype.query = function (sqlStr, showSqlStr) {
         var _this = this;
         if (showSqlStr) {
@@ -45,6 +80,11 @@ var mysql = /** @class */ (function () {
             });
         });
     };
+    /**
+     *
+     * @param TableFieldName 选择的字段名称
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     */
     mysql.prototype.select = function (TableFieldName, showSqlStr) {
         if (TableFieldName === void 0) { TableFieldName = "*"; }
         if (showSqlStr) {
@@ -53,6 +93,11 @@ var mysql = /** @class */ (function () {
         this.selectSql = "SELECT " + TableFieldName + " ";
         return this;
     };
+    /**
+     *
+     * @param TableName 表名
+     * @param showSqlStr  是否输出sql字符串，默认不输出
+     */
     mysql.prototype.from = function (TableName, showSqlStr) {
         if (showSqlStr) {
             this.showSqlStrBool = showSqlStr;
@@ -60,34 +105,75 @@ var mysql = /** @class */ (function () {
         this.selectSql += "FROM " + TableName + " ";
         return this;
     };
-    mysql.prototype.where = function (WhereArr, showSqlStr) {
-        var _this = this;
+    /**
+     *
+     * @param WhereArr 条件数据
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     * @param type 类型，默认=，精准匹配
+     */
+    mysql.prototype.where = function (WhereArr, showSqlStr, type) {
+        if (type === void 0) { type = '='; }
         if (showSqlStr) {
             this.showSqlStrBool = showSqlStr;
         }
         switch (typeof WhereArr) {
             case "object":
-                this.selectSql += "WHERE " + Object.keys(WhereArr).map(function (e) { return (e + ' = ' + _this.isString(WhereArr[e])); }).join(" And ");
+                this.selectSql += "WHERE " + this.sqlFormat(WhereArr, type) + " ";
                 break;
             case "string":
-                this.selectSql += "WHERE " + WhereArr + " ";
+                this.selectSql += "WHERE " + this.sqlFormat(WhereArr, type) + " ";
                 break;
         }
         return this;
     };
-    mysql.prototype.insert = function (TabelName, ArrData, showSqlStr) {
+    /**
+     *
+     * @param TabelName 表名
+     * @param ArrData 需要写入的数据
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     * @param insertMore 是否插入多条数据
+     * @param indexMore  当前多条索引
+     * @param indexMaxMore 总条数
+     */
+    mysql.prototype.insert = function (TabelName, ArrData, showSqlStr, insertMore, indexMore, indexMaxMore) {
         var _this = this;
         if (ArrData === void 0) { ArrData = []; }
         if (showSqlStr) {
             this.showSqlStrBool = showSqlStr;
         }
-        this.selectSql = "INSERT INTO " + TabelName + " ";
+        var MoreStr = "";
+        if (insertMore) {
+            MoreStr = ",";
+            if (indexMaxMore == indexMore + 1) {
+                MoreStr = "";
+            }
+        }
+        else {
+            this.selectSql = "INSERT INTO " + TabelName + " ";
+        }
+        ;
         switch (Object.prototype.toString.call(ArrData)) {
             case "[object Array]":
-                this.selectSql += "VALUES(" + ArrData.join(",") + ") ";
+                //多条数据
+                if (ArrData.map(function (e) { return typeof e; }).some(function (e) { return e == 'object'; })) {
+                    ArrData.forEach(function (e, index) { return _this.insert(null, e, false, true, index, ArrData.length); });
+                }
+                else {
+                    var keyNames_1 = "VALUES ";
+                    if (insertMore && indexMore > 0) {
+                        keyNames_1 = "";
+                    }
+                    ;
+                    this.selectSql += keyNames_1 + " (" + ArrData.map(function (e) { return _this.isString(e); }).join(",") + ") " + MoreStr;
+                }
                 break;
             case "[object Object]":
-                this.selectSql += "(" + Object.keys(ArrData).join(",") + ") VALUES (" + Object.keys(ArrData).map(function (e) { return _this.isString(ArrData[e]); }).join(",") + ") ";
+                var keyNames = "(" + Object.keys(ArrData).join(",") + ") VALUES ";
+                if (insertMore && indexMore > 0) {
+                    keyNames = "";
+                }
+                ;
+                this.selectSql += keyNames + " (" + Object.keys(ArrData).map(function (e) { return _this.isString(ArrData[e]); }).join(",") + ") " + MoreStr;
                 break;
             default:
                 this.selectSql += ArrData + " ";
@@ -95,8 +181,86 @@ var mysql = /** @class */ (function () {
         }
         return this;
     };
-    mysql.prototype.end = function () {
-        this.connection.end();
+    /**
+     *
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     */
+    mysql.prototype["delete"] = function (showSqlStr) {
+        if (showSqlStr) {
+            this.showSqlStrBool = showSqlStr;
+        }
+        this.selectSql = "DELETE ";
+        return this;
+    };
+    mysql.prototype.update = function (TabelName, newData, showSqlStr) {
+        if (showSqlStr) {
+            this.showSqlStrBool = showSqlStr;
+        }
+        this.selectSql = "UPDATE " + TabelName + " SET ";
+        if (newData) {
+            this.selectSql += this.sqlFormat(newData);
+        }
+        return this;
+    };
+    /**
+     *
+     * @param FieldName 需要排序的字段名
+     * @param desc 倒叙或正序
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     */
+    mysql.prototype.asc = function (FieldName, desc, showSqlStr) {
+        if (showSqlStr) {
+            this.showSqlStrBool = showSqlStr;
+        }
+        this.selectSql += "order by " + FieldName + " " + ((desc) ? 'desc' : 'asc') + " ";
+        return this;
+    };
+    /**
+     *
+     * @param FieldName 字段名称
+     * @param index 需要处理的数量
+     * @param desc 倒叙或正序
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     */
+    mysql.prototype.limit = function (FieldName, index, desc, showSqlStr) {
+        if (index === void 0) { index = 1; }
+        if (showSqlStr) {
+            this.showSqlStrBool = showSqlStr;
+        }
+        this.asc(FieldName, desc);
+        this.selectSql += " limit " + index + " ";
+        return this;
+    };
+    /**
+     *
+     * @param WhereArr 模糊查询条件数据
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     */
+    mysql.prototype.like = function (WhereArr, showSqlStr) {
+        if (showSqlStr) {
+            this.showSqlStrBool = showSqlStr;
+        }
+        this.where(WhereArr, showSqlStr, "LIKE");
+        return this;
+    };
+    /**
+     *
+     * @param data
+     * @param showSqlStr
+     */
+    mysql.prototype.join = function (data, showSqlStr) {
+        if (showSqlStr) {
+            this.showSqlStrBool = showSqlStr;
+        }
+        switch (typeof data) {
+            case "object":
+                this.selectSql += Object.keys(data).map(function (keyName) { return "LEFT JOIN " + keyName + " ON " + data[keyName] + " "; }).join("");
+                break;
+            case "string":
+                this.selectSql += data;
+                break;
+        }
+        return this;
     };
     return mysql;
 }());
