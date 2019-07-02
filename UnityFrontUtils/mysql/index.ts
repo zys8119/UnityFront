@@ -3,12 +3,18 @@ import configs from "./configs"
 let mysqlTool = require('mysql');
 let ncol = require('ncol');
 export default class mysql {
-    connection = mysqlTool.createConnection(configs.options);
-    selectSql = '';
-    showSqlStrBool = false;
+    private connection = mysqlTool.createConnection(configs.options);
+    private selectSql = '';
+    private showSqlStrBool = false;
     constructor(){
         this.connection.connect();
         this.selectSql = '';
+    }
+    private isString(data:any){
+        if(typeof data == 'string'){
+            return '\''+data+'\'';
+        }
+        return data;
     }
     query(sqlStr?:string,showSqlStr?:boolean){
         if(showSqlStr){this.showSqlStrBool = showSqlStr;}
@@ -44,23 +50,32 @@ export default class mysql {
         this.selectSql += `FROM ${TableName} `;
         return this;
     }
-    where(WhereArr:object,showSqlStr?:boolean){
+    where(WhereArr:object|string,showSqlStr?:boolean){
         if(showSqlStr){this.showSqlStrBool = showSqlStr;}
-        let whereStr = "";
-        let lng = Object.keys(WhereArr).length;
-        let index = 0;
-        let And = "";
-        for (let k in WhereArr){
-            if(index > 0 && index < lng){
-                And = "And";
-            }else {
-                And = "";
-            }
-            whereStr += `${And} ${k} = ${WhereArr[k]} `;
-            index += 1;
+        switch (typeof  WhereArr) {
+            case "object":
+                this.selectSql += `WHERE ${Object.keys(WhereArr).map(e=>(e + ' = '+this.isString(WhereArr[e]))).join(" And ")}`
+                break;
+            case "string":
+                this.selectSql += `WHERE ${WhereArr} `;
+                break;
         }
-        if(lng > 0){
-            this.selectSql += `WHERE ${whereStr}`;
+
+        return this;
+    }
+    insert(TabelName:string,ArrData:any = [],showSqlStr?:boolean){
+        if(showSqlStr){this.showSqlStrBool = showSqlStr;}
+        this.selectSql = `INSERT INTO ${TabelName} `;
+        switch(Object.prototype.toString.call( ArrData )){
+            case "[object Array]":
+                this.selectSql += `VALUES(${ArrData.join(",")}) `;
+                break;
+            case "[object Object]":
+                this.selectSql += `(${Object.keys(ArrData).join(",")}) VALUES (${Object.keys(ArrData).map(e=>this.isString(ArrData[e])).join(",")}) `;
+                break;
+            default:
+                this.selectSql += `${ArrData} `;
+                break;
         }
         return this;
     }

@@ -12,6 +12,12 @@ var mysql = /** @class */ (function () {
         this.connection.connect();
         this.selectSql = '';
     }
+    mysql.prototype.isString = function (data) {
+        if (typeof data == 'string') {
+            return '\'' + data + '\'';
+        }
+        return data;
+    };
     mysql.prototype.query = function (sqlStr, showSqlStr) {
         var _this = this;
         if (showSqlStr) {
@@ -55,25 +61,37 @@ var mysql = /** @class */ (function () {
         return this;
     };
     mysql.prototype.where = function (WhereArr, showSqlStr) {
+        var _this = this;
         if (showSqlStr) {
             this.showSqlStrBool = showSqlStr;
         }
-        var whereStr = "";
-        var lng = Object.keys(WhereArr).length;
-        var index = 0;
-        var And = "";
-        for (var k in WhereArr) {
-            if (index > 0 && index < lng) {
-                And = "And";
-            }
-            else {
-                And = "";
-            }
-            whereStr += And + " " + k + " = " + WhereArr[k] + " ";
-            index += 1;
+        switch (typeof WhereArr) {
+            case "object":
+                this.selectSql += "WHERE " + Object.keys(WhereArr).map(function (e) { return (e + ' = ' + _this.isString(WhereArr[e])); }).join(" And ");
+                break;
+            case "string":
+                this.selectSql += "WHERE " + WhereArr + " ";
+                break;
         }
-        if (lng > 0) {
-            this.selectSql += "WHERE " + whereStr;
+        return this;
+    };
+    mysql.prototype.insert = function (TabelName, ArrData, showSqlStr) {
+        var _this = this;
+        if (ArrData === void 0) { ArrData = []; }
+        if (showSqlStr) {
+            this.showSqlStrBool = showSqlStr;
+        }
+        this.selectSql = "INSERT INTO " + TabelName + " ";
+        switch (Object.prototype.toString.call(ArrData)) {
+            case "[object Array]":
+                this.selectSql += "VALUES(" + ArrData.join(",") + ") ";
+                break;
+            case "[object Object]":
+                this.selectSql += "(" + Object.keys(ArrData).join(",") + ") VALUES (" + Object.keys(ArrData).map(function (e) { return _this.isString(ArrData[e]); }).join(",") + ") ";
+                break;
+            default:
+                this.selectSql += ArrData + " ";
+                break;
         }
         return this;
     };
