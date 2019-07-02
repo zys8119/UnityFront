@@ -16,7 +16,7 @@ var mysql = /** @class */ (function () {
      * @param data 需要处理的数据
      */
     mysql.prototype.isString = function (data) {
-        if (typeof data == 'string') {
+        if (typeof data == 'string' && ['.'].some(function (e) { return data.indexOf(e) == -1; })) {
             return '\'' + data + '\'';
         }
         return data;
@@ -245,8 +245,8 @@ var mysql = /** @class */ (function () {
     };
     /**
      *
-     * @param data
-     * @param showSqlStr
+     * @param data 需要链表的数据
+     * @param showSqlStr 是否输出sql字符串，默认不输出
      */
     mysql.prototype.join = function (data, showSqlStr) {
         if (showSqlStr) {

@@ -15,7 +15,7 @@ export default class mysql {
      * @param data 需要处理的数据
      */
     private isString(data:any){
-        if(typeof data == 'string'){
+        if(typeof data == 'string' &&  ['.'].some(e=>data.indexOf(e) == -1)){
             return '\''+data+'\'';
         }
         return data;
@@ -224,8 +224,8 @@ export default class mysql {
 
     /**
      *
-     * @param data
-     * @param showSqlStr
+     * @param data 需要链表的数据
+     * @param showSqlStr 是否输出sql字符串，默认不输出
      */
     join(data:object|string,showSqlStr?:boolean){
         if(showSqlStr){this.showSqlStrBool = showSqlStr;}

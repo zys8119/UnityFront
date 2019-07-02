@@ -5,7 +5,7 @@ var mysql_1 = require("./UnityFrontUtils/mysql");
 new mysql_1["default"]().select().from('aa a').join({
     'bb b': "a.id = b.a2",
     'cc c': "b.id = c.a2"
-})
+}).where({ 'a.id': 23, 'b.id': 'c.a2' })
     .query(null, true).then(function (res) {
     console.log(res);
 });

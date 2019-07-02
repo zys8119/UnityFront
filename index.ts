@@ -3,7 +3,7 @@ import mysql from "./UnityFrontUtils/mysql"
 new mysql().select().from('aa a').join({
     'bb b':"a.id = b.a2",
     'cc c':"b.id = c.a2",
-})
+}).where({'a.id':23,'b.id':'c.a2'})
 .query(null,true).then(res=>{
     console.log(res)
 });
