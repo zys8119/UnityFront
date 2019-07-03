@@ -2,7 +2,7 @@ import "../typeStript"
 import configs from "./configs"
 let mysqlTool = require('mysql');
 let ncol = require('ncol');
-export default class mysql {
+class mysql {
     private connection = mysqlTool.createConnection(configs.options);
     private selectSql = '';
     private showSqlStrBool = false;
@@ -241,5 +241,6 @@ export default class mysql {
     }
 
 }
+export default mysql;
 
 
