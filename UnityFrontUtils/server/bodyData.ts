@@ -10,11 +10,13 @@ export default class bodyData {
         request.on('data', data => {
             let dataStr =data.toString()
             if(dataStr.indexOf("form-data;")){
-                console.log(dataStr.match(/form-data?.*/img),33333)
+                bodyDataStr = dataStr.match(/form-data?.*/img);
             }else {
                 bodyDataStr += data.toString();
             }
         });
-        request.on('end', callback(bodyDataStr));
+        request.on('end', ()=>{
+            callback(bodyDataStr);
+        });
     }
 }
