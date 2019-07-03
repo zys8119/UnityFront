@@ -1,12 +1,12 @@
 "use strict";
 exports.__esModule = true;
 require("../typeStript");
-var configs_1 = require("./configs");
+var config_1 = require("../config");
 var mysqlTool = require('mysql');
 var ncol = require('ncol');
 var mysql = /** @class */ (function () {
     function mysql() {
-        this.connection = mysqlTool.createConnection(configs_1["default"].options);
+        this.connection = mysqlTool.createConnection(config_1.mysqlConfig.options);
         this.selectSql = '';
         this.showSqlStrBool = false;
         this.connection.connect();

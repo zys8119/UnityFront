@@ -1,9 +1,10 @@
 import mysql from "../mysql"
 const { parse, URL, URLSearchParams } = require('url');
-const bodyData = require('./bodyData');
+import bodyData from "./bodyData"
 module.exports = (request,response)=>{
     return new Promise((resolve, reject) => {
-        bodyData(request,response,body=>{
+        //获取body数据
+        new bodyData(request,response,body=>{
             resolve({
                 body:body,
                 rawTrailers:request.rawTrailers,

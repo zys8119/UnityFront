@@ -1,6 +1,11 @@
 import "../typeStript"
+import { ServerConfig } from "../config"
 const http = require("http");
 const app = require('./app');
-http.createServer(app).listen(3000);
-console.log('Server running at http://127.0.0.1:3000/');
+//创建服务
+http.createServer(app).listen({
+    host: ServerConfig.host,
+    port: ServerConfig.port,
+});
+console.log(`Server running at http://${ServerConfig.host || "localhost"}:${ServerConfig.port}/`);
 

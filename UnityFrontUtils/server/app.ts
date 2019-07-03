@@ -1,26 +1,27 @@
 import "../typeStript"
-const fs = require("fs");
-const path = require('path');
+import fsWatch from "./fsWatch"
+import { ServerConfig } from "../config"
 module.exports =  (request,response)=>{
-    [
-        "./send.js",
-        "./bodyData.js",
-    ].forEach(filePath=>{
-        fs.watch(filePath, (eventType, filename) => {
-            require.cache[path.resolve(__dirname,"send.js")] = null;
-            require.cache[path.resolve(__dirname,"bodyData.js")] = null;
-        });
-    });
+    //文件监听，可以自动刷新
+    if(ServerConfig.fsWatch){
+        try {
+            new fsWatch();
+        }catch (e) {};
+    };
+    //设置headers
     response.writeHead(200, {
         'Content-Type': 'text/json; charset=utf-8',
     });
+    //获取最新内容
     new Promise((resolve, reject) => {
+        //对发送数据处理
         require('./send')(request,response).then(res=>{
             resolve(res);
         }).catch(err=>{
             resolve(err);
         });
     }).then(res=>{
+        //发送数据
         response.end(JSON.stringify(res));
     })
 };

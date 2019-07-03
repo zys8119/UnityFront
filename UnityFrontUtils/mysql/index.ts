@@ -1,5 +1,5 @@
 import "../typeStript"
-import configs from "./configs"
+import { mysqlConfig as configs } from "../config"
 let mysqlTool = require('mysql');
 let ncol = require('ncol');
 class mysql {

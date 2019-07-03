@@ -4,3 +4,5 @@ declare const Promise:any;
 declare const __dirname:any;
 declare const module:any;
 declare const Buffer:any;
+declare const exports:any;
+declare const T:any;
