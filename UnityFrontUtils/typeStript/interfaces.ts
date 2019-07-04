@@ -19,3 +19,15 @@ export interface ServerOptions_fsWatch {
     path:string;//文件路径或目录
     type:string;//路径类型 =>【directory：目录,file: 文件】
 }
+
+export interface ControllerInitDataOptions {
+    $_body?:any;//body数据
+    $_rawTrailers:[];
+    $_headers:headersType;//headers数据
+    $_rawHeaders:object;//rawHeaders数据
+    $_method:string;//请求方式
+    $_url:string;//url
+    $_urlParse:object;//格式化url数据
+    $_query:object;//query数据
+    $_send(sendData:any):any;//发送数据的方法
+}
