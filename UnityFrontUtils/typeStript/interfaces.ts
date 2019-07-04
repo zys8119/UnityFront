@@ -11,7 +11,8 @@ export interface ServerOptions {
     host?:string|number;//主机
     port?:string|number;//端口
     fsWatch?:Array<ServerOptions_fsWatch>;//监听文件变化，如果该字段不存在就监听
-    headers?:headersType
+    RequestStatus:number;//默认请求状态
+    headers?:headersType;//header参数
 }
 
 export interface ServerOptions_fsWatch {

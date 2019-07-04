@@ -22,6 +22,7 @@ export const ServerConfig =  <ServerOptions>{
         //listen UnityFrontUtils directory
         {path:path.resolve(__dirname,"../"),type:"directory"},
     ],
+    RequestStatus:200,
     headers:{
         'Content-Type': 'text/json; charset=utf-8',
         'Access-Control-Allow-Origin': "*",

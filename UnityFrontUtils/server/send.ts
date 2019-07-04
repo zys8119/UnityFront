@@ -1,5 +1,4 @@
-import mysql from "../mysql"
-const { parse, URL, URLSearchParams } = require('url');
+const { parse } = require('url');
 import bodyData from "./bodyData"
 module.exports = (request,response)=>{
     return new Promise((resolve, reject) => {
@@ -16,12 +15,5 @@ module.exports = (request,response)=>{
                 query:parse(request.url,true).query
             });
         });
-        // new mysql().select().from("aa")
-        //     .query()
-        //     .then(data=>{
-        //         resolve(data);
-        //     }).catch(err=>{
-        //         reject(err);
-        //     })
     })
 }
