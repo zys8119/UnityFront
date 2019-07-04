@@ -25,8 +25,8 @@ export const ServerConfig =  <ServerOptions>{
     headers:{
         'Content-Type': 'text/json; charset=utf-8',
         'Access-Control-Allow-Origin': "*",
-        'Access-Control-Allow-Headers':'Content-type',
-        'Access-Control-Max-Age':1728000,//预请求缓存20天
-        'Access-Control-Allow-Methods':"GET, POST, OPTIONS, DELETE",
+        'Access-Control-Allow-Methods':'GET',
+        // 'Access-Control-Allow-Headers':'content-type',
+        // 'Access-Control-Max-Age':0,//预请求缓存20天
     }
 };
