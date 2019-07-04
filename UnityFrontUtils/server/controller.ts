@@ -1,4 +1,5 @@
 import { ControllerInitDataOptions } from "../typeStript"
+const url = require("url");
 export default class controller{
     /**
      * 控制器入口
@@ -14,6 +15,13 @@ export default class controller{
                     Index.Index.prototype[keyName] = ControllerInitData[keyName];
                 };
                 new Index.Index();
+                break;
+            case '/favicon.ico':
+                break;
+            default:
+                let urlArr = ControllerInitData.$_url.split("/").filter(e=>e.length > 0);
+
+                ControllerInitData.$_send("sdfsdf");
                 break;
         }
     }

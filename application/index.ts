@@ -6,8 +6,8 @@ export default class applicationController implements ControllerInitDataOptions 
     $_headers:headersType;
     $_rawHeaders:object;
     $_method:string;
-    $_url:string;//url
+    $_url:string;
     $_urlParse:object;
-    $_query:object;//query数据
+    $_query:object;
     $_send?(sendData:any):any;
 }
