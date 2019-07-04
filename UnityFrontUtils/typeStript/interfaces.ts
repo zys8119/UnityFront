@@ -1,4 +1,4 @@
-import { fsWatchType } from "./Types"
+import { headersType } from "./Types"
 export interface mysqlOptions {
     host: string;//主机
     user: string;//账号
@@ -11,6 +11,7 @@ export interface ServerOptions {
     host?:string|number;//主机
     port?:string|number;//端口
     fsWatch?:Array<ServerOptions_fsWatch>;//监听文件变化，如果该字段不存在就监听
+    headers?:headersType
 }
 
 export interface ServerOptions_fsWatch {

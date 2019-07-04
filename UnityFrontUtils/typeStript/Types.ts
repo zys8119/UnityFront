@@ -1,1 +1,1 @@
-export type fsWatchType =  {[key:string]: string }
+export type headersType =  {[key:string]: string|number }
