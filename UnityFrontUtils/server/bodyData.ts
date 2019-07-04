@@ -1,4 +1,5 @@
 import "../typeStript"
+import getFormData from "../lib/formData"
 const { parse, URL, URLSearchParams } = require('url');
 var qs = require('querystring');
 /**
@@ -6,17 +7,22 @@ var qs = require('querystring');
  */
 export default class bodyData {
     constructor(request,response,callback?:Function){
-        let bodyDataStr = '';
+        let postData = "";
         request.on('data', data => {
-            let dataStr =data.toString()
-            if(dataStr.indexOf("form-data;")){
-                bodyDataStr = dataStr.match(/form-data?.*/img);
-            }else {
-                bodyDataStr += data.toString();
-            }
+            postData += data;
         });
         request.on('end', ()=>{
-            callback(bodyDataStr);
+            console.log("====================="+Date.now());
+            if(postData.indexOf("Content-Disposition: form-data;") > -1){
+                try {callback(new getFormData(postData));}catch (e) {callback(e.message)};
+            }
+        });
+        request.on('error', (err) => {
+            if(err) {
+                response.writeHead(500, {'Content-Type': 'text/html'});
+                response.write('An error occurred');
+                response.end();
+            }
         });
     }
 }
