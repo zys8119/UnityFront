@@ -7,6 +7,6 @@ export default class controller{
      * @param ControllerInitData //控制器初始化数据
      */
     constructor(request:any, response:any,ControllerInitData:ControllerInitDataOptions){
-        ControllerInitData.$_send("333444433");
+        ControllerInitData.$_send(ControllerInitData.$_body);
     }
 }

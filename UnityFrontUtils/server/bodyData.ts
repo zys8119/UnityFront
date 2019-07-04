@@ -12,6 +12,11 @@ export default class bodyData {
         });
         request.on('end', ()=>{
             if(request.headers["content-type"]){
+                if(postData.indexOf("Content-Disposition: form-data") > -1){
+                    //获取multipart/form-data;数据
+                    try {callback(new getFormData(postData));}catch (err) {callback({})};
+                    return;
+                }else
                 if(request.headers["content-type"].indexOf("multipart/form-data;") > -1){
                     //获取multipart/form-data;数据
                     try {callback(new getFormData(postData));}catch (err) {callback({})};
