@@ -11,26 +11,28 @@ export default class bodyData {
             postData += data;
         });
         request.on('end', ()=>{
-            if(request.headers["content-type"].indexOf("multipart/form-data;") > -1){
-                //获取multipart/form-data;数据
-                try {callback(new getFormData(postData));}catch (err) {callback({})};
-                return;
-            }else if(request.headers["content-type"].indexOf("application/x-www-form-urlencoded") > -1){
-                //获取application/x-www-form-urlencoded数据
-                try {callback(qs.parse(postData));}catch (err) {callback({})};
-                return;
-            }else if(request.headers["content-type"].indexOf("text/plain") > -1){
-                //获取text/plain数据
-                try {callback(postData);}catch (err) {callback({})};
-                return;
-            }else if(request.headers["content-type"].indexOf("application/json") > -1){
-                //获取application/json数据
-                try {callback(JSON.parse(postData));}catch (err) {callback({})};
-                return;
-            }else {
-                //其他数据，可扩展
-                try {callback(postData);}catch (err) {callback({})};
-                return;
+            if(request.headers["content-type"]){
+                if(request.headers["content-type"].indexOf("multipart/form-data;") > -1){
+                    //获取multipart/form-data;数据
+                    try {callback(new getFormData(postData));}catch (err) {callback({})};
+                    return;
+                }else if(request.headers["content-type"].indexOf("application/x-www-form-urlencoded") > -1){
+                    //获取application/x-www-form-urlencoded数据
+                    try {callback(qs.parse(postData));}catch (err) {callback({})};
+                    return;
+                }else if(request.headers["content-type"].indexOf("text/plain") > -1){
+                    //获取text/plain数据
+                    try {callback(postData);}catch (err) {callback({})};
+                    return;
+                }else if(request.headers["content-type"].indexOf("application/json") > -1){
+                    //获取application/json数据
+                    try {callback(JSON.parse(postData));}catch (err) {callback({})};
+                    return;
+                }else {
+                    //其他数据，可扩展
+                    try {callback(postData);}catch (err) {callback({})};
+                    return;
+                }
             }
             //获取其他格式数据
             callback(postData);
