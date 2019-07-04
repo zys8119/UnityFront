@@ -21,6 +21,8 @@ export const ServerConfig =  <ServerOptions>{
     fsWatch:[
         //listen UnityFrontUtils directory
         {path:path.resolve(__dirname,"../"),type:"directory"},
+        //listen application directory
+        {path:path.resolve(__dirname,"../../application"),type:"directory"},
     ],
     RequestStatus:200,
     headers:{

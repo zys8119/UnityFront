@@ -7,6 +7,14 @@ export default class controller{
      * @param ControllerInitData //控制器初始化数据
      */
     constructor(request:any, response:any,ControllerInitData:ControllerInitDataOptions){
-        ControllerInitData.$_send(ControllerInitData.$_body);
+        switch (ControllerInitData.$_url) {
+            case "/":
+                const Index = require("../../application/Index/Controller/Index");
+                for (let keyName in ControllerInitData){
+                    Index.Index.prototype[keyName] = ControllerInitData[keyName];
+                };
+                new Index.Index();
+                break;
+        }
     }
 }

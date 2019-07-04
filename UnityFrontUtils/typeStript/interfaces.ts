@@ -29,5 +29,5 @@ export interface ControllerInitDataOptions {
     $_url:string;//url
     $_urlParse:object;//格式化url数据
     $_query:object;//query数据
-    $_send(sendData:any):any;//发送数据的方法
+    $_send?(sendData:any):any;//发送数据的方法
 }
