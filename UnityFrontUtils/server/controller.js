@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var config_1 = require("../config");
 var static_1 = require("../static");
 var path = require("path");
@@ -59,14 +59,22 @@ var controller = /** @class */ (function () {
                 break;
             default:
                 //todo ====开放资源目录==start
-                new static_1.default(ControllerInitData, function () {
+                new static_1["default"](ControllerInitData, function () {
                     //todo 其他路径处理
                     var urlArr = ControllerInitData.$_url.split("/").filter(function (e) { return e.length > 0; });
-                    ControllerInitData.$_send("sdfsdf");
+                    console.log(urlArr);
+                    var filePath = "../../application/" + urlArr[0];
+                    if (!fs.existsSync(path.resolve(__dirname, filePath))) {
+                    }
+                    ;
+                    ControllerInitData.$_send({
+                        RequestStatus: 200,
+                        data: "asdad"
+                    });
                 });
                 break;
         }
     }
     return controller;
 }());
-exports.default = controller;
+exports["default"] = controller;

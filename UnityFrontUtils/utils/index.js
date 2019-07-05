@@ -1,9 +1,8 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-require("../typeStript");
+exports.__esModule = true;
 var path = require('path');
 var fs = require("fs");
-exports.default = {
+exports["default"] = {
     /**
      * 获取目录所有文件
      * @param fileDirPath
@@ -46,5 +45,30 @@ exports.default = {
             }
         }
         return data;
+    },
+    /**
+     * 渲染错误模板
+     * @param filPath 错误模板路径
+     * @param TemplateData 错误模板数据
+     * @param $_send 发送方法
+     * @constructor
+     */
+    RenderTemplateError: function (filPath, TemplateData) {
+        var _this = this;
+        fs.readFile(filPath, 'utf8', function (terr, tdata) {
+            if (terr) {
+                _this.$_send("\n                            <title>\u670D\u52A1\u5668\u9519\u8BEF</title>\n                            <h1>\u670D\u52A1\u5668\uFF1A500</h1>\n                            <hr>\n                            <div>" + terr + "</div>\n                        ");
+                return;
+            }
+            ;
+            for (var k in TemplateData) {
+                var value = TemplateData[k];
+                if (typeof value != "string") {
+                    value = "<pre>" + JSON.stringify(value, null, 4) + "</pre>";
+                }
+                tdata = tdata.replace(new RegExp("\\{\\{" + k + ".*\\}\\}", "g"), value);
+            }
+            _this.$_send(tdata);
+        });
     }
 };

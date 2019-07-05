@@ -1,4 +1,5 @@
-import "../typeStript"
+// import "../typeStript"
+import { TemplateErrorDataOptions } from  "../typeStript"
 const path = require('path');
 const fs = require("fs");
 export default {
@@ -43,6 +44,35 @@ export default {
             }
         }
         return data;
+    },
+
+    /**
+     * 渲染错误模板
+     * @param filPath 错误模板路径
+     * @param TemplateData 错误模板数据
+     * @param $_send 发送方法
+     * @constructor
+     */
+    RenderTemplateError(filPath:string,TemplateData:TemplateErrorDataOptions){
+        fs.readFile(filPath,'utf8',(terr,tdata)=>{
+            if (terr) {
+                this.$_send(`
+                            <title>服务器错误</title>
+                            <h1>服务器：500</h1>
+                            <hr>
+                            <div>${terr}</div>
+                        `);
+                return;
+            };
+            for (let k in TemplateData){
+                let value = TemplateData[k];
+                if(typeof value != "string"){
+                    value = `<pre>${JSON.stringify(value,null,4)}</pre>`;
+                }
+                tdata = tdata.replace(new RegExp(`\\{\\{${k}.*\\}\\}`,"g"),value);
+            }
+            this.$_send(tdata);
+        });
     }
 }
 

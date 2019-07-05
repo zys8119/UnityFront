@@ -59,33 +59,17 @@ export default class applicationController implements ControllerInitDataOptions 
                 this.setHeaders({
                     'Content-Type': 'text/html; charset=utf-8',
                 });
-                fs.readFile(path.resolve(__dirname,"../UnityFrontUtils/Template/TemplateError.html"),'utf8',(terr,tdata)=>{
-                    if (terr) {
-                        this.$_send(`
-                            <title>服务器错误</title>
-                            <h1>服务器：500</h1>
-                            <hr>
-                            <div>${terr}</div>
-                        `);
-                        return;
-                    };
-                    TemplateData = {
-                        tpn:this.$methodName+ServerConfig.Template.suffix,
-                        ERROR:{
-                            "控制器 -> ":this.__dir,
-                            "方法 -> ":this.$methodName,
-                            "error":"模板【"+filePath+"】不存在",
+                Utils.RenderTemplateError.call(this,
+                    path.resolve(__dirname,"../UnityFrontUtils/Template/TemplateError.html"),
+                    {
+                        title:`模板【${this.$methodName+ServerConfig.Template.suffix}】不存在`,
+                        error:{
+                                "控制器 -> ":this.__dir,
+                                "方法 -> ":this.$methodName,
+                                "error":"模板【"+filePath+"】不存在",
                         }
-                    };
-                    for (let k in TemplateData){
-                        let value = TemplateData[k];
-                        if(typeof value != "string"){
-                            value = `<pre>${JSON.stringify(value,null,4)}</pre>`;
-                        }
-                        tdata = tdata.replace(new RegExp(`\\{\\{${k}.*\\}\\}`,"g"),value);
                     }
-                    this.$_send(tdata);
-                });
+                );
                 return;
             };
             if(ServerConfig.Template.suffix == ".html"){

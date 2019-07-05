@@ -1,10 +1,11 @@
 import {ServerConfig} from "../config";
+import {ControllerInitDataOptions} from "../typeStript";
 import Utils from "../utils";
 const path = require("path");
 const fs = require("fs");
 export default class staticIndex {
-    private ControllerInitData:any;
-    constructor(ControllerInitData,naxt){
+    private ControllerInitData:ControllerInitDataOptions;
+    constructor(ControllerInitData:ControllerInitDataOptions,next:Function){
         this.ControllerInitData = ControllerInitData;
         if(ControllerInitData.$_url.indexOf("/public") == 0){
             let filePath = path.resolve(__dirname,"../../","./"+ControllerInitData.$_url);
@@ -42,7 +43,7 @@ export default class staticIndex {
             }
             return;
         }else {
-            naxt();
+            next();
         };
     }
 

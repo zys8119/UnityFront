@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var path = require("path");
 //数据库配置
 exports.mysqlConfig = {
@@ -26,14 +26,14 @@ exports.ServerConfig = {
     headers: {
         'Content-Type': 'text/json; charset=utf-8',
         'Access-Control-Allow-Origin': "*",
-        'Access-Control-Allow-Methods': 'GET',
+        'Access-Control-Allow-Methods': 'GET'
     },
     Template: {
         pablicPath: path.resolve(__dirname, "../../views"),
         suffix: ".html",
         urlVars: {
             "__STATIC__": "/public/static",
-            "__PUBLIC__": "/public",
+            "__PUBLIC__": "/public"
         }
     }
 };

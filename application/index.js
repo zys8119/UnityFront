@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var config_1 = require("../UnityFrontUtils/config");
 var utils_1 = require("../UnityFrontUtils/utils");
 var fs = require('fs');
@@ -43,43 +43,28 @@ var applicationController = /** @class */ (function () {
         fs.readFile(filePath, 'utf8', function (err, data) {
             if (err) {
                 _this.setHeaders({
-                    'Content-Type': 'text/html; charset=utf-8',
+                    'Content-Type': 'text/html; charset=utf-8'
                 });
-                fs.readFile(path.resolve(__dirname, "../UnityFrontUtils/Template/TemplateError.html"), 'utf8', function (terr, tdata) {
-                    if (terr) {
-                        _this.$_send("\n                            <title>\u670D\u52A1\u5668\u9519\u8BEF</title>\n                            <h1>\u670D\u52A1\u5668\uFF1A500</h1>\n                            <hr>\n                            <div>" + terr + "</div>\n                        ");
-                        return;
+                utils_1["default"].RenderTemplateError.call(_this, path.resolve(__dirname, "../UnityFrontUtils/Template/TemplateError.html"), {
+                    title: "\u6A21\u677F\u3010" + (_this.$methodName + config_1.ServerConfig.Template.suffix) + "\u3011\u4E0D\u5B58\u5728",
+                    error: {
+                        "控制器 -> ": _this.__dir,
+                        "方法 -> ": _this.$methodName,
+                        "error": "模板【" + filePath + "】不存在"
                     }
-                    ;
-                    TemplateData = {
-                        tpn: _this.$methodName + config_1.ServerConfig.Template.suffix,
-                        ERROR: {
-                            "控制器 -> ": _this.__dir,
-                            "方法 -> ": _this.$methodName,
-                            "error": "模板【" + filePath + "】不存在",
-                        }
-                    };
-                    for (var k in TemplateData) {
-                        var value = TemplateData[k];
-                        if (typeof value != "string") {
-                            value = "<pre>" + JSON.stringify(value, null, 4) + "</pre>";
-                        }
-                        tdata = tdata.replace(new RegExp("\\{\\{" + k + ".*\\}\\}", "g"), value);
-                    }
-                    _this.$_send(tdata);
                 });
                 return;
             }
             ;
             if (config_1.ServerConfig.Template.suffix == ".html") {
                 _this.setHeaders({
-                    'Content-Type': 'text/html; charset=utf-8',
+                    'Content-Type': 'text/html; charset=utf-8'
                 });
             }
             ;
-            _this.$_send(utils_1.default.replaceUrlVars(config_1.ServerConfig, data));
+            _this.$_send(utils_1["default"].replaceUrlVars(config_1.ServerConfig, data));
         });
     };
     return applicationController;
 }());
-exports.default = applicationController;
+exports["default"] = applicationController;

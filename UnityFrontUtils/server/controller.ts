@@ -1,4 +1,4 @@
-import { ControllerInitDataOptions } from "../typeStript"
+import { ControllerInitDataOptions, SendDataOptions } from "../typeStript"
 import {mysqlConfig, ServerConfig} from "../config";
 import staticIndex from "../static";
 const path = require("path");
@@ -30,7 +30,7 @@ export default class controller{
                                 for(let k in this.$_RequestHeaders){
                                     headers[k] = this.$_RequestHeaders[k];
                                 };
-                                let sendData = {
+                                let sendData = <SendDataOptions>{
                                     data:RequestData,
                                     RequestStatus:this.$_RequestStatus || ServerConfig.RequestStatus,
                                     headers
@@ -54,7 +54,15 @@ export default class controller{
                 new staticIndex(ControllerInitData,()=>{
                     //todo 其他路径处理
                     let urlArr = ControllerInitData.$_url.split("/").filter(e=>e.length > 0);
-                    ControllerInitData.$_send("sdfsdf");
+                    console.log(urlArr);
+                    let filePath =  `../../application/${urlArr[0]}`;
+                    if(!fs.existsSync(path.resolve(__dirname,filePath))){
+
+                    };
+                    ControllerInitData.$_send(<SendDataOptions>{
+                        RequestStatus:200,
+                        data:"asdad"
+                    });
                 });
                 break;
 

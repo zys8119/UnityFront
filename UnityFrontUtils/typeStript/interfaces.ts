@@ -35,21 +35,10 @@ export interface ServerOptions_Template {
     urlVars?:object;//模板Url变量
 }
 
-export interface ControllerInitDataOptions {
-    $_body?:any;//body数据
-    $_rawTrailers:[];
-    $_headers:headersType;//headers数据
-    $_rawHeaders:object;//rawHeaders数据
-    $_method:string;//请求方式
-    $_url:string;//url
-    $_urlParse:object;//格式化url数据
-    $_query:object;//query数据
-    $_send?(sendData:any):any;//发送数据的方法
-    $_RequestStatus:number;// 请求状态设置
-    $_RequestHeaders:headersType;//headers头设置
-    $mysql?(optionsConfig?:object,isEnd?:boolean):SqlUtilsOptions;//sql工具
-    __dir:string;//当前控制器位置
-    $methodName:string;//当前控制器执行的方法名称
+export interface SendDataOptions {
+    data?:any;//发送的数据
+    headers?:headersType;//发送的请求头
+    RequestStatus?:number;//请求的状态码
 }
 
 export interface SqlUtilsOptions {
@@ -127,4 +116,27 @@ export interface SqlUtilsOptions {
      * @param showSqlStr 是否输出sql字符串，默认不输出
      */
     join(data:object|string,showSqlStr?:boolean):SqlUtilsOptions;
+}
+
+export interface ControllerInitDataOptions {
+    $_body?:any;//body数据
+    $_rawTrailers:[];
+    $_headers:headersType;//headers数据
+    $_rawHeaders:object;//rawHeaders数据
+    $_method:string;//请求方式
+    $_url:string;//url
+    $_urlParse:object;//格式化url数据
+    $_query:object;//query数据
+    $_send?(sendData:any):any;//发送数据的方法
+    $_RequestStatus:number;// 请求状态设置
+    $_RequestHeaders:headersType;//headers头设置
+    $mysql?(optionsConfig?:object,isEnd?:boolean):SqlUtilsOptions;//sql工具
+    __dir:string;//当前控制器位置
+    $methodName:string;//当前控制器执行的方法名称
+}
+
+export interface TemplateErrorDataOptions {
+    title?:string;//错误标题
+    error?:object;//错误详情
+
 }
