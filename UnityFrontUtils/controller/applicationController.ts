@@ -58,9 +58,10 @@ export default class applicationController implements ControllerInitDataOptions 
                 Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
                     title:`模板【${this.$methodName+ServerConfig.Template.suffix}】不存在`,
                     error:{
-                            "控制器 -> ":this.__dir,
-                            "方法 -> ":this.$methodName,
-                            "error":"模板【"+filePath+"】不存在",
+                        "错误来源 -> ":ServerConfig.Template.ErrorPathSource,
+                        "控制器 -> ":this.__dir,
+                        "方法 -> ":this.$methodName,
+                        "error":"模板【"+filePath+"】不存在",
                     }
                 });
                 return;
@@ -81,10 +82,27 @@ export default class applicationController implements ControllerInitDataOptions 
         }else {
             //其他路径
             let urlArrs = this.$_url.replace(/^\/{1}/,"").split("/");
-            let modulePath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0]);
-            if(!fs.existsSync(modulePath)){
+            //判断模块
+            let ModulePath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0]);
+            if(!fs.existsSync(ModulePath)){
                 Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
-                    title:`模块【${urlArrs[0]}】不存在`
+                    title:`模块【${urlArrs[0]}】不存在`,
+                    error:{
+                        "错误来源 -> ":ServerConfig.Template.ErrorPathSource,
+                    }
+                });
+                return;
+            };
+            //判断控制器
+            urlArrs[1] = urlArrs[1] || "Index";
+            let ControllerPath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"Controller",urlArrs[1]);
+            if(!fs.existsSync(ControllerPath)){
+                Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
+                    title:`控制器【${urlArrs[0]}】不存在`,
+                    error:{
+                        "错误来源 -> ":ServerConfig.Template.ErrorPathSource,
+                        "模块 -> ":urlArrs[1],
+                    }
                 });
                 return;
             };

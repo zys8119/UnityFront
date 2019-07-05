@@ -44,6 +44,7 @@ var applicationController = /** @class */ (function () {
                 utils_1["default"].RenderTemplateError.call(_this, config_1.ServerConfig.Template.TemplateErrorPath, {
                     title: "\u6A21\u677F\u3010" + (_this.$methodName + config_1.ServerConfig.Template.suffix) + "\u3011\u4E0D\u5B58\u5728",
                     error: {
+                        "错误来源 -> ": config_1.ServerConfig.Template.ErrorPathSource,
                         "控制器 -> ": _this.__dir,
                         "方法 -> ": _this.$methodName,
                         "error": "模板【" + filePath + "】不存在"
@@ -69,10 +70,28 @@ var applicationController = /** @class */ (function () {
         else {
             //其他路径
             var urlArrs = this.$_url.replace(/^\/{1}/, "").split("/");
-            var modulePath = path.resolve(config_1.ServerConfig.Template.applicationPath, urlArrs[0]);
-            if (!fs.existsSync(modulePath)) {
+            //判断模块
+            var ModulePath = path.resolve(config_1.ServerConfig.Template.applicationPath, urlArrs[0]);
+            if (!fs.existsSync(ModulePath)) {
                 utils_1["default"].RenderTemplateError.call(this, config_1.ServerConfig.Template.TemplateErrorPath, {
-                    title: "\u6A21\u5757\u3010" + urlArrs[0] + "\u3011\u4E0D\u5B58\u5728"
+                    title: "\u6A21\u5757\u3010" + urlArrs[0] + "\u3011\u4E0D\u5B58\u5728",
+                    error: {
+                        "错误来源 -> ": config_1.ServerConfig.Template.ErrorPathSource
+                    }
+                });
+                return;
+            }
+            ;
+            //判断控制器
+            urlArrs[1] = urlArrs[1] || "Index";
+            var ControllerPath = path.resolve(config_1.ServerConfig.Template.applicationPath, urlArrs[0], "Controller", urlArrs[1]);
+            if (!fs.existsSync(ControllerPath)) {
+                utils_1["default"].RenderTemplateError.call(this, config_1.ServerConfig.Template.TemplateErrorPath, {
+                    title: "\u63A7\u5236\u5668\u3010" + urlArrs[0] + "\u3011\u4E0D\u5B58\u5728",
+                    error: {
+                        "错误来源 -> ": config_1.ServerConfig.Template.ErrorPathSource,
+                        "模块 -> ": urlArrs[1]
+                    }
                 });
                 return;
             }

@@ -32,6 +32,7 @@ exports.ServerConfig = {
         viewsPath: path.resolve(__dirname, "../../views"),
         applicationPath: path.resolve(__dirname, "../../application"),
         TemplateErrorPath: path.resolve(__dirname, "../Template/TemplateError.html"),
+        ErrorPathSource: path.resolve(__dirname, "../controller/applicationController.js"),
         suffix: ".html",
         urlVars: {
             "__STATIC__": "/public/static",

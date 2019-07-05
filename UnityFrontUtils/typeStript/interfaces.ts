@@ -33,6 +33,7 @@ export interface ServerOptions_Template {
     viewsPath?:string;//公共模板路径
     applicationPath?:string;//公共应用路径
     TemplateErrorPath?:string;//错误模板渲染路径
+    ErrorPathSource?:string;//错误来源路径
     suffix?:string;//模板后缀
     urlVars?:object;//模板Url变量
 }
