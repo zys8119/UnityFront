@@ -4,6 +4,7 @@ import UnityFrontController from "./controller"
 import { ServerConfig } from "../config"
 module.exports = (request,response)=>{
     return new Promise((resolve, reject) => {
+        console.log("===============",Date.now());
         //获取body数据
         new bodyData(request,response,body=>{
             //初始化UnityFrontController控制器

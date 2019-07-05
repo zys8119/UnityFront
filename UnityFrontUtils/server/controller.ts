@@ -1,5 +1,6 @@
 import { ControllerInitDataOptions } from "../typeStript"
-const url = require("url");
+import { ServerConfig } from "../config";
+
 export default class controller{
     /**
      * 控制器入口
@@ -8,19 +9,23 @@ export default class controller{
      * @param ControllerInitData //控制器初始化数据
      */
     constructor(request:any, response:any,ControllerInitData:ControllerInitDataOptions){
-        console.log("===============",Date.now());
         switch (ControllerInitData.$_url) {
             case "/":
                 const Index = require("../../application/Index/Controller/Index");
                 for (let keyName in ControllerInitData){
                     switch (keyName) {
                         case "$_send":
-                            console.log(ControllerInitData.$_RequestStatus,2222)
                             Index.Index.prototype[keyName] = function (data) {
+                                let RequestData = "";
+                                if(this.$_RequestHeaders && this.$_RequestHeaders['Content-Type'] && this.$_RequestHeaders['Content-Type'].indexOf("text/json") > -1){
+                                    RequestData = JSON.stringify(data);
+                                }else {
+                                    RequestData = data;
+                                };
                                 let sendData = {
-                                    data,
-                                    RequestStatus:this.$_RequestStatus,
-                                    headers:this.$_RequestHeaders
+                                    data:RequestData,
+                                    RequestStatus:this.$_RequestStatus || ServerConfig.headers,
+                                    headers:(<any>Object).assign(ServerConfig.headers,this.$_RequestHeaders)
                                 };
                                 ControllerInitData[keyName](sendData);
                             }

@@ -1,7 +1,6 @@
 import "../typeStript"
 import fsWatch from "./fsWatch"
 import { ServerConfig } from "../config"
-import Utils from "../utils"
 module.exports =  (request,response)=>{
     //文件监听，可以自动刷新
     if(ServerConfig.fsWatch){
@@ -18,9 +17,9 @@ module.exports =  (request,response)=>{
             resolve(err);
         });
     }).then((res)=>{
-        //设置headers
-        response.writeHead(res.RequestStatus || ServerConfig.RequestStatus, res.headers || ServerConfig.headers);
+        //设置headers,asdad
+        response.writeHead(res.RequestStatus, res.headers);
         //发送数据
-        response.end(JSON.stringify(res.data));
+        response.end(res.data);
     })
 };

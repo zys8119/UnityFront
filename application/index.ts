@@ -11,5 +11,17 @@ export default class applicationController implements ControllerInitDataOptions 
     $_query:object;
     $_send?(sendData:any):any;
     $_RequestStatus:number;
-    $_RequestHeaders:headersType
+    $_RequestHeaders:headersType;
+
+    /**
+     * 设置header头
+     * @param Headers
+     */
+    setHeaders(Headers:headersType = {}){
+        this.$_RequestHeaders = Headers;
+    }
+
+    setRequestStatus(Status:number){
+        this.$_RequestStatus = Status;
+    }
 }
