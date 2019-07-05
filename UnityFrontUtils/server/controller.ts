@@ -1,6 +1,6 @@
 import { ControllerInitDataOptions } from "../typeStript"
-import { ServerConfig } from "../config";
-
+import {mysqlConfig, ServerConfig} from "../config";
+const path = require("path");
 export default class controller{
     /**
      * 控制器入口
@@ -11,7 +11,11 @@ export default class controller{
     constructor(request:any, response:any,ControllerInitData:ControllerInitDataOptions){
         switch (ControllerInitData.$_url) {
             case "/":
-                const Index = require("../../application/Index/Controller/Index");
+                let filePath =  "../../application/Index/Controller/Index";
+                let $methodName = "index";
+                const Index = require(filePath);
+                Index.Index.prototype.__dir = path.resolve(__dirname,filePath);
+                Index.Index.prototype.$methodName = $methodName;
                 for (let keyName in ControllerInitData){
                     switch (keyName) {
                         case "$_send":
@@ -22,10 +26,14 @@ export default class controller{
                                 }else {
                                     RequestData = data;
                                 };
+                                let headers = JSON.parse(JSON.stringify(ServerConfig.headers));
+                                for(let k in this.$_RequestHeaders){
+                                    headers[k] = this.$_RequestHeaders[k];
+                                };
                                 let sendData = {
                                     data:RequestData,
-                                    RequestStatus:this.$_RequestStatus || ServerConfig.headers,
-                                    headers:(<any>Object).assign(ServerConfig.headers,this.$_RequestHeaders)
+                                    RequestStatus:this.$_RequestStatus || ServerConfig.RequestStatus,
+                                    headers
                                 };
                                 ControllerInitData[keyName](sendData);
                             }
@@ -35,11 +43,12 @@ export default class controller{
                             break;
                     }
                 };
-                new Index.Index();
+                new Index.Index().index();
                 break;
             case '/favicon.ico':
                 break;
             default:
+                console.log(ControllerInitData.$_url);
                 let urlArr = ControllerInitData.$_url.split("/").filter(e=>e.length > 0);
                 ControllerInitData.$_send("sdfsdf");
                 break;

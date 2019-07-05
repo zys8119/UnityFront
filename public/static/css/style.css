@@ -1,0 +1,16 @@
+*{
+    text-align: center;
+}
+.content{
+    width: 700px;
+    box-shadow: 0 0 5px #e5e5e5;
+    padding: 50px;
+    margin: auto;
+    margin-top: 25%;
+}
+h2{
+
+}
+p{
+    color: #999999;
+}

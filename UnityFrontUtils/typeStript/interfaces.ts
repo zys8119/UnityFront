@@ -21,11 +21,18 @@ export interface ServerOptions {
     fsWatch?:Array<ServerOptions_fsWatch>;//监听文件变化，如果该字段不存在就不监听
     RequestStatus:number;//默认请求状态
     headers?:headersType;//header参数
+    Template?:ServerOptions_Template;//模板相关配置
 }
 
 export interface ServerOptions_fsWatch {
     path:string;//文件路径或目录
     type:string;//路径类型 =>【directory：目录,file: 文件】
+}
+
+export interface ServerOptions_Template {
+    pablicPath?:string;//公共模板路径
+    suffix?:string;//模板后缀
+    urlVars?:object;//模板Url变量
 }
 
 export interface ControllerInitDataOptions {
@@ -41,6 +48,8 @@ export interface ControllerInitDataOptions {
     $_RequestStatus:number;// 请求状态设置
     $_RequestHeaders:headersType;//headers头设置
     $mysql?(optionsConfig?:object,isEnd?:boolean):SqlUtilsOptions;//sql工具
+    __dir:string;//当前控制器位置
+    $methodName:string;//当前控制器执行的方法名称
 }
 
 export interface SqlUtilsOptions {

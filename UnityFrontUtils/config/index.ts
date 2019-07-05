@@ -33,5 +33,12 @@ export const ServerConfig =  <ServerOptions>{
         'Access-Control-Allow-Methods':'GET',
         // 'Access-Control-Allow-Headers':'content-type',
         // 'Access-Control-Max-Age':0,//预请求缓存20天
+    },
+    Template:{
+        pablicPath:path.resolve(__dirname,"../../views"),
+        suffix:".html",
+        urlVars:{
+            "__STATIC__":"/public/static"
+        }
     }
 };
