@@ -1,6 +1,8 @@
 import { ControllerInitDataOptions } from "../typeStript"
 import {mysqlConfig, ServerConfig} from "../config";
+import staticIndex from "../static";
 const path = require("path");
+const fs = require("fs");
 export default class controller{
     /**
      * 控制器入口
@@ -14,8 +16,6 @@ export default class controller{
                 let filePath =  "../../application/Index/Controller/Index";
                 let $methodName = "index";
                 const Index = require(filePath);
-                Index.Index.prototype.__dir = path.resolve(__dirname,filePath);
-                Index.Index.prototype.$methodName = $methodName;
                 for (let keyName in ControllerInitData){
                     switch (keyName) {
                         case "$_send":
@@ -43,15 +43,21 @@ export default class controller{
                             break;
                     }
                 };
+                Index.Index.prototype.__dir = path.resolve(__dirname,filePath);
+                Index.Index.prototype.$methodName = $methodName;
                 new Index.Index().index();
                 break;
             case '/favicon.ico':
                 break;
             default:
-                console.log(ControllerInitData.$_url);
-                let urlArr = ControllerInitData.$_url.split("/").filter(e=>e.length > 0);
-                ControllerInitData.$_send("sdfsdf");
+                //todo ====开放资源目录==start
+                new staticIndex(ControllerInitData,()=>{
+                    //todo 其他路径处理
+                    let urlArr = ControllerInitData.$_url.split("/").filter(e=>e.length > 0);
+                    ControllerInitData.$_send("sdfsdf");
+                });
                 break;
+
         }
     }
 }

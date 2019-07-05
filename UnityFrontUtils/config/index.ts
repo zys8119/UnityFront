@@ -38,7 +38,8 @@ export const ServerConfig =  <ServerOptions>{
         pablicPath:path.resolve(__dirname,"../../views"),
         suffix:".html",
         urlVars:{
-            "__STATIC__":"/public/static"
+            "__STATIC__":"/public/static",
+            "__PUBLIC__":"/public",
         }
     }
 };

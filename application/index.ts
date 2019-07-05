@@ -1,6 +1,7 @@
 import {ControllerInitDataOptions, mysqlOptionsOptions, SqlUtilsOptions} from "../UnityFrontUtils/typeStript"
 import { headersType } from "../UnityFrontUtils/typeStript/Types";
 import { ServerConfig } from "../UnityFrontUtils/config";
+import Utils from "../UnityFrontUtils/utils";
 const fs = require('fs');
 const path = require('path');
 export default class applicationController implements ControllerInitDataOptions {
@@ -92,12 +93,9 @@ export default class applicationController implements ControllerInitDataOptions 
                     'Content-Type': 'text/html; charset=utf-8',
                 });
             };
-            if(ServerConfig.Template.urlVars && typeof ServerConfig.Template.urlVars == "object"){
-                for(let v in ServerConfig.Template.urlVars){
-                    data = data.replace(new RegExp(v,"g"),ServerConfig.Template.urlVars[v]);
-                }
-            }
-            this.$_send(data);
+            this.$_send(Utils.replaceUrlVars(ServerConfig,data));
         });
     }
+
+
 }
