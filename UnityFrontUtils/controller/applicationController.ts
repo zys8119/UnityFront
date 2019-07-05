@@ -52,7 +52,7 @@ export default class applicationController implements ControllerInitDataOptions 
      */
     Render(TemplatePath?:string,TemplateData?:object){
         TemplateData = TemplateData || {};
-        let filePath = path.resolve(this.__dir,"../../Template1/",this.$methodName+ServerConfig.Template.suffix);
+        let filePath = path.resolve(this.__dir,"../../Template/",this.$methodName+ServerConfig.Template.suffix);
         fs.readFile(filePath,'utf8',(err,data)=>{
             if (err){
                 Utils.RenderTemplateError.call(this,
