@@ -5,12 +5,14 @@ var config_1 = require("../config");
 var mysqlTool = require('mysql');
 var ncol = require('ncol');
 var mysql = /** @class */ (function () {
-    function mysql() {
+    function mysql(isEnd) {
         this.connection = mysqlTool.createConnection(config_1.mysqlConfig.options);
         this.selectSql = '';
         this.showSqlStrBool = false;
+        this.isEnd = false;
         this.connection.connect();
         this.selectSql = '';
+        this.isEnd = isEnd;
     }
     /**
      * @param data 需要处理的数据
@@ -46,7 +48,9 @@ var mysql = /** @class */ (function () {
      *
      */
     mysql.prototype.end = function () {
-        this.connection.end();
+        if (this.isEnd) {
+            this.connection.end();
+        }
     };
     /**
      *

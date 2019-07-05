@@ -12,7 +12,7 @@ export default class applicationController implements ControllerInitDataOptions 
     $_send?(sendData:any):any;
     $_RequestStatus:number;
     $_RequestHeaders:headersType;
-    $mysql?():SqlUtilsOptions;
+    $mysql?(isEnd?:boolean):SqlUtilsOptions;
 
     /**
      * 设置header头
@@ -34,7 +34,7 @@ export default class applicationController implements ControllerInitDataOptions 
      * $mysql实例化
      * @constructor
      */
-    DB(){
-        return  this.$mysql();
+    DB(isEnd?:boolean){
+        return  this.$mysql(isEnd);
     }
 }

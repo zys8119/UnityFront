@@ -5,7 +5,7 @@ import { ServerConfig } from "../config"
 import mysql from "../mysql"
 module.exports = (request,response)=>{
     return new Promise((resolve, reject) => {
-        console.log("===============",Date.now());
+        console.log("请求开始===============时间：",Date.now());
         //获取body数据
         new bodyData(request,response,body=>{
             //初始化UnityFrontController控制器
@@ -23,8 +23,8 @@ module.exports = (request,response)=>{
                 },
                 $_RequestStatus:ServerConfig.RequestStatus,
                 $_RequestHeaders:ServerConfig.headers,
-                $mysql:()=>{
-                    return new mysql();
+                $mysql:(isEnd)=>{
+                    return new mysql(isEnd);
                 }
             });
         });

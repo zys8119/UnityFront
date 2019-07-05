@@ -32,7 +32,7 @@ export interface ControllerInitDataOptions {
     $_send?(sendData:any):any;//发送数据的方法
     $_RequestStatus:number;// 请求状态设置
     $_RequestHeaders:headersType;//headers头设置
-    $mysql?():SqlUtilsOptions;//sql工具
+    $mysql?(isEnd?:boolean):SqlUtilsOptions;//sql工具
 }
 
 export interface SqlUtilsOptions {

@@ -6,9 +6,11 @@ class mysql {
     private connection = mysqlTool.createConnection(configs.options);
     private selectSql = '';
     private showSqlStrBool = false;
-    constructor(){
+    private isEnd = false;
+    constructor(isEnd?:boolean){
         this.connection.connect();
         this.selectSql = '';
+        this.isEnd = isEnd;
     }
 
     /**
@@ -44,7 +46,9 @@ class mysql {
      *
      */
     private end(){
-        this.connection.end();
+        if(this.isEnd){
+            this.connection.end();
+        }
     }
 
     /**
