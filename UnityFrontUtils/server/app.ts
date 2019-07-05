@@ -12,15 +12,15 @@ module.exports =  (request,response)=>{
     //获取最新内容
     new Promise((resolve, reject) => {
         //对发送数据处理
-        require('./send')(request,response).then((res,RequestStatus,headers)=>{
-            resolve(res,RequestStatus,headers);
+        require('./send')(request,response).then((res)=>{
+            resolve(res);
         }).catch(err=>{
-            resolve(err,500);
+            resolve(err);
         });
-    }).then((res,RequestStatus,headers)=>{
+    }).then((res)=>{
         //设置headers
-        response.writeHead(RequestStatus || ServerConfig.RequestStatus, headers || ServerConfig.headers);
+        response.writeHead(res.RequestStatus || ServerConfig.RequestStatus, res.headers || ServerConfig.headers);
         //发送数据
-        response.end(JSON.stringify(res));
+        response.end(JSON.stringify(res.data));
     })
 };

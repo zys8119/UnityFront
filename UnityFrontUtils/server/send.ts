@@ -1,7 +1,7 @@
 const { parse } = require('url');
 import bodyData from "./bodyData"
 import UnityFrontController from "./controller"
-import { ControllerInitDataOptions } from "../typeStript"
+import { ServerConfig } from "../config"
 module.exports = (request,response)=>{
     return new Promise((resolve, reject) => {
         //获取body数据
@@ -16,7 +16,11 @@ module.exports = (request,response)=>{
                 $_url:request.url,
                 $_urlParse:parse(request.url,true),
                 $_query:parse(request.url,true).query,
-                $_send:resolve
+                $_send:(sendData)=>{
+                    resolve(sendData);
+                },
+                $_RequestStatus:ServerConfig.RequestStatus,
+                $_RequestHeaders:ServerConfig.headers,
             });
         });
     })

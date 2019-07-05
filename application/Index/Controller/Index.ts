@@ -2,6 +2,9 @@ import applicationController from "../../index"
 export class Index extends applicationController{
     constructor(){
         super();
-        this.$_send("Asdssdfsdfa---sfsdf---333333");
+        this.$_RequestHeaders = {
+            'Content-Type': 'text/html; charset=utf-8',
+        };
+        this.$_send("<h1>Hello world1212</h1>");
     }
 }

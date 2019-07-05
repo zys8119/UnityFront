@@ -10,4 +10,6 @@ export default class applicationController implements ControllerInitDataOptions 
     $_urlParse:object;
     $_query:object;
     $_send?(sendData:any):any;
+    $_RequestStatus:number;
+    $_RequestHeaders:headersType
 }
