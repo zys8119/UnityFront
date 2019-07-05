@@ -5,14 +5,24 @@ var config_1 = require("../config");
 var mysqlTool = require('mysql');
 var ncol = require('ncol');
 var mysql = /** @class */ (function () {
-    function mysql(isEnd) {
-        this.connection = mysqlTool.createConnection(config_1.mysqlConfig.options);
+    function mysql(optionsConfig, isEnd) {
         this.selectSql = '';
         this.showSqlStrBool = false;
         this.isEnd = false;
-        this.connection.connect();
         this.selectSql = '';
         this.isEnd = isEnd;
+        var options = JSON.parse(JSON.stringify(config_1.mysqlConfig.options));
+        if (typeof optionsConfig == "object") {
+            for (var k in optionsConfig) {
+                options[k] = optionsConfig[k];
+            }
+        }
+        var QueueKeyName = options.host;
+        if (!config_1.mysqlConfig.createPool[QueueKeyName]) {
+            config_1.mysqlConfig.createPool[QueueKeyName] = mysqlTool.createPool(options);
+        }
+        ;
+        this.connection = config_1.mysqlConfig.createPool[QueueKeyName];
     }
     /**
      * @param data 需要处理的数据
@@ -45,11 +55,11 @@ var mysql = /** @class */ (function () {
         return sqlStr;
     };
     /**
-     *
+     *断开连接
      */
     mysql.prototype.end = function () {
         if (this.isEnd) {
-            this.connection.end();
+            // this.connection.end();
         }
     };
     /**

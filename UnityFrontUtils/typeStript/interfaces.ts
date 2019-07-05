@@ -1,5 +1,13 @@
 import { headersType } from "./Types"
 export interface mysqlOptions {
+    //连接池
+    createPool:object;
+    //连接选项
+    options:mysqlOptionsOptions
+}
+
+export interface mysqlOptionsOptions {
+    connectionLimit?:number;//连接数
     host: string;//主机
     user: string;//账号
     password: string;//密码
@@ -32,7 +40,7 @@ export interface ControllerInitDataOptions {
     $_send?(sendData:any):any;//发送数据的方法
     $_RequestStatus:number;// 请求状态设置
     $_RequestHeaders:headersType;//headers头设置
-    $mysql?(isEnd?:boolean):SqlUtilsOptions;//sql工具
+    $mysql?(optionsConfig?:object,isEnd?:boolean):SqlUtilsOptions;//sql工具
 }
 
 export interface SqlUtilsOptions {

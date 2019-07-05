@@ -5,8 +5,10 @@ import {
 } from "../typeStript";
 
 //数据库配置
-export const mysqlConfig = {
-    options: <mysqlOptions> {
+export const mysqlConfig = <mysqlOptions>{
+    createPool:{},
+    options:{
+        connectionLimit : 10,
         host: 'localhost',
         user: 'root',
         password: 'admin123',

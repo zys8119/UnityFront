@@ -1,16 +1,26 @@
 import "../typeStript"
-import { mysqlConfig as configs } from "../config"
+import { mysqlConfig} from "../config"
 let mysqlTool = require('mysql');
 let ncol = require('ncol');
 class mysql {
-    private connection = mysqlTool.createConnection(configs.options);
+    private connection:any;
     private selectSql = '';
     private showSqlStrBool = false;
     private isEnd = false;
-    constructor(isEnd?:boolean){
-        this.connection.connect();
+    constructor(optionsConfig:object,isEnd?:boolean){
         this.selectSql = '';
         this.isEnd = isEnd;
+        let options = JSON.parse(JSON.stringify(mysqlConfig.options));
+        if(typeof optionsConfig == "object"){
+            for (let k in optionsConfig){
+                options[k] = optionsConfig[k];
+            }
+        }
+        let QueueKeyName = options.host;
+        if(!mysqlConfig.createPool[QueueKeyName]){
+            mysqlConfig.createPool[QueueKeyName] = mysqlTool.createPool(options);
+        };
+        this.connection = mysqlConfig.createPool[QueueKeyName];
     }
 
     /**
@@ -43,11 +53,11 @@ class mysql {
     }
 
     /**
-     *
+     *断开连接
      */
     private end(){
         if(this.isEnd){
-            this.connection.end();
+            // this.connection.end();
         }
     }
 

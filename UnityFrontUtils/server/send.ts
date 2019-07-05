@@ -23,8 +23,8 @@ module.exports = (request,response)=>{
                 },
                 $_RequestStatus:ServerConfig.RequestStatus,
                 $_RequestHeaders:ServerConfig.headers,
-                $mysql:(isEnd)=>{
-                    return new mysql(isEnd);
+                $mysql:(optionsConfig?:object,isEnd?:boolean)=>{
+                    return new mysql(optionsConfig,isEnd);
                 }
             });
         });

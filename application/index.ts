@@ -1,4 +1,4 @@
-import {ControllerInitDataOptions, ServerOptions, SqlUtilsOptions} from "../UnityFrontUtils/typeStript"
+import {ControllerInitDataOptions, mysqlOptionsOptions, SqlUtilsOptions} from "../UnityFrontUtils/typeStript"
 import { headersType } from "../UnityFrontUtils/typeStript/Types";
 export default class applicationController implements ControllerInitDataOptions {
     $_body?:any;
@@ -12,7 +12,7 @@ export default class applicationController implements ControllerInitDataOptions 
     $_send?(sendData:any):any;
     $_RequestStatus:number;
     $_RequestHeaders:headersType;
-    $mysql?(isEnd?:boolean):SqlUtilsOptions;
+    $mysql?(optionsConfig?:object,isEnd?:boolean):SqlUtilsOptions;
 
     /**
      * 设置header头
@@ -34,7 +34,7 @@ export default class applicationController implements ControllerInitDataOptions 
      * $mysql实例化
      * @constructor
      */
-    DB(isEnd?:boolean){
-        return  this.$mysql(isEnd);
+    DB(optionsConfig?:mysqlOptionsOptions,isEnd?:boolean){
+        return this.$mysql(optionsConfig,isEnd);
     }
 }

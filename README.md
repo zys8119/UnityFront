@@ -4,6 +4,6 @@
 
 #参考文档
 
-[MySql](http://c.biancheng.net/view/2548.html)
+[MySql语法](http://c.biancheng.net/view/2548.html)
 
-sada
+[mysql工具](https://www.npmjs.com/package/mysql#pool-options)

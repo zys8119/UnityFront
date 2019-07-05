@@ -6,3 +6,4 @@ declare const module:any;
 declare const Buffer:any;
 declare const exports:any;
 declare const T:any;
+declare const global:any;
