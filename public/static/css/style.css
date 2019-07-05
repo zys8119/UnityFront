@@ -6,7 +6,13 @@
     box-shadow: 0 0 5px #e5e5e5;
     padding: 50px;
     margin: auto;
-    margin-top: 25%;
+    border-radius: 10px;
+    position: fixed;
+    top:25%;
+    left: 25%;
+    transform: translate(-50%,-50%);
+    top: calc(50%);
+    left: calc(50%);
 }
 h2{
 
