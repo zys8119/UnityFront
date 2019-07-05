@@ -47,7 +47,7 @@ export interface SqlUtilsOptions {
      * @param TableFieldName 选择的字段名称
      * @param showSqlStr 是否输出sql字符串，默认不输出
      */
-    select(TableFieldName:string,showSqlStr?:boolean):SqlUtilsOptions;
+    select(TableFieldName?:string,showSqlStr?:boolean):SqlUtilsOptions;
     /**
      *
      * @param TableName 表名
