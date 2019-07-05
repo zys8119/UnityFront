@@ -176,6 +176,12 @@ class mysql {
         return this;
     }
 
+    /**
+     *
+     * @param TabelName 表名
+     * @param newData 新数据
+     * @param showSqlStr  是否输出sql字符串，默认不输出
+     */
     update(TabelName:string,newData?:object|string|[],showSqlStr?:boolean){
         if(showSqlStr){this.showSqlStrBool = showSqlStr;}
         this.selectSql = `UPDATE ${TabelName} SET `;

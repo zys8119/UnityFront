@@ -192,6 +192,12 @@ var mysql = /** @class */ (function () {
         this.selectSql = "DELETE ";
         return this;
     };
+    /**
+     *
+     * @param TabelName 表名
+     * @param newData 新数据
+     * @param showSqlStr  是否输出sql字符串，默认不输出
+     */
     mysql.prototype.update = function (TabelName, newData, showSqlStr) {
         if (showSqlStr) {
             this.showSqlStrBool = showSqlStr;

@@ -2,6 +2,7 @@ const { parse } = require('url');
 import bodyData from "./bodyData"
 import UnityFrontController from "./controller"
 import { ServerConfig } from "../config"
+import mysql from "../mysql"
 module.exports = (request,response)=>{
     return new Promise((resolve, reject) => {
         console.log("===============",Date.now());
@@ -22,6 +23,9 @@ module.exports = (request,response)=>{
                 },
                 $_RequestStatus:ServerConfig.RequestStatus,
                 $_RequestHeaders:ServerConfig.headers,
+                $mysql:()=>{
+                    return new mysql();
+                }
             });
         });
     })
