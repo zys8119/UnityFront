@@ -55,6 +55,9 @@ exports["default"] = {
      */
     RenderTemplateError: function (filPath, TemplateData) {
         var _this = this;
+        this.setHeaders({
+            'Content-Type': 'text/html; charset=utf-8'
+        });
         fs.readFile(filPath, 'utf8', function (terr, tdata) {
             if (terr) {
                 _this.$_send("\n                            <title>\u670D\u52A1\u5668\u9519\u8BEF</title>\n                            <h1>\u670D\u52A1\u5668\uFF1A500</h1>\n                            <hr>\n                            <div>" + terr + "</div>\n                        ");

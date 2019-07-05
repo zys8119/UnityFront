@@ -54,6 +54,9 @@ export default {
      * @constructor
      */
     RenderTemplateError(filPath:string,TemplateData:TemplateErrorDataOptions){
+        this.setHeaders({
+            'Content-Type': 'text/html; charset=utf-8',
+        });
         fs.readFile(filPath,'utf8',(terr,tdata)=>{
             if (terr) {
                 this.$_send(`

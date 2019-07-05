@@ -1,6 +1,6 @@
 const { parse } = require('url');
 import bodyData from "./bodyData"
-import UnityFrontController from "./controller"
+import UnityFrontController from "../controller/controller"
 import { ServerConfig } from "../config"
 import mysql from "../mysql"
 module.exports = (request,response)=>{

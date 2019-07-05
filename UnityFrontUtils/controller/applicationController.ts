@@ -1,7 +1,7 @@
-import {ControllerInitDataOptions, mysqlOptionsOptions, SqlUtilsOptions} from "../UnityFrontUtils/typeStript"
-import { headersType } from "../UnityFrontUtils/typeStript/Types";
-import { ServerConfig } from "../UnityFrontUtils/config";
-import Utils from "../UnityFrontUtils/utils";
+import {ControllerInitDataOptions, mysqlOptionsOptions, SqlUtilsOptions} from "../typeStript"
+import { headersType } from "../typeStript/Types";
+import { ServerConfig } from "../config";
+import Utils from "../utils";
 const fs = require('fs');
 const path = require('path');
 export default class applicationController implements ControllerInitDataOptions {
@@ -52,15 +52,11 @@ export default class applicationController implements ControllerInitDataOptions 
      */
     Render(TemplatePath?:string,TemplateData?:object){
         TemplateData = TemplateData || {};
-        let fileNameArr = this.__dir.replace(/^(.|\n).*application\\/img,"").split(path.sep);
-        let filePath = path.resolve(ServerConfig.Template.pablicPath,fileNameArr[0],fileNameArr[2],this.$methodName+ServerConfig.Template.suffix);
+        let filePath = path.resolve(this.__dir,"../../Template1/",this.$methodName+ServerConfig.Template.suffix);
         fs.readFile(filePath,'utf8',(err,data)=>{
             if (err){
-                this.setHeaders({
-                    'Content-Type': 'text/html; charset=utf-8',
-                });
                 Utils.RenderTemplateError.call(this,
-                    path.resolve(__dirname,"../UnityFrontUtils/Template/TemplateError.html"),
+                    path.resolve(__dirname,"../Template/TemplateError.html"),
                     {
                         title:`模板【${this.$methodName+ServerConfig.Template.suffix}】不存在`,
                         error:{
