@@ -55,17 +55,14 @@ export default class applicationController implements ControllerInitDataOptions 
         let filePath = path.resolve(this.__dir,"../../Template/",this.$methodName+ServerConfig.Template.suffix);
         fs.readFile(filePath,'utf8',(err,data)=>{
             if (err){
-                Utils.RenderTemplateError.call(this,
-                    path.resolve(__dirname,"../Template/TemplateError.html"),
-                    {
-                        title:`模板【${this.$methodName+ServerConfig.Template.suffix}】不存在`,
-                        error:{
-                                "控制器 -> ":this.__dir,
-                                "方法 -> ":this.$methodName,
-                                "error":"模板【"+filePath+"】不存在",
-                        }
+                Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
+                    title:`模板【${this.$methodName+ServerConfig.Template.suffix}】不存在`,
+                    error:{
+                            "控制器 -> ":this.__dir,
+                            "方法 -> ":this.$methodName,
+                            "error":"模板【"+filePath+"】不存在",
                     }
-                );
+                });
                 return;
             };
             if(ServerConfig.Template.suffix == ".html"){
@@ -77,5 +74,23 @@ export default class applicationController implements ControllerInitDataOptions 
         });
     }
 
+    UrlParse(){
+        //首页渲染
+        if(this.$_url == "/"){
+            this.Render();
+        }else {
+            //其他路径
+            let urlArrs = this.$_url.replace(/^\/{1}/,"").split("/");
+            let modulePath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0]);
+            if(!fs.existsSync(modulePath)){
+                Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
+                    title:`模块【${urlArrs[0]}】不存在`
+                });
+                return;
+            };
+            console.log(urlArrs[1])
+            this.$_send("其他路径测试");
+        }
+    }
 
 }

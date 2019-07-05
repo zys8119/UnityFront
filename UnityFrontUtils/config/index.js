@@ -29,7 +29,9 @@ exports.ServerConfig = {
         'Access-Control-Allow-Methods': 'GET'
     },
     Template: {
-        pablicPath: path.resolve(__dirname, "../../views"),
+        viewsPath: path.resolve(__dirname, "../../views"),
+        applicationPath: path.resolve(__dirname, "../../application"),
+        TemplateErrorPath: path.resolve(__dirname, "../Template/TemplateError.html"),
         suffix: ".html",
         urlVars: {
             "__STATIC__": "/public/static",

@@ -41,7 +41,7 @@ var applicationController = /** @class */ (function () {
         var filePath = path.resolve(this.__dir, "../../Template/", this.$methodName + config_1.ServerConfig.Template.suffix);
         fs.readFile(filePath, 'utf8', function (err, data) {
             if (err) {
-                utils_1["default"].RenderTemplateError.call(_this, path.resolve(__dirname, "../Template/TemplateError.html"), {
+                utils_1["default"].RenderTemplateError.call(_this, config_1.ServerConfig.Template.TemplateErrorPath, {
                     title: "\u6A21\u677F\u3010" + (_this.$methodName + config_1.ServerConfig.Template.suffix) + "\u3011\u4E0D\u5B58\u5728",
                     error: {
                         "控制器 -> ": _this.__dir,
@@ -60,6 +60,26 @@ var applicationController = /** @class */ (function () {
             ;
             _this.$_send(utils_1["default"].replaceUrlVars(config_1.ServerConfig, data));
         });
+    };
+    applicationController.prototype.UrlParse = function () {
+        //首页渲染
+        if (this.$_url == "/") {
+            this.Render();
+        }
+        else {
+            //其他路径
+            var urlArrs = this.$_url.replace(/^\/{1}/, "").split("/");
+            var modulePath = path.resolve(config_1.ServerConfig.Template.applicationPath, urlArrs[0]);
+            if (!fs.existsSync(modulePath)) {
+                utils_1["default"].RenderTemplateError.call(this, config_1.ServerConfig.Template.TemplateErrorPath, {
+                    title: "\u6A21\u5757\u3010" + urlArrs[0] + "\u3011\u4E0D\u5B58\u5728"
+                });
+                return;
+            }
+            ;
+            console.log(urlArrs[1]);
+            this.$_send("其他路径测试");
+        }
     };
     return applicationController;
 }());

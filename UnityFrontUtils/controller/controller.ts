@@ -14,7 +14,7 @@ export default class controller{
     constructor(request:any, response:any,ControllerInitData:ControllerInitDataOptions){
         switch (ControllerInitData.$_url) {
             case "/":
-                this.URLParsing(request, response,ControllerInitData);
+                this.ControllerParamesInit(request, response,ControllerInitData);
                 break;
             case '/favicon.ico':
                 break;
@@ -22,7 +22,7 @@ export default class controller{
                 //todo ====开放资源目录==start
                 new staticIndex(ControllerInitData,()=>{
                     //todo 其他路径处理
-                    this.URLParsing(request, response,ControllerInitData);
+                    this.ControllerParamesInit(request, response,ControllerInitData);
                 });
                 break;
 
@@ -30,12 +30,12 @@ export default class controller{
     }
 
     /**
-     * url解析
+     * 控制器参数初始化
      * @param request //请求
      * @param response //返回
      * @param ControllerInitData //控制器初始化数据
      */
-    URLParsing(request:any, response:any,ControllerInitData:ControllerInitDataOptions){
+    ControllerParamesInit(request:any, response:any,ControllerInitData:ControllerInitDataOptions){
         let filePath =  "./main";
         let $methodName = "index";
         const Main = require(filePath);

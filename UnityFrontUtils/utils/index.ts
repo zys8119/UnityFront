@@ -53,11 +53,11 @@ export default {
      * @param $_send 发送方法
      * @constructor
      */
-    RenderTemplateError(filPath:string,TemplateData:TemplateErrorDataOptions){
+    RenderTemplateError(filePath:string,TemplateData:TemplateErrorDataOptions){
         this.setHeaders({
             'Content-Type': 'text/html; charset=utf-8',
         });
-        fs.readFile(filPath,'utf8',(terr,tdata)=>{
+        fs.readFile(filePath,'utf8',(terr,tdata)=>{
             if (terr) {
                 this.$_send(`
                             <title>服务器错误</title>

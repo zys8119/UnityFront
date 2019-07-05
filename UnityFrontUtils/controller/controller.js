@@ -14,7 +14,7 @@ var controller = /** @class */ (function () {
         var _this = this;
         switch (ControllerInitData.$_url) {
             case "/":
-                this.URLParsing(request, response, ControllerInitData);
+                this.ControllerParamesInit(request, response, ControllerInitData);
                 break;
             case '/favicon.ico':
                 break;
@@ -22,18 +22,18 @@ var controller = /** @class */ (function () {
                 //todo ====开放资源目录==start
                 new index_2["default"](ControllerInitData, function () {
                     //todo 其他路径处理
-                    _this.URLParsing(request, response, ControllerInitData);
+                    _this.ControllerParamesInit(request, response, ControllerInitData);
                 });
                 break;
         }
     }
     /**
-     * url解析
+     * 控制器参数初始化
      * @param request //请求
      * @param response //返回
      * @param ControllerInitData //控制器初始化数据
      */
-    controller.prototype.URLParsing = function (request, response, ControllerInitData) {
+    controller.prototype.ControllerParamesInit = function (request, response, ControllerInitData) {
         var filePath = "./main";
         var $methodName = "index";
         var Main = require(filePath);

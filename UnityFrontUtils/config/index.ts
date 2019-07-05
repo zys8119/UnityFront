@@ -35,7 +35,9 @@ export const ServerConfig =  <ServerOptions>{
         // 'Access-Control-Max-Age':0,//预请求缓存20天
     },
     Template:{
-        pablicPath:path.resolve(__dirname,"../../views"),
+        viewsPath:path.resolve(__dirname,"../../views"),
+        applicationPath:path.resolve(__dirname,"../../application"),
+        TemplateErrorPath:path.resolve(__dirname,"../Template/TemplateError.html"),
         suffix:".html",
         urlVars:{
             "__STATIC__":"/public/static",
