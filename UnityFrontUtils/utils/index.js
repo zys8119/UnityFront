@@ -109,6 +109,8 @@ exports["default"] = {
                         ControllerInitData[keyName](sendData);
                     };
                     break;
+                case "index":
+                    break;
                 default:
                     ControllerClassObj.prototype[keyName] = ControllerInitData[keyName];
                     break;

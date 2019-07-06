@@ -82,6 +82,8 @@ export default class applicationController implements ControllerInitDataOptions 
         }else {
             //todo ========【其他路径】=======
             let urlArrs = this.$_url.replace(/^\/{1}/,"").split("/");
+            urlArrs[1] = urlArrs[1] || "Index";
+            urlArrs[2] = urlArrs[2] || "index";
 
             //todo 判断模块1
             let ModulePath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0]);
@@ -96,7 +98,6 @@ export default class applicationController implements ControllerInitDataOptions 
             };
 
             //todo 判断控制器2
-            urlArrs[1] = urlArrs[1] || "Index";
             let ControllerPath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"Controller",urlArrs[1]+"Controller.js");
             if(!fs.existsSync(ControllerPath)){
                 Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
@@ -128,11 +129,10 @@ export default class applicationController implements ControllerInitDataOptions 
             }
 
             //todo 判断控制器类方法4
-            urlArrs[2] = urlArrs[2] || "index";
             //实例化控制器
             let ControllerClassObj = ControllerClass[ControllerClassName];
             //注入控制器类公共的初始数据及方法
-            // Utils.ControllerInitData.call(this,ControllerInitData,Main.main,$methodName,ServerConfig,path.resolve(__dirname,filePath));
+            Utils.ControllerInitData.call(this,this,ControllerClassObj,urlArrs[2],ServerConfig,ControllerPath);
             let ControllerClassInit = new ControllerClassObj();
             //判断控制器方法是否存在
             if(!ControllerClassInit[urlArrs[2]]){
@@ -158,7 +158,8 @@ export default class applicationController implements ControllerInitDataOptions 
                 });
                 return;
             };
-            this.$_send("其他路径测试");
+            //todo 执行控制器方法5
+            ControllerClassInit[urlArrs[2]]();
         }
     }
 

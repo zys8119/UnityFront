@@ -18,10 +18,12 @@ var IndexController = /** @class */ (function (_super) {
     __extends(IndexController, _super);
     function IndexController() {
         var _this = _super.call(this) || this;
-        console.log(_this.$_headers);
+        // console.log(this.$_headers);
+        console.log("----->");
         return _this;
     }
     IndexController.prototype.index = function () {
+        this.$_send("asdasd");
     };
     return IndexController;
 }(applicationController_1["default"]));
