@@ -85,12 +85,17 @@ export default {
      * @param $methodName 当前执行的控制器方法名称
      * @param ServerConfig 服务配置
      * @param __dir 当前执行的控制器路径
+     * @param bool 是否是其他控制器渲染
      * @constructor
      */
-    ControllerInitData(ControllerInitData,ControllerClassObj,$methodName,ServerConfig,__dir){
+    ControllerInitData(ControllerInitData,ControllerClassObj,$methodName,ServerConfig,__dir,bool:boolean){
         for (let keyName in ControllerInitData){
             switch (keyName) {
                 case "$_send":
+                    if(bool){
+                        ControllerClassObj.prototype[keyName] = ControllerInitData[keyName];
+                        break;
+                    }
                     ControllerClassObj.prototype[keyName] = function (data) {
                         let RequestData = "";
                         if(this.$_RequestHeaders && this.$_RequestHeaders['Content-Type'] && this.$_RequestHeaders['Content-Type'].indexOf("text/json") > -1){

@@ -82,7 +82,7 @@ export default class applicationController implements ControllerInitDataOptions 
         }else {
             //todo ========【其他路径】=======
             let urlArrs = this.$_url.replace(/^\/{1}/,"").split("/");
-            urlArrs[1] = urlArrs[1] || "Index";
+            urlArrs[1] = urlArrs[1] || "Index2";
             urlArrs[2] = urlArrs[2] || "index";
 
             //todo 判断模块1
@@ -132,12 +132,12 @@ export default class applicationController implements ControllerInitDataOptions 
             //实例化控制器
             let ControllerClassObj = ControllerClass[ControllerClassName];
             //注入控制器类公共的初始数据及方法
-            Utils.ControllerInitData.call(this,this,ControllerClassObj,urlArrs[2],ServerConfig,ControllerPath);
+            Utils.ControllerInitData.call(this,this,ControllerClassObj,urlArrs[2],ServerConfig,ControllerPath,true);
             let ControllerClassInit = new ControllerClassObj();
             //判断控制器方法是否存在
             if(!ControllerClassInit[urlArrs[2]]){
                 Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
-                    title:`控制器方法【${urlArrs[1]}】不存在`,
+                    title:`控制器方法【${urlArrs[2]}】不存在`,
                     error:{
                         "错误来源 -> ":ServerConfig.Template.ErrorPathSource,
                         "模块 -> ":urlArrs[0],

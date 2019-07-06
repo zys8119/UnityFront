@@ -81,12 +81,17 @@ exports["default"] = {
      * @param $methodName 当前执行的控制器方法名称
      * @param ServerConfig 服务配置
      * @param __dir 当前执行的控制器路径
+     * @param bool 是否是其他控制器渲染
      * @constructor
      */
-    ControllerInitData: function (ControllerInitData, ControllerClassObj, $methodName, ServerConfig, __dir) {
+    ControllerInitData: function (ControllerInitData, ControllerClassObj, $methodName, ServerConfig, __dir, bool) {
         var _loop_1 = function (keyName) {
             switch (keyName) {
                 case "$_send":
+                    if (bool) {
+                        ControllerClassObj.prototype[keyName] = ControllerInitData[keyName];
+                        break;
+                    }
                     ControllerClassObj.prototype[keyName] = function (data) {
                         var RequestData = "";
                         if (this.$_RequestHeaders && this.$_RequestHeaders['Content-Type'] && this.$_RequestHeaders['Content-Type'].indexOf("text/json") > -1) {

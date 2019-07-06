@@ -70,7 +70,7 @@ var applicationController = /** @class */ (function () {
         else {
             //todo ========【其他路径】=======
             var urlArrs = this.$_url.replace(/^\/{1}/, "").split("/");
-            urlArrs[1] = urlArrs[1] || "Index";
+            urlArrs[1] = urlArrs[1] || "Index2";
             urlArrs[2] = urlArrs[2] || "index";
             //todo 判断模块1
             var ModulePath = path.resolve(config_1.ServerConfig.Template.applicationPath, urlArrs[0]);
@@ -118,12 +118,12 @@ var applicationController = /** @class */ (function () {
             //实例化控制器
             var ControllerClassObj = ControllerClass[ControllerClassName];
             //注入控制器类公共的初始数据及方法
-            utils_1["default"].ControllerInitData.call(this, this, ControllerClassObj, urlArrs[2], config_1.ServerConfig, ControllerPath);
+            utils_1["default"].ControllerInitData.call(this, this, ControllerClassObj, urlArrs[2], config_1.ServerConfig, ControllerPath, true);
             var ControllerClassInit = new ControllerClassObj();
             //判断控制器方法是否存在
             if (!ControllerClassInit[urlArrs[2]]) {
                 utils_1["default"].RenderTemplateError.call(this, config_1.ServerConfig.Template.TemplateErrorPath, {
-                    title: "\u63A7\u5236\u5668\u65B9\u6CD5\u3010" + urlArrs[1] + "\u3011\u4E0D\u5B58\u5728",
+                    title: "\u63A7\u5236\u5668\u65B9\u6CD5\u3010" + urlArrs[2] + "\u3011\u4E0D\u5B58\u5728",
                     error: {
                         "错误来源 -> ": config_1.ServerConfig.Template.ErrorPathSource,
                         "模块 -> ": urlArrs[0],
