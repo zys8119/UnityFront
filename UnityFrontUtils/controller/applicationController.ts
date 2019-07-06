@@ -55,10 +55,15 @@ export default class applicationController implements ControllerInitDataOptions 
      */
     Render(bool?:boolean){
         //默认其他控制器模板路径
-        let publicFilePath = path.resolve(ServerConfig.Template.viewsPath,this.$urlArrs[0],this.$urlArrs[1]);
+        let publicFilePath = "";
         if(bool){
             //UnityFront主模板渲染路径
             publicFilePath = path.resolve(ServerConfig.Template.TemplatePath);
+        }else {
+            //其他模块控制器视图渲染路径
+            if(this.$urlArrs.length >= 2){
+                publicFilePath = path.resolve(ServerConfig.Template.viewsPath,this.$urlArrs[0],this.$urlArrs[1]);
+            }
         }
         let filePath = path.resolve(publicFilePath,this.$methodName+ServerConfig.Template.suffix);
         fs.readFile(filePath,'utf8',(err,data)=>{
