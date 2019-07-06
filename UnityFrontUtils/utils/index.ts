@@ -1,5 +1,5 @@
 // import "../typeStript"
-import { TemplateErrorDataOptions } from  "../typeStript"
+import {SendDataOptions, TemplateErrorDataOptions} from "../typeStript"
 const path = require('path');
 const fs = require("fs");
 export default {
@@ -76,6 +76,47 @@ export default {
             }
             this.$_send(tdata);
         });
+    },
+
+    /**
+     * 注入控制器类公共的初始数据及方法,this上下文为当前控制器解析实体
+     * @param ControllerInitData 控制器数据
+     * @param ControllerClassObj 控制器实体
+     * @param $methodName 当前执行的控制器方法名称
+     * @param ServerConfig 服务配置
+     * @param __dir 当前执行的控制器路径
+     * @constructor
+     */
+    ControllerInitData(ControllerInitData,ControllerClassObj,$methodName,ServerConfig,__dir){
+        for (let keyName in ControllerInitData){
+            switch (keyName) {
+                case "$_send":
+                    ControllerClassObj.prototype[keyName] = function (data) {
+                        let RequestData = "";
+                        if(this.$_RequestHeaders && this.$_RequestHeaders['Content-Type'] && this.$_RequestHeaders['Content-Type'].indexOf("text/json") > -1){
+                            RequestData = JSON.stringify(data);
+                        }else {
+                            RequestData = data;
+                        };
+                        let headers = JSON.parse(JSON.stringify(ServerConfig.headers));
+                        for(let k in this.$_RequestHeaders){
+                            headers[k] = this.$_RequestHeaders[k];
+                        };
+                        let sendData = <SendDataOptions>{
+                            data:RequestData,
+                            RequestStatus:this.$_RequestStatus || ServerConfig.RequestStatus,
+                            headers
+                        };
+                        ControllerInitData[keyName](sendData);
+                    };
+                    break;
+                default:
+                    ControllerClassObj.prototype[keyName] = ControllerInitData[keyName];
+                    break;
+            }
+        };
+        ControllerClassObj.prototype.__dir = __dir;
+        ControllerClassObj.prototype.$methodName = $methodName;
     }
 }
 

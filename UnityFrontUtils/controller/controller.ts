@@ -39,35 +39,7 @@ export default class controller{
         let filePath =  "./main";
         let $methodName = "index";
         const Main = require(filePath);
-        for (let keyName in ControllerInitData){
-            switch (keyName) {
-                case "$_send":
-                    Main.main.prototype[keyName] = function (data) {
-                        let RequestData = "";
-                        if(this.$_RequestHeaders && this.$_RequestHeaders['Content-Type'] && this.$_RequestHeaders['Content-Type'].indexOf("text/json") > -1){
-                            RequestData = JSON.stringify(data);
-                        }else {
-                            RequestData = data;
-                        };
-                        let headers = JSON.parse(JSON.stringify(ServerConfig.headers));
-                        for(let k in this.$_RequestHeaders){
-                            headers[k] = this.$_RequestHeaders[k];
-                        };
-                        let sendData = <SendDataOptions>{
-                            data:RequestData,
-                            RequestStatus:this.$_RequestStatus || ServerConfig.RequestStatus,
-                            headers
-                        };
-                        ControllerInitData[keyName](sendData);
-                    };
-                    break;
-                default:
-                    Main.main.prototype[keyName] = ControllerInitData[keyName];
-                    break;
-            }
-        };
-        Main.main.prototype.__dir = path.resolve(__dirname,filePath);
-        Main.main.prototype.$methodName = $methodName;
+        Utils.ControllerInitData.call(this,ControllerInitData,Main.main,$methodName,ServerConfig,path.resolve(__dirname,filePath));
         new Main.main().index();
     }
 }

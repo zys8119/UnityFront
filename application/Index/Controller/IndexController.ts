@@ -1,9 +1,12 @@
-export class IndexController {
+import applicationController from "../../../UnityFrontUtils/controller/applicationController";
+
+export class IndexController extends applicationController{
     constructor(){
-        console.log("sdfds======")
+        super();
+        console.log(this.$_headers);
     }
 
-    index1(){
+    index(){
 
     }
-}
+};

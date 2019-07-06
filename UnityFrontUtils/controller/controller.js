@@ -1,7 +1,8 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var index_1 = require("../config/index");
 var index_2 = require("../static/index");
+var index_3 = require("../utils/index");
 var path = require("path");
 var controller = /** @class */ (function () {
     /**
@@ -20,7 +21,7 @@ var controller = /** @class */ (function () {
                 break;
             default:
                 //todo ====开放资源目录==start
-                new index_2.default(ControllerInitData, function () {
+                new index_2["default"](ControllerInitData, function () {
                     //todo 其他路径处理
                     _this.ControllerParamesInit(request, response, ControllerInitData);
                 });
@@ -37,44 +38,9 @@ var controller = /** @class */ (function () {
         var filePath = "./main";
         var $methodName = "index";
         var Main = require(filePath);
-        var _loop_1 = function (keyName) {
-            switch (keyName) {
-                case "$_send":
-                    Main.main.prototype[keyName] = function (data) {
-                        var RequestData = "";
-                        if (this.$_RequestHeaders && this.$_RequestHeaders['Content-Type'] && this.$_RequestHeaders['Content-Type'].indexOf("text/json") > -1) {
-                            RequestData = JSON.stringify(data);
-                        }
-                        else {
-                            RequestData = data;
-                        }
-                        ;
-                        var headers = JSON.parse(JSON.stringify(index_1.ServerConfig.headers));
-                        for (var k in this.$_RequestHeaders) {
-                            headers[k] = this.$_RequestHeaders[k];
-                        }
-                        ;
-                        var sendData = {
-                            data: RequestData,
-                            RequestStatus: this.$_RequestStatus || index_1.ServerConfig.RequestStatus,
-                            headers: headers
-                        };
-                        ControllerInitData[keyName](sendData);
-                    };
-                    break;
-                default:
-                    Main.main.prototype[keyName] = ControllerInitData[keyName];
-                    break;
-            }
-        };
-        for (var keyName in ControllerInitData) {
-            _loop_1(keyName);
-        }
-        ;
-        Main.main.prototype.__dir = path.resolve(__dirname, filePath);
-        Main.main.prototype.$methodName = $methodName;
+        index_3["default"].ControllerInitData.call(this, ControllerInitData, Main.main, $methodName, index_1.ServerConfig, path.resolve(__dirname, filePath));
         new Main.main().index();
     };
     return controller;
 }());
-exports.default = controller;
+exports["default"] = controller;

@@ -68,7 +68,7 @@ var applicationController = /** @class */ (function () {
             this.Render();
         }
         else {
-            //todo 其他路径
+            //todo ========【其他路径】=======
             var urlArrs = this.$_url.replace(/^\/{1}/, "").split("/");
             //todo 判断模块1
             var ModulePath = path.resolve(config_1.ServerConfig.Template.applicationPath, urlArrs[0]);
@@ -115,29 +115,37 @@ var applicationController = /** @class */ (function () {
             }
             //todo 判断控制器类方法4
             urlArrs[2] = urlArrs[2] || "index";
-            //实例化
-            var ControllerClassInit = new ControllerClass[ControllerClassName]();
+            //实例化控制器
+            var ControllerClassObj = ControllerClass[ControllerClassName];
+            //注入控制器类公共的初始数据及方法
+            var ControllerClassInit = new ControllerClassObj();
+            //判断控制器方法是否存在
             if (!ControllerClassInit[urlArrs[2]]) {
                 utils_1["default"].RenderTemplateError.call(this, config_1.ServerConfig.Template.TemplateErrorPath, {
                     title: "\u63A7\u5236\u5668\u65B9\u6CD5\u3010" + urlArrs[1] + "\u3011\u4E0D\u5B58\u5728",
                     error: {
                         "错误来源 -> ": config_1.ServerConfig.Template.ErrorPathSource,
-                        "模块 -> ": urlArrs[0]
+                        "模块 -> ": urlArrs[0],
+                        "控制器 -> ": ControllerClassName
                     }
                 });
+                return;
             }
             ;
-            // let ControllerPath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"Controller",urlArrs[1]);
-            // if(!fs.existsSync(ControllerPath)){
-            //     Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
-            //         title:`控制器【${urlArrs[1]}】不存在`,
-            //         error:{
-            //             "错误来源 -> ":ServerConfig.Template.ErrorPathSource,
-            //             "模块 -> ":urlArrs[0],
-            //         }
-            //     });
-            //     return;
-            // };
+            //判断控制器方法是否存在
+            if (typeof ControllerClassInit[urlArrs[2]] != "function") {
+                utils_1["default"].RenderTemplateError.call(this, config_1.ServerConfig.Template.TemplateErrorPath, {
+                    title: "\u63A7\u5236\u5668\u65B9\u6CD5\u3010" + urlArrs[1] + "\u3011\u4E0D\u662F\u4E00\u4E2A\u51FD\u6570",
+                    error: {
+                        "错误来源 -> ": config_1.ServerConfig.Template.ErrorPathSource,
+                        "模块 -> ": urlArrs[0],
+                        "控制器 -> ": ControllerClassName
+                    }
+                });
+                return;
+            }
+            ;
+            //todo 实例化控制器及控制器参数5
             this.$_send("其他路径测试");
         }
     };

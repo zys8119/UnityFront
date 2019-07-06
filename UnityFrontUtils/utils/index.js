@@ -73,5 +73,52 @@ exports["default"] = {
             }
             _this.$_send(tdata);
         });
+    },
+    /**
+     * 注入控制器类公共的初始数据及方法,this上下文为当前控制器解析实体
+     * @param ControllerInitData 控制器数据
+     * @param ControllerClassObj 控制器实体
+     * @param $methodName 当前执行的控制器方法名称
+     * @param ServerConfig 服务配置
+     * @param __dir 当前执行的控制器路径
+     * @constructor
+     */
+    ControllerInitData: function (ControllerInitData, ControllerClassObj, $methodName, ServerConfig, __dir) {
+        var _loop_1 = function (keyName) {
+            switch (keyName) {
+                case "$_send":
+                    ControllerClassObj.prototype[keyName] = function (data) {
+                        var RequestData = "";
+                        if (this.$_RequestHeaders && this.$_RequestHeaders['Content-Type'] && this.$_RequestHeaders['Content-Type'].indexOf("text/json") > -1) {
+                            RequestData = JSON.stringify(data);
+                        }
+                        else {
+                            RequestData = data;
+                        }
+                        ;
+                        var headers = JSON.parse(JSON.stringify(ServerConfig.headers));
+                        for (var k in this.$_RequestHeaders) {
+                            headers[k] = this.$_RequestHeaders[k];
+                        }
+                        ;
+                        var sendData = {
+                            data: RequestData,
+                            RequestStatus: this.$_RequestStatus || ServerConfig.RequestStatus,
+                            headers: headers
+                        };
+                        ControllerInitData[keyName](sendData);
+                    };
+                    break;
+                default:
+                    ControllerClassObj.prototype[keyName] = ControllerInitData[keyName];
+                    break;
+            }
+        };
+        for (var keyName in ControllerInitData) {
+            _loop_1(keyName);
+        }
+        ;
+        ControllerClassObj.prototype.__dir = __dir;
+        ControllerClassObj.prototype.$methodName = $methodName;
     }
 };
