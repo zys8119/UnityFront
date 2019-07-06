@@ -63,14 +63,14 @@ var applicationController = /** @class */ (function () {
         });
     };
     applicationController.prototype.UrlParse = function () {
-        //首页渲染
+        //todo 首页渲染
         if (this.$_url == "/") {
             this.Render();
         }
         else {
-            //其他路径
+            //todo 其他路径
             var urlArrs = this.$_url.replace(/^\/{1}/, "").split("/");
-            //判断模块
+            //todo 判断模块1
             var ModulePath = path.resolve(config_1.ServerConfig.Template.applicationPath, urlArrs[0]);
             if (!fs.existsSync(ModulePath)) {
                 utils_1["default"].RenderTemplateError.call(this, config_1.ServerConfig.Template.TemplateErrorPath, {
@@ -82,21 +82,62 @@ var applicationController = /** @class */ (function () {
                 return;
             }
             ;
-            //判断控制器
+            //todo 判断控制器2
             urlArrs[1] = urlArrs[1] || "Index";
-            var ControllerPath = path.resolve(config_1.ServerConfig.Template.applicationPath, urlArrs[0], "Controller", urlArrs[1]);
+            var ControllerPath = path.resolve(config_1.ServerConfig.Template.applicationPath, urlArrs[0], "Controller", urlArrs[1] + "Controller.js");
             if (!fs.existsSync(ControllerPath)) {
                 utils_1["default"].RenderTemplateError.call(this, config_1.ServerConfig.Template.TemplateErrorPath, {
-                    title: "\u63A7\u5236\u5668\u3010" + urlArrs[0] + "\u3011\u4E0D\u5B58\u5728",
+                    title: "\u63A7\u5236\u5668\u3010" + urlArrs[1] + "\u3011\u4E0D\u5B58\u5728",
                     error: {
                         "错误来源 -> ": config_1.ServerConfig.Template.ErrorPathSource,
-                        "模块 -> ": urlArrs[1]
+                        "模块 -> ": urlArrs[0]
                     }
                 });
                 return;
             }
             ;
-            console.log(urlArrs[1]);
+            //todo 判断控制器类3
+            //清除控制器缓存，以保证最新控制器
+            require.cache[ControllerPath] = null;
+            //获取最新控制器
+            var ControllerClass = require(ControllerPath);
+            var ControllerClassName = urlArrs[1] + "Controller";
+            if (Object.keys(ControllerClass).indexOf(ControllerClassName) == -1) {
+                utils_1["default"].RenderTemplateError.call(this, config_1.ServerConfig.Template.TemplateErrorPath, {
+                    title: "\u63A7\u5236\u5668\u3010" + urlArrs[1] + "\u3011\u7C7B\u540D\u4E0E\u63A7\u5236\u5668\u540D\u79F0\u4E0D\u4E00\u81F4",
+                    error: {
+                        "错误来源 -> ": config_1.ServerConfig.Template.ErrorPathSource,
+                        "模块 -> ": urlArrs[0],
+                        "控制器 -> ": urlArrs[1]
+                    }
+                });
+                return;
+            }
+            //todo 判断控制器类方法4
+            urlArrs[2] = urlArrs[2] || "index";
+            //实例化
+            var ControllerClassInit = new ControllerClass[ControllerClassName]();
+            if (!ControllerClassInit[urlArrs[2]]) {
+                utils_1["default"].RenderTemplateError.call(this, config_1.ServerConfig.Template.TemplateErrorPath, {
+                    title: "\u63A7\u5236\u5668\u65B9\u6CD5\u3010" + urlArrs[1] + "\u3011\u4E0D\u5B58\u5728",
+                    error: {
+                        "错误来源 -> ": config_1.ServerConfig.Template.ErrorPathSource,
+                        "模块 -> ": urlArrs[0]
+                    }
+                });
+            }
+            ;
+            // let ControllerPath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"Controller",urlArrs[1]);
+            // if(!fs.existsSync(ControllerPath)){
+            //     Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
+            //         title:`控制器【${urlArrs[1]}】不存在`,
+            //         error:{
+            //             "错误来源 -> ":ServerConfig.Template.ErrorPathSource,
+            //             "模块 -> ":urlArrs[0],
+            //         }
+            //     });
+            //     return;
+            // };
             this.$_send("其他路径测试");
         }
     };

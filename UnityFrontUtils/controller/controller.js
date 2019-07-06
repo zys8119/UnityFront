@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var index_1 = require("../config/index");
 var index_2 = require("../static/index");
 var path = require("path");
@@ -20,7 +20,7 @@ var controller = /** @class */ (function () {
                 break;
             default:
                 //todo ====开放资源目录==start
-                new index_2["default"](ControllerInitData, function () {
+                new index_2.default(ControllerInitData, function () {
                     //todo 其他路径处理
                     _this.ControllerParamesInit(request, response, ControllerInitData);
                 });
@@ -77,4 +77,4 @@ var controller = /** @class */ (function () {
     };
     return controller;
 }());
-exports["default"] = controller;
+exports.default = controller;

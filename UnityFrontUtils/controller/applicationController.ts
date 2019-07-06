@@ -76,13 +76,13 @@ export default class applicationController implements ControllerInitDataOptions 
     }
 
     UrlParse(){
-        //首页渲染
+        //todo 首页渲染
         if(this.$_url == "/"){
             this.Render();
         }else {
-            //其他路径
+            //todo 其他路径
             let urlArrs = this.$_url.replace(/^\/{1}/,"").split("/");
-            //判断模块
+            //todo 判断模块1
             let ModulePath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0]);
             if(!fs.existsSync(ModulePath)){
                 Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
@@ -93,20 +93,61 @@ export default class applicationController implements ControllerInitDataOptions 
                 });
                 return;
             };
-            //判断控制器
+            //todo 判断控制器2
             urlArrs[1] = urlArrs[1] || "Index";
-            let ControllerPath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"Controller",urlArrs[1]);
+            let ControllerPath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"Controller",urlArrs[1]+"Controller.js");
             if(!fs.existsSync(ControllerPath)){
                 Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
-                    title:`控制器【${urlArrs[0]}】不存在`,
+                    title:`控制器【${urlArrs[1]}】不存在`,
                     error:{
                         "错误来源 -> ":ServerConfig.Template.ErrorPathSource,
-                        "模块 -> ":urlArrs[1],
+                        "模块 -> ":urlArrs[0],
                     }
                 });
                 return;
             };
-            console.log(urlArrs[1])
+            //todo 判断控制器类3
+            //清除控制器缓存，以保证最新控制器
+            require.cache[ControllerPath] = null;
+            //获取最新控制器
+            let ControllerClass = require(ControllerPath);
+            let ControllerClassName = urlArrs[1]+"Controller";
+            if(Object.keys(ControllerClass).indexOf(ControllerClassName) == -1){
+                Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
+                    title:`控制器【${urlArrs[1]}】类名与控制器名称不一致`,
+                    error:{
+                        "错误来源 -> ":ServerConfig.Template.ErrorPathSource,
+                        "模块 -> ":urlArrs[0],
+                        "控制器 -> ":urlArrs[1],
+                    }
+                });
+                return;
+            }
+
+            //todo 判断控制器类方法4
+            urlArrs[2] = urlArrs[2] || "index";
+            //实例化
+            let ControllerClassInit = new ControllerClass[ControllerClassName]();
+            if(! ControllerClassInit[urlArrs[2]]){
+                Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
+                    title:`控制器方法【${urlArrs[1]}】不存在`,
+                    error:{
+                        "错误来源 -> ":ServerConfig.Template.ErrorPathSource,
+                        "模块 -> ":urlArrs[0],
+                    }
+                });
+            };
+            // let ControllerPath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"Controller",urlArrs[1]);
+            // if(!fs.existsSync(ControllerPath)){
+            //     Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
+            //         title:`控制器【${urlArrs[1]}】不存在`,
+            //         error:{
+            //             "错误来源 -> ":ServerConfig.Template.ErrorPathSource,
+            //             "模块 -> ":urlArrs[0],
+            //         }
+            //     });
+            //     return;
+            // };
             this.$_send("其他路径测试");
         }
     }
