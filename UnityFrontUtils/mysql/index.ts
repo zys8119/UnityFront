@@ -16,7 +16,7 @@ class mysql {
                 options[k] = optionsConfig[k];
             }
         }
-        let QueueKeyName = options.host;
+        let QueueKeyName = JSON.stringify(options);
         if(!mysqlConfig.createPool[QueueKeyName]){
             mysqlConfig.createPool[QueueKeyName] = mysqlTool.createPool(options);
         };
