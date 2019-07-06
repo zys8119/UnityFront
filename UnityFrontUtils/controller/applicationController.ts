@@ -91,19 +91,26 @@ export default class applicationController implements ControllerInitDataOptions 
 
             //todo ========【其他路径】=======
             let $$url = this.$_url;
-            //自定义路由配置
+            //自定义路由配置===start
             //应用路由配置
             try {
-                $$url = require(path.resolve(ServerConfig.Template.applicationPath,"conf/route")).default[this.$_url];
+                let $appRouteConfig = require(path.resolve(ServerConfig.Template.applicationPath,"conf/route"));
+                if($appRouteConfig && $appRouteConfig.default && $appRouteConfig.default[this.$_url]){
+                    $$url = $appRouteConfig.default[this.$_url];
+                }
             }catch (e) {}
             let urlArrs = Utils.getUrlArrs($$url);
             //控制器路由配置
             try {
-                $$url = require(path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"conf/route")).default[this.$_url];
-                try {
-                    urlArrs = Utils.getUrlArrs($$url);
-                }catch (e) {}
+                let $moduleRouteConfig = require(path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"conf/route"));
+                if($moduleRouteConfig && $moduleRouteConfig.default && $moduleRouteConfig.default[this.$_url]){
+                    $$url = $moduleRouteConfig.default[this.$_url];
+                    try {
+                        urlArrs = Utils.getUrlArrs($$url);
+                    }catch (e) {}
+                }
             }catch (e) {}
+            //==================end
 
             //todo 判断模块1
             let ModulePath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0]);
@@ -156,14 +163,19 @@ export default class applicationController implements ControllerInitDataOptions 
             //扩展公共数据及方法
             ControllerClassObj.prototype.$urlArrs = urlArrs;
             //自定义配置文件===start
+            let $ControllerConfig = {};
             //应用配置
             try {
-                ControllerClassObj.prototype.$ControllerConfig = require(path.resolve(ServerConfig.Template.applicationPath,"conf/index")).default;
+                $ControllerConfig = require(path.resolve(ServerConfig.Template.applicationPath,"conf/index")).default || {};
             }catch (e) {}
             //控制器配置
             try {
-                ControllerClassObj.prototype.$ControllerConfig = require(path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"conf/index")).default;
+                let $ControllerModuleConfig = require(path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"conf/index")).default || {};
+                for (let ck in $ControllerModuleConfig) {
+                    $ControllerConfig[ck] = $ControllerModuleConfig[ck];
+                }
             }catch (e) {}
+            ControllerClassObj.prototype.$ControllerConfig = $ControllerConfig;
             //=================end
             let ControllerClassInit = new ControllerClassObj();
             //判断控制器方法是否存在

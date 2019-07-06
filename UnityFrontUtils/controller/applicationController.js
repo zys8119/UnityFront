@@ -76,22 +76,29 @@ var applicationController = /** @class */ (function () {
         else {
             //todo ========【其他路径】=======
             var $$url = this.$_url;
-            //自定义路由配置
+            //自定义路由配置===start
             //应用路由配置
             try {
-                $$url = require(path.resolve(config_1.ServerConfig.Template.applicationPath, "conf/route"))["default"][this.$_url];
+                var $appRouteConfig = require(path.resolve(config_1.ServerConfig.Template.applicationPath, "conf/route"));
+                if ($appRouteConfig && $appRouteConfig["default"] && $appRouteConfig["default"][this.$_url]) {
+                    $$url = $appRouteConfig["default"][this.$_url];
+                }
             }
             catch (e) { }
             var urlArrs = utils_1["default"].getUrlArrs($$url);
             //控制器路由配置
             try {
-                $$url = require(path.resolve(config_1.ServerConfig.Template.applicationPath, urlArrs[0], "conf/route"))["default"][this.$_url];
-                try {
-                    urlArrs = utils_1["default"].getUrlArrs($$url);
+                var $moduleRouteConfig = require(path.resolve(config_1.ServerConfig.Template.applicationPath, urlArrs[0], "conf/route"));
+                if ($moduleRouteConfig && $moduleRouteConfig["default"] && $moduleRouteConfig["default"][this.$_url]) {
+                    $$url = $moduleRouteConfig["default"][this.$_url];
+                    try {
+                        urlArrs = utils_1["default"].getUrlArrs($$url);
+                    }
+                    catch (e) { }
                 }
-                catch (e) { }
             }
             catch (e) { }
+            //==================end
             //todo 判断模块1
             var ModulePath = path.resolve(config_1.ServerConfig.Template.applicationPath, urlArrs[0]);
             if (!fs.existsSync(ModulePath)) {
@@ -142,16 +149,21 @@ var applicationController = /** @class */ (function () {
             //扩展公共数据及方法
             ControllerClassObj.prototype.$urlArrs = urlArrs;
             //自定义配置文件===start
+            var $ControllerConfig = {};
             //应用配置
             try {
-                ControllerClassObj.prototype.$ControllerConfig = require(path.resolve(config_1.ServerConfig.Template.applicationPath, "conf/index"))["default"];
+                $ControllerConfig = require(path.resolve(config_1.ServerConfig.Template.applicationPath, "conf/index"))["default"] || {};
             }
             catch (e) { }
             //控制器配置
             try {
-                ControllerClassObj.prototype.$ControllerConfig = require(path.resolve(config_1.ServerConfig.Template.applicationPath, urlArrs[0], "conf/index"))["default"];
+                var $ControllerModuleConfig = require(path.resolve(config_1.ServerConfig.Template.applicationPath, urlArrs[0], "conf/index"))["default"] || {};
+                for (var ck in $ControllerModuleConfig) {
+                    $ControllerConfig[ck] = $ControllerModuleConfig[ck];
+                }
             }
             catch (e) { }
+            ControllerClassObj.prototype.$ControllerConfig = $ControllerConfig;
             //=================end
             var ControllerClassInit = new ControllerClassObj();
             //判断控制器方法是否存在
