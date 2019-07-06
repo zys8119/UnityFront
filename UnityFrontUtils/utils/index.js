@@ -136,6 +136,10 @@ exports["default"] = {
         var urlArrs = $$url.replace(/^\/{1}/, "").split("/");
         urlArrs[1] = urlArrs[1] || "Index";
         urlArrs[2] = urlArrs[2] || "index";
+        try {
+            urlArrs[2] = urlArrs[2].replace(/\/(.|\n)*$|\?(.|\n)*$|/img, "");
+        }
+        catch (e) { }
         return urlArrs;
     }
 };
