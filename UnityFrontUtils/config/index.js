@@ -31,6 +31,7 @@ exports.ServerConfig = {
     Template: {
         viewsPath: path.resolve(__dirname, "../../views"),
         applicationPath: path.resolve(__dirname, "../../application"),
+        TemplatePath: path.resolve(__dirname, "../Template"),
         TemplateErrorPath: path.resolve(__dirname, "../Template/TemplateError.html"),
         ErrorPathSource: path.resolve(__dirname, "../controller/applicationController.js"),
         suffix: ".html",

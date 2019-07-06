@@ -3,8 +3,6 @@ import applicationController from "../../../UnityFrontUtils/controller/applicati
 export class IndexController extends applicationController{
     constructor(){
         super();
-        console.log(this.__dir,this.$methodName);
-        console.log("----->");
     }
 
     index(){

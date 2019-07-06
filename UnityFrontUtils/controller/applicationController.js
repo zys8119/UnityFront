@@ -31,14 +31,20 @@ var applicationController = /** @class */ (function () {
     };
     /**
      * 渲染模板
-     * @param TemplatePath 模板路径
-     * @param TemplateData 模板数据
+     // * @param TemplatePath 模板路径
+     // * @param TemplateData 模板数据
+     * @param bool 是否为主控制器渲染
      * @constructor
      */
-    applicationController.prototype.Render = function (TemplatePath, TemplateData) {
+    applicationController.prototype.Render = function (bool) {
         var _this = this;
-        TemplateData = TemplateData || {};
-        var filePath = path.resolve(this.__dir, "../../Template/", this.$methodName + config_1.ServerConfig.Template.suffix);
+        //默认其他控制器模板路径
+        var publicFilePath = path.resolve(config_1.ServerConfig.Template.viewsPath, this.$urlArrs[0], this.$urlArrs[1]);
+        if (bool) {
+            //UnityFront主模板渲染路径
+            publicFilePath = path.resolve(config_1.ServerConfig.Template.TemplatePath);
+        }
+        var filePath = path.resolve(publicFilePath, this.$methodName + config_1.ServerConfig.Template.suffix);
         fs.readFile(filePath, 'utf8', function (err, data) {
             if (err) {
                 utils_1["default"].RenderTemplateError.call(_this, config_1.ServerConfig.Template.TemplateErrorPath, {
@@ -65,7 +71,7 @@ var applicationController = /** @class */ (function () {
     applicationController.prototype.UrlParse = function () {
         //todo 首页渲染
         if (this.$_url == "/") {
-            this.Render();
+            this.Render(true);
         }
         else {
             //todo ========【其他路径】=======
@@ -119,6 +125,8 @@ var applicationController = /** @class */ (function () {
             var ControllerClassObj = ControllerClass[ControllerClassName];
             //注入控制器类公共的初始数据及方法
             utils_1["default"].ControllerInitData.call(this, this, ControllerClassObj, urlArrs[2], config_1.ServerConfig, ControllerPath, true);
+            //扩展公共数据及方法
+            ControllerClassObj.prototype.$urlArrs = urlArrs;
             var ControllerClassInit = new ControllerClassObj();
             //判断控制器方法是否存在
             if (!ControllerClassInit[urlArrs[2]]) {

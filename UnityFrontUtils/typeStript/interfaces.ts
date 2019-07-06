@@ -32,6 +32,7 @@ export interface ServerOptions_fsWatch {
 export interface ServerOptions_Template {
     viewsPath?:string;//公共模板路径
     applicationPath?:string;//公共应用路径
+    TemplatePath?:string;//UnityFront主模板渲染路径
     TemplateErrorPath?:string;//错误模板渲染路径
     ErrorPathSource?:string;//错误来源路径
     suffix?:string;//模板后缀
@@ -136,6 +137,7 @@ export interface ControllerInitDataOptions {
     $mysql?(optionsConfig?:object,isEnd?:boolean):SqlUtilsOptions;//sql工具
     __dir:string;//当前控制器位置
     $methodName:string;//当前控制器执行的方法名称
+    $urlArrs:any[];//控制器url数组
 }
 
 export interface TemplateErrorDataOptions {

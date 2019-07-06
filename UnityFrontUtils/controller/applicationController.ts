@@ -19,6 +19,7 @@ export default class applicationController implements ControllerInitDataOptions 
     $mysql?(optionsConfig?:object,isEnd?:boolean):SqlUtilsOptions;
     __dir:string;
     $methodName:string;
+    $urlArrs:any[];
 
     /**
      * 设置header头
@@ -46,13 +47,19 @@ export default class applicationController implements ControllerInitDataOptions 
 
     /**
      * 渲染模板
-     * @param TemplatePath 模板路径
-     * @param TemplateData 模板数据
+     // * @param TemplatePath 模板路径
+     // * @param TemplateData 模板数据
+     * @param bool 是否为主控制器渲染
      * @constructor
      */
-    Render(TemplatePath?:string,TemplateData?:object){
-        TemplateData = TemplateData || {};
-        let filePath = path.resolve(this.__dir,"../../Template/",this.$methodName+ServerConfig.Template.suffix);
+    Render(bool?:boolean){
+        //默认其他控制器模板路径
+        let publicFilePath = path.resolve(ServerConfig.Template.viewsPath,this.$urlArrs[0],this.$urlArrs[1]);
+        if(bool){
+            //UnityFront主模板渲染路径
+            publicFilePath = path.resolve(ServerConfig.Template.TemplatePath);
+        }
+        let filePath = path.resolve(publicFilePath,this.$methodName+ServerConfig.Template.suffix);
         fs.readFile(filePath,'utf8',(err,data)=>{
             if (err){
                 Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
@@ -78,7 +85,7 @@ export default class applicationController implements ControllerInitDataOptions 
     UrlParse(){
         //todo 首页渲染
         if(this.$_url == "/"){
-            this.Render();
+            this.Render(true);
         }else {
             //todo ========【其他路径】=======
             let urlArrs = this.$_url.replace(/^\/{1}/,"").split("/");
@@ -133,6 +140,8 @@ export default class applicationController implements ControllerInitDataOptions 
             let ControllerClassObj = ControllerClass[ControllerClassName];
             //注入控制器类公共的初始数据及方法
             Utils.ControllerInitData.call(this,this,ControllerClassObj,urlArrs[2],ServerConfig,ControllerPath,true);
+            //扩展公共数据及方法
+            ControllerClassObj.prototype.$urlArrs = urlArrs;
             let ControllerClassInit = new ControllerClassObj();
             //判断控制器方法是否存在
             if(!ControllerClassInit[urlArrs[2]]){
