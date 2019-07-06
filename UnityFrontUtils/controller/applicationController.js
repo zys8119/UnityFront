@@ -75,7 +75,13 @@ var applicationController = /** @class */ (function () {
         }
         else {
             //todo ========【其他路径】=======
-            var urlArrs = this.$_url.replace(/^\/{1}/, "").split("/");
+            var $$url = this.$_url;
+            //自定义路由配置
+            try {
+                $$url = require(path.resolve(config_1.ServerConfig.Template.applicationPath, "conf/route"))["default"][this.$_url];
+            }
+            catch (e) { }
+            var urlArrs = $$url.replace(/^\/{1}/, "").split("/");
             urlArrs[1] = urlArrs[1] || "Index2";
             urlArrs[2] = urlArrs[2] || "index";
             //todo 判断模块1

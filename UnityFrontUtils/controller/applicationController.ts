@@ -87,8 +87,14 @@ export default class applicationController implements ControllerInitDataOptions 
         if(this.$_url == "/"){
             this.Render(true);
         }else {
+
             //todo ========【其他路径】=======
-            let urlArrs = this.$_url.replace(/^\/{1}/,"").split("/");
+            let $$url = this.$_url;
+            //自定义路由配置
+            try {
+                $$url = require(path.resolve(ServerConfig.Template.applicationPath,"conf/route")).default[this.$_url];
+            }catch (e) {}
+            let urlArrs = $$url.replace(/^\/{1}/,"").split("/");
             urlArrs[1] = urlArrs[1] || "Index2";
             urlArrs[2] = urlArrs[2] || "index";
 
