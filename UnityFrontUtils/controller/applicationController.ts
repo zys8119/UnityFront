@@ -20,6 +20,7 @@ export default class applicationController implements ControllerInitDataOptions 
     __dir:string;
     $methodName:string;
     $urlArrs:any[];
+    $ControllerConfig:object;
 
     /**
      * 设置header头
@@ -91,12 +92,18 @@ export default class applicationController implements ControllerInitDataOptions 
             //todo ========【其他路径】=======
             let $$url = this.$_url;
             //自定义路由配置
+            //应用路由配置
             try {
                 $$url = require(path.resolve(ServerConfig.Template.applicationPath,"conf/route")).default[this.$_url];
             }catch (e) {}
-            let urlArrs = $$url.replace(/^\/{1}/,"").split("/");
-            urlArrs[1] = urlArrs[1] || "Index2";
-            urlArrs[2] = urlArrs[2] || "index";
+            let urlArrs = Utils.getUrlArrs($$url);
+            //控制器路由配置
+            try {
+                $$url = require(path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"conf/route")).default[this.$_url];
+                try {
+                    urlArrs = Utils.getUrlArrs($$url);
+                }catch (e) {}
+            }catch (e) {}
 
             //todo 判断模块1
             let ModulePath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0]);
@@ -148,6 +155,16 @@ export default class applicationController implements ControllerInitDataOptions 
             Utils.ControllerInitData.call(this,this,ControllerClassObj,urlArrs[2],ServerConfig,ControllerPath,true);
             //扩展公共数据及方法
             ControllerClassObj.prototype.$urlArrs = urlArrs;
+            //自定义配置文件===start
+            //应用配置
+            try {
+                ControllerClassObj.prototype.$ControllerConfig = require(path.resolve(ServerConfig.Template.applicationPath,"conf/index")).default;
+            }catch (e) {}
+            //控制器配置
+            try {
+                ControllerClassObj.prototype.$ControllerConfig = require(path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"conf/index")).default;
+            }catch (e) {}
+            //=================end
             let ControllerClassInit = new ControllerClassObj();
             //判断控制器方法是否存在
             if(!ControllerClassInit[urlArrs[2]]){

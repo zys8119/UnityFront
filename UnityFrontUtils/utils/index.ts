@@ -124,6 +124,17 @@ export default {
         };
         ControllerClassObj.prototype.__dir = __dir;
         ControllerClassObj.prototype.$methodName = $methodName;
+    },
+
+    /**
+     * 路由数组转换
+     * @param $$url 需要转换的url字符串
+     */
+    getUrlArrs($$url:string){
+        let urlArrs = $$url.replace(/^\/{1}/,"").split("/");
+        urlArrs[1] = urlArrs[1] || "Index";
+        urlArrs[2] = urlArrs[2] || "index";
+        return urlArrs;
     }
 }
 

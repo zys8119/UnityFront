@@ -10,5 +10,6 @@ export class IndexController extends applicationController{
     }
     aa(){
         this.Render();
+        console.log(this.$ControllerConfig);
     }
 };

@@ -24,6 +24,7 @@ var IndexController = /** @class */ (function (_super) {
     };
     IndexController.prototype.aa = function () {
         this.Render();
+        console.log(this.$ControllerConfig);
     };
     return IndexController;
 }(applicationController_1["default"]));

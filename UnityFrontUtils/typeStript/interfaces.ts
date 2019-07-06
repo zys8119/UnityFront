@@ -138,6 +138,7 @@ export interface ControllerInitDataOptions {
     __dir:string;//当前控制器位置
     $methodName:string;//当前控制器执行的方法名称
     $urlArrs:any[];//控制器url数组
+    $ControllerConfig:object;//控制器配置
 }
 
 export interface TemplateErrorDataOptions {
