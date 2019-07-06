@@ -31,12 +31,12 @@ var applicationController = /** @class */ (function () {
     };
     /**
      * 渲染模板
-     // * @param TemplatePath 模板路径
-     // * @param TemplateData 模板数据
+     * @param TemplatePath 模板路径
+     * @param TemplateData 模板数据
      * @param bool 是否为主控制器渲染
      * @constructor
      */
-    applicationController.prototype.Render = function (bool) {
+    applicationController.prototype.Render = function (TemplatePath, TemplateData, bool) {
         var _this = this;
         //默认其他控制器模板路径
         var publicFilePath = "";
@@ -51,6 +51,11 @@ var applicationController = /** @class */ (function () {
             }
         }
         var filePath = path.resolve(publicFilePath, this.$methodName + config_1.ServerConfig.Template.suffix);
+        //自定义模板渲染路径
+        if (TemplatePath && TemplatePath.length > 0) {
+            filePath = path.resolve(config_1.ServerConfig.Template.viewsPath, TemplatePath + config_1.ServerConfig.Template.suffix);
+        }
+        console.log(filePath);
         fs.readFile(filePath, 'utf8', function (err, data) {
             if (err) {
                 utils_1["default"].RenderTemplateError.call(_this, config_1.ServerConfig.Template.TemplateErrorPath, {
@@ -77,7 +82,7 @@ var applicationController = /** @class */ (function () {
     applicationController.prototype.UrlParse = function () {
         //todo 首页渲染
         if (this.$_url == "/") {
-            this.Render(true);
+            this.Render(null, null, true);
         }
         else {
             //todo ========【其他路径】=======

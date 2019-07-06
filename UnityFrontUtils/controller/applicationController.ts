@@ -48,12 +48,12 @@ export default class applicationController implements ControllerInitDataOptions 
 
     /**
      * 渲染模板
-     // * @param TemplatePath 模板路径
-     // * @param TemplateData 模板数据
+     * @param TemplatePath 模板路径
+     * @param TemplateData 模板数据
      * @param bool 是否为主控制器渲染
      * @constructor
      */
-    Render(bool?:boolean){
+    Render(TemplatePath?:string,TemplateData?:any,bool?:boolean){
         //默认其他控制器模板路径
         let publicFilePath = "";
         if(bool){
@@ -66,6 +66,11 @@ export default class applicationController implements ControllerInitDataOptions 
             }
         }
         let filePath = path.resolve(publicFilePath,this.$methodName+ServerConfig.Template.suffix);
+        //自定义模板渲染路径
+        if(TemplatePath && TemplatePath.length > 0){
+            filePath = path.resolve(ServerConfig.Template.viewsPath,TemplatePath+ServerConfig.Template.suffix);
+        }
+        console.log(filePath);
         fs.readFile(filePath,'utf8',(err,data)=>{
             if (err){
                 Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
@@ -91,9 +96,8 @@ export default class applicationController implements ControllerInitDataOptions 
     UrlParse(){
         //todo 首页渲染
         if(this.$_url == "/"){
-            this.Render(true);
+            this.Render(null,null,true);
         }else {
-
             //todo ========【其他路径】=======
             let $$url = this.$_url;
             //自定义路由配置===start
