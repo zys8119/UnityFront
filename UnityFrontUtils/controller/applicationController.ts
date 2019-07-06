@@ -53,7 +53,12 @@ export default class applicationController implements ControllerInitDataOptions 
      * @param bool 是否为主控制器渲染
      * @constructor
      */
-    Render(TemplatePath?:string,TemplateData?:any,bool?:boolean){
+    Render(TemplatePath?:any,TemplateData?:object,bool?:boolean){
+        TemplateData = TemplateData || {};
+        if(TemplatePath && typeof TemplatePath == "object"){
+            TemplateData = TemplatePath;
+            TemplatePath = null;
+        };
         //默认其他控制器模板路径
         let publicFilePath = "";
         if(bool){
@@ -70,7 +75,6 @@ export default class applicationController implements ControllerInitDataOptions 
         if(TemplatePath && TemplatePath.length > 0){
             filePath = path.resolve(ServerConfig.Template.viewsPath,TemplatePath+ServerConfig.Template.suffix);
         }
-        console.log(filePath);
         fs.readFile(filePath,'utf8',(err,data)=>{
             if (err){
                 Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
@@ -89,7 +93,7 @@ export default class applicationController implements ControllerInitDataOptions 
                     'Content-Type': 'text/html; charset=utf-8',
                 });
             };
-            this.$_send(Utils.replaceUrlVars(ServerConfig,data));
+            this.$_send(Utils.replaceUrlVars(ServerConfig,data,TemplateData));
         });
     }
 

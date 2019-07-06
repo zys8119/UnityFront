@@ -13,7 +13,7 @@ export const mysqlConfig = <mysqlOptions>{
         user: 'root',
         password: 'admin123',
         port: '3306',
-        database: 'test'
+        database: 'dome'
     }
 };
 

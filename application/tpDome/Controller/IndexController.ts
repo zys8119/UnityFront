@@ -2,6 +2,9 @@ import applicationController from "../../../UnityFrontUtils/controller/applicati
 
 export class IndexController extends applicationController{
     index(){
-        this.Render("Dome/index/aa");
+        this.DB().select().from("d1").query().then(res=>{
+            this.Render(null,{aa:res,bb:"bb",cc:true,dd:151});
+        });
+
     }
 }

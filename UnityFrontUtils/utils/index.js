@@ -35,13 +35,23 @@ exports["default"] = {
     },
     /**
      * 替换模板url变量
-     * @param ServerConfig
-     * @param data
+     * @param ServerConfig 服务配置
+     * @param data 模板内容
+     * @param TemplateData 模板苏剧
      */
-    replaceUrlVars: function (ServerConfig, data) {
+    replaceUrlVars: function (ServerConfig, data, TemplateData) {
         if (ServerConfig.Template.urlVars && typeof ServerConfig.Template.urlVars == "object") {
             for (var v in ServerConfig.Template.urlVars) {
                 data = data.replace(new RegExp(v, "g"), ServerConfig.Template.urlVars[v]);
+            }
+        }
+        if (TemplateData && typeof TemplateData == "object") {
+            for (var v in TemplateData) {
+                var value = TemplateData[v];
+                if (typeof value != 'string') {
+                    value = JSON.stringify(value, null, 4);
+                }
+                data = data.replace(new RegExp("\\{\\{\\$td\\." + v + "\\}\\}", "g"), value);
             }
         }
         return data;

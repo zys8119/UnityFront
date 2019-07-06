@@ -38,6 +38,12 @@ var applicationController = /** @class */ (function () {
      */
     applicationController.prototype.Render = function (TemplatePath, TemplateData, bool) {
         var _this = this;
+        TemplateData = TemplateData || {};
+        if (TemplatePath && typeof TemplatePath == "object") {
+            TemplateData = TemplatePath;
+            TemplatePath = null;
+        }
+        ;
         //默认其他控制器模板路径
         var publicFilePath = "";
         if (bool) {
@@ -55,7 +61,6 @@ var applicationController = /** @class */ (function () {
         if (TemplatePath && TemplatePath.length > 0) {
             filePath = path.resolve(config_1.ServerConfig.Template.viewsPath, TemplatePath + config_1.ServerConfig.Template.suffix);
         }
-        console.log(filePath);
         fs.readFile(filePath, 'utf8', function (err, data) {
             if (err) {
                 utils_1["default"].RenderTemplateError.call(_this, config_1.ServerConfig.Template.TemplateErrorPath, {
@@ -76,7 +81,7 @@ var applicationController = /** @class */ (function () {
                 });
             }
             ;
-            _this.$_send(utils_1["default"].replaceUrlVars(config_1.ServerConfig, data));
+            _this.$_send(utils_1["default"].replaceUrlVars(config_1.ServerConfig, data, TemplateData));
         });
     };
     applicationController.prototype.UrlParse = function () {

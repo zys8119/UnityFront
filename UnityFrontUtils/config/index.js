@@ -10,7 +10,7 @@ exports.mysqlConfig = {
         user: 'root',
         password: 'admin123',
         port: '3306',
-        database: 'test'
+        database: 'dome'
     }
 };
 //服务设置

@@ -12,7 +12,7 @@ var mysql = /** @class */ (function () {
         this.selectSql = '';
         this.isEnd = isEnd;
         var options = JSON.parse(JSON.stringify(config_1.mysqlConfig.options));
-        if (typeof optionsConfig == "object") {
+        if (optionsConfig && typeof optionsConfig == "object") {
             for (var k in optionsConfig) {
                 options[k] = optionsConfig[k];
             }

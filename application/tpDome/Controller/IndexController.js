@@ -20,7 +20,10 @@ var IndexController = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     IndexController.prototype.index = function () {
-        this.Render("Dome/index/aa");
+        var _this = this;
+        this.DB().select().from("d1").query().then(function (res) {
+            _this.Render(null, { aa: res, bb: "bb", cc: true, dd: 151 });
+        });
     };
     return IndexController;
 }(applicationController_1["default"]));
