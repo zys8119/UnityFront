@@ -4,6 +4,7 @@ import { ServerConfig } from "../config";
 import Utils from "../utils";
 const fs = require('fs');
 const path = require('path');
+const pug = require('pug');
 export default class applicationController implements ControllerInitDataOptions {
     $_body?:any;
     $_rawTrailers:[];
@@ -59,42 +60,76 @@ export default class applicationController implements ControllerInitDataOptions 
             TemplateData = TemplatePath;
             TemplatePath = null;
         };
+        let $methodName = this.$methodName;
+        //自定义控制器模板配置
+        let $$ServerConfig = JSON.parse(JSON.stringify(ServerConfig));
+        try {
+            let $$AppServerConfig = require(path.resolve(ServerConfig.Template.applicationPath,this.$urlArrs[0],"conf/index"));
+            if($$AppServerConfig && $$AppServerConfig.default && typeof $$AppServerConfig.default == 'object' && $$AppServerConfig.default.Template && typeof $$AppServerConfig.default.Template == 'object'){
+                (<any>Object).assign($$ServerConfig.Template,$$AppServerConfig.default.Template)
+            }
+        }catch (e) {}
         //默认其他控制器模板路径
         let publicFilePath = "";
         if(bool){
             //UnityFront主模板渲染路径
-            publicFilePath = path.resolve(ServerConfig.Template.TemplatePath);
+            publicFilePath = path.resolve($$ServerConfig.Template.TemplatePath);
         }else {
             //其他模块控制器视图渲染路径
             if(this.$urlArrs.length >= 2){
-                publicFilePath = path.resolve(ServerConfig.Template.viewsPath,this.$urlArrs[0],this.$urlArrs[1]);
+                publicFilePath = path.resolve($$ServerConfig.Template.viewsPath,this.$urlArrs[0],this.$urlArrs[1]);
             }
         }
-        let filePath = path.resolve(publicFilePath,this.$methodName+ServerConfig.Template.suffix);
+        let filePath = path.resolve(publicFilePath,this.$methodName+$$ServerConfig.Template.suffix);
         //自定义模板渲染路径
         if(TemplatePath && TemplatePath.length > 0){
-            filePath = path.resolve(ServerConfig.Template.viewsPath,TemplatePath+ServerConfig.Template.suffix);
+            filePath = path.resolve($$ServerConfig.Template.viewsPath,TemplatePath+$$ServerConfig.Template.suffix);
+            $methodName = Utils.getUrlArrs(TemplatePath)[2];
         }
-        fs.readFile(filePath,'utf8',(err,data)=>{
-            if (err){
-                Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
-                    title:`模板【${this.$methodName+ServerConfig.Template.suffix}】不存在`,
-                    error:{
-                        "错误来源 -> ":ServerConfig.Template.ErrorPathSource,
-                        "控制器 -> ":this.__dir,
-                        "方法 -> ":this.$methodName,
-                        "error":"模板【"+filePath+"】不存在",
+
+        this.setHeaders({
+            'Content-Type': 'text/html; charset=utf-8',
+        });
+        if(!fs.existsSync(filePath)){
+            Utils.RenderTemplateError.call(this,$$ServerConfig.Template.TemplateErrorPath,{
+                title:`模板【${$methodName+$$ServerConfig.Template.suffix}】不存在`,
+                error:{
+                    "错误来源 -> ":$$ServerConfig.Template.ErrorPathSource,
+                    "控制器 -> ":this.__dir,
+                    "方法 -> ":this.$methodName,
+                    "error":"模板【"+filePath+"】不存在",
+                }
+            });
+            return;
+        }
+        fs.readFile(filePath,'utf8',(err,data)=> {
+            if (err) {
+                Utils.RenderTemplateError.call(this, $$ServerConfig.Template.TemplateErrorPath, {
+                    title: `模板【${$methodName + $$ServerConfig.Template.suffix}】不存在`,
+                    error: {
+                        "错误来源 -> ": $$ServerConfig.Template.ErrorPathSource,
+                        "控制器 -> ": this.__dir,
+                        "方法 -> ": this.$methodName,
+                        "error": "模板【" + filePath + "】不存在",
                     }
                 });
                 return;
             };
-            if(ServerConfig.Template.suffix == ".html"){
-                this.setHeaders({
-                    'Content-Type': 'text/html; charset=utf-8',
-                });
-            };
-            this.$_send(Utils.replaceUrlVars(ServerConfig,data,TemplateData));
+            switch ($$ServerConfig.Template.suffix) {
+                //传统html模板渲染
+                case ".html":
+                    this.$_send(Utils.replaceUrlVars($$ServerConfig, data, TemplateData));
+                    break;
+                //pug模板渲染
+                case ".pug":
+                    this.$_send(pug.render(Utils.replaceUrlVars($$ServerConfig, data, TemplateData,0),{pretty:true}));
+                    break;
+                default:
+                    break;
+            }
         });
+
+
     }
 
     UrlParse(){

@@ -4,6 +4,7 @@ var config_1 = require("../config");
 var utils_1 = require("../utils");
 var fs = require('fs');
 var path = require('path');
+var pug = require('pug');
 var applicationController = /** @class */ (function () {
     function applicationController() {
     }
@@ -44,29 +45,55 @@ var applicationController = /** @class */ (function () {
             TemplatePath = null;
         }
         ;
+        var $methodName = this.$methodName;
+        //自定义控制器模板配置
+        var $$ServerConfig = JSON.parse(JSON.stringify(config_1.ServerConfig));
+        try {
+            var $$AppServerConfig = require(path.resolve(config_1.ServerConfig.Template.applicationPath, this.$urlArrs[0], "conf/index"));
+            if ($$AppServerConfig && $$AppServerConfig["default"] && typeof $$AppServerConfig["default"] == 'object' && $$AppServerConfig["default"].Template && typeof $$AppServerConfig["default"].Template == 'object') {
+                Object.assign($$ServerConfig.Template, $$AppServerConfig["default"].Template);
+            }
+        }
+        catch (e) { }
         //默认其他控制器模板路径
         var publicFilePath = "";
         if (bool) {
             //UnityFront主模板渲染路径
-            publicFilePath = path.resolve(config_1.ServerConfig.Template.TemplatePath);
+            publicFilePath = path.resolve($$ServerConfig.Template.TemplatePath);
         }
         else {
             //其他模块控制器视图渲染路径
             if (this.$urlArrs.length >= 2) {
-                publicFilePath = path.resolve(config_1.ServerConfig.Template.viewsPath, this.$urlArrs[0], this.$urlArrs[1]);
+                publicFilePath = path.resolve($$ServerConfig.Template.viewsPath, this.$urlArrs[0], this.$urlArrs[1]);
             }
         }
-        var filePath = path.resolve(publicFilePath, this.$methodName + config_1.ServerConfig.Template.suffix);
+        var filePath = path.resolve(publicFilePath, this.$methodName + $$ServerConfig.Template.suffix);
         //自定义模板渲染路径
         if (TemplatePath && TemplatePath.length > 0) {
-            filePath = path.resolve(config_1.ServerConfig.Template.viewsPath, TemplatePath + config_1.ServerConfig.Template.suffix);
+            filePath = path.resolve($$ServerConfig.Template.viewsPath, TemplatePath + $$ServerConfig.Template.suffix);
+            $methodName = utils_1["default"].getUrlArrs(TemplatePath)[2];
+        }
+        this.setHeaders({
+            'Content-Type': 'text/html; charset=utf-8'
+        });
+        if (!fs.existsSync(filePath)) {
+            utils_1["default"].RenderTemplateError.call(this, $$ServerConfig.Template.TemplateErrorPath, {
+                title: "\u6A21\u677F\u3010" + ($methodName + $$ServerConfig.Template.suffix) + "\u3011\u4E0D\u5B58\u5728",
+                error: {
+                    "错误来源 -> ": $$ServerConfig.Template.ErrorPathSource,
+                    "控制器 -> ": this.__dir,
+                    "方法 -> ": this.$methodName,
+                    "error": "模板【" + filePath + "】不存在"
+                }
+            });
+            return;
         }
         fs.readFile(filePath, 'utf8', function (err, data) {
             if (err) {
-                utils_1["default"].RenderTemplateError.call(_this, config_1.ServerConfig.Template.TemplateErrorPath, {
-                    title: "\u6A21\u677F\u3010" + (_this.$methodName + config_1.ServerConfig.Template.suffix) + "\u3011\u4E0D\u5B58\u5728",
+                utils_1["default"].RenderTemplateError.call(_this, $$ServerConfig.Template.TemplateErrorPath, {
+                    title: "\u6A21\u677F\u3010" + ($methodName + $$ServerConfig.Template.suffix) + "\u3011\u4E0D\u5B58\u5728",
                     error: {
-                        "错误来源 -> ": config_1.ServerConfig.Template.ErrorPathSource,
+                        "错误来源 -> ": $$ServerConfig.Template.ErrorPathSource,
                         "控制器 -> ": _this.__dir,
                         "方法 -> ": _this.$methodName,
                         "error": "模板【" + filePath + "】不存在"
@@ -75,13 +102,18 @@ var applicationController = /** @class */ (function () {
                 return;
             }
             ;
-            if (config_1.ServerConfig.Template.suffix == ".html") {
-                _this.setHeaders({
-                    'Content-Type': 'text/html; charset=utf-8'
-                });
+            switch ($$ServerConfig.Template.suffix) {
+                //传统html模板渲染
+                case ".html":
+                    _this.$_send(utils_1["default"].replaceUrlVars($$ServerConfig, data, TemplateData));
+                    break;
+                //pug模板渲染
+                case ".pug":
+                    _this.$_send(pug.render(utils_1["default"].replaceUrlVars($$ServerConfig, data, TemplateData, 0), { pretty: true }));
+                    break;
+                default:
+                    break;
             }
-            ;
-            _this.$_send(utils_1["default"].replaceUrlVars(config_1.ServerConfig, data, TemplateData));
         });
     };
     applicationController.prototype.UrlParse = function () {

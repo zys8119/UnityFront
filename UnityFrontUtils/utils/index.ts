@@ -37,8 +37,12 @@ export default {
      * @param ServerConfig 服务配置
      * @param data 模板内容
      * @param TemplateData 模板苏剧
+     * @param space 数据格式化缩进数量
      */
-    replaceUrlVars(ServerConfig,data,TemplateData?:object){
+    replaceUrlVars(ServerConfig,data,TemplateData?:object,space?:number){
+        if(typeof space != "number"){
+            space = space || 4;
+        }
         if(ServerConfig.Template.urlVars && typeof ServerConfig.Template.urlVars == "object"){
             for(let v in ServerConfig.Template.urlVars){
                 data = data.replace(new RegExp(v,"g"),ServerConfig.Template.urlVars[v]);
@@ -48,7 +52,7 @@ export default {
             for(let v in TemplateData){
                 let value = TemplateData[v];
                 if(typeof value != 'string'){
-                    value = JSON.stringify(value,null,4);
+                    value = JSON.stringify(value,null,space);
                 }
                 data = data.replace(new RegExp(`\\{\\{\\$td\\.${v}\\}\\}`,"g"),value);
             }
