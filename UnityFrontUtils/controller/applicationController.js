@@ -118,6 +118,7 @@ var applicationController = /** @class */ (function () {
             //实例化控制器
             var ControllerClassObj = ControllerClass[ControllerClassName];
             //注入控制器类公共的初始数据及方法
+            // Utils.ControllerInitData.call(this,ControllerInitData,Main.main,$methodName,ServerConfig,path.resolve(__dirname,filePath));
             var ControllerClassInit = new ControllerClassObj();
             //判断控制器方法是否存在
             if (!ControllerClassInit[urlArrs[2]]) {
@@ -145,7 +146,6 @@ var applicationController = /** @class */ (function () {
                 return;
             }
             ;
-            //todo 实例化控制器及控制器参数5
             this.$_send("其他路径测试");
         }
     };

@@ -22,7 +22,6 @@ var main = /** @class */ (function (_super) {
     main.prototype.index = function () {
         //控制器url路由解析
         this.UrlParse();
-        ;
     };
     return main;
 }(applicationController_1["default"]));

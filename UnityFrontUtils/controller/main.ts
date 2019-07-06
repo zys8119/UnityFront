@@ -6,6 +6,6 @@ export class main extends applicationController{
 
     index(){
         //控制器url路由解析
-        this.UrlParse();;
+        this.UrlParse();
     }
 }
