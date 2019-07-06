@@ -86,35 +86,35 @@ var applicationController = /** @class */ (function () {
     };
     applicationController.prototype.UrlParse = function () {
         //todo 首页渲染
-        if (this.$_url == "/") {
+        var $$url = this.$_url;
+        //自定义路由配置===start
+        //应用路由配置
+        try {
+            var $appRouteConfig = require(path.resolve(config_1.ServerConfig.Template.applicationPath, "conf/route"));
+            if ($appRouteConfig && $appRouteConfig["default"] && $appRouteConfig["default"][this.$_url]) {
+                $$url = $appRouteConfig["default"][this.$_url];
+            }
+        }
+        catch (e) { }
+        var urlArrs = utils_1["default"].getUrlArrs($$url);
+        //控制器路由配置
+        try {
+            var $moduleRouteConfig = require(path.resolve(config_1.ServerConfig.Template.applicationPath, urlArrs[0], "conf/route"));
+            if ($moduleRouteConfig && $moduleRouteConfig["default"] && $moduleRouteConfig["default"][this.$_url]) {
+                $$url = $moduleRouteConfig["default"][this.$_url];
+                try {
+                    urlArrs = utils_1["default"].getUrlArrs($$url);
+                }
+                catch (e) { }
+            }
+        }
+        catch (e) { }
+        //==================end
+        if ($$url == "/") {
             this.Render(null, null, true);
         }
         else {
             //todo ========【其他路径】=======
-            var $$url = this.$_url;
-            //自定义路由配置===start
-            //应用路由配置
-            try {
-                var $appRouteConfig = require(path.resolve(config_1.ServerConfig.Template.applicationPath, "conf/route"));
-                if ($appRouteConfig && $appRouteConfig["default"] && $appRouteConfig["default"][this.$_url]) {
-                    $$url = $appRouteConfig["default"][this.$_url];
-                }
-            }
-            catch (e) { }
-            var urlArrs = utils_1["default"].getUrlArrs($$url);
-            //控制器路由配置
-            try {
-                var $moduleRouteConfig = require(path.resolve(config_1.ServerConfig.Template.applicationPath, urlArrs[0], "conf/route"));
-                if ($moduleRouteConfig && $moduleRouteConfig["default"] && $moduleRouteConfig["default"][this.$_url]) {
-                    $$url = $moduleRouteConfig["default"][this.$_url];
-                    try {
-                        urlArrs = utils_1["default"].getUrlArrs($$url);
-                    }
-                    catch (e) { }
-                }
-            }
-            catch (e) { }
-            //==================end
             //todo 判断模块1
             var ModulePath = path.resolve(config_1.ServerConfig.Template.applicationPath, urlArrs[0]);
             if (!fs.existsSync(ModulePath)) {

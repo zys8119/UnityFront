@@ -99,31 +99,31 @@ export default class applicationController implements ControllerInitDataOptions 
 
     UrlParse(){
         //todo 首页渲染
-        if(this.$_url == "/"){
+        let $$url = this.$_url;
+        //自定义路由配置===start
+        //应用路由配置
+        try {
+            let $appRouteConfig = require(path.resolve(ServerConfig.Template.applicationPath,"conf/route"));
+            if($appRouteConfig && $appRouteConfig.default && $appRouteConfig.default[this.$_url]){
+                $$url = $appRouteConfig.default[this.$_url];
+            }
+        }catch (e) {}
+        let urlArrs = Utils.getUrlArrs($$url);
+        //控制器路由配置
+        try {
+            let $moduleRouteConfig = require(path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"conf/route"));
+            if($moduleRouteConfig && $moduleRouteConfig.default && $moduleRouteConfig.default[this.$_url]){
+                $$url = $moduleRouteConfig.default[this.$_url];
+                try {
+                    urlArrs = Utils.getUrlArrs($$url);
+                }catch (e) {}
+            }
+        }catch (e) {}
+        //==================end
+        if($$url == "/"){
             this.Render(null,null,true);
         }else {
             //todo ========【其他路径】=======
-            let $$url = this.$_url;
-            //自定义路由配置===start
-            //应用路由配置
-            try {
-                let $appRouteConfig = require(path.resolve(ServerConfig.Template.applicationPath,"conf/route"));
-                if($appRouteConfig && $appRouteConfig.default && $appRouteConfig.default[this.$_url]){
-                    $$url = $appRouteConfig.default[this.$_url];
-                }
-            }catch (e) {}
-            let urlArrs = Utils.getUrlArrs($$url);
-            //控制器路由配置
-            try {
-                let $moduleRouteConfig = require(path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"conf/route"));
-                if($moduleRouteConfig && $moduleRouteConfig.default && $moduleRouteConfig.default[this.$_url]){
-                    $$url = $moduleRouteConfig.default[this.$_url];
-                    try {
-                        urlArrs = Utils.getUrlArrs($$url);
-                    }catch (e) {}
-                }
-            }catch (e) {}
-            //==================end
 
             //todo 判断模块1
             let ModulePath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0]);
