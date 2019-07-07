@@ -221,10 +221,10 @@ export default {
                 Format = Format.replace(/s{1}/g,nowTimeArr[3][2].slice(0,1));
                 break;
             case "[object Date]":
-                return this.dateFormat(newDate.getTime());
+                return this.dateFormat(newDate.getTime(),Format);
                 break;
             case "[object String]":
-                return this.dateFormat(new Date(newDate).getTime());
+                return this.dateFormat(new Date(newDate).getTime(),Format);
                 break;
         }
         return Format;

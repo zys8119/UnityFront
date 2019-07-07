@@ -122,7 +122,6 @@ export default class applicationController implements ControllerInitDataOptions 
                     break;
                 //pug模板渲染
                 case ".pug":
-                    console.log(Utils.replaceUrlVars($$ServerConfig, data, TemplateData,0))
                     this.$_send(pug.render(Utils.replaceUrlVars($$ServerConfig, data, TemplateData,0),{
                         pretty:true,
                         filename:filePath,
@@ -269,7 +268,8 @@ export default class applicationController implements ControllerInitDataOptions 
      */
     $_log(...args){
         let logDirPath = path.resolve(__dirname,"../log");
-        let logFileName = Utils.dateFormat(new Date().setHours(0, 0, 0, 0),"YYYY-MM-DD")+".log";
+        // let logFileName = Utils.dateFormat(new Date().setHours(0, 0, 0, 0),"YYYY-MM-DD")+".log";
+        let logFileName = Utils.dateFormat(new Date(),"YYYY-MM-DD HH-mm-ss")+".log";
         let logPath = path.resolve(logDirPath,logFileName);
         //判断日志文件是否存在，不存在则创建，并写入
         if(!fs.existsSync(logPath)){
