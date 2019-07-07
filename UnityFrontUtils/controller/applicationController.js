@@ -109,7 +109,11 @@ var applicationController = /** @class */ (function () {
                     break;
                 //pug模板渲染
                 case ".pug":
-                    _this.$_send(pug.render(utils_1["default"].replaceUrlVars($$ServerConfig, data, TemplateData, 0), { pretty: true }));
+                    console.log(utils_1["default"].replaceUrlVars($$ServerConfig, data, TemplateData, 0));
+                    _this.$_send(pug.render(utils_1["default"].replaceUrlVars($$ServerConfig, data, TemplateData, 0), {
+                        pretty: true,
+                        filename: filePath
+                    }));
                     break;
                 default:
                     break;

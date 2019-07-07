@@ -122,7 +122,11 @@ export default class applicationController implements ControllerInitDataOptions 
                     break;
                 //pug模板渲染
                 case ".pug":
-                    this.$_send(pug.render(Utils.replaceUrlVars($$ServerConfig, data, TemplateData,0),{pretty:true}));
+                    console.log(Utils.replaceUrlVars($$ServerConfig, data, TemplateData,0))
+                    this.$_send(pug.render(Utils.replaceUrlVars($$ServerConfig, data, TemplateData,0),{
+                        pretty:true,
+                        filename:filePath,
+                    }));
                     break;
                 default:
                     break;

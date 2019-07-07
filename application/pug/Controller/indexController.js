@@ -13,16 +13,16 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-var applicationController_1 = require("./applicationController");
-var main = /** @class */ (function (_super) {
-    __extends(main, _super);
-    function main() {
+var applicationController_1 = require("../../../UnityFrontUtils/controller/applicationController");
+var IndexController = /** @class */ (function (_super) {
+    __extends(IndexController, _super);
+    function IndexController() {
         return _super.call(this) || this;
     }
-    main.prototype.index = function () {
-        //控制器url路由解析
-        this.UrlParse();
+    IndexController.prototype.index = function () {
+        this.$_log("Pug测试");
+        this.Render();
     };
-    return main;
+    return IndexController;
 }(applicationController_1.default));
-exports.main = main;
+exports.IndexController = IndexController;

@@ -10,7 +10,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var config_1 = require("../config");
 var utils_1 = require("../utils");
 var path = require("path");
@@ -83,7 +83,7 @@ var staticIndex = /** @class */ (function () {
             switch (fileType) {
                 case ".html":
                 case ".htm":
-                    data = utils_1["default"].replaceUrlVars(config_1.ServerConfig, data);
+                    data = utils_1.default.replaceUrlVars(config_1.ServerConfig, data);
                     break;
             }
             ;
@@ -92,4 +92,4 @@ var staticIndex = /** @class */ (function () {
     };
     return staticIndex;
 }());
-exports["default"] = staticIndex;
+exports.default = staticIndex;
