@@ -5,7 +5,6 @@ import { ServerConfig } from "../config"
 import mysql from "../mysql"
 module.exports = (request,response)=>{
     return new Promise((resolve, reject) => {
-        console.log("请求开始===============时间：",Date.now());
         //获取body数据
         new bodyData(request,response,body=>{
             //初始化UnityFrontController控制器

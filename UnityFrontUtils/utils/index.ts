@@ -152,6 +152,82 @@ export default {
             urlArrs[2] = urlArrs[2].replace(/\/(.|\n)*$|\?(.|\n)*$|/img,"");
         }catch (e) {}
         return urlArrs;
+    },
+
+    /**
+     * 时间格式转化
+     * @param newDate 时间数据
+     * @param Format 时间格式
+     */
+    dateFormat(newDate?:any,Format?:string){
+        newDate = newDate || new Date();
+        Format = Format || "YYYY-MM-DD HH:mm:ss week sc";
+        switch (Object.prototype.toString.call(newDate)) {
+            case "[object Number]":
+                let now = new Date();
+                now.setTime(newDate);
+                let nowTime = now.toLocaleString();
+                let week = now.getDay(); //星期
+                let hour = now.getHours(); //小时
+                //判断星期几
+                let weeks = ["日","一","二","三","四","五","六"];
+                let getWeek = "星期" + weeks[week];
+                let sc;
+                //判断是AM or PM
+                if(hour >= 0 && hour < 5){
+                    sc = '凌晨';
+                }
+                else if(hour > 5 && hour <= 7){
+                    sc = '早上';
+                }
+                else if(hour > 7 && hour <= 11){
+                    sc = '上午';
+                }
+                else if(hour > 11 && hour <= 13){
+                    sc = '中午';
+                }
+                else if(hour> 13 && hour <= 18){
+                    sc = '下午';
+                }
+                else if(hour > 18 && hour <= 23){
+                    sc = '晚上';
+                }
+                //"YYYY-MM-DD HH:mm:ss week sc"
+                //{ nowTime: '2019-7-7 13:18:29', getWeek: '星期日', sc: '中午' }
+                let nowTimeArr:any = nowTime
+                    .replace(/\s/,"-")
+                    .split("-")
+                    .map(e=>e.split(":").map(item=>{
+                        if(item.length == 1){
+                            return `0${item}`;
+                        }
+                        return item;
+                    }));
+                Format = Format.replace(/week/g,getWeek);
+                Format = Format.replace(/sc/g,sc);
+                Format = Format.replace(/Y{4}/g,nowTimeArr[0].slice(0,4));
+                Format = Format.replace(/Y{3}/g,nowTimeArr[0].slice(0,3));
+                Format = Format.replace(/Y{2}/g,nowTimeArr[0].slice(0,2));
+                Format = Format.replace(/Y{1}/g,nowTimeArr[0].slice(0,1));
+                Format = Format.replace(/M{2}/g,nowTimeArr[1].slice(0,2));
+                Format = Format.replace(/M{1}/g,nowTimeArr[1].slice(0,1));
+                Format = Format.replace(/D{2}/g,nowTimeArr[2].slice(0,2));
+                Format = Format.replace(/D{1}/g,nowTimeArr[2].slice(0,1));
+                Format = Format.replace(/H{2}/g,nowTimeArr[3][0].slice(0,2));
+                Format = Format.replace(/H{1}/g,nowTimeArr[3][0].slice(0,1));
+                Format = Format.replace(/m{2}/g,nowTimeArr[3][1].slice(0,2));
+                Format = Format.replace(/m{1}/g,nowTimeArr[3][1].slice(0,1));
+                Format = Format.replace(/s{2}/g,nowTimeArr[3][2].slice(0,2));
+                Format = Format.replace(/s{1}/g,nowTimeArr[3][2].slice(0,1));
+                break;
+            case "[object Date]":
+                return this.dateFormat(newDate.getTime());
+                break;
+            case "[object String]":
+                return this.dateFormat(new Date(newDate).getTime());
+                break;
+        }
+        return Format;
     }
 }
 

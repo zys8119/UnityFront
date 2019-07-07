@@ -248,6 +248,10 @@ var applicationController = /** @class */ (function () {
             ControllerClassInit[urlArrs[2]]();
         }
     };
+    /**
+     * 日志输出
+     * @param args 输出的参数数据
+     */
     applicationController.prototype.$_log = function () {
         var _this = this;
         var args = [];
@@ -255,32 +259,41 @@ var applicationController = /** @class */ (function () {
             args[_i] = arguments[_i];
         }
         var logDirPath = path.resolve(__dirname, "../log");
-        var logPath = path.resolve(logDirPath, new Date().setHours(0, 0, 0, 0).toString() + ".log");
+        var logFileName = utils_1["default"].dateFormat(new Date().setHours(0, 0, 0, 0), "YYYY-MM-DD") + ".log";
+        var logPath = path.resolve(logDirPath, logFileName);
+        //判断日志文件是否存在，不存在则创建，并写入
         if (!fs.existsSync(logPath)) {
             this.writeLogFile(args, logPath, "");
             return;
         }
+        //存在直接写入
         fs.readFile(logPath, 'utf8', function (err, data) {
             if (err)
                 throw err;
             _this.writeLogFile(args, logPath, data);
         });
     };
+    /**
+     * 写入日志
+     * @param args 输出的参数数据
+     * @param logPath 日志路径
+     * @param oldData 旧日志数据
+     */
     applicationController.prototype.writeLogFile = function (args, logPath, oldData) {
         oldData = oldData || "";
-        fs.writeFile(logPath, oldData + "\n\n\n" + JSON.stringify({
+        fs.writeFile(logPath, JSON.stringify({
             "【log_start】": "===================================================",
             "【log_message】": {
-                "时间": new Date(),
+                "时间": utils_1["default"].dateFormat(),
                 "日志目录": logPath,
                 "来源": {
                     "控制器目录": this.__dir,
                     "控制器方法": this.$methodName
                 },
-                "日志数据": JSON.stringify(args, null, 4)
+                "日志数据": args
             },
             "【log_end】": "====================================================="
-        }, null, 4), "utf8", function (err) {
+        }, null, 4) + "\n\n\n" + oldData, "utf8", function (err) {
             if (err) {
                 console.log("日志写入失败", err);
                 return;

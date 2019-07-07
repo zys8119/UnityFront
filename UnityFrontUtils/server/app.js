@@ -1,13 +1,18 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 require("../typeStript");
 var fsWatch_1 = require("./fsWatch");
 var config_1 = require("../config");
 module.exports = function (request, response) {
+    //定时任务
+    // setInterval(()=>{
+    //     console.log(11111111)
+    // },500);
+    console.log("--------------");
     //文件监听，可以自动刷新
     if (config_1.ServerConfig.fsWatch) {
         try {
-            new fsWatch_1.default();
+            new fsWatch_1["default"]();
         }
         catch (e) { }
         ;
@@ -18,7 +23,7 @@ module.exports = function (request, response) {
         //对发送数据处理
         require('./send')(request, response).then(function (res) {
             resolve(res);
-        }).catch(function (err) {
+        })["catch"](function (err) {
             resolve(err);
         });
     }).then(function (res) {

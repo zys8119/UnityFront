@@ -124,21 +124,21 @@ export interface SqlUtilsOptions {
 
 export interface ControllerInitDataOptions {
     $_body?:any;//body数据
-    $_rawTrailers:[];
-    $_headers:headersType;//headers数据
-    $_rawHeaders:object;//rawHeaders数据
-    $_method:string;//请求方式
-    $_url:string;//url
-    $_urlParse:object;//格式化url数据
-    $_query:object;//query数据
+    $_rawTrailers?:[];
+    $_headers?:headersType;//headers数据
+    $_rawHeaders?:object;//rawHeaders数据
+    $_method?:string;//请求方式
+    $_url?:string;//url
+    $_urlParse?:object;//格式化url数据
+    $_query?:object;//query数据
     $_send?(sendData:any):any;//发送数据的方法
-    $_RequestStatus:number;// 请求状态设置
-    $_RequestHeaders:headersType;//headers头设置
+    $_RequestStatus?:number;// 请求状态设置
+    $_RequestHeaders?:headersType;//headers头设置
     $mysql?(optionsConfig?:object,isEnd?:boolean):SqlUtilsOptions;//sql工具
-    __dir:string;//当前控制器位置
-    $methodName:string;//当前控制器执行的方法名称
-    $urlArrs:any[];//控制器url数组
-    $ControllerConfig:object;//控制器配置
+    __dir?:string;//当前控制器位置
+    $methodName?:string;//当前控制器执行的方法名称
+    $urlArrs?:any[];//控制器url数组
+    $ControllerConfig?:object;//控制器配置
 }
 
 export interface TemplateErrorDataOptions {

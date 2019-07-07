@@ -259,34 +259,47 @@ export default class applicationController implements ControllerInitDataOptions 
         }
     }
 
+    /**
+     * 日志输出
+     * @param args 输出的参数数据
+     */
     $_log(...args){
         let logDirPath = path.resolve(__dirname,"../log");
-        let logPath = path.resolve(logDirPath,new Date().setHours(0, 0, 0, 0) .toString()+".log");
+        let logFileName = Utils.dateFormat(new Date().setHours(0, 0, 0, 0),"YYYY-MM-DD")+".log";
+        let logPath = path.resolve(logDirPath,logFileName);
+        //判断日志文件是否存在，不存在则创建，并写入
         if(!fs.existsSync(logPath)){
             this.writeLogFile(args,logPath,"");
             return;
         }
+        //存在直接写入
         fs.readFile(logPath,'utf8',(err,data)=> {
             if (err) throw err;
             this.writeLogFile(args,logPath,data);
         });
     }
 
+    /**
+     * 写入日志
+     * @param args 输出的参数数据
+     * @param logPath 日志路径
+     * @param oldData 旧日志数据
+     */
     writeLogFile(args,logPath:string,oldData?:string){
         oldData = oldData || "";
-        fs.writeFile(logPath,oldData+"\n\n\n"+JSON.stringify({
+        fs.writeFile(logPath,JSON.stringify({
             "【log_start】":"===================================================",
             "【log_message】":{
-                "时间":new Date(),
+                "时间":Utils.dateFormat(),
                 "日志目录":logPath,
                 "来源":{
                     "控制器目录":this.__dir,
                     "控制器方法":this.$methodName,
                 },
-                "日志数据":JSON.stringify(args,null,4)
+                "日志数据":args
             },
             "【log_end】":"=====================================================",
-        },null,4),"utf8",(err)=>{
+        },null,4)+"\n\n\n"+oldData,"utf8",(err)=>{
             if (err) {
                 console.log("日志写入失败",err);
                 return;
