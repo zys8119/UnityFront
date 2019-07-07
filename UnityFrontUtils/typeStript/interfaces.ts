@@ -23,6 +23,7 @@ export interface ServerOptions {
     RequestStatus:number;//默认请求状态
     headers?:headersType;//header参数
     Template?:ServerOptions_Template;//模板相关配置
+    TimingTaskQueue?:boolean;//是否开启定时任务
 }
 
 export interface ServerOptions_fsWatch {
@@ -152,4 +153,7 @@ export interface TimingTaskQueueOptions {
     TaskQueue?():any;//任务队列
     TaskQueueTime?:number;//定时任务周期时间
     LogsRetainTime?:number;//日志保留毫秒时间
+    isClearLogTime?:boolean;//是否开启清除日志任务
+    ClearLogAppointTime?(date?:Date):number;//是否开启指定时间内清除日志任务,返回值应为一个制定的时间戳
+    ClearLogTimeFrame?:number;//可允许清除日志的指定时间的上下浮动范围，这样可以确保任务的执行
 }

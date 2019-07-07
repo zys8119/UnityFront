@@ -4,11 +4,26 @@ const path = require("path");
 const fs = require("fs");
 export class LogTask {
     constructor(){
+        //是否开启任务
+        if(!TimingTaskQueue.isClearLogTime){
+            return;
+        }
         //获取需要保留的时间
         if(!TimingTaskQueue.LogsRetainTime){
             return;
         }
-        let getTime =  new Date().getTime();
+        let DateObj = new Date();
+        let getTime =  +JSON.stringify(DateObj.getTime());
+        //指定时间内才执行,以减少服务器资源消耗
+        if(TimingTaskQueue.ClearLogAppointTime){
+            return;
+        }
+        let AppointTime =  TimingTaskQueue.ClearLogAppointTime(DateObj);
+        let AppointTimeMin = AppointTime-TimingTaskQueue.ClearLogTimeFrame;
+        let AppointTimeMax = AppointTime+TimingTaskQueue.ClearLogTimeFrame;
+        if(AppointTime && getTime >= AppointTimeMin && getTime <= AppointTimeMax){
+            return;
+        }
         let RetainTime = TimingTaskQueue.LogsRetainTime;
         let MaxTime = getTime - RetainTime;
         //判断日志文件是需要保留

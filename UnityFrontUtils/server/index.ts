@@ -3,7 +3,7 @@ import {ServerConfig, TimingTaskQueue} from "../config"
 const http = require("http");
 const app = require('./app');
 //定时任务
-if(TimingTaskQueue && TimingTaskQueue.TaskQueue){
+if(TimingTaskQueue && ServerConfig.TimingTaskQueue  && TimingTaskQueue.TaskQueue){
     setInterval(TimingTaskQueue.TaskQueue,TimingTaskQueue.TaskQueueTime);
 }
 //创建服务
