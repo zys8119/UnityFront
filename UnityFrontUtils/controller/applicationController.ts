@@ -268,8 +268,9 @@ export default class applicationController implements ControllerInitDataOptions 
      */
     $_log(...args){
         let logDirPath = path.resolve(__dirname,"../log");
-        // let logFileName = Utils.dateFormat(new Date().setHours(0, 0, 0, 0),"YYYY-MM-DD")+".log";
-        let logFileName = Utils.dateFormat(new Date(),"YYYY-MM-DD HH-mm-ss")+".log";
+        let getTime = new Date().getTime();
+        // let logFileName = Utils.dateFormat(getTime,"YYYY-MM-DD")+".log";
+        let logFileName = Utils.dateFormat(getTime,"YYYY-MM-DD HH-mm-ss")+"__Time__"+getTime.toString()+".log";
         let logPath = path.resolve(logDirPath,logFileName);
         //判断日志文件是否存在，不存在则创建，并写入
         if(!fs.existsSync(logPath)){
@@ -308,7 +309,6 @@ export default class applicationController implements ControllerInitDataOptions 
                 console.log("日志写入失败",err);
                 return;
             };
-            console.log("日志写入成功");
         });
     }
 

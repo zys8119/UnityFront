@@ -4,11 +4,6 @@ require("../typeStript");
 var fsWatch_1 = require("./fsWatch");
 var config_1 = require("../config");
 module.exports = function (request, response) {
-    //定时任务
-    // setInterval(()=>{
-    //     console.log(11111111)
-    // },500);
-    console.log("--------------");
     //文件监听，可以自动刷新
     if (config_1.ServerConfig.fsWatch) {
         try {

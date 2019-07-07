@@ -1,5 +1,6 @@
 "use strict";
 exports.__esModule = true;
+var index_1 = require("../../TaskQueue/index");
 var path = require("path");
 //数据库配置
 exports.mysqlConfig = {
@@ -40,4 +41,24 @@ exports.ServerConfig = {
             "__PUBLIC__": "/public"
         }
     }
+};
+//定时任务设置
+exports.TimingTaskQueue = {
+    TaskQueue: function () {
+        if (Object.prototype.toString.call(index_1["default"]) == '[object Array]') {
+            index_1["default"].forEach(function (TaskItem) {
+                try {
+                    if (typeof TaskItem == "function") {
+                        new TaskItem();
+                    }
+                    ;
+                }
+                catch (e) { }
+            });
+        }
+        ;
+    },
+    TaskQueueTime: 1000,
+    //日志保留时间，当前默认30天
+    LogsRetainTime: 1000 * 60 * 60 * 24 * 30
 };

@@ -262,8 +262,9 @@ var applicationController = /** @class */ (function () {
             args[_i] = arguments[_i];
         }
         var logDirPath = path.resolve(__dirname, "../log");
-        // let logFileName = Utils.dateFormat(new Date().setHours(0, 0, 0, 0),"YYYY-MM-DD")+".log";
-        var logFileName = utils_1["default"].dateFormat(new Date(), "YYYY-MM-DD HH-mm-ss") + ".log";
+        var getTime = new Date().getTime();
+        // let logFileName = Utils.dateFormat(getTime,"YYYY-MM-DD")+".log";
+        var logFileName = utils_1["default"].dateFormat(getTime, "YYYY-MM-DD HH-mm-ss") + "__Time__" + getTime.toString() + ".log";
         var logPath = path.resolve(logDirPath, logFileName);
         //判断日志文件是否存在，不存在则创建，并写入
         if (!fs.existsSync(logPath)) {
@@ -303,7 +304,6 @@ var applicationController = /** @class */ (function () {
                 return;
             }
             ;
-            console.log("日志写入成功");
         });
     };
     return applicationController;

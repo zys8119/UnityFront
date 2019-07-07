@@ -1,4 +1,5 @@
 import { headersType } from "./Types"
+
 export interface mysqlOptions {
     //连接池
     createPool:object;
@@ -145,4 +146,10 @@ export interface TemplateErrorDataOptions {
     title?:string;//错误标题
     error?:object;//错误详情
 
+}
+
+export interface TimingTaskQueueOptions {
+    TaskQueue?():any;//任务队列
+    TaskQueueTime?:number;//定时任务周期时间
+    LogsRetainTime?:number;//日志保留毫秒时间
 }

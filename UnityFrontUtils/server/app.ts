@@ -2,11 +2,6 @@ import "../typeStript"
 import fsWatch from "./fsWatch"
 import { ServerConfig } from "../config"
 module.exports =  (request,response)=>{
-    //定时任务
-    // setInterval(()=>{
-    //     console.log(11111111)
-    // },500);
-    console.log("--------------")
     //文件监听，可以自动刷新
     if(ServerConfig.fsWatch){
         try {

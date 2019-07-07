@@ -1,7 +1,9 @@
+import TaskQueue from "../../TaskQueue/index"
 const path = require("path");
 import {
     mysqlOptions,
-    ServerOptions
+    ServerOptions,
+    TimingTaskQueueOptions
 } from "../typeStript";
 
 //数据库配置
@@ -47,3 +49,21 @@ export const ServerConfig =  <ServerOptions>{
         }
     }
 };
+
+//定时任务设置
+export const TimingTaskQueue = <TimingTaskQueueOptions>{
+    TaskQueue:()=>{
+        if(Object.prototype.toString.call(TaskQueue) == '[object Array]'){
+            TaskQueue.forEach((TaskItem)=>{
+                try {
+                    if(typeof TaskItem == "function"){
+                        new TaskItem();
+                    };
+                }catch (e) {}
+            });
+        };
+    },
+    TaskQueueTime:1000,
+    //日志保留时间，当前默认30天
+    LogsRetainTime:1000*60*60*24*30,
+}
