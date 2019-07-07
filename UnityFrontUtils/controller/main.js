@@ -5,14 +5,14 @@ var __extends = (this && this.__extends) || (function () {
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
             function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
         return extendStatics(d, b);
-    }
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var applicationController_1 = require("./applicationController");
 var main = /** @class */ (function (_super) {
     __extends(main, _super);
@@ -20,9 +20,10 @@ var main = /** @class */ (function (_super) {
         return _super.call(this) || this;
     }
     main.prototype.index = function () {
+        this.$_log("sdasd", "Dfsdfs", { a: 2, n: [123], d: { a: { da: "1222" } } });
         //控制器url路由解析
         this.UrlParse();
     };
     return main;
-}(applicationController_1.default));
+}(applicationController_1["default"]));
 exports.main = main;

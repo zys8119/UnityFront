@@ -116,6 +116,10 @@ var applicationController = /** @class */ (function () {
             }
         });
     };
+    /**
+     * 控制器及url解析
+     * @constructor
+     */
     applicationController.prototype.UrlParse = function () {
         //todo 首页渲染
         var $$url = this.$_url;
@@ -243,6 +247,47 @@ var applicationController = /** @class */ (function () {
             //todo 执行控制器方法5
             ControllerClassInit[urlArrs[2]]();
         }
+    };
+    applicationController.prototype.$_log = function () {
+        var _this = this;
+        var args = [];
+        for (var _i = 0; _i < arguments.length; _i++) {
+            args[_i] = arguments[_i];
+        }
+        var logDirPath = path.resolve(__dirname, "../log");
+        var logPath = path.resolve(logDirPath, new Date().setHours(0, 0, 0, 0).toString() + ".log");
+        if (!fs.existsSync(logPath)) {
+            this.writeLogFile(args, logPath, "");
+            return;
+        }
+        fs.readFile(logPath, 'utf8', function (err, data) {
+            if (err)
+                throw err;
+            _this.writeLogFile(args, logPath, data);
+        });
+    };
+    applicationController.prototype.writeLogFile = function (args, logPath, oldData) {
+        oldData = oldData || "";
+        fs.writeFile(logPath, oldData + "\n\n\n" + JSON.stringify({
+            "【log_start】": "===================================================",
+            "【log_message】": {
+                "时间": new Date(),
+                "日志目录": logPath,
+                "来源": {
+                    "控制器目录": this.__dir,
+                    "控制器方法": this.$methodName
+                },
+                "日志数据": JSON.stringify(args, null, 4)
+            },
+            "【log_end】": "====================================================="
+        }, null, 4), "utf8", function (err) {
+            if (err) {
+                console.log("日志写入失败", err);
+                return;
+            }
+            ;
+            console.log("日志写入成功");
+        });
     };
     return applicationController;
 }());

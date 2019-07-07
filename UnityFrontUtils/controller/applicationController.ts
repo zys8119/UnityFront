@@ -132,6 +132,10 @@ export default class applicationController implements ControllerInitDataOptions 
 
     }
 
+    /**
+     * 控制器及url解析
+     * @constructor
+     */
     UrlParse(){
         //todo 首页渲染
         let $$url = this.$_url;
@@ -253,6 +257,42 @@ export default class applicationController implements ControllerInitDataOptions 
             //todo 执行控制器方法5
             ControllerClassInit[urlArrs[2]]();
         }
+    }
+
+    $_log(...args){
+        let logDirPath = path.resolve(__dirname,"../log");
+        let logPath = path.resolve(logDirPath,new Date().setHours(0, 0, 0, 0) .toString()+".log");
+        if(!fs.existsSync(logPath)){
+            this.writeLogFile(args,logPath,"");
+            return;
+        }
+        fs.readFile(logPath,'utf8',(err,data)=> {
+            if (err) throw err;
+            this.writeLogFile(args,logPath,data);
+        });
+    }
+
+    writeLogFile(args,logPath:string,oldData?:string){
+        oldData = oldData || "";
+        fs.writeFile(logPath,oldData+"\n\n\n"+JSON.stringify({
+            "【log_start】":"===================================================",
+            "【log_message】":{
+                "时间":new Date(),
+                "日志目录":logPath,
+                "来源":{
+                    "控制器目录":this.__dir,
+                    "控制器方法":this.$methodName,
+                },
+                "日志数据":JSON.stringify(args,null,4)
+            },
+            "【log_end】":"=====================================================",
+        },null,4),"utf8",(err)=>{
+            if (err) {
+                console.log("日志写入失败",err);
+                return;
+            };
+            console.log("日志写入成功");
+        });
     }
 
 }
