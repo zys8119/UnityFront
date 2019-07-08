@@ -1,4 +1,5 @@
 import { headersType } from "./Types"
+
 export interface mysqlOptions {
     //连接池
     createPool:object;
@@ -22,6 +23,7 @@ export interface ServerOptions {
     RequestStatus:number;//默认请求状态
     headers?:headersType;//header参数
     Template?:ServerOptions_Template;//模板相关配置
+    TimingTaskQueue?:boolean;//是否开启定时任务
 }
 
 export interface ServerOptions_fsWatch {
@@ -30,26 +32,19 @@ export interface ServerOptions_fsWatch {
 }
 
 export interface ServerOptions_Template {
-    pablicPath?:string;//公共模板路径
+    viewsPath?:string;//公共模板路径
+    applicationPath?:string;//公共应用路径
+    TemplatePath?:string;//UnityFront主模板渲染路径
+    TemplateErrorPath?:string;//错误模板渲染路径
+    ErrorPathSource?:string;//错误来源路径
     suffix?:string;//模板后缀
     urlVars?:object;//模板Url变量
 }
 
-export interface ControllerInitDataOptions {
-    $_body?:any;//body数据
-    $_rawTrailers:[];
-    $_headers:headersType;//headers数据
-    $_rawHeaders:object;//rawHeaders数据
-    $_method:string;//请求方式
-    $_url:string;//url
-    $_urlParse:object;//格式化url数据
-    $_query:object;//query数据
-    $_send?(sendData:any):any;//发送数据的方法
-    $_RequestStatus:number;// 请求状态设置
-    $_RequestHeaders:headersType;//headers头设置
-    $mysql?(optionsConfig?:object,isEnd?:boolean):SqlUtilsOptions;//sql工具
-    __dir:string;//当前控制器位置
-    $methodName:string;//当前控制器执行的方法名称
+export interface SendDataOptions {
+    data?:any;//发送的数据
+    headers?:headersType;//发送的请求头
+    RequestStatus?:number;//请求的状态码
 }
 
 export interface SqlUtilsOptions {
@@ -127,4 +122,38 @@ export interface SqlUtilsOptions {
      * @param showSqlStr 是否输出sql字符串，默认不输出
      */
     join(data:object|string,showSqlStr?:boolean):SqlUtilsOptions;
+}
+
+export interface ControllerInitDataOptions {
+    $_body?:any;//body数据
+    $_rawTrailers?:[];
+    $_headers?:headersType;//headers数据
+    $_rawHeaders?:object;//rawHeaders数据
+    $_method?:string;//请求方式
+    $_url?:string;//url
+    $_urlParse?:object;//格式化url数据
+    $_query?:object;//query数据
+    $_send?(sendData:any):any;//发送数据的方法
+    $_RequestStatus?:number;// 请求状态设置
+    $_RequestHeaders?:headersType;//headers头设置
+    $mysql?(optionsConfig?:object,isEnd?:boolean):SqlUtilsOptions;//sql工具
+    __dir?:string;//当前控制器位置
+    $methodName?:string;//当前控制器执行的方法名称
+    $urlArrs?:any[];//控制器url数组
+    $ControllerConfig?:object;//控制器配置
+}
+
+export interface TemplateErrorDataOptions {
+    title?:string;//错误标题
+    error?:object;//错误详情
+
+}
+
+export interface TimingTaskQueueOptions {
+    TaskQueue?():any;//任务队列
+    TaskQueueTime?:number;//定时任务周期时间
+    LogsRetainTime?:number;//日志保留毫秒时间
+    isClearLogTime?:boolean;//是否开启清除日志任务
+    ClearLogAppointTime?(date?:Date):number;//是否开启指定时间内清除日志任务,返回值应为一个制定的时间戳
+    ClearLogTimeFrame?:number;//可允许清除日志的指定时间的上下浮动范围，这样可以确保任务的执行
 }

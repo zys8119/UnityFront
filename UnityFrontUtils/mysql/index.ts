@@ -11,12 +11,12 @@ class mysql {
         this.selectSql = '';
         this.isEnd = isEnd;
         let options = JSON.parse(JSON.stringify(mysqlConfig.options));
-        if(typeof optionsConfig == "object"){
+        if(optionsConfig && typeof optionsConfig == "object"){
             for (let k in optionsConfig){
                 options[k] = optionsConfig[k];
             }
         }
-        let QueueKeyName = options.host;
+        let QueueKeyName = JSON.stringify(options);
         if(!mysqlConfig.createPool[QueueKeyName]){
             mysqlConfig.createPool[QueueKeyName] = mysqlTool.createPool(options);
         };

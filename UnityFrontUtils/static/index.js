@@ -10,13 +10,13 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var config_1 = require("../config");
 var utils_1 = require("../utils");
 var path = require("path");
 var fs = require("fs");
 var staticIndex = /** @class */ (function () {
-    function staticIndex(ControllerInitData, naxt) {
+    function staticIndex(ControllerInitData, next) {
         this.ControllerInitData = ControllerInitData;
         if (ControllerInitData.$_url.indexOf("/public") == 0) {
             var filePath = path.resolve(__dirname, "../../", "./" + ControllerInitData.$_url);
@@ -55,7 +55,7 @@ var staticIndex = /** @class */ (function () {
             return;
         }
         else {
-            naxt();
+            next();
         }
         ;
     }
@@ -83,7 +83,7 @@ var staticIndex = /** @class */ (function () {
             switch (fileType) {
                 case ".html":
                 case ".htm":
-                    data = utils_1["default"].replaceUrlVars(config_1.ServerConfig, data);
+                    data = utils_1.default.replaceUrlVars(config_1.ServerConfig, data);
                     break;
             }
             ;
@@ -92,4 +92,4 @@ var staticIndex = /** @class */ (function () {
     };
     return staticIndex;
 }());
-exports["default"] = staticIndex;
+exports.default = staticIndex;
