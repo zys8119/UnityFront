@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 require("../typeStript");
 var fs = require("fs");
 var config_1 = require("../config");
@@ -23,7 +23,7 @@ var fsWatch = /** @class */ (function () {
                         require.cache[filePath.path] = null;
                         return;
                     }
-                    utils_1["default"].getJsonFiles(filePath.path, function (DirFilePath) {
+                    utils_1.default.getJsonFiles(filePath.path, function (DirFilePath) {
                         if (fs.existsSync(DirFilePath)) {
                             require.cache[DirFilePath] = null;
                         }
@@ -34,4 +34,4 @@ var fsWatch = /** @class */ (function () {
     }
     return fsWatch;
 }());
-exports["default"] = fsWatch;
+exports.default = fsWatch;
