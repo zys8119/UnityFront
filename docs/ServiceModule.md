@@ -76,3 +76,103 @@
 -| README.md----------------------------------项目描述
 ```
 # application模块
+
+## route配置
+
+> route示例
+
+可以配置应用的全局路由
+
+```typescript
+    export default {
+        "/":"index/index/index"
+    }
+```
+
+## 模块配置
+
+模块包含控制器， Controller相关配置如下
+
+> route示例
+
+可配置当前控制器的路由，其优先级最高，将覆盖应用的全局路由，但不影响其他模块的控制器
+
+```typescript
+    export default {
+        "/":"index/index/index"
+    }
+```
+
+> config示例
+
+可以配置控制器有关模板的参数自定义，如改变渲染模板等
+
+```typescript
+    export default {
+        Template:{
+            ///服务设置Template参数为准
+        }
+        //其他参数自定义
+    }
+```
+
+> Controller示例
+
+在使用控制器时候需要注意一下几点：<br>
+1、ControllerClassName必须与控制器的文件名一致，否则报错<br>
+2、控制器的公共语法虽然暴露，但在typeScript编译控制器的时候，公共方法会报错.<br>
+   那么可以继承底层applicationController控制器类，这样就能通过编译，并且有语法提示。<br>
+   当然你不用typescript编译那就另当别论。<br>
+3、像方法里面调用的this.$_send();、this.Render();等就是applicationController类暴露出来的<br>
+   更多公共方法及参数请参考applicationController类介绍，这里主要介绍以下参数<br>
+   this.$_send();//发送数据，一般用于写接口的时候调用，便于前后端分离的开发模式<br>
+   this.Render();//渲染静态模板，一般用于传统的嵌入式开发模式
+
+```typescript
+export class ControllerClassName extends applicationController{
+  constructor(){
+      super();
+      //....
+  }
+  
+  index(){
+      this.$_send();
+  }
+  
+  Render(){
+      this.Render();
+  }
+}
+```
+
+# docs模块
+
+> UnityFront框架的文档介绍
+
+开发文档需要先安装docsify-cli脚手架,具体参考[docsify文档工具](https://docsify.js.org/#/zh-cn/quickstart)
+
+> 全局安装docsify-cli
+
+```blade
+ npm i docsify-cli -g
+```
+
+> 初始化项目
+
+如果想在项目的 ./docs 目录里写文档，直接通过 init 初始化项目。
+
+
+```blade
+  docsify init ./docs
+```
+
+> 本地预览网站
+
+运行一个本地服务器通过 docsify serve 可以方便的预览效果，而且提供 LiveReload 功能，可以让实时的预览。默认访问 http://localhost:3000 。
+
+
+```blade
+  docsify serve doc
+```
+
+# Framework模块
