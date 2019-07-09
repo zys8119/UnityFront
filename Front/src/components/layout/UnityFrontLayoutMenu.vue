@@ -30,7 +30,7 @@
                                  title:"关于UnityFront",
                                  components: "About/About",
                                  width:"500px"
-                             })
+                             });
                         }}
                     ]},
                 ]

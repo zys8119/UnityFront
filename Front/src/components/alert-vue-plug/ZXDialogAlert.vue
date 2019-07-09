@@ -144,6 +144,7 @@
                 border-radius: 6px;
                 overflow: hidden;
                 background-color: @themeColor;
+                box-shadow: 0 0 2px #000000;
             }
         }
         .ZXDialogAlertTitle{
