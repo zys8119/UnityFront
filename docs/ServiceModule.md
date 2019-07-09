@@ -139,7 +139,7 @@ export class ControllerClassName extends applicationController{
       this.$_send();
   }
   
-  Render(){
+  RenderView(){
       this.Render();
   }
 }
@@ -176,3 +176,155 @@ export class ControllerClassName extends applicationController{
 ```
 
 # Framework模块
+
+这是一个框架资源，跟程序无关，跟项目有关的目录
+
+# public模块
+
+这是一个静态资源目录，该目录完全对外开放，可以直接访问<br>
+其中映射了两个url变量
+```text
+"__STATIC__":"/public/static",
+"__PUBLIC__":"/public",
+```
+更多详情查看服务配置模块
+
+# TaskQueue模块
+
+这是一个管理全局定时任务队列目录，例如：定期清除过期日志
+
+> 使用方法
+
+在子目录Task下的index.ts中,暴露指定任务
+
+```typescript
+export { LogTask } from "./log";
+```
+
+然后创建你的任务log.ts文件,
+在log.ts文件内创建基本代码
+
+```typescript
+export class LogTask {
+    
+    constructor(){
+        
+        //要执行的任务代码
+        
+    }
+    
+    //...更多任务方法
+}
+```
+
+# UnityFrontUtils 项目底层
+
+## 配置
+
+### mysqlConfig
+
+> 数据库配置，属于 `mysqlOptions`
+
+#### createPool
+
+* 类型： `object`
+
+* 默认值： `{}`
+
+* 作用：数据库连接池
+
+#### options
+
+> 数据库连接选项，数据 `mysqlOptionsOptions` 更多配置参考[mysql工具](https://www.npmjs.com/package/mysql#connection-options)
+
+##### connectionLimit
+
+* 类型： `number`
+
+* 默认值： `10`
+
+* 作用：每个池的最大连接数
+
+##### host
+
+* 类型： `string`
+
+* 默认值： `localhost`
+
+* 作用：连接主机
+
+##### user
+
+* 类型： `string`
+
+* 默认值： `root`
+
+* 作用：数据库账号
+
+##### password
+
+* 类型： `string`
+
+* 默认值： `root`
+
+* 作用：数据库密码
+
+##### port
+
+* 类型： `string|number`
+
+* 默认值： `3306`
+
+* 作用：端口
+
+##### database
+
+* 类型： `string`
+
+* 默认值： `dome`
+
+* 作用：数据库名称
+
+### ServerConfig
+
+> 底层服务器设置，属于 `ServerOptions`
+
+#### port
+
+* 类型： `string|number`
+
+* 默认值： `8080`
+
+* 作用：端口
+
+#### fsWatch
+
+> 需要监听的文件路径配置，属于 `ServerOptions_fsWatch`
+
+* 类型： `Array<ServerOptions_fsWatch>`
+
+    > ServerOptions_fsWatch
+    
+    * path: `string`
+    * type: `string`
+
+* 默认值： 
+```
+[
+    //listen UnityFrontUtils directory
+    {path:path.resolve(__dirname,"../"),type:"directory"},
+    //listen application directory
+    {path:path.resolve(__dirname,"../../application"),type:"directory"},
+]
+```
+
+* 作用：文件监听，刷新缓存
+
+#### RequestStatus
+
+* 类型： `number`
+
+* 默认值：`200`
+
+* 作用：默认请求状态
+

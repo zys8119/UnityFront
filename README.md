@@ -10,7 +10,7 @@
 
 [MySql语法](http://c.biancheng.net/view/2548.html)
 
-[mysql工具](https://www.npmjs.com/package/mysql#pool-options)
+[mysql工具](https://www.npmjs.com/package/mysql#connection-options)
 
 [pug模板语言](https://pugjs.org/api/getting-started.html)
 
