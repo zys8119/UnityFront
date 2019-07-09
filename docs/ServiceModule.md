@@ -504,3 +504,312 @@ _2.真正解析url,其中包括以下几个实现步骤_<br>
 先给控制器注入控制器类公共的初始数据及方法，再扩展公共数据及方法和写入自定义配置，并扩展属性，然后再实例化控制器，最后再判断方法的存在性和正确性<br>
 
 之所以在实例化前做数据初始化，属性及配置扩展等操作，是因为实例化后就不能写入初始化数据了，将导致每个应用控制器获取不到公共（数据、方法、配置等）参数了。
+
+## mySql
+
+这是一个mySqlS的二次封装库，便于控制器调用sql，更多用法请参考 `SqlUtilsOptions`,mySql语法请参考[MySql语法](http://c.biancheng.net/view/2548.html)，其中包含以下方法
+
+### query
+
+* 类型： `function`
+
+* 参数：
+
+```typescript
+/**
+ *
+ * @param sqlStr sql字符串
+ * @param showSqlStr 是否输出sql字符串，默认不输出
+ */
+```
+
+* 返回值：`Promise` 执行Sql或的结果
+
+* 作用：执行Sql语句，更多请参考 `SqlUtilsOptions`
+
+* 示例：
+
+```sql
+    mySql.query(`SELECT * FROM TABLE_NAME;`);
+```
+
+### select
+
+* 类型： `function`
+
+* 参数：
+
+```typescript
+/**
+     *
+     * @param TableFieldName 选择的字段名称
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     */
+```
+
+* 返回值：`上下文` 当前mySql实体类
+
+* 作用：选择表字段，更多请参考 `SqlUtilsOptions`
+
+* 示例：
+
+```sql
+    mySql.select("*").from("TABLE_NAME").query();
+```
+
+### from
+
+* 类型： `function`
+
+* 参数：
+
+```typescript
+/**
+     *
+     * @param TableName 表名
+     * @param showSqlStr  是否输出sql字符串，默认不输出
+     */
+```
+
+* 返回值：`上下文` 当前mySql实体类
+
+* 作用：选择表，更多请参考 `SqlUtilsOptions`
+
+* 示例：
+
+```sql
+    mySql.select("*").from("TABLE_NAME").query();
+```
+
+### where
+
+* 类型： `function`
+
+* 参数：
+
+```typescript
+/**
+     *
+     * @param WhereArr 条件数据
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     * @param type 类型，默认=，精准匹配
+     */
+```
+
+* 返回值：`上下文` 当前mySql实体类
+
+* 作用：执行条件，更多请参考 `SqlUtilsOptions`
+
+* 示例：
+
+```sql
+    mySql.select("*").from("TABLE_NAME").where({
+        id:1,
+        aa:2,
+        ...
+    }).query();
+```
+
+### insert
+
+* 类型： `function`
+
+* 参数：
+
+```typescript
+/**
+     *
+     * @param TabelName 表名
+     * @param ArrData 需要写入的数据
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     * @param insertMore 是否插入多条数据
+     * @param indexMore  当前多条索引
+     * @param indexMaxMore 总条数
+     */
+```
+
+* 返回值：`上下文` 当前mySql实体类
+
+* 作用：插入数据，更多请参考 `SqlUtilsOptions`
+
+* 示例：
+
+```sql
+    //单条数据
+    mySql.insert(`TABLE_NAME`,{
+        id:1,
+        aa:2,
+        ...
+    }).query();
+    
+    //多条数据
+    mySql.insert(`TABLE_NAME`,[
+      {
+          id:1,
+          aa:2,
+          ...
+      }
+      ...
+    ],true).query();
+```
+
+### delete
+
+* 类型： `function`
+
+* 参数：
+
+```typescript
+/**
+ *
+ * @param showSqlStr 是否输出sql字符串，默认不输出
+ */
+```
+
+* 返回值：`上下文` 当前mySql实体类
+
+* 作用：删除数据，更多请参考 `SqlUtilsOptions`
+
+* 示例：
+
+```sql
+    mySql.delete().from("TABLE_NAME").where({
+        id:1,
+        aa:2,
+        ...
+    }).query();
+```
+
+### update
+
+* 类型： `function`
+
+* 参数：
+
+```typescript
+/**
+ *
+ * @param TabelName 表名
+ * @param newData 新数据
+ * @param showSqlStr  是否输出sql字符串，默认不输出
+ */
+```
+
+* 返回值：`上下文` 当前mySql实体类
+
+* 作用：更新数据，更多请参考 `SqlUtilsOptions`
+
+* 示例：
+
+```sql
+    mySql.update("TABLE_NAME",{
+        id:1,
+        aa:2,
+        ...
+    }).query();
+```
+
+### asc
+
+* 类型： `function`
+
+* 参数：
+
+```typescript
+/**
+     *
+     * @param FieldName 需要排序的字段名
+     * @param desc 倒叙或正序
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     */
+```
+
+* 返回值：`上下文` 当前mySql实体类
+
+* 作用：是否倒序查询，更多请参考 `SqlUtilsOptions`
+
+* 示例：
+
+```sql
+    mySql.select("*").from("TABLE_NAME").asc("id",true).query();
+```
+
+### limit
+
+* 类型： `function`
+
+* 参数：
+
+```typescript
+/**
+     *
+     * @param FieldName 字段名称
+     * @param index 需要处理的数量
+     * @param desc 倒叙或正序
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     */
+```
+
+* 返回值：`上下文` 当前mySql实体类
+
+* 作用：指定数据的条数，更多请参考 `SqlUtilsOptions`
+
+* 示例：
+
+```sql
+    mySql.select("*").from("TABLE_NAME").limit(10).query();
+```
+
+### like
+
+* 类型： `function`
+
+* 参数：
+
+```typescript
+/**
+     *
+     * @param WhereArr 模糊查询条件数据
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     */
+```
+
+* 返回值：`上下文` 当前mySql实体类
+
+* 作用：模糊查询方法，更多请参考 `SqlUtilsOptions`,更多like请参考[通配符like的使用教程详解](https://www.jb51.net/article/139085.htm)
+
+* 示例：
+
+```sql
+    mySql.select("*").from("TABLE_NAME").like({
+      'Name%':"findName",
+      '%Name%':"findName",
+      ...
+    }).query();
+```
+
+### join
+
+* 类型： `function`
+
+* 参数：
+
+```typescript
+/**
+     *
+     * @param data 需要链表的数据
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     */
+```
+
+* 返回值：`上下文` 当前mySql实体类
+
+* 作用：链表操作，更多请参考 `SqlUtilsOptions`
+
+```sql
+    mySql.select().from('TABLE_A a').join({
+              'TABLE_B b':"a.id = b.a2",
+              'TABLE_c c':"b.id = c.a2",
+              ...
+      }).where({'a.id':23,'b.id':'c.a2'}).query();
+```

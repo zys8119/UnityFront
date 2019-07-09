@@ -149,7 +149,7 @@ var mysql = /** @class */ (function () {
      * @param indexMore  当前多条索引
      * @param indexMaxMore 总条数
      */
-    mysql.prototype.insert = function (TabelName, ArrData, showSqlStr, insertMore, indexMore, indexMaxMore) {
+    mysql.prototype.insert = function (TabelName, ArrData, insertMore, showSqlStr, indexMore, indexMaxMore) {
         var _this = this;
         if (ArrData === void 0) { ArrData = []; }
         if (showSqlStr) {
