@@ -35,6 +35,16 @@
                     ]},
                 ]
             }
+        },
+        mounted() {
+            this.$ZAlert.show({
+                title:"关于UnityFront",
+                components: "About/About",
+                width:"500px",
+                props:{
+                    _vm:()=>this
+                }
+            })
         }
     }
 </script>
