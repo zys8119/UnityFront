@@ -8,8 +8,6 @@
 
 # 查看文档教程
 
-<hr>
-
 > UnityFront框架的文档介绍
 
 开发文档需要先安装docsify-cli脚手架,具体参考[docsify文档工具](https://docsify.js.org/#/zh-cn/quickstart)
