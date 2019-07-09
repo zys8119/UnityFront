@@ -3,10 +3,10 @@
         <x-dialog :mask-z-index="maskZIndex" :dialog-style="{width:width,maxWidth:maxWidthValue}" :hide-on-blur="hideOnBlur" v-model="show" @on-show="onShow" @on-hide="onHide" class="x-dialog">
             <div class="ZXDialogAlertTitle" v-if="showTitile">
                 <span class="text">{{title}}</span>
-                <span class="iconfont" @click="onClose" v-if="showClose">&#xe640;</span>
+                <span class="iconfont" @click="onClose" v-if="showClose">&#xe6b5;</span>
                 <span class="minTitle" v-if="minTitle">{{minTitle}}</span>
             </div>
-            <component ref="component"  v-if="show && components" :is="temp"></component>
+            <component ref="component" class="ZXDialogAlertContent"  v-if="show && components" :is="temp"></component>
             <div v-if="show && !components && content" v-html="content" class="ZXDialogAlertContent console-PagePadding"></div>
         </x-dialog>
     </div>
@@ -111,7 +111,7 @@
                             this.$refs.component._events[i] = [this._event[i]];
                         }
                     })
-                
+
                     return currentView;
                 }catch (e){}
             }
@@ -131,8 +131,7 @@
 </script>
 
 <style scoped lang="less">
-    @themeColor:#f00;
-    @pa:25px;
+    @import "../../assets/less/vars";
     .ZXDialogAlert{
         &/deep/ .x-dialog{
             width: auto;
@@ -142,11 +141,14 @@
             .weui-dialog{
                 width: auto;
                 z-index: 500!important;
+                border-radius: 6px;
+                overflow: hidden;
+                background-color: @themeColor;
             }
         }
         .ZXDialogAlertTitle{
             width: 100%;
-            background-color: #f8f8f8;
+            background-color: #FFFFFF;
             line-height: 40px;
             text-align: left;
             overflow: hidden;
@@ -159,7 +161,7 @@
                 width: 50px;
                 display: inline-block;
                 text-align: center;
-                font-size: 30px;
+                font-size: 14px;
                 cursor: pointer;
                 &:hover{
                     background-color: #f8f8f8*0.9;
@@ -173,6 +175,7 @@
         .ZXDialogAlertContent{
             text-align: left;
             padding: @pa;
+            background-color: @themeColor;
         }
     }
 </style>
