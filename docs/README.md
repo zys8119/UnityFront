@@ -1,6 +1,8 @@
 <img src="/text.png">
 
-这是一个基于node开发的服务框架，纯前端可视化项目，支持pug前端模板引
+这是一个基于node开发的服务框架，纯前端可视化项目，支持pug前端模板引`更新时间：{docsify-updated}`
+
+<hr>
 
 # 快速入门
 
@@ -12,21 +14,26 @@
 
 > 第二步，安装依赖
 
-```text
+```bash
  npm install
 ```
 
 > 第二步，运行项目
 
-```text
+```bash
  npm run serve
 ```
+<hr>
 
-# [服务模块](/ServiceModule)
+# [api文档](/ServiceModule)
+
+<hr>
 
 # 依赖项
 
 > node 当前依赖【v11.12.0】，其他暂未自测
+
+<hr>
 
 # 参考文档
 
