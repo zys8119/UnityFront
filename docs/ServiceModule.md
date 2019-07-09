@@ -181,7 +181,7 @@ export class ControllerClassName extends applicationController{
 
 
 ```bash
-  docsify serve doc
+  docsify serve docs
 ```
 
 # Framework模块
