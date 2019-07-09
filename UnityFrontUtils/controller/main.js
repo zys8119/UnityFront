@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var applicationController_1 = require("./applicationController");
 var main = /** @class */ (function (_super) {
     __extends(main, _super);
@@ -24,5 +24,5 @@ var main = /** @class */ (function (_super) {
         this.UrlParse();
     };
     return main;
-}(applicationController_1["default"]));
+}(applicationController_1.default));
 exports.main = main;

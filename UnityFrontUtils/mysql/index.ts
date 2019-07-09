@@ -142,7 +142,7 @@ class mysql {
      * @param indexMore  当前多条索引
      * @param indexMaxMore 总条数
      */
-    insert(TabelName:string,ArrData:any = [],showSqlStr?:boolean,insertMore?:boolean,indexMore?:number,indexMaxMore?:number){
+    insert(TabelName:string,ArrData:any = [],insertMore?:boolean,showSqlStr?:boolean,indexMore?:number,indexMaxMore?:number){
         if(showSqlStr){this.showSqlStrBool = showSqlStr;}
         let MoreStr = "";
         if(insertMore){

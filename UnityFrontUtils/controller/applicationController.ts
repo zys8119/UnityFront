@@ -211,7 +211,6 @@ export default class applicationController implements ControllerInitDataOptions 
             }
 
             //todo 判断控制器类方法4
-            //实例化控制器
             let ControllerClassObj = ControllerClass[ControllerClassName];
             //注入控制器类公共的初始数据及方法
             Utils.ControllerInitData.call(this,this,ControllerClassObj,urlArrs[2],ServerConfig,ControllerPath,true);
@@ -232,6 +231,7 @@ export default class applicationController implements ControllerInitDataOptions 
             }catch (e) {}
             ControllerClassObj.prototype.$ControllerConfig = $ControllerConfig;
             //=================end
+            //实例化控制器
             let ControllerClassInit = new ControllerClassObj();
             //判断控制器方法是否存在
             if(!ControllerClassInit[urlArrs[2]]){

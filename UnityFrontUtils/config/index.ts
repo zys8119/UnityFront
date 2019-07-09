@@ -21,7 +21,7 @@ export const mysqlConfig = <mysqlOptions>{
 
 //服务设置
 export const ServerConfig =  <ServerOptions>{
-    port:3000,
+    port:8080,
     fsWatch:[
         //listen UnityFrontUtils directory
         {path:path.resolve(__dirname,"../"),type:"directory"},

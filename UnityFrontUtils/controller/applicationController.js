@@ -197,7 +197,6 @@ var applicationController = /** @class */ (function () {
                 return;
             }
             //todo 判断控制器类方法4
-            //实例化控制器
             var ControllerClassObj = ControllerClass[ControllerClassName];
             //注入控制器类公共的初始数据及方法
             utils_1["default"].ControllerInitData.call(this, this, ControllerClassObj, urlArrs[2], config_1.ServerConfig, ControllerPath, true);
@@ -220,6 +219,7 @@ var applicationController = /** @class */ (function () {
             catch (e) { }
             ControllerClassObj.prototype.$ControllerConfig = $ControllerConfig;
             //=================end
+            //实例化控制器
             var ControllerClassInit = new ControllerClassObj();
             //判断控制器方法是否存在
             if (!ControllerClassInit[urlArrs[2]]) {

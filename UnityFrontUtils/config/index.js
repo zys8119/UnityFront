@@ -16,7 +16,7 @@ exports.mysqlConfig = {
 };
 //服务设置
 exports.ServerConfig = {
-    port: 3000,
+    port: 8080,
     fsWatch: [
         //listen UnityFrontUtils directory
         { path: path.resolve(__dirname, "../"), type: "directory" },

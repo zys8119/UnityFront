@@ -82,7 +82,7 @@ export interface SqlUtilsOptions {
      * @param indexMore  当前多条索引
      * @param indexMaxMore 总条数
      */
-    insert(TabelName:string,ArrData:Array<any>,showSqlStr?:boolean,insertMore?:boolean,indexMore?:number,indexMaxMore?:number):SqlUtilsOptions;
+    insert(TabelName:string,ArrData:Array<any>,insertMore?:boolean,showSqlStr?:boolean,indexMore?:number,indexMaxMore?:number):SqlUtilsOptions;
     /**
      *
      * @param showSqlStr 是否输出sql字符串，默认不输出

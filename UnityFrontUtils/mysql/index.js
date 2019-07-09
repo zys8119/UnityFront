@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 require("../typeStript");
 var config_1 = require("../config");
 var mysqlTool = require('mysql');
@@ -149,7 +149,7 @@ var mysql = /** @class */ (function () {
      * @param indexMore  当前多条索引
      * @param indexMaxMore 总条数
      */
-    mysql.prototype.insert = function (TabelName, ArrData, showSqlStr, insertMore, indexMore, indexMaxMore) {
+    mysql.prototype.insert = function (TabelName, ArrData, insertMore, showSqlStr, indexMore, indexMaxMore) {
         var _this = this;
         if (ArrData === void 0) { ArrData = []; }
         if (showSqlStr) {
@@ -199,7 +199,7 @@ var mysql = /** @class */ (function () {
      *
      * @param showSqlStr 是否输出sql字符串，默认不输出
      */
-    mysql.prototype["delete"] = function (showSqlStr) {
+    mysql.prototype.delete = function (showSqlStr) {
         if (showSqlStr) {
             this.showSqlStrBool = showSqlStr;
         }
@@ -284,4 +284,4 @@ var mysql = /** @class */ (function () {
     };
     return mysql;
 }());
-exports["default"] = mysql;
+exports.default = mysql;
