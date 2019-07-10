@@ -23,13 +23,22 @@
         data(){
             return {
                 MenuList:[
-                    { title:"文件" ,chlid:[]},
+                    { title:"文件" ,chlid:[
+                        { title:"创建新项目" ,icon:"&#xe60e;"},
+                        { title:"打开项目" ,groupEnd:true ,icon:"&#xe669;"},
+                        { title:"打开记录",groupEnd:true ,icon:"&#xe64c;" , chlid:[
+                        ]},
+                        { title:"设置" ,icon:"&#xe621;",fontSize:"18px"},
+                        { title:"退出" ,icon:"&#xe673;" ,run:()=>{
+                            window.close();
+                        }},
+                    ]},
                     { title:"编辑" },
                     { title:"资源" },
                     { title:"UnityFront对象" },
                     { title:"窗口" },
                     { title:"帮助" ,chlid:[
-                        {title:"关于UnityFront",run:item=>{
+                        {title:"关于UnityFront" ,icon:"&#xe65d;",run:item=>{
                              this.$ZAlert.show({
                                  title:"关于UnityFront",
                                  components: "About/About",
