@@ -1,7 +1,7 @@
 <template>
     <div class="UnityFrontLayoutTool">
         <tool-pane></tool-pane>
-        <div class="borderLine"></div>
+        <div class="borderLine" v-dragdrop dragdrop=".ToolPane"></div>
         <component-view></component-view>
         <div class="dragdrop" v-dragdrop dragdrop=".UnityFrontLayoutTool"></div>
     </div>
@@ -37,6 +37,11 @@
             width: @borderLineWidth;
             z-index: 2;
             cursor: w-resize;
+        }
+        .borderLine{
+            cursor: s-resize;
+            position: relative;
+            z-index: 3;
         }
     }
 </style>

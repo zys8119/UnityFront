@@ -1,7 +1,7 @@
 <template>
     <div class="UnityFrontLayoutComponentPane">
         <component-pane></component-pane>
-        <div class="borderLine"></div>
+        <div class="borderLine" v-dragdrop dragdrop=".ComponentPane"></div>
         <project-pane></project-pane>
         <div class="dragdrop" v-dragdrop dragdrop=".UnityFrontLayoutComponentPane"></div>
     </div>
@@ -34,6 +34,11 @@
             width: @borderLineWidth;
             z-index: 2;
             cursor: e-resize;
+        }
+        .borderLine{
+            cursor: s-resize;
+            position: relative;
+            z-index: 2;
         }
     }
 </style>

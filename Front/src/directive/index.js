@@ -8,9 +8,8 @@ export default {
                 let dragObj = document.querySelector(dragdropClassName) || el;
                 //算出鼠标相对元素的位置
                 let disX,disY,oldLeft,oldTop,oldWidth,oldHeight;
-
                 //鼠标按下的事件
-                dragObj.onmousedown = (e)=>{
+                el.onmousedown = (e)=>{
                     disX = e.clientX;
                     disY = e.clientY;
                     let getStyle = getComputedStyle(dragObj);

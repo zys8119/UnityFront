@@ -48,5 +48,23 @@ export default {
         }
         //移动当前元素
         dragObj.style.width = width + 'px';
-    }
+    },
+    ".ToolPane":function (dragObj, getStyle ,left,top,{ oldHeight }) {
+        let height = oldHeight + top;
+        // //边界判断
+        if(height >= (window.innerHeight - 40 - 32) ||　height <= 40){
+            return;
+        }
+        //移动当前元素
+        dragObj.style.height = height + 'px';
+    },
+    ".ComponentPane":function (dragObj, getStyle ,left,top,{ oldHeight }) {
+        let height = oldHeight + top;
+        // //边界判断
+        if(height >= (window.innerHeight - 40 - 32) ||　height <= 40){
+            return;
+        }
+        //移动当前元素
+        dragObj.style.height = height + 'px';
+    },
 }
