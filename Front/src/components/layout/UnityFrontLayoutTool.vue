@@ -1,7 +1,6 @@
 <template>
-    <div class="UnityFrontLayoutTool webkit-scrollbar">
+    <div class="UnityFrontLayoutTool">
         <tool-pane></tool-pane>
-        <div v-for="i in 100">{{i}}</div>
         <div class="borderLine"></div>
         <component-view></component-view>
         <div class="dragdrop" v-dragdrop dragdrop=".UnityFrontLayoutTool"></div>
