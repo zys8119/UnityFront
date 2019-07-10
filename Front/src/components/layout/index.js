@@ -8,3 +8,4 @@ const ivTo = (name)=>{
 export const UnityFrontLayoutMenu = ivTo("UnityFrontLayoutMenu");
 export const UnityFrontLayoutTool = ivTo("UnityFrontLayoutTool");
 export const UnityFrontLayoutComponentPane = ivTo("UnityFrontLayoutComponentPane");
+export const UnityFrontLayoutView = ivTo("UnityFrontLayoutView");
