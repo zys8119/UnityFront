@@ -1,7 +1,7 @@
 <template>
     <div class="UnityFrontLayoutMenu">
         <ul>
-            <li v-for="item in MenuList" v-dragdrop>
+            <li v-for="item in MenuList">
                 <div>{{item.title}}</div>
                 <unity-front-layout-menu-item v-if="item.chlid && item.chlid.length > 0" :list="item.chlid"></unity-front-layout-menu-item>
             </li>
