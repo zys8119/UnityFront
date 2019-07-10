@@ -6,3 +6,5 @@ const ivTo = (name)=>{
     }).component;
 };
 export const UnityFrontLayoutMenu = ivTo("UnityFrontLayoutMenu");
+export const UnityFrontLayoutTool = ivTo("UnityFrontLayoutTool");
+export const UnityFrontLayoutComponentPane = ivTo("UnityFrontLayoutComponentPane");

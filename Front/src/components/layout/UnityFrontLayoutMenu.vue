@@ -40,17 +40,18 @@
 </script>
 
 <style scoped lang="less">
+    @import "../../assets/less/vars";
     .UnityFrontLayoutMenu {
         position: fixed;
         left: 0;
         top: 0;
         width: 100%;
         background-color: #FFFFFF;
-        line-height: 40px;
+        line-height: @UnityFrontLayoutMenuHeight;
         z-index: 1;
-        height: 40px;
+        height: @UnityFrontLayoutMenuHeight;
         ul{
-            height: 40px;
+            height: @UnityFrontLayoutMenuHeight;
             width: 100%;
             li{
                 float: left;

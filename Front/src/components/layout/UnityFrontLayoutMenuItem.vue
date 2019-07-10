@@ -34,10 +34,11 @@
 </script>
 
 <style scoped lang="less">
+    @import "../../assets/less/vars";
     .UnityFrontLayoutMenuItem {
         position: absolute;
         left: 0;
-        top: 40px;
+        top: @UnityFrontLayoutMenuHeight;
         background-color: #f2f2f2;
         z-index: 2;
         box-shadow: 0 0 2px #999;
@@ -60,7 +61,7 @@
             .itemRow{
                 .iconfont{
                     float: right;
-                    line-height: 40px;
+                    line-height: @UnityFrontLayoutMenuHeight;
                 }
             }
         }
