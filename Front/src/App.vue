@@ -5,8 +5,21 @@
 </template>
 
 <script>
+import lib_setInterval from "@/lib/setInterval"
 export default {
-  name: 'App'
+  name: 'App',
+  mounted() {
+    //全局定时器
+    setInterval(()=>{
+      try {
+        Object.keys(lib_setInterval).forEach(keyName=>{
+          try {
+            lib_setInterval[keyName].call(this,keyName);
+          }catch (e) {};
+        })
+      }catch (e) {};
+    },200);
+  }
 }
 </script>
 

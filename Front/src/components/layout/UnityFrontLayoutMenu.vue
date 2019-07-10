@@ -6,6 +6,10 @@
                 <unity-front-layout-menu-item v-if="item.chlid && item.chlid.length > 0" :list="item.chlid"></unity-front-layout-menu-item>
             </li>
         </ul>
+        <div class="UnityFrontLayoutMenuTool">
+            <span class="iconfont" @click="$utils.fullScreen" v-if="!airforce.isFull">&#xe640;</span>
+            <span class="iconfont" @click="$utils.exitFullscreen" v-else>&#xe637;</span>
+        </div>
     </div>
 </template>
 
@@ -79,5 +83,21 @@
         .mediaInit(400px,15px);
         .mediaInit(350px,10px);
         .mediaInit(300px,5px);
+        .UnityFrontLayoutMenuTool{
+            position: absolute;
+            right: 15px;
+            top: 0;
+            .iconfont{
+                font-size: 25px;
+                color: #999999;
+                &:hover{
+                    color: @themeLogoColor;
+                    cursor: pointer;
+                }
+            }
+            @media  (max-width: 480px){
+                display: none;
+            }
+        }
     }
 </style>
