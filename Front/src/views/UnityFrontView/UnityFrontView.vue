@@ -1,6 +1,8 @@
 <template>
     <div class="UnityFrontView">
         <unity-front-layout-title title="场景视图"></unity-front-layout-title>
+        撒大声地阿达
+        <span style="float: right">sdada</span>
     </div>
 </template>
 

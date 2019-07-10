@@ -3,6 +3,7 @@
         <component-pane></component-pane>
         <div class="borderLine"></div>
         <project-pane></project-pane>
+        <div class="dragdrop" v-dragdrop dragdrop=".UnityFrontLayoutComponentPane"></div>
     </div>
 </template>
 
@@ -23,8 +24,17 @@
         top: @UnityFrontLayoutMenuHeight;
         width: 400px;
         height: ~"calc(100% - @{UnityFrontLayoutMenuHeight})";
-        overflow: hidden;
         background-color: @themeColor2;
         border-right: @borderLine;
+        .dragdrop{
+            position: absolute;
+            right: -@borderLineWidth;
+            top: 0;
+            height: 100%;
+            width: @borderLineWidth;
+            background-color: #E59313;
+            z-index: 2;
+            cursor: e-resize;
+        }
     }
 </style>
