@@ -24,8 +24,6 @@ export default {
                 }else {
                     oldTop = parseInt(getStyle.top);
                 };
-
-
                 //鼠标按下并移动的事件
                 window.onmousemove =  (e)=>{
                     if(!disX || !disY){
@@ -67,7 +65,7 @@ export default {
                 };
             };
 
-            window.onmouseup = () => {
+            window.onmouseup = (e) => {
                 disX = null;
                 disY = null;
                 window.onmousemove = null;
