@@ -8,6 +8,7 @@ export default {
         return oldLeft;
     },
     default(dragObj, getStyle ,left,top, oldLeft,oldTop,dragObjWidth,dragObjHeight){
+        //边界判断
         if(
             dragObj.offsetLeft <= 1 && left < 0 ||
             dragObj.offsetLeft+dragObjWidth >= window.innerWidth && left > 0 ||
@@ -31,11 +32,21 @@ export default {
         this.default(dragObj, getStyle ,left,top, oldLeft,oldTop,dragObjWidth,dragObjHeight);
     },
     ".UnityFrontLayoutTool":function (dragObj, getStyle ,left,top,{ oldWidth }) {
+        let width = oldWidth - left;
+        //边界判断
+        if(width >= window.innerWidth / 3 ||　width <= 100){
+            return;
+        }
         //移动当前元素
-        dragObj.style.width = oldWidth - left + 'px';
+        dragObj.style.width = width + 'px';
     },
     ".UnityFrontLayoutComponentPane":function (dragObj, getStyle ,left,top,{ oldWidth }) {
+        let width = oldWidth + left;
+        //边界判断
+        if(width >= window.innerWidth / 3 ||　width <= 100){
+            return;
+        }
         //移动当前元素
-        dragObj.style.width = oldWidth + left + 'px';
+        dragObj.style.width = width + 'px';
     }
 }

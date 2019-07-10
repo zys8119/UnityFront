@@ -29,7 +29,6 @@ export default {
                         //用鼠标的位置减去鼠标相对元素的位置，得到元素的位置
                         let left = e.clientX - disX;
                         let top = e.clientY - disY;
-                        //边界判断
                         let dragObjWidth = parseInt(getStyle.width);
                         if(isNaN(dragObjWidth)){
                             dragObjWidth = 0;

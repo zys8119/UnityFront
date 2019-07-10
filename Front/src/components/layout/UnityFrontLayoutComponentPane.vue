@@ -32,7 +32,6 @@
             top: 0;
             height: 100%;
             width: @borderLineWidth;
-            background-color: #E59313;
             z-index: 2;
             cursor: e-resize;
         }

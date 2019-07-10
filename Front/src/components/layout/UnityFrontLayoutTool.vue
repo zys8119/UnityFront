@@ -1,6 +1,7 @@
 <template>
-    <div class="UnityFrontLayoutTool">
+    <div class="UnityFrontLayoutTool webkit-scrollbar">
         <tool-pane></tool-pane>
+        <div v-for="i in 100">{{i}}</div>
         <div class="borderLine"></div>
         <component-view></component-view>
         <div class="dragdrop" v-dragdrop dragdrop=".UnityFrontLayoutTool"></div>
@@ -35,7 +36,6 @@
             top: 0;
             height: 100%;
             width: @borderLineWidth;
-            background-color: #E59313;
             z-index: 2;
             cursor: w-resize;
         }

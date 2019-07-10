@@ -53,3 +53,27 @@ p{
   height: 0;
   border-top:@borderLine;
 }
+
+.webkit-scrollbar{
+  &::-webkit-scrollbar {
+    width:5px;
+    height:5px;
+    display: none;
+  }
+  &::-webkit-scrollbar{
+    display: block;
+  }
+  &::-webkit-scrollbar-button    {
+    background:@themeColor/0.9;
+  }
+  &::-webkit-scrollbar-track     {
+    background:@themeColor/0.9;
+  }
+  &::-webkit-scrollbar-thumb{
+    background:@themeColor*3;
+    border-radius:4px;
+  }
+  &::-webkit-scrollbar-corner {
+    background:#fff;
+  }
+}

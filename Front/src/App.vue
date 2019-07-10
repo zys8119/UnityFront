@@ -18,7 +18,7 @@ export default {
           }catch (e) {};
         })
       }catch (e) {};
-    },200);
+    });
   }
 }
 </script>
