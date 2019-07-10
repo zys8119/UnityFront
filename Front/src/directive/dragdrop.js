@@ -57,6 +57,8 @@ export default {
         }
         //移动当前元素
         dragObj.style.height = height + 'px';
+        //移动相邻元素
+        document.querySelector(".ComponentView").style.height = window.innerHeight - height - 40 + "px";
     },
     ".ComponentPane":function (dragObj, getStyle ,left,top,{ oldHeight }) {
         let height = oldHeight + top;
@@ -66,5 +68,7 @@ export default {
         }
         //移动当前元素
         dragObj.style.height = height + 'px';
+        //移动相邻元素
+        document.querySelector(".ProjectPane").style.height = window.innerHeight - height - 40 + "px";
     },
 }
