@@ -28,7 +28,7 @@ Vue.use(alertVuePlug);
 //全局注入指令
 import directive from "./directive"
 Object.keys(directive).forEach(directiveName=>{
-    Vue.directive(directiveName, directive[directive])
+    Vue.directive(directiveName, directive[directiveName])
 });
 
 

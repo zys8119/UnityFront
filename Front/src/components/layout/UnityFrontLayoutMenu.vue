@@ -1,7 +1,7 @@
 <template>
     <div class="UnityFrontLayoutMenu">
         <ul>
-            <li v-for="item in MenuList">
+            <li v-for="item in MenuList" v-dragdrop>
                 <div>{{item.title}}</div>
                 <unity-front-layout-menu-item v-if="item.chlid && item.chlid.length > 0" :list="item.chlid"></unity-front-layout-menu-item>
             </li>
@@ -35,16 +35,6 @@
                     ]},
                 ]
             }
-        },
-        mounted() {
-            this.$ZAlert.show({
-                title:"关于UnityFront",
-                components: "About/About",
-                width:"500px",
-                props:{
-                    _vm:()=>this
-                }
-            })
         }
     }
 </script>
