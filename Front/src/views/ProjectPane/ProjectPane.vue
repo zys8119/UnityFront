@@ -1,18 +1,19 @@
 <template>
     <div class="ProjectPane">
-        <unity-front-layout-title title="项目"></unity-front-layout-title>
+        <unity-front-layout-title title="项目" search></unity-front-layout-title>
         <uf-box>
-            <div v-for="i in 100">{{i}}</div>
+            <project-grid></project-grid>
         </uf-box>
     </div>
 </template>
 
 <script>
     import UnityFrontLayoutTitle from "@/components/layout/UnityFrontLayoutTitle"
-    import UfBox from "@/components/UfBox"
+    import { UfBox, ProjectGrid } from "@/components"
+
     export default {
         name: "ProjectPane",
-        components:{ UnityFrontLayoutTitle, UfBox }
+        components:{ UnityFrontLayoutTitle, UfBox, ProjectGrid }
     }
 </script>
 
