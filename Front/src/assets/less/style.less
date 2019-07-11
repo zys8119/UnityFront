@@ -39,7 +39,7 @@ ul,li,p,a{
 }
 p{
   &.msg{
-    color: #b4b4b4;
+    color: @textColor;
   }
   &.box{
     background-color: @themeColor/0.7;
@@ -85,4 +85,21 @@ p{
   -webkit-text-overflow:ellipsis;
   -moz-text-overflow:ellipsis;
   white-space:nowrap;
+}
+
+.z_Input{
+  color: @textColor;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  @index:30px;
+  line-height: @index;
+  .weui-icon-clear{
+    display: none;
+  }
+  input{
+    background-color: @themeColor;
+    box-shadow: inset 0 0 3px #000000;
+    line-height: @index;
+    height: @index;
+  }
 }

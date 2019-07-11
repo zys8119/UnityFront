@@ -1,5 +1,5 @@
 <template>
-    <div class="UfGroup vux-1px-b">
+    <div class="UfGroup vux-1px-b" :class="{notOpen:!isOpen}">
         <p class="UfGroupTitle msg" @click="isOpen = !isOpen">
             <span class="iconfont" v-if="isOpen">&#xe634;</span>
             <span class="iconfont" v-else>&#xe638;</span>
@@ -42,12 +42,19 @@
         .UfGroupTitle{
             overflow: hidden;
             line-height: 30px;
+            margin-bottom: 15px;
             &:hover{
                 background-color: @themeColor;
             }
             .iconfont{
                 font-size: 25px;
                 float: left;
+            }
+        }
+        &.notOpen{
+            padding-bottom: 0;
+            .UfGroupTitle{
+                margin-bottom: 0;
             }
         }
     }
