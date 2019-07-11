@@ -19,7 +19,8 @@
 <style scoped lang="less">
     .UfBox {
         height: 100%;
-        overflow-x: hidden;
+        /*overflow-x: hidden;*/
+        overflow: auto;
         .UfBoxContent{
             padding-bottom: 30px;
             .UfBoxContentViews{

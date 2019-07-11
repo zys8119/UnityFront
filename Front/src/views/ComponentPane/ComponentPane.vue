@@ -2,17 +2,25 @@
     <div class="ComponentPane">
         <unity-front-layout-title title="组件"></unity-front-layout-title>
         <uf-box>
-            <div v-for="i in 100">{{i}}</div>
+            <component-tree :item="item" v-for="item,key in list" :key="key" init></component-tree>
         </uf-box>
     </div>
 </template>
 
 <script>
     import UnityFrontLayoutTitle from "@/components/layout/UnityFrontLayoutTitle"
-    import UfBox from "@/components/UfBox"
+    import { UfBox, ComponentTree } from "@/components"
     export default {
         name: "ComponentPane",
-        components:{ UnityFrontLayoutTitle, UfBox }
+        components:{ UnityFrontLayoutTitle, UfBox, ComponentTree },
+        data(){
+            return {
+                list:[
+                    {name:"场景组件",open:false,child:[
+                    ]}
+                ]
+            }
+        }
     }
 </script>
 
