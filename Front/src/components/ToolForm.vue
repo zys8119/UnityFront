@@ -2,7 +2,7 @@
     <div class="ToolForm">
         <x-input class="z_Input" title="组件名称" value="input"></x-input>
         <uf-group title="基础属性" open>
-            内容sdfsd
+            <x-input class="z_Input" title="组件名称" value="input"></x-input>
         </uf-group>
     </div>
 </template>
