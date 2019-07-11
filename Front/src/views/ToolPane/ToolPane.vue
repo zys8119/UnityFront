@@ -2,17 +2,17 @@
     <div class="ToolPane">
         <unity-front-layout-title title="工具"></unity-front-layout-title>
         <uf-box>
-            <div v-for="i in 100">{{i}}</div>
+            <tool-form></tool-form>
         </uf-box>
     </div>
 </template>
 
 <script>
     import UnityFrontLayoutTitle from "@/components/layout/UnityFrontLayoutTitle"
-    import UfBox from "@/components/UfBox"
+    import { UfBox, ToolForm } from "@/components"
     export default {
         name: "ToolPane",
-        components:{ UnityFrontLayoutTitle, UfBox }
+        components:{ UnityFrontLayoutTitle, UfBox, ToolForm }
     }
 </script>
 

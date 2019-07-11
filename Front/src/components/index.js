@@ -8,3 +8,5 @@ const ivTo = (name)=>{
 export const ComponentTree = ivTo("ComponentTree");
 export const UfBox = ivTo("UfBox");
 export const ProjectGrid = ivTo("ProjectGrid");
+export const ToolForm = ivTo("ToolForm");
+export const UfGroup = ivTo("UfGroup");
