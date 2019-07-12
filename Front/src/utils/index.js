@@ -32,9 +32,38 @@ export default {
      * 判断是否全屏
      * @returns {boolean}
      */
-    isFull(){
+    isFull() {
         return !!(document.webkitIsFullScreen || document.mozFullScreen ||
             document.msFullscreenElement || document.fullscreenElement
         );
+    },
+    /**
+     * 鼠标滚轮
+     */
+    windowAddMouseWheel(resolve) {
+        var scrollFunc = function (e) {
+            e = e || window.event;
+            if (e.wheelDelta) {  //判断浏览器IE，谷歌滑轮事件
+                if (e.wheelDelta > 0) { //当滑轮向上滚动时
+                    resolve("top",e);
+                }
+                if (e.wheelDelta < 0) { //当滑轮向下滚动时
+                    resolve("down",e);
+                }
+            } else if (e.detail) {  //Firefox滑轮事件
+                if (e.detail > 0) { //当滑轮向上滚动时
+                    resolve("top",e);
+                }
+                if (e.detail < 0) { //当滑轮向下滚动时
+                    resolve("down",e);
+                }
+            }
+        };
+        //给页面绑定滑轮滚动事件
+        if (document.addEventListener) {
+            document.addEventListener('DOMMouseScroll', scrollFunc, false);
+        }
+        //滚动滑轮触发scrollFunc方法
+        window.onmousewheel = document.onmousewheel = scrollFunc;
     }
 }

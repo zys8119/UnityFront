@@ -7,16 +7,18 @@ export default {
         };
         return oldLeft;
     },
-    default(dragObj, getStyle ,left,top, oldLeft,oldTop,dragObjWidth,dragObjHeight){
+    default(dragObj, getStyle ,left,top, oldLeft,oldTop,dragObjWidth,dragObjHeight,boundary){
         //边界判断
-        if(
-            dragObj.offsetLeft <= 1 && left < 0 ||
-            dragObj.offsetLeft+dragObjWidth >= window.innerWidth && left > 0 ||
-            dragObj.offsetTop <= 50 && top < 0
-            || dragObj.offsetTop + 50 >= window.innerHeight && top > 0
-        ){
-            return;
-        };
+        if(!boundary){
+            if(
+                dragObj.offsetLeft <= 1 && left < 0 ||
+                dragObj.offsetLeft+dragObjWidth >= window.innerWidth && left > 0 ||
+                dragObj.offsetTop <= 50 && top < 0
+                || dragObj.offsetTop + 50 >= window.innerHeight && top > 0
+            ){
+                return;
+            };
+        }
         let index = 1;
         if(getStyle.position == "fixed" || getStyle.position == "absolute"){
             //更改加速度
@@ -70,5 +72,5 @@ export default {
         dragObj.style.height = height + 'px';
         //移动相邻元素
         document.querySelector(".ProjectPane").style.height = window.innerHeight - height - 40 + "px";
-    },
+    }
 }

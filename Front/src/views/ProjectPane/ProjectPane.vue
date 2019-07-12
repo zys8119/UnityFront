@@ -13,7 +13,7 @@
 
     export default {
         name: "ProjectPane",
-        components:{ UnityFrontLayoutTitle, UfBox, ProjectGrid }
+        components:{ UnityFrontLayoutTitle, UfBox, ProjectGrid },
     }
 </script>
 
@@ -21,5 +21,6 @@
     .ProjectPane {
         position: relative;
         height: 30%;
+        #div1 {width:198px; height:66px;padding:10px;border:1px solid #aaaaaa;}
     }
 </style>
