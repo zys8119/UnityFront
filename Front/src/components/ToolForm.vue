@@ -66,7 +66,6 @@
                     <uf-color></uf-color>
                 </flexbox-item>
             </flexbox>
-
         </uf-group>
     </div>
 </template>

@@ -1,7 +1,7 @@
 <template>
     <div class="UfColor">
         <flexbox>
-            <flexbox-item><p class="msg">asd</p></flexbox-item>
+            <flexbox-item><p class="msg">背景</p></flexbox-item>
             <flexbox-item><div class="color">asd</div></flexbox-item>
         </flexbox>
         <!--<color-sketch v-model="color" :presetColors="[]"></color-sketch>-->
