@@ -29,6 +29,7 @@
         height: ~"calc(100% - @{UnityFrontLayoutMenuHeight})";
         background-color: @themeColor2;
         border-left: @borderLine;
+        z-index: 1;
         .dragdrop{
             position: absolute;
             left: -@borderLineWidth;
