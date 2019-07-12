@@ -39,6 +39,15 @@ Vue.use(AlertPlugin)
 Vue.use(ToastPlugin)
 Vue.use(ConfirmPlugin)
 
+//下拉选择
+import Multiselect from 'vue-multiselect'
+// register globally
+Vue.component('z-select', Multiselect);
+
+//颜色选择器
+import { Sketch } from 'vue-color'
+Vue.component('color-sketch', Sketch);
+
 //todo 全局加载===============
 // const Vux = require('vux');
 // Object.keys(Vux).map(e=>{
