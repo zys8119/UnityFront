@@ -16,7 +16,7 @@
                 </flexbox-item>
             </flexbox>
         </uf-group>
-        <uf-group title="盒子属性" open>
+        <uf-group title="盒子属性">
             <flexbox>
                 <flexbox-item title="margin-top">
                     <x-input class="z_Input" title="maT" value="0"></x-input>
@@ -50,7 +50,7 @@
                 </flexbox-item>
             </flexbox>
         </uf-group>
-        <uf-group title="布局" open>
+        <uf-group title="布局">
             <flexbox>
                 <flexbox-item>
                     <z-select class="z_select" v-model="value" :options="list" :show-labels="false" placeholder="posType"></z-select>
@@ -68,13 +68,19 @@
                 </flexbox-item>
             </flexbox>
         </uf-group>
-        <uf-group title="文字" open>
+        <uf-group title="文字">
             <x-textarea title="内容" class="z_textarea">sdadf</x-textarea>
             <flexbox>
                 <flexbox-item title="padding-color">
                     <uf-color title="文字颜色" v-model="color2"></uf-color>
                 </flexbox-item>
             </flexbox>
+        </uf-group>
+        <uf-group title="样式表" open>
+            <z-select class="z_select z_select_more" v-model="value" :options="list" :show-labels="false" placeholder="搜索或选择" :multiple="true" :searchable="true"></z-select>
+        </uf-group>
+        <uf-group title="脚本" open>
+            <z-select class="z_select z_select_more" v-model="value" :options="list" :show-labels="false" placeholder="搜索或选择" :multiple="true" :searchable="true"></z-select>
         </uf-group>
     </div>
 </template>

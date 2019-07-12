@@ -20,5 +20,6 @@
     .ToolPane {
         position: relative;
         height: 70%;
+        z-index: 4;
     }
 </style>

@@ -18,15 +18,14 @@
 
 <style scoped lang="less">
     .UfBox {
-        height: 100%;
-        /*overflow-x: hidden;*/
+        height: 90%;
+        height: ~"calc(100% - 32px)";
         overflow: auto;
         .UfBoxContent{
             padding-bottom: 30px;
             .UfBoxContentViews{
                 padding: 15px;
             }
-
         }
     }
 </style>
