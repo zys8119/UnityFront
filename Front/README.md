@@ -2,6 +2,6 @@
 
 # 参考资源
 
-[vue-multiselect](https://vue-multiselect.js.org/#sub-getting-started)
+[vue-multiselect选择器](https://vue-multiselect.js.org/#sub-getting-started)
 [vux](https://vux.li/#/)
-[vue-color](https://github.com/xiaokaike/vue-color)
+[vue-color颜色选择器](https://github.com/xiaokaike/vue-color)

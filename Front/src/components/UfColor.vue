@@ -1,11 +1,7 @@
 <template>
     <div class="UfColor">
-        <p class="msg">背景</p>
-        <div class="color" :style="{backgroundColor:color}">
-            <div class="color-sketch-select">
-                <color-sketch v-model="color" :presetColors="[]"></color-sketch>
-            </div>
-        </div>
+        <p class="msg">{{title}}</p>
+        <div class="color" :style="{backgroundColor:color}" @click="showColorSelect"></div>
     </div>
 </template>
 
@@ -16,7 +12,58 @@
         components:{ Flexbox, FlexboxItem },
         data(){
             return {
-                color:'#f00',
+                show:false,
+            }
+        },
+        props:{
+            title:{
+                type:String,
+                default:null
+            },
+            value:{
+                type:String | Object,
+                default:null
+            },
+            presetColors:{
+                type:Array,
+                default:Array
+            }
+        },
+        methods:{
+            showColorSelect(){
+                let color = this.value;
+                try {
+                    if(typeof this.value == 'object'  && this.value.rgba){
+                        color = ()=>this.value;
+                    }
+                }catch (e) {}
+                this.$ZAlert.show({
+                    title:`【${this.title}】颜色选择`,
+                    width:"220px",
+                    components: "ColorSketch/ColorSketch",
+                    props:{
+                        color,
+                        presetColors:()=>this.presetColors
+                    },
+                    _event:{
+                        change:val=>{
+                            this.$emit("input",val);
+                        }
+                    }
+                })
+            }
+        },
+        computed:{
+            color(){
+                try {
+                    let rgba = this.value.rgba;
+                    if(rgba){
+                        return `rgba(${rgba.r},${rgba.g},${rgba.b},${rgba.a})`;
+                    }
+                }catch (e) {}
+                if(typeof this.value == "string"){
+                    return this.value;
+                }
             }
         }
     }
@@ -37,12 +84,6 @@
             cursor: pointer;
             box-shadow: inset 0 0 3px #000000;
             position: relative;
-            .color-sketch-select{
-                position: absolute;
-                top:@index ;
-                left: -(220px - @index);
-                z-index: 1;
-            }
         }
     }
 </style>

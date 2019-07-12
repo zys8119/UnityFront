@@ -1,23 +1,7 @@
 <template>
     <div class="ToolForm">
-        <x-input class="z_Input" title="组件名称" value="input"></x-input>
         <uf-group title="基础属性" open>
-            <flexbox>
-                <flexbox-item>
-                    <z-select class="z_select" v-model="value" :options="list" :show-labels="false" placeholder="posType"></z-select>
-                </flexbox-item>
-                <flexbox-item>
-                    <z-select class="z_select" v-model="value2" :options="floatList" :close-on-select="false" :show-labels="false" placeholder="float"></z-select>
-                </flexbox-item>
-            </flexbox>
-            <flexbox>
-                <flexbox-item title="left">
-                    <x-input class="z_Input" title="Left" value="0"></x-input>
-                </flexbox-item>
-                <flexbox-item title="right">
-                    <x-input class="z_Input" title="Right" value="0"></x-input>
-                </flexbox-item>
-            </flexbox>
+            <x-input class="z_Input" title="组件名称" value="input"></x-input>
             <flexbox>
                 <flexbox-item title="width">
                     <x-input class="z_Input" title="width" value="0"></x-input>
@@ -26,6 +10,13 @@
                     <x-input class="z_Input" title="height" value="0"></x-input>
                 </flexbox-item>
             </flexbox>
+            <flexbox>
+                <flexbox-item title="background-color">
+                    <uf-color title="背景颜色" v-model="color1"></uf-color>
+                </flexbox-item>
+            </flexbox>
+        </uf-group>
+        <uf-group title="盒子属性" open>
             <flexbox>
                 <flexbox-item title="margin-top">
                     <x-input class="z_Input" title="maT" value="0"></x-input>
@@ -58,12 +49,30 @@
                     <x-input class="z_Input" title="paL" value="0"></x-input>
                 </flexbox-item>
             </flexbox>
+        </uf-group>
+        <uf-group title="布局" open>
             <flexbox>
-                <flexbox-item title="background-color">
-                    <uf-color title=""></uf-color>
+                <flexbox-item>
+                    <z-select class="z_select" v-model="value" :options="list" :show-labels="false" placeholder="posType"></z-select>
                 </flexbox-item>
+                <flexbox-item>
+                    <z-select class="z_select" v-model="value2" :options="floatList" :close-on-select="false" :show-labels="false" placeholder="float"></z-select>
+                </flexbox-item>
+            </flexbox>
+            <flexbox>
+                <flexbox-item title="left">
+                    <x-input class="z_Input" title="Left" value="0"></x-input>
+                </flexbox-item>
+                <flexbox-item title="right">
+                    <x-input class="z_Input" title="Right" value="0"></x-input>
+                </flexbox-item>
+            </flexbox>
+        </uf-group>
+        <uf-group title="文字" open>
+            <x-textarea title="内容" class="z_textarea">sdadf</x-textarea>
+            <flexbox>
                 <flexbox-item title="padding-color">
-                    <uf-color></uf-color>
+                    <uf-color title="文字颜色" v-model="color2"></uf-color>
                 </flexbox-item>
             </flexbox>
         </uf-group>
@@ -73,11 +82,13 @@
 <script>
     import UfGroup from "./UfGroup"
     import UfColor from "./UfColor"
-    import { XInput, Flexbox, FlexboxItem, Selector  } from "vux"
+    import { XInput, Flexbox, FlexboxItem, Selector, XTextarea  } from "vux"
     export default {
         name: "ToolForm",
         data(){
             return {
+                color1:"#f00",
+                color2:"#f00",
                 value:"",
                 value2:"",
                 list:["inherit","relative","absolute","fixed"],
@@ -85,7 +96,7 @@
             }
         },
         components:{
-            UfGroup, XInput, Flexbox, FlexboxItem, Selector, UfColor
+            UfGroup, XInput, Flexbox, FlexboxItem, Selector, UfColor, XTextarea
         },
         mounted() {
 
