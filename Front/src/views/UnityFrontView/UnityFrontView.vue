@@ -2,7 +2,7 @@
     <div class="UnityFrontView">
         <unity-front-layout-title title="场景视图"></unity-front-layout-title>
         <div class="UnityFrontViewContent" ref="UnityFrontViewContent">
-
+            sdfsd
         </div>
     </div>
 </template>
@@ -14,7 +14,18 @@
         components:{ UnityFrontLayoutTitle },
         mounted() {
             this.$utils.windowAddMouseWheel((type,e)=>{
-                console.log(type,e.target == this.$refs.UnityFrontViewContent);
+                if(e.target == this.$refs.UnityFrontViewContent){
+                    let index = new Number(this.$refs.UnityFrontViewContent.style.transform.replace(/[^0-9.]/img,""));
+                    if(index == 0){
+                        index = 1;
+                    }
+                    if(type == "top"){
+                    }else if(type == "down"){
+                        this.$refs.UnityFrontViewContent.style.transform = `scale(1.5)`
+                    };
+                    this.$refs.UnityFrontViewContent.style.transform = `scale(${index})`;
+                    console.log(index)
+                }
             })
         }
     }
