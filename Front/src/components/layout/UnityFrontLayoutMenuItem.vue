@@ -1,13 +1,13 @@
 <template>
-    <div class="UnityFrontLayoutMenuItem" :class="{chlidItem:chlid}">
+    <div class="UnityFrontLayoutMenuItem" :class="{childItem:child}">
         <div class="item" :class="{'vux-1px-b':item.groupEnd}" v-for="item in list">
             <div class="itemRow" @click.stop="select(item)">
                 <span class="iconfont icon" v-if="item.icon" v-html="item.icon" :style="{fontSize:item.fontSize}"></span>
                 <span class="iconfont icon" v-else></span>
                 {{item.title}}
-                <span class="iconfont" v-if="item.chlid">&#xe635;</span>
+                <span class="iconfont" v-if="item.child">&#xe635;</span>
             </div>
-            <unity-front-layout-menu-item  v-if="item.chlid && item.chlid.length > 0" :list="item.chlid" chlid></unity-front-layout-menu-item>
+            <unity-front-layout-menu-item  v-if="item.child && item.child.length > 0" :list="item.child" child></unity-front-layout-menu-item>
         </div>
     </div>
 </template>
@@ -20,14 +20,14 @@
                 type:Array,
                 default:Array
             },
-            chlid:{
+            child:{
                 type:Boolean,
                 default:false
             }
         },
         methods:{
             select(item){
-                if(!item.chlid && typeof item.run == "function"){
+                if(!item.child && typeof item.run == "function"){
                     item.run(item);
                 }
             }
@@ -47,7 +47,7 @@
         width: 250px;
         padding: 2px;
         display: none;
-        &.chlidItem{
+        &.childItem{
             left: 250px;
             top: 0;
         }

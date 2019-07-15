@@ -13,11 +13,21 @@
     export default {
         name: "ComponentPane",
         components:{ UnityFrontLayoutTitle, UfBox, ComponentTree },
+        provide(){
+            return {
+                treeData:this.list,
+            }
+        },
         data(){
             return {
                 list:[
                     {name:"场景组件",open:false,child:[
-                    ]}
+                            {name:"sad",select:false}
+                    ]},
+                    {name:"场景组件",open:false,child:[
+                            {name:"sad",select:false},
+                            {name:"sad",select:false},
+                    ]},
                 ]
             }
         }

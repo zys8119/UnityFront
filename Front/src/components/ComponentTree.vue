@@ -8,7 +8,7 @@
             </p>
             <component-tree v-for="itemChild,key in item.child" :item="itemChild" :key="key"></component-tree>
         </div>
-        <div class="ComponentTreeRow" v-else @click.stop="SelectChild(item)">
+        <div class="ComponentTreeRow" :class="{select:item.select}" v-else @click.stop="SelectChild(item)">
             <p class="msg text-overflow">
                 <span class="iconfont"></span>
                 {{item.name}}
@@ -20,6 +20,8 @@
 <script>
     export default {
         name: "ComponentTree",
+        // inject:["list"],
+        inject:{},
         props:{
             item:{
                 type:Object,
@@ -35,7 +37,8 @@
                 item.open = !item.open;
             },
             SelectChild(item){
-
+                item.select = true;
+                console.log(this.list)
             }
         }
     }
@@ -72,7 +75,12 @@
                 & > .ComponentTreeRow{
                     display: block;
                 }
-
+            }
+            &.select{
+                .msg{
+                    background-color: @themeLogoColor;
+                    color: #FFFFFF !important;
+                }
             }
         }
     }
