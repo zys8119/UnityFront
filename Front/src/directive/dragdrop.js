@@ -73,7 +73,9 @@ export default {
         //移动相邻元素
         document.querySelector(".ProjectPane").style.height = window.innerHeight - height - 40 + "px";
     },
-    ".UnityFrontViewContent":function (dragObj, getStyle ,left,top,{ oldHeight }) {
-        console.log(dragObj)
+    ".UnityFrontViewContent":function (dragObj, getStyle ,left,top,{ oldHeight, oldLeft, oldTop }) {
+        //移动当前元素
+        dragObj.style.left = oldLeft + left + 'px';
+        dragObj.style.top = oldTop + top + 'px';
     }
 }

@@ -22,20 +22,20 @@
                 if(e.target == this.$refs.UnityFrontViewContent){
                     let index = new Number(this.$refs.UnityFrontViewContent.style.transform.replace(/[^0-9.]/img,""));
                     if(index == 0){
-                        if(this.bool){
-                            index = 1;
-                            this.bool = false;
-                        }else {
+                        index = 1;
+                    };
+                    if(type == "top"){
+                        //最大
+                        if(index >= 4){
                             return;
                         }
-                    };
-                    if(index >= 4){
-                        return;
-                    }
-                    if(type == "top"){
-                        index += 0.01;
+                        index += 0.02;
                     }else if(type == "down"){
-                        index -= 0.01;
+                        //最小
+                        if(index <= 0.1){
+                            return;
+                        }
+                        index -= 0.02;
                     };
                     this.$refs.UnityFrontViewContent.style.transform = `scale(${index})`;
                 }
