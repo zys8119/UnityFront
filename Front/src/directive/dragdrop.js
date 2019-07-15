@@ -72,5 +72,8 @@ export default {
         dragObj.style.height = height + 'px';
         //移动相邻元素
         document.querySelector(".ProjectPane").style.height = window.innerHeight - height - 40 + "px";
+    },
+    ".UnityFrontViewContent":function (dragObj, getStyle ,left,top,{ oldHeight }) {
+        console.log(dragObj)
     }
 }

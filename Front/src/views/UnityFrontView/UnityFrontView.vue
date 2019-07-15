@@ -1,7 +1,7 @@
 <template>
     <div class="UnityFrontView">
         <unity-front-layout-title title="场景视图"></unity-front-layout-title>
-        <div class="UnityFrontViewContent" ref="UnityFrontViewContent">
+        <div class="UnityFrontViewContent" ref="UnityFrontViewContent" v-dragdrop dragdrop=".UnityFrontViewContent">
             sdfsd
         </div>
     </div>
@@ -12,19 +12,32 @@
     export default {
         name: "UnityFrontView",
         components:{ UnityFrontLayoutTitle },
+        data(){
+            return {
+                bool:true,
+            }
+        },
         mounted() {
             this.$utils.windowAddMouseWheel((type,e)=>{
                 if(e.target == this.$refs.UnityFrontViewContent){
                     let index = new Number(this.$refs.UnityFrontViewContent.style.transform.replace(/[^0-9.]/img,""));
                     if(index == 0){
-                        index = 1;
+                        if(this.bool){
+                            index = 1;
+                            this.bool = false;
+                        }else {
+                            return;
+                        }
+                    };
+                    if(index >= 4){
+                        return;
                     }
                     if(type == "top"){
+                        index += 0.01;
                     }else if(type == "down"){
-                        this.$refs.UnityFrontViewContent.style.transform = `scale(1.5)`
+                        index -= 0.01;
                     };
                     this.$refs.UnityFrontViewContent.style.transform = `scale(${index})`;
-                    console.log(index)
                 }
             })
         }
