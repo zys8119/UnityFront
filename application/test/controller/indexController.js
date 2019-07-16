@@ -24,7 +24,7 @@ var IndexController = /** @class */ (function (_super) {
     }
     IndexController.prototype.index = function () {
         var _this = this;
-        console.log("====================", Date.now());
+        console.log("=================================", Date.now());
         axios_1.default({
             url: "http://apis.juhe.cn/cnoil/oil_city",
             params: {

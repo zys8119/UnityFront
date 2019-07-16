@@ -8,7 +8,7 @@ export class IndexController extends  applicationController{
     }
 
     index(){
-        console.log(`====================`,Date.now());
+        console.log(`=================================`,Date.now());
         axios({
             url:"http://apis.juhe.cn/cnoil/oil_city",
             params:{
