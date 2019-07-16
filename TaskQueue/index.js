@@ -1,4 +1,4 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var TaskQueue = require("./Task/index");
-exports.default = Object.keys(TaskQueue).map(function (Task) { return TaskQueue[Task]; }).slice();
+exports["default"] = Object.keys(TaskQueue).map(function (Task) { return TaskQueue[Task]; }).slice();
