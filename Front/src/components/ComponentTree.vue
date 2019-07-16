@@ -1,6 +1,6 @@
 <template>
     <div class="ComponentTree">
-        <div v-if="item.child" class="ComponentTreeRow" :class="{init:init,open:item.open}" @click.stop="OpenChild(item)">
+        <div v-if="item.child" class="ComponentTreeRow" :class="{init:init,open:item.open,select:item.select}" @click.stop="OpenChild(item)">
             <p class="msg text-overflow">
                 <span class="iconfont" v-if="item.open">&#xe634;</span>
                 <span class="iconfont" v-else>&#xe638;</span>
@@ -20,8 +20,7 @@
 <script>
     export default {
         name: "ComponentTree",
-        // inject:["list"],
-        inject:{},
+        inject:["treeData"],
         props:{
             item:{
                 type:Object,
@@ -34,11 +33,22 @@
         },
         methods:{
             OpenChild(item){
+                this.SelectChild(item);
                 item.open = !item.open;
             },
+            treeDataInit(data){
+                data = data.map(item=>{
+                    if(item.child){
+                        return this.treeDataInit(item.child);
+                    }
+                    item.select = false;
+                    return item;
+                })
+            },
             SelectChild(item){
-                item.select = true;
-                console.log(this.list)
+                this.treeDataInit(this.treeData);
+                console.log(item)
+                // item.select = true;
             }
         }
     }
@@ -77,7 +87,7 @@
                 }
             }
             &.select{
-                .msg{
+                & > .msg{
                     background-color: @themeLogoColor;
                     color: #FFFFFF !important;
                 }
