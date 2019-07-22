@@ -11,7 +11,7 @@ exports.mysqlConfig = {
         user: 'root',
         password: 'admin123',
         port: '3306',
-        database: 'dome'
+        database: 'test'
     }
 };
 //服务设置
@@ -68,4 +68,3 @@ exports.TimingTaskQueue = {
     //默认允许指定时间的上下范围20000毫秒
     ClearLogTimeFrame: 10000,
 };
-//# sourceMappingURL=index.js.map

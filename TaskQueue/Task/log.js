@@ -45,4 +45,3 @@ var LogTask = /** @class */ (function () {
     return LogTask;
 }());
 exports.LogTask = LogTask;
-//# sourceMappingURL=log.js.map

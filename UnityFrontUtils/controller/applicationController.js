@@ -309,4 +309,3 @@ var applicationController = /** @class */ (function () {
     return applicationController;
 }());
 exports.default = applicationController;
-//# sourceMappingURL=applicationController.js.map

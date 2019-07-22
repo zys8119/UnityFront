@@ -25,6 +25,10 @@ var IndexController = /** @class */ (function (_super) {
     IndexController.prototype.index = function () {
         var _this = this;
         console.log("=================================", Date.now());
+        // this.setHeaders({
+        //     'Content-Type': 'text/html; charset=utf-8',
+        // });
+        // this.$_RequestStatus = 500;
         axios_1.default({
             url: "http://apis.juhe.cn/cnoil/oil_city",
             params: {
@@ -35,9 +39,24 @@ var IndexController = /** @class */ (function (_super) {
                 _this.$_send(res.data);
             }
             else {
-                _this.$_send({
-                    resultcode: "10101",
-                    mrg: "请求失败",
+                Promise.all([
+                    // this.DB()
+                    //     .select("*")
+                    //     .from("aa").query(),
+                    // this.DB()
+                    //     .select("*")
+                    //     .from("bb").query(),
+                    _this.DB()
+                        .select("*")
+                        .from("cc").where({
+                        id: 375
+                    }).query(),
+                ]).then(function (res) {
+                    _this.$_send({
+                        resultcode: "10101",
+                        mrg: "请求失败",
+                        data: res
+                    });
                 });
             }
         }).catch(function (err) {
