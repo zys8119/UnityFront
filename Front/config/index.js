@@ -11,9 +11,9 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-      "/":{
-        target:"localhost:8080",
-        changeOrigin: true,
+      '/':{
+        target:"http://localhost:8080",
+        // changeOrigin: true,
         pathRewrite: {
           '^/': '/',
         },
