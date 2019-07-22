@@ -38,17 +38,16 @@
             },
             treeDataInit(data){
                 data = data.map(item=>{
+                    item.select = false;
                     if(item.child){
                         return this.treeDataInit(item.child);
                     }
-                    item.select = false;
                     return item;
                 })
             },
             SelectChild(item){
                 this.treeDataInit(this.treeData);
-                console.log(item)
-                // item.select = true;
+                item.select = true;
             }
         }
     }

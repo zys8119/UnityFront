@@ -1,3 +1,9 @@
 export default {
-    $t:"zh-cn"
+    $t:"zh-cn",
+    install:{
+        sql:{
+            dataBaseName:"UnityFront"
+        },
+
+    }
 }

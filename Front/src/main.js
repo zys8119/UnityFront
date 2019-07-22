@@ -34,10 +34,11 @@ Object.keys(directive).forEach(directiveName=>{
 
 //Vux插件
 //todo 按需加载===============
-import { AlertPlugin, ToastPlugin, ConfirmPlugin } from 'vux'
+import { AlertPlugin, ToastPlugin, ConfirmPlugin, LoadingPlugin } from 'vux'
 Vue.use(AlertPlugin)
 Vue.use(ToastPlugin)
 Vue.use(ConfirmPlugin)
+Vue.use(LoadingPlugin)
 
 //下拉选择
 import Multiselect from 'vue-multiselect'

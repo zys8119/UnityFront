@@ -1,10 +1,12 @@
 import Utils from "../utils"
 export default {
     isFull(){
-        this.action({
-            moduleName:"isFull",
-            goods:Utils.isFull()
-        })
+        if(this.$route.path == "/"){
+            this.action({
+                moduleName:"isFull",
+                goods:Utils.isFull()
+            })
+        }
     },
     calcView(){
         let Tool_w = getComputedStyle(document.querySelector(".UnityFrontLayoutTool")).width;

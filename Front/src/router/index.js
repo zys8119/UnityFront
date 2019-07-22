@@ -7,5 +7,6 @@ Vue.use(Router)
 export default new Router({
   routes: [
     importVue("UnityFront/UnityFront","/","UnityFront"),
+    importVue("install/install","/install","初始化项目"),
   ]
 })

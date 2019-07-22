@@ -11,19 +11,21 @@ export const MenuList = [
         ]},
     { title:"编辑",child:[
         { title:"创建UI" ,groupEnd:true ,child:[
-            {title:"input"}
+            {title:"input",run:function () {
+                   console.log(this.$utils.SearchParentKey(this.$root))
+            }}
         ]}
     ] },
     { title:"资源" },
     { title:"UnityFront对象" },
     { title:"窗口" },
     { title:"帮助" ,child:[
-            {title:"关于UnityFront" ,icon:"&#xe65d;",run:item=>{
-                    this.$ZAlert.show({
-                        title:"关于UnityFront",
-                        components: "About/About",
-                        width:"500px"
-                    });
-                }}
-        ]},
+        {title:"关于UnityFront" ,icon:"&#xe65d;",run:function () {
+            this.$ZAlert.show({
+                title:"关于UnityFront",
+                components: "About/About",
+                width:"500px"
+            });
+        }}
+    ]},
 ]

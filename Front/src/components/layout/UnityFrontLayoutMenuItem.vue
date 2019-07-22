@@ -28,7 +28,7 @@
         methods:{
             select(item){
                 if(!item.child && typeof item.run == "function"){
-                    item.run(item);
+                    item.run.call(this,item);
                 }
             }
         }
