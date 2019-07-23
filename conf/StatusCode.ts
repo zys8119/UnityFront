@@ -2,7 +2,7 @@ import {StatusCodeOptions} from "../UnityFrontUtils/typeStript";
 
 export default <StatusCodeOptions>{
     error:{
-        code:404,
+        code:403,
         msg:"error"
     },
     success:{

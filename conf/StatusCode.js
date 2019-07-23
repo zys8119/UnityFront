@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.default = {
     error: {
-        code: 404,
+        code: 403,
         msg: "error"
     },
     success: {
