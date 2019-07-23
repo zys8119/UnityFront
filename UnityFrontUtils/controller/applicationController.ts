@@ -1,4 +1,4 @@
-import {ControllerInitDataOptions, mysqlOptionsOptions, SqlUtilsOptions} from "../typeStript"
+import {ControllerInitDataOptions, mysqlOptionsOptions, SqlUtilsOptions, SuccessSendDataOptions } from "../typeStript"
 import { headersType } from "../typeStript/Types";
 import { ServerConfig } from "../config";
 import Utils from "../utils";
@@ -310,6 +310,41 @@ export default class applicationController implements ControllerInitDataOptions 
                 return;
             };
         });
+    }
+
+    /**
+     * 成功提示工具
+     * @param msg 提示信息
+     * @param sendData 发送数据
+     * @param code 状态码
+     */
+    $_success(msg?:any,sendData?:any,code?:number){
+        let newSendData = <SuccessSendDataOptions>{
+            code:200,
+            data:null,
+            msg:"success"
+        };
+        if(typeof msg == "string"){
+            newSendData.msg = msg;
+        }
+        if (typeof msg != "string" && !sendData){
+            newSendData.data = msg;
+        }
+        if(sendData){
+            newSendData.data = sendData;
+        }
+        newSendData.code = code || newSendData.code;
+        this.$_send(newSendData);
+    }
+
+    /**
+     * 错误提示工具
+     * @param msg 提示信息
+     * @param sendData 发送数据
+     * @param code 状态码
+     */
+    $_error(msg:any = "error",sendData?:any,code:number = 404){
+        this.$_success(msg,sendData,code)
     }
 
 }

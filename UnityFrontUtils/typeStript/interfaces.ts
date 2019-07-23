@@ -157,3 +157,9 @@ export interface TimingTaskQueueOptions {
     ClearLogAppointTime?(date?:Date):number;//是否开启指定时间内清除日志任务,返回值应为一个制定的时间戳
     ClearLogTimeFrame?:number;//可允许清除日志的指定时间的上下浮动范围，这样可以确保任务的执行
 }
+
+export interface SuccessSendDataOptions {
+    code?:number;//状态码
+    msg?:string;//信息
+    data?:any;//数据
+}

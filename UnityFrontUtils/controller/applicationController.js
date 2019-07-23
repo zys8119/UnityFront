@@ -306,6 +306,41 @@ var applicationController = /** @class */ (function () {
             ;
         });
     };
+    /**
+     * 成功提示工具
+     * @param msg 提示信息
+     * @param sendData 发送数据
+     * @param code 状态码
+     */
+    applicationController.prototype.$_success = function (msg, sendData, code) {
+        var newSendData = {
+            code: 200,
+            data: null,
+            msg: "success"
+        };
+        if (typeof msg == "string") {
+            newSendData.msg = msg;
+        }
+        if (typeof msg != "string" && !sendData) {
+            newSendData.data = msg;
+        }
+        if (sendData) {
+            newSendData.data = sendData;
+        }
+        newSendData.code = code || newSendData.code;
+        this.$_send(newSendData);
+    };
+    /**
+     * 错误提示工具
+     * @param msg 提示信息
+     * @param sendData 发送数据
+     * @param code 状态码
+     */
+    applicationController.prototype.$_error = function (msg, sendData, code) {
+        if (msg === void 0) { msg = "error"; }
+        if (code === void 0) { code = 404; }
+        this.$_success(msg, sendData, code);
+    };
     return applicationController;
 }());
 exports.default = applicationController;
