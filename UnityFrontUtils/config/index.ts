@@ -23,6 +23,8 @@ export const mysqlConfig = <mysqlOptions>{
 export const ServerConfig =  <ServerOptions>{
     port:8080,
     fsWatch:[
+        //listen conf directory
+        {path:path.resolve(__dirname,"../../conf"),type:"directory"},
         //listen UnityFrontUtils directory
         {path:path.resolve(__dirname,"../"),type:"directory"},
         //listen application directory

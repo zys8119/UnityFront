@@ -141,12 +141,12 @@ export interface ControllerInitDataOptions {
     $methodName?:string;//当前控制器执行的方法名称
     $urlArrs?:any[];//控制器url数组
     $ControllerConfig?:object;//控制器配置
+    StatusCode?:StatusCodeOptions;//公共状态码定义
 }
 
 export interface TemplateErrorDataOptions {
     title?:string;//错误标题
     error?:object;//错误详情
-
 }
 
 export interface TimingTaskQueueOptions {
@@ -156,4 +156,19 @@ export interface TimingTaskQueueOptions {
     isClearLogTime?:boolean;//是否开启清除日志任务
     ClearLogAppointTime?(date?:Date):number;//是否开启指定时间内清除日志任务,返回值应为一个制定的时间戳
     ClearLogTimeFrame?:number;//可允许清除日志的指定时间的上下浮动范围，这样可以确保任务的执行
+}
+
+export interface SuccessSendDataOptions {
+    code?:number;//状态码
+    msg?:string;//信息
+    data?:any;//数据
+}
+
+export interface StatusCodeOptions {
+    [propName:string]:StatusCodeOptions_format
+}
+
+export interface StatusCodeOptions_format{
+    code?:number;//状态码
+    msg?:string;//状态码描述
 }

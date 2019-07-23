@@ -25,6 +25,8 @@ var applicationController = /** @class */ (function () {
     };
     /**
      * $mysql实例化
+     * @param optionsConfig 数据库配置
+     * @param isEnd 执行完是否放开数据库连接
      * @constructor
      */
     applicationController.prototype.DB = function (optionsConfig, isEnd) {
@@ -305,6 +307,41 @@ var applicationController = /** @class */ (function () {
             }
             ;
         });
+    };
+    /**
+     * 成功提示工具
+     * @param msg 提示信息
+     * @param sendData 发送数据
+     * @param code 状态码
+     */
+    applicationController.prototype.$_success = function (msg, sendData, code) {
+        var newSendData = {
+            code: this.StatusCode.success.code,
+            data: null,
+            msg: this.StatusCode.success.msg
+        };
+        if (typeof msg == "string") {
+            newSendData.msg = msg;
+        }
+        if (typeof msg != "string" && !sendData) {
+            newSendData.data = msg;
+        }
+        if (sendData) {
+            newSendData.data = sendData;
+        }
+        newSendData.code = code || newSendData.code;
+        this.$_send(newSendData);
+    };
+    /**
+     * 错误提示工具
+     * @param msg 提示信息
+     * @param sendData 发送数据
+     * @param code 状态码
+     */
+    applicationController.prototype.$_error = function (msg, sendData, code) {
+        if (msg === void 0) { msg = this.StatusCode.error.msg; }
+        if (code === void 0) { code = this.StatusCode.error.code; }
+        this.$_success(msg, sendData, code);
     };
     return applicationController;
 }());

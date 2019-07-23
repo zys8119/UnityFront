@@ -1,4 +1,4 @@
-import {ControllerInitDataOptions, mysqlOptionsOptions, SqlUtilsOptions} from "../typeStript"
+import {ControllerInitDataOptions, mysqlOptionsOptions, SqlUtilsOptions, SuccessSendDataOptions, StatusCodeOptions } from "../typeStript"
 import { headersType } from "../typeStript/Types";
 import { ServerConfig } from "../config";
 import Utils from "../utils";
@@ -22,6 +22,7 @@ export default class applicationController implements ControllerInitDataOptions 
     $methodName:string;
     $urlArrs:any[];
     $ControllerConfig:object;
+    StatusCode:StatusCodeOptions;
 
     /**
      * 设置header头
@@ -41,6 +42,8 @@ export default class applicationController implements ControllerInitDataOptions 
 
     /**
      * $mysql实例化
+     * @param optionsConfig 数据库配置
+     * @param isEnd 执行完是否放开数据库连接
      * @constructor
      */
     DB(optionsConfig?:mysqlOptionsOptions,isEnd?:boolean){
@@ -310,6 +313,41 @@ export default class applicationController implements ControllerInitDataOptions 
                 return;
             };
         });
+    }
+
+    /**
+     * 成功提示工具
+     * @param msg 提示信息
+     * @param sendData 发送数据
+     * @param code 状态码
+     */
+    $_success(msg?:any,sendData?:any,code?:number){
+        let newSendData = <SuccessSendDataOptions>{
+            code:this.StatusCode.success.code,
+            data:null,
+            msg:this.StatusCode.success.msg
+        };
+        if(typeof msg == "string"){
+            newSendData.msg = msg;
+        }
+        if (typeof msg != "string" && !sendData){
+            newSendData.data = msg;
+        }
+        if(sendData){
+            newSendData.data = sendData;
+        }
+        newSendData.code = code || newSendData.code;
+        this.$_send(newSendData);
+    }
+
+    /**
+     * 错误提示工具
+     * @param msg 提示信息
+     * @param sendData 发送数据
+     * @param code 状态码
+     */
+    $_error(msg:any = this.StatusCode.error.msg,sendData?:any,code:number = this.StatusCode.error.code){
+        this.$_success(msg,sendData,code)
     }
 
 }

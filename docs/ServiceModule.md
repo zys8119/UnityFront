@@ -15,6 +15,8 @@
       -| indexController----------------------index控制器
       ...
   ...
+-| conf---------------------------------------配置目录
+  -| StatusCode.ts----------------------------全局状态码配置
 -| docs---------------------------------------文档项目
   ...
 -| node_modules
@@ -151,6 +153,34 @@ export class ControllerClassName extends applicationController{
   }
 }
 ```
+# conf模块
+
+<hr>
+
+> 一般用户放置应用全局配置
+
+## StatusCode全局状态码
+
+> 全局状态码的配置信息
+
+* 例子：
+
+```typescript
+import {StatusCodeOptions} from "../UnityFrontUtils/typeStript";
+
+export default <StatusCodeOptions>{
+    error:{
+        code:404,
+        msg:"error"
+    },
+    success:{
+        code:200,
+        msg:"success"
+    }
+}
+```
+
+
 
 # docs模块
 
@@ -504,6 +534,269 @@ _2.真正解析url,其中包括以下几个实现步骤_<br>
 先给控制器注入控制器类公共的初始数据及方法，再扩展公共数据及方法和写入自定义配置，并扩展属性，然后再实例化控制器，最后再判断方法的存在性和正确性<br>
 
 之所以在实例化前做数据初始化，属性及配置扩展等操作，是因为实例化后就不能写入初始化数据了，将导致每个应用控制器获取不到公共（数据、方法、配置等）参数了。
+
+## 控制器公共方法
+
+### 基础属性
+
+#### $_body
+
+* 类型： `any`
+
+* 作用：获取post请求数据，更多请参考 `ControllerInitDataOptions`
+
+#### $_rawTrailers
+
+* 类型： `[]`
+
+* 作用：-，更多请参考 `ControllerInitDataOptions`
+
+#### $_headers
+
+* 类型： `headersType`
+
+* 作用：请求头，更多请参考 `ControllerInitDataOptions`
+
+#### $_rawHeaders
+
+* 类型： `object`
+
+* 作用：原始请求头，更多请参考 `ControllerInitDataOptions`
+
+#### $_method
+
+* 类型： `string`
+
+* 作用：请求方式，更多请参考 `ControllerInitDataOptions`
+
+#### $_url
+
+* 类型： `string`
+
+* 作用：请求url，更多请参考 `ControllerInitDataOptions`
+
+#### $_urlParse
+
+* 类型： `object`
+
+* 作用：解析后的url，更多请参考 `ControllerInitDataOptions`
+
+#### $_query
+
+* 类型： `object`
+
+* 作用：get请求参数，更多请参考 `ControllerInitDataOptions`
+
+#### $_send
+
+* 类型： `function`
+
+* 参数：
+
+```typescript
+/**
+ *
+ * @param sendData 任意数据
+ */
+```
+
+* 作用：发送数据给客户端，更多请参考 `ControllerInitDataOptions`
+
+#### $_RequestStatus
+
+* 类型： `number`
+
+* 作用：设置响应状态码，更多请参考 `ControllerInitDataOptions`
+
+#### $_RequestHeaders
+
+* 类型： `headersType`
+
+* 作用：设置headers请求头，更多请参考 `ControllerInitDataOptions`
+
+#### $mysql
+
+* 类型： `mysql`
+
+* 作用：数据库工具，更多请参考 `mysql工具库 或 mySql数据库操作`
+
+#### __dir
+
+* 类型： `string`
+
+* 作用：控制器路径，更多请参考 `ControllerInitDataOptions`
+
+#### $methodName
+
+* 类型： `string`
+
+* 作用：当前请求的控制器方法名称，更多请参考 `ControllerInitDataOptions`
+
+#### $urlArrs
+
+* 类型： `any[]`
+
+* 作用：控制器url路由解析后的数据，更多请参考 `ControllerInitDataOptions`
+
+#### $ControllerConfig
+
+* 类型： `object`
+
+* 作用：控制器配置，更多请参考 `ControllerInitDataOptions`
+
+#### StatusCode
+
+* 类型： `object`
+
+* 作用：全局状态码配置，更多请参考 `ControllerInitDataOptions`
+
+### 公共方法
+
+#### setHeaders
+
+* 类型： `function`
+
+* 参数： 
+
+```typescript
+/**
+ * 设置header头
+ * @param Headers
+ */
+```
+
+* 作用：设置header请求头，更多请参考 `ControllerInitDataOptions`
+
+#### setRequestStatus
+
+* 类型： `function`
+
+* 参数： 
+
+```typescript
+/**
+     * $mysql实例化
+     * @constructor
+     */
+```
+
+* 作用：设置响应状态码，更多请参考 `ControllerInitDataOptions`
+
+#### DB
+
+* 类型： `function`
+
+* 参数： 
+
+```typescript
+/**
+     * $mysql实例化
+     * @param optionsConfig 数据库配置
+     * @param isEnd 执行完是否放开数据库连接
+     * @constructor
+     */
+```
+
+* 作用：$mysql实例化，更多请参考 `ControllerInitDataOptions`
+
+#### Render
+
+* 类型： `function`
+
+* 参数： 
+
+```typescript
+/**
+     * 渲染模板
+     * @param TemplatePath 模板路径
+     * @param TemplateData 模板数据
+     * @param bool 是否为主控制器渲染
+     * @constructor
+     */
+```
+
+* 作用：渲染模板，更多请参考 `ControllerInitDataOptions`
+
+#### UrlParse
+
+* 类型： `function`
+
+* 参数： 
+
+```typescript
+/**
+     * 控制器及url解析
+     * @constructor
+     */
+```
+
+* 作用：控制器及url解析，更多请参考 `ControllerInitDataOptions`
+
+#### $_log
+
+* 类型： `function`
+
+* 参数： 
+
+```typescript
+/**
+     * 日志输出
+     * @param args 输出的参数数据
+     */
+```
+
+* 作用：日志输出，更多请参考 `ControllerInitDataOptions`
+
+#### writeLogFile
+
+* 类型： `function`
+
+* 参数： 
+
+```typescript
+/**
+     * 写入日志
+     * @param args 输出的参数数据
+     * @param logPath 日志路径
+     * @param oldData 旧日志数据
+     */
+```
+
+* 作用：写入日志，更多请参考 `ControllerInitDataOptions`
+
+#### $_success
+
+* 类型： `function`
+
+* 参数： 
+
+```typescript
+/**
+     * 成功提示工具
+     * @param msg 提示信息
+     * @param sendData 发送数据
+     * @param code 状态码
+     */
+```
+
+* 作用：成功提示工具，更多请参考 `ControllerInitDataOptions`
+
+#### $_error
+
+* 类型： `function`
+
+* 参数： 
+
+```typescript
+/**
+     * 错误提示工具
+     * @param msg 提示信息
+     * @param sendData 发送数据
+     * @param code 状态码
+     */
+```
+
+* 作用：错误提示工具，更多请参考 `ControllerInitDataOptions`
 
 ## mySql数据库操作
 
@@ -991,6 +1284,22 @@ export interface TimingTaskQueueOptions {
     isClearLogTime?:boolean;//是否开启清除日志任务
     ClearLogAppointTime?(date?:Date):number;//是否开启指定时间内清除日志任务,返回值应为一个制定的时间戳
     ClearLogTimeFrame?:number;//可允许清除日志的指定时间的上下浮动范围，这样可以确保任务的执行
+}
+
+export interface SuccessSendDataOptions {
+    code?:number;//状态码
+    msg?:string;//信息
+    data?:any;//数据
+}
+
+
+export interface StatusCodeOptions {
+    [propName:string]:StatusCodeOptions_format
+}
+
+export interface StatusCodeOptions_format{
+    code?:number;//状态码
+    msg?:string;//状态码描述
 }
 
 ```
