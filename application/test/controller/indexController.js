@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var applicationController_1 = require("../../../UnityFrontUtils/controller/applicationController");
 var axios_1 = require("axios");
 var http = require("http");
@@ -29,7 +29,7 @@ var IndexController = /** @class */ (function (_super) {
         //     'Content-Type': 'text/html; charset=utf-8',
         // });
         // this.$_RequestStatus = 500;
-        axios_1.default({
+        axios_1["default"]({
             url: "http://apis.juhe.cn/cnoil/oil_city",
             params: {
                 'key': 'a2e387effbe81dda89d35eb947b15485'
@@ -59,10 +59,10 @@ var IndexController = /** @class */ (function (_super) {
                     });
                 });
             }
-        }).catch(function (err) {
+        })["catch"](function (err) {
             _this.$_send(err);
         });
     };
     return IndexController;
-}(applicationController_1.default));
+}(applicationController_1["default"]));
 exports.IndexController = IndexController;
