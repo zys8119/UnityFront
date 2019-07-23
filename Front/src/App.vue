@@ -8,6 +8,9 @@
 import lib_setInterval from "@/lib/setInterval"
 export default {
   name: 'App',
+  created(){
+    window.__vm__ = this;
+  },
   mounted() {
     //全局定时器
     setInterval(()=>{
