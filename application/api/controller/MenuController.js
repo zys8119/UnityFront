@@ -14,15 +14,19 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var applicationController_1 = require("../../../UnityFrontUtils/controller/applicationController");
-var IndexController = /** @class */ (function (_super) {
-    __extends(IndexController, _super);
-    function IndexController() {
+var MenuController = /** @class */ (function (_super) {
+    __extends(MenuController, _super);
+    function MenuController() {
         return _super.call(this) || this;
     }
-    IndexController.prototype.index = function () {
-        console.log(this.StatusCode);
-        this.$_success("Asdad");
+    MenuController.prototype.getMenuUi = function () {
+        var _this = this;
+        this.DB().select().from("uf_menu_ui").query().then(function (res) {
+            _this.$_success(res);
+        }).catch(function (err) {
+            _this.$_error();
+        });
     };
-    return IndexController;
+    return MenuController;
 }(applicationController_1.default));
-exports.IndexController = IndexController;
+exports.MenuController = MenuController;

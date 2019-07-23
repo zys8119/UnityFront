@@ -12,21 +12,28 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var applicationController_1 = require("../../../UnityFrontUtils/controller/applicationController");
 var installController = /** @class */ (function (_super) {
     __extends(installController, _super);
     function installController() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super.call(this) || this;
+        _this.prefix = "uf_";
+        _this.sql = [
+            "\n        CREATE TABLE IF NOT EXISTS " + _this.prefix + "menu_ui\n        (id  int(11) NOT NULL AUTO_INCREMENT,\n            name  varchar(25) NULL COMMENT 'ui\u540D\u79F0' ,\n            type  varchar(25) NULL COMMENT 'ui\u7C7B\u578B' ,\n            path  varchar(255) NULL COMMENT 'ui\u8DEF\u5F84' ,\n        PRIMARY KEY (id))\n        "
+        ];
+        _this.sqlStr = "";
+        _this.sqlStr = _this.sql.join(";");
+        return _this;
     }
     installController.prototype.install = function () {
         var _this = this;
-        this.DB().query("\n        CREATE DATABASE IF NOT EXISTS " + this.$_body.sql.dataBaseName + " \n        DEFAULT CHARACTER SET utf8\n        DEFAULT COLLATE utf8_general_ci1;\n        ").then(function (res) {
-            _this.$_success("数据库创建成功");
-        }).catch(function (err) {
-            _this.$_error("数据库创建失败");
+        this.DB().query(this.sqlStr).then(function (res) {
+            _this.$_success("安装成功");
+        })["catch"](function (err) {
+            _this.$_error("安装失败");
         });
     };
     return installController;
-}(applicationController_1.default));
+}(applicationController_1["default"]));
 exports.installController = installController;

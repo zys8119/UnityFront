@@ -13,7 +13,9 @@ export default {
                 });
             }
         }).then(res=>{
-            console.log(res);
+            if(res.code == 200){
+                this.$vux.toast.text(res.msg);
+            }
         })
     }
 }

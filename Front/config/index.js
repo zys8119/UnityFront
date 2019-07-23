@@ -12,13 +12,15 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/':{
-        target:"http://localhost:8080",
+        target:"http://localhost:8080/api/",
         // changeOrigin: true,
         pathRewrite: {
           '^/': '/',
         },
       }
     },
+    // $$rootUrl:"'http://localhost:8080/api/'",
+    $$rootUrl:"''",
 
     // Various Dev Server settings
     host: 'localhost', // can be overwritten by process.env.HOST

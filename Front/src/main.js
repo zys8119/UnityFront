@@ -10,7 +10,6 @@ import layoutInitState from "./store/layoutInitState"
 Vue.config.productionTip = false
 
 
-
 router.beforeEach((to,from,next)=>{
     loginVue(to, from, next, store,{
         layoutInitState

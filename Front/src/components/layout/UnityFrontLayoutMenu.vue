@@ -25,6 +25,14 @@
             return {
                 MenuList:MenuList
             }
+        },
+        mounted() {
+            try {
+                console.log(this.api().getMenuUi(),2222222222)
+                this.api().getMenuUi().then(res=>{
+                    console.log(res);
+                });
+            }catch (e) {}
         }
     }
 </script>
