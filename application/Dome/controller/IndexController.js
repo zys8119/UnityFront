@@ -20,6 +20,7 @@ var IndexController = /** @class */ (function (_super) {
         return _super.call(this) || this;
     }
     IndexController.prototype.index = function () {
+        console.log(this.StatusCode);
         this.$_success("Asdad");
     };
     return IndexController;

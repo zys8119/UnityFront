@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var index_1 = require("../config/index");
 var index_2 = require("../static/index");
 var index_3 = require("../utils/index");
@@ -21,7 +21,7 @@ var controller = /** @class */ (function () {
                 break;
             default:
                 //todo ====开放资源目录==start
-                new index_2.default(ControllerInitData, function () {
+                new index_2["default"](ControllerInitData, function () {
                     //todo 其他路径处理
                     _this.ControllerParamesInit(request, response, ControllerInitData);
                 });
@@ -38,9 +38,9 @@ var controller = /** @class */ (function () {
         var filePath = "./main";
         var $methodName = "index";
         var Main = require(filePath);
-        index_3.default.ControllerInitData.call(this, ControllerInitData, Main.main, $methodName, index_1.ServerConfig, path.resolve(__dirname, filePath));
+        index_3["default"].ControllerInitData.call(this, ControllerInitData, Main.main, $methodName, index_1.ServerConfig, path.resolve(__dirname, filePath));
         new Main.main().index();
     };
     return controller;
 }());
-exports.default = controller;
+exports["default"] = controller;

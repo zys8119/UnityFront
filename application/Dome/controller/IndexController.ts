@@ -6,6 +6,7 @@ export class IndexController extends  applicationController{
         }
 
         index(){
+            console.log(this.StatusCode)
             this.$_success("Asdad");
         }
 
