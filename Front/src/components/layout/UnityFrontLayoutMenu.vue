@@ -23,14 +23,23 @@
         },
         data(){
             return {
-                MenuList:MenuList
+                MenuList:_.cloneDeep(MenuList)
             }
         },
         mounted() {
             try {
-                console.log(this.api().getMenuUi(),2222222222)
                 this.api().getMenuUi().then(res=>{
-                    console.log(res);
+                    if(res.code){
+                        this.MenuList[1].child[0].child = res.data.map(e=>{
+                            return {
+                                ...e,
+                                title:e.name,
+                                run:item=>{
+                                    console.log(item.path)
+                                }
+                            }
+                        });
+                    }
                 });
             }catch (e) {}
         }

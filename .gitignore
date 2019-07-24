@@ -1,3 +1,5 @@
 .idea/
 node_modules/
 v8/
+isolate.*.log
+*.log

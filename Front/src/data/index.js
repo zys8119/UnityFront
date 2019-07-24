@@ -10,11 +10,7 @@ export const MenuList = [
                 }},
         ]},
     { title:"编辑",child:[
-        { title:"创建UI" ,groupEnd:true ,child:[
-            {title:"input",run:function () {
-                   console.log(this.$utils.SearchParentKey(this.$root))
-            }}
-        ]}
+        { title:"创建UI" ,groupEnd:true ,child:[]}
     ] },
     { title:"资源" },
     { title:"UnityFront对象" },

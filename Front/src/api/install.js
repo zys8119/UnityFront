@@ -4,7 +4,7 @@ export default {
         this.action({
             moduleName:"install_api",
             method:"post",
-            url:"/install/install/install",
+            url:"install/install",
             data:this.airforce.install,
             resthen:()=>{
                 this.action({
