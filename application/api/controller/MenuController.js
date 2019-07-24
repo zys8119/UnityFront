@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var applicationController_1 = require("../../../UnityFrontUtils/controller/applicationController");
 var MenuController = /** @class */ (function (_super) {
     __extends(MenuController, _super);
@@ -23,10 +23,10 @@ var MenuController = /** @class */ (function (_super) {
         var _this = this;
         this.DB().select().from("uf_menu_ui").query().then(function (res) {
             _this.$_success(res);
-        }).catch(function (err) {
+        })["catch"](function (err) {
             _this.$_error();
         });
     };
     return MenuController;
-}(applicationController_1.default));
+}(applicationController_1["default"]));
 exports.MenuController = MenuController;
