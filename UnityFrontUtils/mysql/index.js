@@ -73,6 +73,21 @@ var mysql = /** @class */ (function () {
             this.showSqlStrBool = showSqlStr;
         }
         var sqlStrs = sqlStr || this.selectSql;
+        try {
+            var sqlStrsMatch = sqlStrs.match(/#\{(.|\n)*?\}#/img) || [];
+            sqlStrsMatch.forEach(function (e) {
+                var val = e.replace(/^#\{|\}#$/img, "");
+                try {
+                    eval(val);
+                }
+                catch (e) {
+                    val = "'" + val + "'";
+                }
+                sqlStrs = sqlStrs.replace(e, val);
+            });
+        }
+        catch (e) { }
+        ;
         if (this.showSqlStrBool) {
             ncol.success(sqlStrs);
             return new Promise(function (resolve, reject) {
@@ -80,6 +95,7 @@ var mysql = /** @class */ (function () {
                 _this.end();
             });
         }
+        ;
         return new Promise(function (resolve, reject) {
             _this.connection.query(sqlStrs, function (error, results, fields) {
                 if (error) {
