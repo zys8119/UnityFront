@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var applicationController_1 = require("../../../UnityFrontUtils/controller/applicationController");
 var installController = /** @class */ (function (_super) {
     __extends(installController, _super);
@@ -31,19 +31,14 @@ var installController = /** @class */ (function (_super) {
     }
     installController.prototype.install = function () {
         var _this = this;
-        var a = "asd ad";
-        this.DB().select().from("uf_menu_ui").where("#{" + "adadsa" + "}# name=#{" + a + "}##{" + "1 or b = 2#{}" + "}#and nn=#{" + "1 or b = 2#{}" + "}#\"", true).query();
-        this.$_success("安装成功");
-        return;
-        this.DB().select().from("uf_menu_ui").where({ 'a and aa': true, c: 5 }, true).query();
         this.DB({
-            multipleStatements: true
+            multipleStatements: true,
         }).query(this.sqlStr, true).then(function (res) {
             _this.$_success("安装成功");
-        })["catch"](function (err) {
+        }).catch(function (err) {
             _this.$_error("安装失败");
         });
     };
     return installController;
-}(applicationController_1["default"]));
+}(applicationController_1.default));
 exports.installController = installController;

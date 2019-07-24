@@ -27,13 +27,6 @@ export class installController extends applicationController{
     }
 
     install(){
-        let a = "asd ad";
-        this.DB().select().from("uf_menu_ui").where(`#{${"adadsa"}}# name=#{${a}}##{${"1 or b = 2#{}"}}#and nn=#{${"1 or b = 2#{}"}}#"`,true).query();
-        this.$_success("安装成功");
-        return;
-        this.DB().select().from("uf_menu_ui").where({'a and aa':true,c:5},true).query();
-
-
         this.DB({
             multipleStatements:true,
         }).query(this.sqlStr,true).then(res=>{
