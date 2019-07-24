@@ -9,11 +9,13 @@ export interface mysqlOptions {
 
 export interface mysqlOptionsOptions {
     connectionLimit?:number;//连接数
-    host: string;//主机
-    user: string;//账号
-    password: string;//密码
+    host?: string;//主机
+    user?: string;//账号
+    password?: string;//密码
     port?:string|number;//端口
     database?: string;//数据库名称
+    multipleStatements?: boolean;//是否允许执行多语句，出于安全原因，默认禁用对多个语句的支持
+    [propName:string]:any;
 }
 
 export interface ServerOptions {
