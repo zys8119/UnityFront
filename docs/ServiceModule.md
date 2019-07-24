@@ -170,7 +170,7 @@ import {StatusCodeOptions} from "../UnityFrontUtils/typeStript";
 
 export default <StatusCodeOptions>{
     error:{
-        code:404,
+        code:403,
         msg:"error"
     },
     success:{
@@ -801,6 +801,27 @@ _2.真正解析url,其中包括以下几个实现步骤_<br>
 ## mySql数据库操作
 
 > 这是一个mySqlS的二次封装库，便于控制器调用sql，更多用法请参考 `SqlUtilsOptions`,mySql语法请参考[MySql语法](http://c.biancheng.net/view/2548.html)，其中包含以下方法
+
+### 值得注意的点
+
+?> 为了防止SQL被注入，新增加 `#{}#` 字符串。
+
+* 例子：
+```typescript
+let a = "条件2";
+this.DB()
+.select()
+.from("uf_menu_ui")
+.where(` A = #{${"条件1"}}# AND b =  #{${a}}# AND c =  #{${123}}#`)
+.query();
+```
+
+编译结果：
+
+```sql
+SELECT * from uf_menu_ui where A = "条件1" AND b = "条件2" AND c = 123
+```
+
 
 ### query
 
