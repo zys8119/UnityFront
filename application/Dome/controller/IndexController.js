@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var applicationController_1 = require("../../../UnityFrontUtils/controller/applicationController");
 var IndexController = /** @class */ (function (_super) {
     __extends(IndexController, _super);
@@ -24,5 +24,5 @@ var IndexController = /** @class */ (function (_super) {
         this.$_success("Asdad");
     };
     return IndexController;
-}(applicationController_1["default"]));
+}(applicationController_1.default));
 exports.IndexController = IndexController;
