@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var applicationController_1 = require("../../../UnityFrontUtils/controller/applicationController");
 var pdf = require('html-pdf');
 var IndexController = /** @class */ (function (_super) {
@@ -45,5 +45,5 @@ var IndexController = /** @class */ (function (_super) {
         });
     };
     return IndexController;
-}(applicationController_1.default));
+}(applicationController_1["default"]));
 exports.IndexController = IndexController;
