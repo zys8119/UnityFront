@@ -4,7 +4,6 @@ export default {
             moduleName:"Menu_getMenuUi",
             method:"post",
             url:"Menu/getMenuUi",
-            data:this.airforce.install,
             resthen:()=>{
                 this.action({
                     moduleName: "Menu_getMenuUi",
@@ -12,5 +11,18 @@ export default {
                 });
             }
         });
-    }
+    },
+    getProjectList(){
+        return this.action({
+            moduleName:"getProjectList",
+            method:"post",
+            url:"Menu/getProjectList",
+            resthen:()=>{
+                this.action({
+                    moduleName: "getProjectList",
+                    goods:null
+                });
+            }
+        });
+    },
 }

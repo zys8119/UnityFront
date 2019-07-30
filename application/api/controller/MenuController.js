@@ -19,9 +19,23 @@ var MenuController = /** @class */ (function (_super) {
     function MenuController() {
         return _super.call(this) || this;
     }
+    /**
+     *获取基础UI
+     */
     MenuController.prototype.getMenuUi = function () {
         var _this = this;
         this.DB().select().from("uf_menu_ui").query().then(function (res) {
+            _this.$_success(res);
+        }).catch(function (err) {
+            _this.$_error();
+        });
+    };
+    /**
+     *获取项目记录
+     */
+    MenuController.prototype.getProjectList = function () {
+        var _this = this;
+        this.DB().select().from("uf_project").query().then(function (res) {
             _this.$_success(res);
         }).catch(function (err) {
             _this.$_error();
