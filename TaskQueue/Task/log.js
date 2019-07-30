@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var utils_1 = require("../../UnityFrontUtils/utils");
 var config_1 = require("../../UnityFrontUtils/config");
 var path = require("path");
@@ -29,7 +29,7 @@ var LogTask = /** @class */ (function () {
         var RetainTime = config_1.TimingTaskQueue.LogsRetainTime;
         var MaxTime = getTime - RetainTime;
         //判断日志文件是需要保留
-        var logs = utils_1.default.getJsonFiles(path.resolve(__dirname, "../../UnityFrontUtils/log")).map(function (logItem) {
+        var logs = utils_1["default"].getJsonFiles(path.resolve(__dirname, "../../UnityFrontUtils/log")).map(function (logItem) {
             return {
                 path: logItem,
                 time: +(logItem.replace(/\.log$/g, "").split("__Time__")[1])
