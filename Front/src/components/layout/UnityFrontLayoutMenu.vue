@@ -57,6 +57,14 @@
                     }
                 });
             }catch (e) {}
+            this.$ZAlert.show({
+                title:"创建新项目",
+                components:"Alert/CreateNewProjects",
+                width:"500px",
+                props:{
+                    vm:()=>this
+                }
+            });
         }
     }
 </script>

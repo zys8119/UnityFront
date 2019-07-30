@@ -4,5 +4,9 @@ export default {
         sql:{
             dataBaseName:"unity_front"
         },
+    },
+    CreateNewProjects:{
+        project_name:null,
+        rmarks:null,
     }
 }

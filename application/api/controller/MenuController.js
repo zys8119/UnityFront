@@ -41,6 +41,20 @@ var MenuController = /** @class */ (function (_super) {
             _this.$_error();
         });
     };
+    /**
+     *创建新项目
+     */
+    MenuController.prototype.CreateNewProjects = function () {
+        var _this = this;
+        this.DB().insert("uf_project", {
+            project_name: this.$_body.project_name,
+            rmarks: this.$_body.rmarks || "",
+        }).query().then(function (res) {
+            _this.$_success();
+        }).catch(function (err) {
+            _this.$_error();
+        });
+    };
     return MenuController;
 }(applicationController_1.default));
 exports.MenuController = MenuController;

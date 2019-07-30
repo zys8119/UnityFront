@@ -1,3 +1,4 @@
+@import "fn";
 //todo 阿里图标库
 
 @font-face {
@@ -135,6 +136,9 @@ p{
       .webkit-scrollbar;
     }
   }
+  &.palr{
+    padding-left: 0 !important;
+  }
 
 
 }
@@ -187,5 +191,16 @@ p{
       }
     }
 
+  }
+}
+
+.z_XButton{
+  background-color: @themeColor2 !important;
+  color:@textColor !important;
+  font-size: 12px !important;
+  .linear-gradient(@themeColor2,@themeColor*0.9);
+  //cursor: pointer;
+  &:hover{
+    .linear-gradient(@themeColor2*0.9,@themeColor);
   }
 }

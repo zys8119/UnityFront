@@ -27,5 +27,18 @@ export class MenuController extends  applicationController{
         });
 
     }
+    /**
+     *创建新项目
+     */
+    CreateNewProjects(){
+        this.DB().insert("uf_project",{
+            project_name:this.$_body.project_name,
+            rmarks:this.$_body.rmarks || "",
+        }).query().then(res=>{
+            this.$_success();
+        }).catch(err=>{
+            this.$_error();
+        });
+    }
 
 }

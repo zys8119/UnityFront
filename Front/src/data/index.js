@@ -1,6 +1,15 @@
 export const MenuList = [
     { title:"文件" ,child:[
-            { title:"创建新项目" ,icon:"&#xe60e;"},
+            { title:"创建新项目" ,icon:"&#xe60e;",run:function (item){
+                this.$ZAlert.show({
+                    title:"创建新项目",
+                    components:"Alert/CreateNewProjects",
+                    width:"500px",
+                    props:{
+                        vm:()=>this
+                    }
+                });
+            }},
             { title:"打开项目" ,groupEnd:true ,icon:"&#xe669;"},
             { title:"打开记录",groupEnd:true ,icon:"&#xe64c;" , child:[
                 ]},
