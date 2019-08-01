@@ -11,7 +11,8 @@ exports.mysqlConfig = {
         user: 'root',
         password: 'admin123',
         port: '3306',
-        database: 'unity_front'
+        database: 'dome',
+        prefix: "uf_"
     }
 };
 //服务设置

@@ -15,6 +15,7 @@ export interface mysqlOptionsOptions {
     port?:string|number;//端口
     database?: string;//数据库名称
     multipleStatements?: boolean;//是否允许执行多语句，出于安全原因，默认禁用对多个语句的支持
+    prefix?:string;//数据库表前缀
     [propName:string]:any;
 }
 
