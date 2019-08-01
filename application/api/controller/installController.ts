@@ -1,4 +1,5 @@
 import applicationController from "../../../UnityFrontUtils/controller/applicationController";
+import { mysqlConfig } from "../../../UnityFrontUtils/config/index";
 
 export class installController extends applicationController{
     prefix = "uf_";
@@ -37,14 +38,28 @@ export class installController extends applicationController{
         this.sqlStr =this.sql.join("\n")
     }
 
+    /**
+     * 安装数据
+     */
     install(){
         this.DB({
             multipleStatements:true,
         }).query(this.sqlStr).then(res=>{
-            this.$_success("安装成功");
+            //查询数据库所有表
+            this.DB().select("table_name").from("information_schema.tables").where({
+                table_schema:mysqlConfig.options.database
+            }).query().then(res=>{
+                this.$_success("安装成功",res);
+            }).catch(err=>{
+                this.$_error("安装失败");
+            });
         }).catch(err=>{
             this.$_error("安装失败");
         });
+    }
+
+    queryTable(){
+
     }
 
 }

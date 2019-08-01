@@ -15,7 +15,7 @@ export const mysqlConfig = <mysqlOptions>{
         user: 'root',
         password: 'admin123',
         port: '3306',
-        database: 'unity_front'
+        database: 'unity_front',
     }
 };
 

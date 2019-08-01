@@ -1,9 +1,7 @@
 <template>
     <div class="install">
-        <h1>asdsad</h1>
-        <group title="数据库配置">
-            <x-input title="数据库名称" :value="airforce.install.sql.dataBaseName"
-            @on-change="airforce.input($event,'sql.dataBaseName','install')" :showClear="false"></x-input>
+        <h1>初始化项目</h1>
+        <group :title="`数据库配置,请先确保数据库 ${airforce.install.sql.dataBaseName}的存在，以实际项目为准`">
             <x-button type="primary" @click.native="install">安装</x-button>
         </group>
     </div>
