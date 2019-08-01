@@ -1163,6 +1163,8 @@ export interface mysqlOptionsOptions {
     password: string;//密码
     port?:string|number;//端口
     database?: string;//数据库名称
+    prefix?:string;//数据库前缀
+    [propName:string]:any;
 }
 
 export interface ServerOptions {
