@@ -36,8 +36,8 @@
                                 rmarks:null,
                             }
                         });
+                        this.vm.$ZAlert.hide();
                     }
-                    console.log(res);
                 }).catch(err=>{
                     this.vm.$vux.toast.text(err);
                 });
