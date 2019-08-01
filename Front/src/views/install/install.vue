@@ -1,5 +1,6 @@
 <template>
     <div class="install">
+        <h1>asdsad</h1>
         <group title="数据库配置">
             <x-input title="数据库名称" :value="airforce.install.sql.dataBaseName"
             @on-change="airforce.input($event,'sql.dataBaseName','install')" :showClear="false"></x-input>
