@@ -12,14 +12,14 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var applicationController_1 = require("../../../UnityFrontUtils/controller/applicationController");
 var index_1 = require("../../../UnityFrontUtils/config/index");
 var installController = /** @class */ (function (_super) {
     __extends(installController, _super);
     function installController() {
         var _this = _super.call(this) || this;
-        _this.prefix = "uf_";
+        _this.prefix = index_1.mysqlConfig.options.prefix;
         _this.sql = [
             "   SET FOREIGN_KEY_CHECKS=0;",
             //创建表menu_ui
@@ -32,27 +32,33 @@ var installController = /** @class */ (function (_super) {
         return _this;
     }
     /**
-     * 安装数据
+     * 安装数据表
      */
     installController.prototype.install = function () {
         var _this = this;
         this.DB({
-            multipleStatements: true
+            multipleStatements: true,
         }).query(this.sqlStr).then(function (res) {
             //查询数据库所有表
-            _this.DB().select("table_name").from("information_schema.tables").where({
-                table_schema: index_1.mysqlConfig.options.database
-            }).query().then(function (res) {
-                _this.$_success("安装成功", res);
-            })["catch"](function (err) {
-                _this.$_error("安装失败");
-            });
-        })["catch"](function (err) {
+            _this.queryTableNameList();
+        }).catch(function (err) {
             _this.$_error("安装失败");
         });
     };
-    installController.prototype.queryTable = function () {
+    /**
+     * 查询已安装的数据表
+     */
+    installController.prototype.queryTableNameList = function () {
+        var _this = this;
+        console.log(/DROP TABLE IF EXISTS(.)*/img.exec(this.sql.join("")));
+        this.DB().select("table_name").from("information_schema.tables").where({
+            table_schema: index_1.mysqlConfig.options.database
+        }).query().then(function (res) {
+            _this.$_success(res);
+        }).catch(function (err) {
+            _this.$_error();
+        });
     };
     return installController;
-}(applicationController_1["default"]));
+}(applicationController_1.default));
 exports.installController = installController;

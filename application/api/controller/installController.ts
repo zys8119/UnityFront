@@ -2,7 +2,7 @@ import applicationController from "../../../UnityFrontUtils/controller/applicati
 import { mysqlConfig } from "../../../UnityFrontUtils/config/index";
 
 export class installController extends applicationController{
-    prefix = "uf_";
+    prefix = mysqlConfig.options.prefix;
     sql = [
         `   SET FOREIGN_KEY_CHECKS=0;`,
         //创建表menu_ui
@@ -38,28 +38,33 @@ export class installController extends applicationController{
         this.sqlStr =this.sql.join("\n")
     }
 
+
     /**
-     * 安装数据
+     * 安装数据表
      */
     install(){
         this.DB({
             multipleStatements:true,
         }).query(this.sqlStr).then(res=>{
             //查询数据库所有表
-            this.DB().select("table_name").from("information_schema.tables").where({
-                table_schema:mysqlConfig.options.database
-            }).query().then(res=>{
-                this.$_success("安装成功",res);
-            }).catch(err=>{
-                this.$_error("安装失败");
-            });
+            this.queryTableNameList();
         }).catch(err=>{
             this.$_error("安装失败");
         });
     }
 
-    queryTable(){
-
+    /**
+     * 查询已安装的数据表
+     */
+    queryTableNameList(){
+        console.log(/DROP TABLE IF EXISTS(.)*/img.exec(this.sql.join("")))
+        this.DB().select("table_name").from("information_schema.tables").where({
+            table_schema:mysqlConfig.options.database
+        }).query().then(res=>{
+            this.$_success(res);
+        }).catch(err=>{
+            this.$_error();
+        });
     }
 
 }
