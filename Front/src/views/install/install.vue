@@ -38,10 +38,16 @@
             install(){
                 this.$vux.confirm.show({
                     title:"温馨提醒",
-                    content:"已安装的数据库将被覆盖"
+                    content:"已安装的数据库将被覆盖",
+                    onConfirm:() =>{
+                        this.api().install().then(res=>{
+                            if(res.code == 200){
+                                this.TableNameList = res.data;
+                                this.$vux.toast.text("安装成功");
+                            }
+                        });
+                    }
                 });
-                return;
-                this.api().install().then(res=>(res.code == 200)?this.TableNameList = res.data:null);
             }
         },
         mounted(){
