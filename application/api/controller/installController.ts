@@ -2,6 +2,7 @@ import applicationController from "../../../UnityFrontUtils/controller/applicati
 import { mysqlConfig } from "../../../UnityFrontUtils/config/index";
 
 export class installController extends applicationController{
+
     constructor(){
         super();
     }
