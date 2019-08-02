@@ -27,7 +27,7 @@ var MenuController = /** @class */ (function (_super) {
         this.DB().select().from("uf_menu_ui").query().then(function (res) {
             _this.$_success(res);
         }).catch(function (err) {
-            _this.$_error();
+            _this.$_error(err.message);
         });
     };
     /**
@@ -38,7 +38,7 @@ var MenuController = /** @class */ (function (_super) {
         this.DB().select().from("uf_project").query().then(function (res) {
             _this.$_success(res);
         }).catch(function (err) {
-            _this.$_error();
+            _this.$_error(err.message);
         });
     };
     /**
@@ -50,9 +50,13 @@ var MenuController = /** @class */ (function (_super) {
             project_name: this.$_body.project_name,
             rmarks: this.$_body.rmarks || "",
         }).query().then(function (res) {
-            _this.$_success();
+            _this.DB().select().from("uf_project").query().then(function (res) {
+                _this.$_success(res);
+            }).catch(function (err) {
+                _this.$_error(err.message);
+            });
         }).catch(function (err) {
-            _this.$_error();
+            _this.$_error(err.message);
         });
     };
     return MenuController;

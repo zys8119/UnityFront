@@ -50,21 +50,13 @@
                                 ...e,
                                 title:e.project_name,
                                 run:item=>{
-                                    console.log(item)
+                                    this.$utils.ProjectList.call(this,item);
                                 }
                             }
                         });
                     }
                 });
             }catch (e) {}
-            this.$ZAlert.show({
-                title:"创建新项目",
-                components:"Alert/CreateNewProjects",
-                width:"500px",
-                props:{
-                    vm:()=>this
-                }
-            });
         }
     }
 </script>

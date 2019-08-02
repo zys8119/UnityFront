@@ -65,5 +65,14 @@ export default {
         }
         //滚动滑轮触发scrollFunc方法
         window.onmousewheel = document.onmousewheel = scrollFunc;
+    },
+    /**
+     * 项目打开记录执行
+     * @constructor vm
+     * @param item 项目对象
+     *
+     */
+    ProjectList(item){
+        console.log(item)
     }
 }

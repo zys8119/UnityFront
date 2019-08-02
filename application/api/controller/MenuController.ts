@@ -12,7 +12,7 @@ export class MenuController extends  applicationController{
         this.DB().select().from("uf_menu_ui").query().then(res=>{
             this.$_success(res);
         }).catch(err=>{
-            this.$_error();
+            this.$_error(err.message);
         });
     }
 
@@ -23,7 +23,7 @@ export class MenuController extends  applicationController{
         this.DB().select().from("uf_project").query().then(res=>{
             this.$_success(res);
         }).catch(err=>{
-            this.$_error();
+            this.$_error(err.message);
         });
 
     }
@@ -35,9 +35,13 @@ export class MenuController extends  applicationController{
             project_name:this.$_body.project_name,
             rmarks:this.$_body.rmarks || "",
         }).query().then(res=>{
-            this.$_success();
+            this.DB().select().from("uf_project").query().then(res=>{
+                this.$_success(res);
+            }).catch(err=>{
+                this.$_error(err.message);
+            });
         }).catch(err=>{
-            this.$_error();
+            this.$_error(err.message);
         });
     }
 

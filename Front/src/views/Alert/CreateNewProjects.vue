@@ -37,6 +37,19 @@
                             }
                         });
                         this.vm.$ZAlert.hide();
+                        try {
+                            this.vm.$parent.MenuList[0].child[2].child = res.data.map(e=>{
+                                return {
+                                    ...e,
+                                    title:e.project_name,
+                                    run:item=>{
+                                        this.vm.$utils.ProjectList.call(this,item);
+                                    }
+                                }
+                            });
+                        }catch (e) {
+
+                        }
                     }
                 }).catch(err=>{
                     this.vm.$vux.toast.text(err);
