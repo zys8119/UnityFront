@@ -16,6 +16,9 @@
             UnityFrontLayoutTool,
             UnityFrontLayoutComponentPane,
             UnityFrontLayoutView
+        },
+        beforeDestroy() {
+            this.$ZAlert.hide();
         }
     }
 </script>

@@ -57,11 +57,40 @@ export class installController extends applicationController{
      * 查询已安装的数据表
      */
     queryTableNameList(){
-        console.log(/DROP TABLE IF EXISTS(.)*/img.exec(this.sql.join("")))
+        let sqlMatch = this.sql
+            .join("")
+            .match(/DROP TABLE IF EXISTS \`.*\`/img);
+        let TableName = [];
+        if(sqlMatch){
+            TableName = sqlMatch.map(e=>{
+                var name = /(?:DROP TABLE IF EXISTS `(.*)`$)/.exec(e);
+                if(name && name[1]){
+                    return {
+                        name:name[1],
+                        install:false
+                    };
+                }
+                return e;
+            });
+        };
         this.DB().select("table_name").from("information_schema.tables").where({
             table_schema:mysqlConfig.options.database
         }).query().then(res=>{
-            this.$_success(res);
+            res.forEach(resItem=>{
+                let indexName = TableName.some(tn=>{
+                    if(tn.name == resItem.table_name){
+                        tn.install = true;
+                        return true;
+                    };
+                });
+                if(!indexName){
+                    TableName.push({
+                        name:resItem.table_name,
+                        install:true
+                    })
+                }
+            });
+            this.$_success(TableName);
         }).catch(err=>{
             this.$_error();
         });
