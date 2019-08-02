@@ -2,13 +2,21 @@ import applicationController from "../../../UnityFrontUtils/controller/applicati
 import { mysqlConfig } from "../../../UnityFrontUtils/config/index";
 
 export class installController extends applicationController{
-    prefix = mysqlConfig.options.prefix;
-    sql = [
-        `   SET FOREIGN_KEY_CHECKS=0;`,
-        //创建表menu_ui
-        `
-            DROP TABLE IF EXISTS \`${this.prefix}menu_ui\`;
-            CREATE TABLE \`${this.prefix}menu_ui\` (
+    constructor(){
+        super();
+    }
+
+    /**
+     * 获取sql
+     * @param prefix 表前缀
+     */
+    getSql(prefix:string = mysqlConfig.options.prefix){
+        return [
+            `   SET FOREIGN_KEY_CHECKS=0;`,
+            //创建表menu_ui
+            `
+            DROP TABLE IF EXISTS \`${prefix}menu_ui\`;
+            CREATE TABLE \`${prefix}menu_ui\` (
                 id  int(11) NOT NULL AUTO_INCREMENT,
                 name  varchar(25) NULL COMMENT 'ui名称' ,
                 type  varchar(25) NULL COMMENT 'ui类型' ,
@@ -16,36 +24,29 @@ export class installController extends applicationController{
                 PRIMARY KEY (id)
             ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
             -- ----------------------------
-            -- 记录 of uf_menu_ui
+            -- 记录 of menu_ui
             -- ----------------------------
-            INSERT INTO \`${this.prefix}menu_ui\` values (1,'input','input','vux/XInput');
+            INSERT INTO \`${prefix}menu_ui\` values (1,'input','input','vux/XInput');
         `,
-        //创建表project
-        `
-            DROP TABLE IF EXISTS \`${this.prefix}project\`;
-            CREATE TABLE IF NOT EXISTS \`${this.prefix}project\` (
+            //创建表project
+            `
+            DROP TABLE IF EXISTS \`${prefix}project\`;
+            CREATE TABLE IF NOT EXISTS \`${prefix}project\` (
                 id  int(11) NOT NULL AUTO_INCREMENT,
                 project_name  varchar(25) NULL COMMENT '项目名称' ,
                 rmarks  varchar(25) not NULL COMMENT '项目备注' default 'asd',
                 PRIMARY KEY (id)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
         `,
-    ];
-    sqlStr = ``;
-
-    constructor(){
-        super();
-        this.sqlStr =this.sql.join("\n")
+        ].join("\n");
     }
-
-
     /**
      * 安装数据表
      */
     install(){
         this.DB({
             multipleStatements:true,
-        }).query(this.sqlStr).then(res=>{
+        }).query(this.getSql(this.$_body.sql.prefix)).then(res=>{
             //查询数据库所有表
             this.queryTableNameList();
         }).catch(err=>{
@@ -57,8 +58,8 @@ export class installController extends applicationController{
      * 查询已安装的数据表
      */
     queryTableNameList(){
-        let sqlMatch = this.sql
-            .join("")
+        let sql = this.getSql(this.$_body.sql.prefix);
+        let sqlMatch = sql
             .match(/DROP TABLE IF EXISTS \`.*\`/img);
         let TableName = [];
         if(sqlMatch){

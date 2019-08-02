@@ -1,6 +1,13 @@
 <template>
     <div class="install">
         <h1>初始化项目</h1>
+        <group :title="`数据库配置,请先确保数据库 ${airforce.install.sql.dataBaseName}的存在，以实际项目为准`">
+            <x-input title="数据表前缀"
+                :value="airforce.install.sql.prefix"
+                @on-change="airforce.input($event,'sql.prefix','install')"
+            ></x-input>
+            <x-button type="primary" @click.native="install">安装</x-button>
+        </group>
         <load-more tip="数据库安装信息" :showLoading="false"></load-more>
         <div class="codeBox">
             <code>
@@ -10,9 +17,6 @@
                 <p class="msg" v-for="item in notInstallList">{{item.name}}<span class="iconfont err">&#xe755;</span></p>
             </code>
         </div>
-        <group :title="`数据库配置,请先确保数据库 ${airforce.install.sql.dataBaseName}的存在，以实际项目为准`">
-            <x-button type="primary" @click.native="install">安装</x-button>
-        </group>
     </div>
 </template>
 
