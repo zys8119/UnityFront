@@ -14,35 +14,15 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var applicationController_1 = require("../../../UnityFrontUtils/controller/applicationController");
-var pdf = require('html-pdf');
 var IndexController = /** @class */ (function (_super) {
     __extends(IndexController, _super);
     function IndexController() {
         return _super.call(this) || this;
     }
     IndexController.prototype.index = function () {
-        console.log(this.StatusCode.error.code);
-        this.$_send("创建成功");
-    };
-    IndexController.prototype.toPdf = function (template, options, reg, filename) {
-        /**
-         template: html 模板
-         options: 配置
-         reg: 正则匹配规则
-         filename: 输出pdf文件路径及文件名
-         */
-        // 将所有匹配规则在html模板中匹配一遍
-        if (reg && Array.isArray(reg)) {
-            reg.forEach(function (item) {
-                template = template.replace(item.relus, item.match);
-            });
-        }
-        pdf.create(template, options).toFile(filename, function (err, res) {
-            if (err) {
-                return console.log(err);
-            }
-            console.log(res);
-        });
+        this.$_log("as");
+        console.log("写入成功");
+        this.$_success();
     };
     return IndexController;
 }(applicationController_1["default"]));

@@ -183,8 +183,7 @@ var applicationController = /** @class */ (function () {
             ;
             //todo 判断控制器类3
             //清除控制器缓存，以保证最新控制器
-            require.cache[ControllerPath] = null;
-            //获取最新控制器
+            delete require.cache[ControllerPath];
             var ControllerClass = require(ControllerPath);
             var ControllerClassName = urlArrs[1] + "Controller";
             if (Object.keys(ControllerClass).indexOf(ControllerClassName) == -1) {
