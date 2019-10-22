@@ -1,6 +1,4 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = {
+export default {
     mysqlConfig: {
         host: 'localhost',
         user: 'root',
@@ -8,4 +6,4 @@ exports.default = {
         port: '3306',
         database: 'dome'
     }
-};
+}

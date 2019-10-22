@@ -212,7 +212,7 @@ class mysql {
         if(showSqlStr){this.showSqlStrBool = showSqlStr;}
         this.selectSql = `UPDATE ${TabelName} SET `;
         if(newData){
-            this.selectSql += this.sqlFormat(newData);
+            this.selectSql += this.sqlFormat(newData,"=",",");
         }
         return this;
     }

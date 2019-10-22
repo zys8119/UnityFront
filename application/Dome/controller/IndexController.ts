@@ -31,4 +31,20 @@ export class IndexController extends  applicationController{
             });
         }
 
+        sql(){
+            let a = "or";
+            this.DB(this.$ControllerConfig.mysqlConfig)
+                .update("aa",{
+                    col2:1,
+                    col1:1,
+                    col3:1,
+                    col4:1,
+                }).where({id:`${a}`},true)
+            .query()
+            .then(res=>{
+                this.$_success();
+            }).catch(err=>{
+                this.$_error(err);
+            });
+        }
 }
