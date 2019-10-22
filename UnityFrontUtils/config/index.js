@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var index_1 = require("../../TaskQueue/index");
 var path = require("path");
 //数据库配置
@@ -30,7 +30,7 @@ exports.ServerConfig = {
     headers: {
         'Content-Type': 'text/json; charset=utf-8',
         'Access-Control-Allow-Origin': "*",
-        'Access-Control-Allow-Methods': 'GET',
+        'Access-Control-Allow-Methods': 'GET'
     },
     Template: {
         viewsPath: path.resolve(__dirname, "../../views"),
@@ -41,7 +41,7 @@ exports.ServerConfig = {
         suffix: ".html",
         urlVars: {
             "__STATIC__": "/public/static",
-            "__PUBLIC__": "/public",
+            "__PUBLIC__": "/public"
         }
     },
     TimingTaskQueue: true
@@ -49,8 +49,8 @@ exports.ServerConfig = {
 //定时任务设置
 exports.TimingTaskQueue = {
     TaskQueue: function () {
-        if (Object.prototype.toString.call(index_1.default) == '[object Array]') {
-            index_1.default.forEach(function (TaskItem) {
+        if (Object.prototype.toString.call(index_1["default"]) == '[object Array]') {
+            index_1["default"].forEach(function (TaskItem) {
                 try {
                     if (typeof TaskItem == "function") {
                         new TaskItem();
@@ -69,5 +69,5 @@ exports.TimingTaskQueue = {
     //默认允许每天的凌晨的清除日志任务
     ClearLogAppointTime: function (DateObj) { return DateObj.setHours(0, 0, 0, 0); },
     //默认允许指定时间的上下范围20000毫秒
-    ClearLogTimeFrame: 10000,
+    ClearLogTimeFrame: 10000
 };
