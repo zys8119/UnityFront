@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 require("../typeStript");
 var config_1 = require("../config");
 var mysqlTool = require('mysql');
@@ -215,7 +215,7 @@ var mysql = /** @class */ (function () {
      *
      * @param showSqlStr 是否输出sql字符串，默认不输出
      */
-    mysql.prototype.delete = function (showSqlStr) {
+    mysql.prototype["delete"] = function (showSqlStr) {
         if (showSqlStr) {
             this.showSqlStrBool = showSqlStr;
         }
@@ -300,4 +300,4 @@ var mysql = /** @class */ (function () {
     };
     return mysql;
 }());
-exports.default = mysql;
+exports["default"] = mysql;
