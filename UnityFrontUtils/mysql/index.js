@@ -234,7 +234,7 @@ var mysql = /** @class */ (function () {
         }
         this.selectSql = "UPDATE " + TabelName + " SET ";
         if (newData) {
-            this.selectSql += this.sqlFormat(newData);
+            this.selectSql += this.sqlFormat(newData, "=", ",");
         }
         return this;
     };
