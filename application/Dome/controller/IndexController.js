@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var applicationController_1 = require("../../../UnityFrontUtils/controller/applicationController");
 var IndexController = /** @class */ (function (_super) {
     __extends(IndexController, _super);
@@ -20,9 +20,10 @@ var IndexController = /** @class */ (function (_super) {
         return _super.call(this) || this;
     }
     IndexController.prototype.index = function () {
-        console.log(this.StatusCode);
-        this.$_success("Asdad");
+        this.$_log("as");
+        console.log("写入成功");
+        this.$_success();
     };
     return IndexController;
-}(applicationController_1.default));
+}(applicationController_1["default"]));
 exports.IndexController = IndexController;

@@ -63,14 +63,14 @@ var staticIndex = /** @class */ (function () {
         this.ControllerInitData.$_send({
             data: "<h1>\u8D44\u6E90\u4E0D\u5B58\u5728\uFF1A404</h1>",
             RequestStatus: 404,
-            headers: __assign({}, config_1.ServerConfig.headers, { 'Content-Type': 'text/html; charset=utf-8' })
+            headers: __assign(__assign({}, config_1.ServerConfig.headers), { 'Content-Type': 'text/html; charset=utf-8' })
         });
     };
     staticIndex.prototype.sendStatic = function (ContentType, data) {
         this.ControllerInitData.$_send({
             data: data,
             RequestStatus: config_1.ServerConfig.RequestStatus,
-            headers: __assign({}, config_1.ServerConfig.headers, { 'Content-Type': ContentType + " charset=utf-8" })
+            headers: __assign(__assign({}, config_1.ServerConfig.headers), { 'Content-Type': ContentType + " charset=utf-8" })
         });
     };
     staticIndex.prototype.getFileData = function (filePath, ContentType, encoding, fileType) {

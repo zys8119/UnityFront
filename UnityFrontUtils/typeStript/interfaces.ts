@@ -128,14 +128,16 @@ export interface SqlUtilsOptions {
 }
 
 export interface ControllerInitDataOptions {
+    request?:any;//请求体
+    response?:any;//返回体
     $_body?:any;//body数据
     $_rawTrailers?:[];
     $_headers?:headersType;//headers数据
-    $_rawHeaders?:object;//rawHeaders数据
+    $_rawHeaders?:any;//rawHeaders数据
     $_method?:string;//请求方式
     $_url?:string;//url
-    $_urlParse?:object;//格式化url数据
-    $_query?:object;//query数据
+    $_urlParse?:any;//格式化url数据
+    $_query?:any;//query数据
     $_send?(sendData:any):any;//发送数据的方法
     $_RequestStatus?:number;// 请求状态设置
     $_RequestHeaders?:headersType;//headers头设置
@@ -143,7 +145,7 @@ export interface ControllerInitDataOptions {
     __dir?:string;//当前控制器位置
     $methodName?:string;//当前控制器执行的方法名称
     $urlArrs?:any[];//控制器url数组
-    $ControllerConfig?:object;//控制器配置
+    $ControllerConfig?:any;//控制器配置
     StatusCode?:StatusCodeOptions;//公共状态码定义
 }
 

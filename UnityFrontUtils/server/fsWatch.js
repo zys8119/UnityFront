@@ -20,12 +20,12 @@ var fsWatch = /** @class */ (function () {
             fs.watch(filePath.path, options, function (eventType, filename) {
                 config_1.ServerConfig.fsWatch.forEach(function (filePath) {
                     if (filePath.type == "file") {
-                        require.cache[filePath.path] = null;
+                        delete require.cache[filePath.path];
                         return;
                     }
                     utils_1.default.getJsonFiles(filePath.path, function (DirFilePath) {
                         if (fs.existsSync(DirFilePath)) {
-                            require.cache[DirFilePath] = null;
+                            delete require.cache[DirFilePath];
                         }
                     });
                 });

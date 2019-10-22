@@ -10,6 +10,8 @@ module.exports = (request,response)=>{
         new bodyData(request,response,body=>{
             //初始化UnityFrontController控制器
             new UnityFrontController(request,response,{
+                request,
+                response,
                 $_body:body,
                 $_rawTrailers:request.rawTrailers,
                 $_headers:request.headers,

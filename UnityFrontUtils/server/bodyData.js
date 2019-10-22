@@ -1,5 +1,5 @@
 "use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 require("../typeStript");
 var formData_1 = require("../lib/formData");
 var qs = require('querystring');
@@ -17,7 +17,7 @@ var bodyData = /** @class */ (function () {
                 if (postData.indexOf("Content-Disposition: form-data") > -1) {
                     //获取multipart/form-data;数据
                     try {
-                        callback(new formData_1.default(postData));
+                        callback(new formData_1["default"](postData));
                     }
                     catch (err) {
                         callback({});
@@ -28,7 +28,7 @@ var bodyData = /** @class */ (function () {
                 else if (request.headers["content-type"].indexOf("multipart/form-data;") > -1) {
                     //获取multipart/form-data;数据
                     try {
-                        callback(new formData_1.default(postData));
+                        callback(new formData_1["default"](postData));
                     }
                     catch (err) {
                         callback({});
@@ -94,4 +94,4 @@ var bodyData = /** @class */ (function () {
     }
     return bodyData;
 }());
-exports.default = bodyData;
+exports["default"] = bodyData;
