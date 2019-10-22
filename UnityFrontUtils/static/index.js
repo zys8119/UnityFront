@@ -10,7 +10,7 @@ var __assign = (this && this.__assign) || function () {
     };
     return __assign.apply(this, arguments);
 };
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var config_1 = require("../config");
 var utils_1 = require("../utils");
 var path = require("path");
@@ -63,14 +63,14 @@ var staticIndex = /** @class */ (function () {
         this.ControllerInitData.$_send({
             data: "<h1>\u8D44\u6E90\u4E0D\u5B58\u5728\uFF1A404</h1>",
             RequestStatus: 404,
-            headers: __assign({}, config_1.ServerConfig.headers, { 'Content-Type': 'text/html; charset=utf-8' })
+            headers: __assign(__assign({}, config_1.ServerConfig.headers), { 'Content-Type': 'text/html; charset=utf-8' })
         });
     };
     staticIndex.prototype.sendStatic = function (ContentType, data) {
         this.ControllerInitData.$_send({
             data: data,
             RequestStatus: config_1.ServerConfig.RequestStatus,
-            headers: __assign({}, config_1.ServerConfig.headers, { 'Content-Type': ContentType + " charset=utf-8" })
+            headers: __assign(__assign({}, config_1.ServerConfig.headers), { 'Content-Type': ContentType + " charset=utf-8" })
         });
     };
     staticIndex.prototype.getFileData = function (filePath, ContentType, encoding, fileType) {
@@ -83,7 +83,7 @@ var staticIndex = /** @class */ (function () {
             switch (fileType) {
                 case ".html":
                 case ".htm":
-                    data = utils_1.default.replaceUrlVars(config_1.ServerConfig, data);
+                    data = utils_1["default"].replaceUrlVars(config_1.ServerConfig, data);
                     break;
             }
             ;
@@ -92,4 +92,4 @@ var staticIndex = /** @class */ (function () {
     };
     return staticIndex;
 }());
-exports.default = staticIndex;
+exports["default"] = staticIndex;

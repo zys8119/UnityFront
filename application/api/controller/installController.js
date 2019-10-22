@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var applicationController_1 = require("../../../UnityFrontUtils/controller/applicationController");
 var installController = /** @class */ (function (_super) {
     __extends(installController, _super);
@@ -32,13 +32,13 @@ var installController = /** @class */ (function (_super) {
     installController.prototype.install = function () {
         var _this = this;
         this.DB({
-            multipleStatements: true,
+            multipleStatements: true
         }).query(this.sqlStr, true).then(function (res) {
             _this.$_success("安装成功");
-        }).catch(function (err) {
+        })["catch"](function (err) {
             _this.$_error("安装失败");
         });
     };
     return installController;
-}(applicationController_1.default));
+}(applicationController_1["default"]));
 exports.installController = installController;
