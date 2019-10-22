@@ -5,14 +5,14 @@ var __extends = (this && this.__extends) || (function () {
             ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
             function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
         return extendStatics(d, b);
-    }
+    };
     return function (d, b) {
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var applicationController_1 = require("../../../UnityFrontUtils/controller/applicationController");
 var pdf = require('html-pdf');
 var IndexController = /** @class */ (function (_super) {
@@ -52,15 +52,15 @@ var IndexController = /** @class */ (function (_super) {
             col2: 1,
             col1: 1,
             col3: 1,
-            col4: 1,
+            col4: 1
         }).where({ id: "" + a }, true)
             .query()
             .then(function (res) {
             _this.$_success();
-        }).catch(function (err) {
+        })["catch"](function (err) {
             _this.$_error(err);
         });
     };
     return IndexController;
-}(applicationController_1.default));
+}(applicationController_1["default"]));
 exports.IndexController = IndexController;
