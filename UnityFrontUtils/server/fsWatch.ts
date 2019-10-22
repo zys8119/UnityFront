@@ -18,12 +18,12 @@ export default class fsWatch {
             fs.watch(filePath.path,options, (eventType, filename) => {
                 ServerConfig.fsWatch.forEach(filePath=>{
                     if(filePath.type == "file"){
-                        require.cache[filePath.path] = null;
+                        delete require.cache[filePath.path];
                         return;
                     }
                     Uitls.getJsonFiles(filePath.path,(DirFilePath)=>{
                         if(fs.existsSync(DirFilePath)){
-                            require.cache[DirFilePath] = null;
+                           delete require.cache[DirFilePath];
                         }
                     })
                 });

@@ -12,6 +12,8 @@ module.exports = function (request, response) {
         new bodyData_1["default"](request, response, function (body) {
             //初始化UnityFrontController控制器
             new controller_1["default"](request, response, {
+                request: request,
+                response: response,
                 $_body: body,
                 $_rawTrailers: request.rawTrailers,
                 $_headers: request.headers,

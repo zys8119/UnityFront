@@ -6,14 +6,16 @@ const fs = require('fs');
 const path = require('path');
 const pug = require('pug');
 export default class applicationController implements ControllerInitDataOptions {
+    request?:any;
+    response?:any;
     $_body?:any;
     $_rawTrailers:[];
     $_headers:headersType;
-    $_rawHeaders:object;
+    $_rawHeaders:any;
     $_method:string;
     $_url:string;
-    $_urlParse:object;
-    $_query:object;
+    $_urlParse:any;
+    $_query:any;
     $_send?(sendData:any):any;
     $_RequestStatus:number;
     $_RequestHeaders:headersType;
@@ -21,7 +23,7 @@ export default class applicationController implements ControllerInitDataOptions 
     __dir:string;
     $methodName:string;
     $urlArrs:any[];
-    $ControllerConfig:object;
+    $ControllerConfig:any;
     StatusCode:StatusCodeOptions;
 
     /**
@@ -197,8 +199,7 @@ export default class applicationController implements ControllerInitDataOptions 
 
             //todo 判断控制器类3
             //清除控制器缓存，以保证最新控制器
-            require.cache[ControllerPath] = null;
-            //获取最新控制器
+            delete require.cache[ControllerPath];
             let ControllerClass = require(ControllerPath);
             let ControllerClassName = urlArrs[1]+"Controller";
             if(Object.keys(ControllerClass).indexOf(ControllerClassName) == -1){
