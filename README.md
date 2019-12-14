@@ -45,3 +45,29 @@
 [pug模板语言](https://pugjs.org/api/getting-started.html)
 
 [docsify文档工具](https://docsify.js.org/#/zh-cn/quickstart)
+
+
+# 技巧
+
+【puppeteer 之爬虫】
+
+> `npm i puppeteer`
+
+```bash
+const puppeteer = require('puppeteer');
+puppeteer.launch().then(async browser => {
+  const page = await browser.newPage();
+  await page.goto('http://www.weather.com.cn/weather1d/101210401.shtml');
+  const resultHandle = await page.evaluateHandle(
+    js=>js,
+    await new Promise((resolve, reject) => {
+    ///todo 可执行的js
+    })
+  );
+  const result = await resultHandle.jsonValue();
+  await browser.close();
+  this.$_success(result);
+}).catch(err=>{
+  this.$_error(err.message)
+});
+```
