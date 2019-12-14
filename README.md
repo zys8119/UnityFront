@@ -54,20 +54,38 @@
 > 安装依赖 `npm i puppeteer`
 
 ```typescript
-const puppeteer = require('puppeteer');
-puppeteer.launch().then(async browser => {
-  const page = await browser.newPage();
-  await page.goto('http://www.weather.com.cn/weather1d/101210401.shtml');
-  const resultHandle = await page.evaluateHandle(
-    js=>js,
-    await new Promise((resolve, reject) => {
-    ///todo 可执行的js
-    })
-  );
-  const result = await resultHandle.jsonValue();
-  await browser.close();
-  this.$_success(result);
-}).catch(err=>{
-  this.$_error(err.message)
-});
+/**
+ * puppeteer 爬虫
+ * @param url
+ * @param jsContent
+ * @return Promise
+ * //=============示例========================
+ * puppeteer('http://www.baidu.com',resolve=>{
+      //执行上下文
+      resolve(result);
+   })
+ *
+ */
+puppeteer(url:string,jsContent:any){
+    return new Promise((resolve, reject) => {
+        try {
+            const puppeteer = require('puppeteer');
+            puppeteer.launch().then(async browser => {
+                const page = await browser.newPage();
+                await page.goto(url);
+                const resultHandle = await page.evaluateHandle(
+                    js => js,
+                    await page.evaluateHandle(()=> new Promise(jsContent))
+                );
+                const result = await resultHandle.jsonValue();
+                await browser.close();
+                resolve(result);
+            }).catch(err=>{
+                reject(err.message)
+            });
+        }catch (err) {
+            reject(err.message)
+        }
+    });
+}
 ```
