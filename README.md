@@ -55,37 +55,40 @@
 
 ```typescript
 /**
- * puppeteer 爬虫
- * @param url
- * @param jsContent
- * @return Promise
- * //=============示例========================
- * puppeteer('http://www.baidu.com',resolve=>{
-      //执行上下文
-      resolve(result);
-   })
- *
- */
-puppeteer(url:string,jsContent:any){
-    return new Promise((resolve, reject) => {
-        try {
-            const puppeteer = require('puppeteer');
-            puppeteer.launch().then(async browser => {
-                const page = await browser.newPage();
-                await page.goto(url);
-                const resultHandle = await page.evaluateHandle(
-                    js => js,
-                    await page.evaluateHandle(()=> new Promise(jsContent))
-                );
-                const result = await resultHandle.jsonValue();
-                await browser.close();
-                resolve(result);
-            }).catch(err=>{
+     * puppeteer 爬虫
+     * @param url
+     * @param jsContent
+     * @return Promise
+     * //=============示例========================
+         this.puppeteer('http://www.baidu.com',)=>new Promise((resolve, reject) => {
+                resolve([]);
+        })).then(res=>{
+                this.$_success(res);
+        }).catch(err=>{
+            this.$_error(err);
+        })
+     *
+     */
+    puppeteer(url:string,jsContent:any){
+        return new Promise((resolve, reject) => {
+            try {
+                const puppeteer = require('puppeteer');
+                puppeteer.launch().then(async browser => {
+                    const page = await browser.newPage();
+                    await page.goto(url);
+                    const resultHandle = await page.evaluateHandle(
+                        js => js,
+                        await page.evaluateHandle(jsContent)
+                    );
+                    const result = await resultHandle.jsonValue();
+                    await browser.close();
+                    resolve(result);
+                }).catch(err=>{
+                    reject(err.message)
+                });
+            }catch (err) {
                 reject(err.message)
-            });
-        }catch (err) {
-            reject(err.message)
-        }
-    });
-}
+            }
+        });
+    }
 ```
