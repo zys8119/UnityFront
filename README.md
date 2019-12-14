@@ -51,9 +51,9 @@
 
 【puppeteer 之爬虫】
 
-> `npm i puppeteer`
+> 安装依赖 `npm i puppeteer`
 
-```bash
+```typescript
 const puppeteer = require('puppeteer');
 puppeteer.launch().then(async browser => {
   const page = await browser.newPage();
