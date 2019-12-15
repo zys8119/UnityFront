@@ -320,7 +320,7 @@ export default class applicationController implements ControllerInitDataOptions 
             }
         });
     }
-    $_getFileContent(fileUrl:string,callBcak?:any,callBackEnd?:any,){
+    $_getFileContent(fileUrl:string,callBcak?:any,callBackEnd?:any){
         return new Promise((resolve, reject) => {
             try {
                 let resultChunk = '';
@@ -340,10 +340,44 @@ export default class applicationController implements ControllerInitDataOptions 
                     res.on('error', err => {
                         reject(err.message);
                     });
-                })
+                }).on('error', (err) => {
+                    reject(err.message);
+                });
             }catch (err) {
                 reject(err.message);
             }
         });
+    }
+    $_fileStreamDownload(fileUrl:string,filename?:string,callBcak?:any){
+        if(typeof  filename === 'function'){
+            callBcak = filename;
+            filename = null;
+        }
+        if(!filename){
+            try {
+                let fileUrlArr = fileUrl.split("/");
+                if(fileUrlArr.length > 0){
+                    filename = fileUrlArr[fileUrlArr.length -1];
+                }
+            }catch (e) {
+                ///
+            }
+        }
+        filename = filename || ('fileStreamDownload_'+Date.now());
+        this.response.writeHead(200,{
+            'Content-Disposition':'attachment; filename='+filename
+        });
+        return new Promise((resolve, reject) => {
+            this.$_getFileContent(fileUrl,chunk=>{
+                this.response.write(chunk);
+                if(callBcak){ callBcak(chunk);};
+            })
+            .then(chunk=>{
+                resolve(chunk);
+                this.response.end();
+            }).catch((err)=>{
+                reject(err);
+            });
+        })
     }
 }

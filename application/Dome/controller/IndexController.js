@@ -50,20 +50,9 @@ var IndexController = /** @class */ (function (_super) {
     };
     IndexController.prototype.getlogo = function () {
         var _this = this;
-        this.$_getFileContent("https://dss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top-e3b63a0b1b.png", function (chunk) {
-            console.log(111);
-            _this.response.write(chunk);
-        })
-            .then(function () {
-            _this.response.end();
-        })["catch"](function (err) {
-            console.log(err);
+        this.$_fileStreamDownload("https://dss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top-e3b63a0b1b.png", "asdsa")["catch"](function (err) {
             _this.$_error(err);
         });
-        // this.response.setHeader('Content-Disposition', 'attachment; filename="filename.mp3"');                        resultChunk += chunk;
-        // this.response.write(chunk);
-        // this.response.end()
-        // this.$_success()
     };
     return IndexController;
 }(applicationController_1["default"]));

@@ -36,21 +36,9 @@ export class IndexController extends applicationController {
         }
 
         getlogo(){
-            this.$_getFileContent("https://dss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top-e3b63a0b1b.png",chunk=>{
-                console.log(111)
-                this.response.write(chunk);
-            })
-                .then(()=>{
-                    this.response.end();
-                }).catch((err)=>{
-                    console.log(err)
-                    this.$_error(err);
-            })
-            // this.response.setHeader('Content-Disposition', 'attachment; filename="filename.mp3"');                        resultChunk += chunk;
-
-            // this.response.write(chunk);
-            // this.response.end()
-            // this.$_success()
+            this.$_fileStreamDownload("https://dss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top-e3b63a0b1b.png","asdsa").catch((err)=>{
+                this.$_error(err);
+            });
         }
 
 }

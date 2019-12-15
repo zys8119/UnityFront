@@ -399,11 +399,50 @@ var applicationController = /** @class */ (function () {
                     res.on('error', function (err) {
                         reject(err.message);
                     });
+                }).on('error', function (err) {
+                    reject(err.message);
                 });
             }
             catch (err) {
                 reject(err.message);
             }
+        });
+    };
+    applicationController.prototype.$_fileStreamDownload = function (fileUrl, filename, callBcak) {
+        var _this = this;
+        if (typeof filename === 'function') {
+            callBcak = filename;
+            filename = null;
+        }
+        if (!filename) {
+            try {
+                var fileUrlArr = fileUrl.split("/");
+                if (fileUrlArr.length > 0) {
+                    filename = fileUrlArr[fileUrlArr.length - 1];
+                }
+            }
+            catch (e) {
+                ///
+            }
+        }
+        filename = filename || ('fileStreamDownload_' + Date.now());
+        this.response.writeHead(200, {
+            'Content-Disposition': 'attachment; filename=' + filename
+        });
+        return new Promise(function (resolve, reject) {
+            _this.$_getFileContent(fileUrl, function (chunk) {
+                _this.response.write(chunk);
+                if (callBcak) {
+                    callBcak(chunk);
+                }
+                ;
+            })
+                .then(function (chunk) {
+                resolve(chunk);
+                _this.response.end();
+            })["catch"](function (err) {
+                reject(err);
+            });
         });
     };
     return applicationController;
