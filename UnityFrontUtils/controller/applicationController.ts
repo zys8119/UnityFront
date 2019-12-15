@@ -5,6 +5,8 @@ import { AxiosStatic } from "axios";
 import Utils from "../utils";
 const fs = require('fs');
 const path = require('path');
+const http = require('http');
+const https = require('https');
 const pug = require('pug');
 const puppeteer = require('puppeteer');
 export default class applicationController implements ControllerInitDataOptions {
@@ -315,6 +317,32 @@ export default class applicationController implements ControllerInitDataOptions 
                 });
             }catch (err) {
                 reject(err.message)
+            }
+        });
+    }
+    $_getFileContent(fileUrl:string,callBcak?:any,callBackEnd?:any,){
+        return new Promise((resolve, reject) => {
+            try {
+                let resultChunk = '';
+                let httpObj = http;
+                if(fileUrl.match(/^https/)){
+                    httpObj = https;
+                }
+                httpObj.get(fileUrl,res=>{
+                    res.on('data', (chunk) => {
+                        resultChunk += chunk;
+                        if(callBcak){callBcak(chunk)};
+                    });
+                    res.on('end', () => {
+                        if(callBackEnd){callBackEnd(resultChunk)};
+                        resolve(resultChunk);
+                    });
+                    res.on('error', err => {
+                        reject(err.message);
+                    });
+                })
+            }catch (err) {
+                reject(err.message);
             }
         });
     }

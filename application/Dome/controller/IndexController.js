@@ -34,13 +34,36 @@ var IndexController = /** @class */ (function (_super) {
     };
     IndexController.prototype.dom = function () {
         var _this = this;
-        this.$_puppeteer("https://www.baidu.com/s?ie=UTF-8&wd=?", new Promise(function (resolve) {
-            resolve([]);
-        })).then(function (res) {
+        this.$_puppeteer("https://www.baidu.com/s?ie=UTF-8&wd=?", function () { return new Promise(function (resolve) {
+            var resData = [];
+            resData.push.apply(resData, document.querySelectorAll(".c-container .t a"));
+            var result = resData.map(function (el) { return ({
+                url: el.href,
+                value: el.innerText
+            }); });
+            resolve(result);
+        }); }).then(function (res) {
             _this.$_success(res);
         })["catch"](function (err) {
             _this.$_error(err);
         });
+    };
+    IndexController.prototype.getlogo = function () {
+        var _this = this;
+        this.$_getFileContent("https://dss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top-e3b63a0b1b.png", function (chunk) {
+            console.log(111);
+            _this.response.write(chunk);
+        })
+            .then(function () {
+            _this.response.end();
+        })["catch"](function (err) {
+            console.log(err);
+            _this.$_error(err);
+        });
+        // this.response.setHeader('Content-Disposition', 'attachment; filename="filename.mp3"');                        resultChunk += chunk;
+        // this.response.write(chunk);
+        // this.response.end()
+        // this.$_success()
     };
     return IndexController;
 }(applicationController_1["default"]));

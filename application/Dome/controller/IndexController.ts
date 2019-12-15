@@ -20,14 +20,37 @@ export class IndexController extends applicationController {
         }
 
         dom(){
-            this.$_puppeteer("https://www.baidu.com/s?ie=UTF-8&wd=?",new Promise(resolve=>{
-                resolve([])
+            this.$_puppeteer("https://www.baidu.com/s?ie=UTF-8&wd=?",()=>new Promise(resolve=>{
+                let resData = [];
+                resData.push.apply(resData,document.querySelectorAll(".c-container .t a"));
+                let result =  resData.map((el:HTMLAnchorElement)=>({
+                    url:el.href,
+                    value:el.innerText
+                }));
+                resolve(result)
             })).then(res=>{
                 this.$_success(res)
             }).catch(err=>{
                 this.$_error(err);
             });
+        }
 
+        getlogo(){
+            this.$_getFileContent("https://dss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top-e3b63a0b1b.png",chunk=>{
+                console.log(111)
+                this.response.write(chunk);
+            })
+                .then(()=>{
+                    this.response.end();
+                }).catch((err)=>{
+                    console.log(err)
+                    this.$_error(err);
+            })
+            // this.response.setHeader('Content-Disposition', 'attachment; filename="filename.mp3"');                        resultChunk += chunk;
+
+            // this.response.write(chunk);
+            // this.response.end()
+            // this.$_success()
         }
 
 }

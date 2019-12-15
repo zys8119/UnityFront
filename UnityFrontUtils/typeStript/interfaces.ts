@@ -206,7 +206,7 @@ export interface ControllerInitDataOptions {
      * @param jsContent
      * @return Promise
      * //=============示例========================
-        this.puppeteer('http://www.baidu.com',)=>new Promise((resolve, reject) => {
+        this.puppeteer('http://www.baidu.com',()=>new Promise((resolve, reject) => {
             ///可执行上下文
             resolve([]);
         })).then(res=>{
@@ -216,7 +216,15 @@ export interface ControllerInitDataOptions {
         })
      *
      */
-    $_puppeteer(url:string,jsContent:any):Promise<any>; // 谷歌爬虫
+    $_puppeteer?(url:string,jsContent:any):Promise<any>; // 谷歌爬虫
+    /**
+     * 获取文件流
+     * @param fileUrl {string} 文件路径
+     * @param callBcak {function} 成功片段回调
+     * @param callBackEnd {function} 片段接收结束回调
+     * @return then 返回文件流，catch 失败回调
+     */
+    $_getFileContent?(fileUrl:string, callBcak?:any , callBackEnd?:any):Promise<any>; // 获取文件流
 }
 
 export interface TemplateErrorDataOptions {

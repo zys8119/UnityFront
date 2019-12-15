@@ -40,6 +40,8 @@ var config_1 = require("../config");
 var utils_1 = require("../utils");
 var fs = require('fs');
 var path = require('path');
+var http = require('http');
+var https = require('https');
 var pug = require('pug');
 var puppeteer = require('puppeteer');
 var applicationController = /** @class */ (function () {
@@ -364,6 +366,39 @@ var applicationController = /** @class */ (function () {
                     });
                 }); })["catch"](function (err) {
                     reject(err.message);
+                });
+            }
+            catch (err) {
+                reject(err.message);
+            }
+        });
+    };
+    applicationController.prototype.$_getFileContent = function (fileUrl, callBcak, callBackEnd) {
+        return new Promise(function (resolve, reject) {
+            try {
+                var resultChunk_1 = '';
+                var httpObj = http;
+                if (fileUrl.match(/^https/)) {
+                    httpObj = https;
+                }
+                httpObj.get(fileUrl, function (res) {
+                    res.on('data', function (chunk) {
+                        resultChunk_1 += chunk;
+                        if (callBcak) {
+                            callBcak(chunk);
+                        }
+                        ;
+                    });
+                    res.on('end', function () {
+                        if (callBackEnd) {
+                            callBackEnd(resultChunk_1);
+                        }
+                        ;
+                        resolve(resultChunk_1);
+                    });
+                    res.on('error', function (err) {
+                        reject(err.message);
+                    });
                 });
             }
             catch (err) {
