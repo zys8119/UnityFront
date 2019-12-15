@@ -37,6 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 var config_1 = require("../config");
+var encrypt_1 = require("../utils/encrypt");
 var utils_1 = require("../utils");
 var fs = require('fs');
 var path = require('path');
@@ -466,6 +467,17 @@ var applicationController = /** @class */ (function () {
                 reject(err);
             });
         });
+    };
+    applicationController.prototype.$_encode = function (data) {
+        return new encrypt_1["default"]().encode(data);
+    };
+    applicationController.prototype.$_decode = function (str) {
+        return new encrypt_1["default"]().decode(str);
+    };
+    applicationController.prototype.$_createEncryptKey = function () {
+        var keyData = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+        var keyDataArr = keyData.split("");
+        return '';
     };
     return applicationController;
 }());

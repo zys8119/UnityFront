@@ -54,6 +54,12 @@ var IndexController = /** @class */ (function (_super) {
             _this.$_error(err);
         });
     };
+    IndexController.prototype.encrypt = function () {
+        this.$_success({
+            a: this.$_encode({ a: 1, b: 2 }),
+            b: this.$_decode('0crVm30crVMj0crVm60crVMj0crVM90crVMG0crVMd0crVMj0crVmO0crVMj0crVM90crVMC0crVmt')
+        });
+    };
     return IndexController;
 }(applicationController_1["default"]));
 exports.IndexController = IndexController;

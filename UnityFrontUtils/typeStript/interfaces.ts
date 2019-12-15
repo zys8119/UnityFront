@@ -234,6 +234,9 @@ export interface ControllerInitDataOptions {
      * @return then 返回文件流，catch 失败回调
      */
     $_fileStreamDownload?(fileUrl:string, filename:string, download:boolean, callBcak?:any):Promise<any>; // 文件流下载
+    $_encode?(data:any):string; // 加密
+    $_decode?(str:string):any; // 解密
+    $_createEncryptKey?():string; // 创建一次性密钥
 }
 
 export interface TemplateErrorDataOptions {
@@ -313,4 +316,24 @@ export interface UtilsOptions {
      * @param Format {string} 时间格式 例如："YYYY-MM-DD HH:mm:ss week sc"
      */
     dateFormat?(newDate?:any,Format?:string):string;
+}
+
+export interface encryptOptions {
+    // 当前密钥
+    key:string;
+    // 加密计算
+    encodeItem?(id:number):string;
+    // 解密计算
+    decodeItem?(str:string):number;
+    // 加密
+    /**
+     * @param data 需要加密的数据
+     */
+    encode?(data:any):string;
+    // 解密
+    /**
+     *
+     * @param str 需要解密的密文
+     */
+    decode?(str:string):any;
 }

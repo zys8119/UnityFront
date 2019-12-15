@@ -2,6 +2,7 @@ import {ControllerInitDataOptions, mysqlOptionsOptions, SqlUtilsOptions, Success
 import { headersType } from "../typeStript/Types";
 import { ServerConfig } from "../config";
 import { AxiosStatic } from "axios";
+import Encrypt from "../utils/encrypt";
 import Utils from "../utils";
 const fs = require('fs');
 const path = require('path');
@@ -402,4 +403,21 @@ export default class applicationController implements ControllerInitDataOptions 
             });
         })
     }
+
+    $_encode(data:any){
+        return new Encrypt().encode(data);
+    }
+
+    $_decode(str:string){
+        return new Encrypt().decode(str);
+    }
+
+    $_createEncryptKey(){
+        let keyData = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+        let keyDataArr = keyData.split("");
+
+        return '';
+    }
+
+
 }
