@@ -229,10 +229,11 @@ export interface ControllerInitDataOptions {
      * 文件流下载
      * @param fileUrl {string} 文件路径
      * @param filename {string} 下载的文件名称
+     * @param download {boolean} 是否下载，默认true下载
      * @param callBcak {function} 成功片段回调
      * @return then 返回文件流，catch 失败回调
      */
-    $_fileStreamDownload?(fileUrl:string, filename:string, callBcak?:any):Promise<any>; // 文件流下载
+    $_fileStreamDownload?(fileUrl:string, filename:string, download:boolean, callBcak?:any):Promise<any>; // 文件流下载
 }
 
 export interface TemplateErrorDataOptions {

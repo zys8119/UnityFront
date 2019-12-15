@@ -348,10 +348,30 @@ export default class applicationController implements ControllerInitDataOptions 
             }
         });
     }
-    $_fileStreamDownload(fileUrl:string,filename?:string,callBcak?:any){
-        if(typeof  filename === 'function'){
-            callBcak = filename;
-            filename = null;
+    $_fileStreamDownload(fileUrl:string,filename?:any,download?:any, callBcak?:any){
+        switch (typeof  filename) {
+            case 'function':
+                callBcak = filename;
+                download = true;
+                filename = null;
+                break;
+            case 'boolean':
+                download = filename;
+                filename = null;
+                break;
+            default:
+                break;
+        }
+        switch (typeof  download) {
+            case 'function':
+                callBcak = download;
+                download = true;
+                break;
+            case 'boolean':
+                break;
+            default:
+                download = true;
+                break;
         }
         if(!filename){
             try {
@@ -364,9 +384,11 @@ export default class applicationController implements ControllerInitDataOptions 
             }
         }
         filename = filename || ('fileStreamDownload_'+Date.now());
-        this.response.writeHead(200,{
-            'Content-Disposition':'attachment; filename='+filename
-        });
+        if(download){
+            this.response.writeHead(200,{
+                'Content-Disposition':'attachment; filename='+filename
+            });
+        }
         return new Promise((resolve, reject) => {
             this.$_getFileContent(fileUrl,chunk=>{
                 this.response.write(chunk);

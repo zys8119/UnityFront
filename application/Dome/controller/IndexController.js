@@ -48,9 +48,9 @@ var IndexController = /** @class */ (function (_super) {
             _this.$_error(err);
         });
     };
-    IndexController.prototype.getlogo = function () {
+    IndexController.prototype.fileStreamDownload = function () {
         var _this = this;
-        this.$_fileStreamDownload("https://dss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top-e3b63a0b1b.png", "asdsa")["catch"](function (err) {
+        this.$_fileStreamDownload("http://localhost:8080/public/example.png", false)["catch"](function (err) {
             _this.$_error(err);
         });
     };
