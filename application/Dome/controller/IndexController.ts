@@ -1,6 +1,6 @@
 import applicationController from "../../../UnityFrontUtils/controller/applicationController";
 
-export class IndexController extends  applicationController{
+export class IndexController extends applicationController {
         constructor(){
             super();
         }
@@ -17,6 +17,17 @@ export class IndexController extends  applicationController{
             }).then(res=>{
                 this.$_success(res.data);
             });
+        }
+
+        dom(){
+            this.$_puppeteer("https://www.baidu.com/s?ie=UTF-8&wd=?",new Promise(resolve=>{
+                resolve([])
+            })).then(res=>{
+                this.$_success(res)
+            }).catch(err=>{
+                this.$_error(err);
+            });
+
         }
 
 }

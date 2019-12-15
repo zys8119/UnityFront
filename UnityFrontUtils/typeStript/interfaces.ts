@@ -200,6 +200,23 @@ export interface ControllerInitDataOptions {
      * @param code 状态码
      */
     $_error?(msg?:any,sendData?:any,code?:number):void;// 错误返回工具
+    /**
+     * puppeteer 爬虫
+     * @param url
+     * @param jsContent
+     * @return Promise
+     * //=============示例========================
+        this.puppeteer('http://www.baidu.com',)=>new Promise((resolve, reject) => {
+            ///可执行上下文
+            resolve([]);
+        })).then(res=>{
+            this.$_success(res);
+        }).catch(err=>{
+            this.$_error(err);
+        })
+     *
+     */
+    $_puppeteer(url:string,jsContent:any):Promise<any>; // 谷歌爬虫
 }
 
 export interface TemplateErrorDataOptions {

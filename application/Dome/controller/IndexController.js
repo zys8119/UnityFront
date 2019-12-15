@@ -32,6 +32,16 @@ var IndexController = /** @class */ (function (_super) {
             _this.$_success(res.data);
         });
     };
+    IndexController.prototype.dom = function () {
+        var _this = this;
+        this.$_puppeteer("https://www.baidu.com/s?ie=UTF-8&wd=?", new Promise(function (resolve) {
+            resolve([]);
+        })).then(function (res) {
+            _this.$_success(res);
+        })["catch"](function (err) {
+            _this.$_error(err);
+        });
+    };
     return IndexController;
 }(applicationController_1["default"]));
 exports.IndexController = IndexController;

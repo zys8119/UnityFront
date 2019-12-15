@@ -6,6 +6,7 @@ import Utils from "../utils";
 const fs = require('fs');
 const path = require('path');
 const pug = require('pug');
+const puppeteer = require('puppeteer');
 export default class applicationController implements ControllerInitDataOptions {
     request?:any;
     response?:any;
@@ -296,5 +297,25 @@ export default class applicationController implements ControllerInitDataOptions 
     $_error(msg:any = this.StatusCode.error.msg,sendData?:any,code:number = this.StatusCode.error.code){
         this.$_success(msg,sendData,code)
     }
-
+    $_puppeteer(url:string,jsContent:any){
+        return new Promise((resolve, reject) => {
+            try {
+                puppeteer.launch().then(async browser => {
+                    const page = await browser.newPage();
+                    await page.goto(url);
+                    const resultHandle = await page.evaluateHandle(
+                        js => js,
+                        await page.evaluateHandle(jsContent)
+                    );
+                    const result = await resultHandle.jsonValue();
+                    await browser.close();
+                    resolve(result);
+                }).catch(err=>{
+                    reject(err.message)
+                });
+            }catch (err) {
+                reject(err.message)
+            }
+        });
+    }
 }
