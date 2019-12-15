@@ -468,16 +468,35 @@ var applicationController = /** @class */ (function () {
             });
         });
     };
-    applicationController.prototype.$_encode = function (data) {
-        return new encrypt_1["default"]().encode(data);
+    applicationController.prototype.$_encode = function (data, newKey) {
+        newKey = newKey || config_1.ServerPublicConfig.createEncryptKey;
+        try {
+            return new encrypt_1["default"](newKey).encode(data);
+        }
+        catch (e) {
+            return false;
+        }
     };
-    applicationController.prototype.$_decode = function (str) {
-        return new encrypt_1["default"]().decode(str);
+    applicationController.prototype.$_decode = function (str, newKey) {
+        newKey = newKey || config_1.ServerPublicConfig.createEncryptKey;
+        try {
+            return new encrypt_1["default"](newKey).decode(str);
+        }
+        catch (e) {
+            return false;
+        }
     };
-    applicationController.prototype.$_createEncryptKey = function () {
+    applicationController.prototype.$_createEncryptKey = function (keyDataArr, result) {
+        result = result || '';
         var keyData = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
-        var keyDataArr = keyData.split("");
-        return '';
+        keyDataArr = keyDataArr || keyData.split("");
+        if (keyDataArr.length === 0) {
+            return result;
+        }
+        var randomNo = utils_1["default"].getRandomIntInclusive(0, keyDataArr.length - 1);
+        result += keyDataArr[randomNo];
+        keyDataArr.splice(randomNo, 1);
+        return this.$_createEncryptKey(keyDataArr, result);
     };
     return applicationController;
 }());

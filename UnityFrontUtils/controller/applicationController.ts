@@ -1,6 +1,6 @@
 import {ControllerInitDataOptions, mysqlOptionsOptions, SqlUtilsOptions, SuccessSendDataOptions, StatusCodeOptions } from "../typeStript"
 import { headersType } from "../typeStript/Types";
-import { ServerConfig } from "../config";
+import { ServerConfig, ServerPublicConfig } from "../config";
 import { AxiosStatic } from "axios";
 import Encrypt from "../utils/encrypt";
 import Utils from "../utils";
@@ -404,19 +404,35 @@ export default class applicationController implements ControllerInitDataOptions 
         })
     }
 
-    $_encode(data:any){
-        return new Encrypt().encode(data);
+    $_encode(data:any, newKey?:string){
+        newKey = newKey || ServerPublicConfig.createEncryptKey;
+        try {
+            return new Encrypt(newKey).encode(data);
+        }catch (e) {
+            return false;
+        }
     }
 
-    $_decode(str:string){
-        return new Encrypt().decode(str);
+    $_decode(str:string, newKey?:string){
+        newKey = newKey || ServerPublicConfig.createEncryptKey;
+        try {
+            return new Encrypt(newKey).decode(str);
+        }catch (e) {
+            return false;
+        }
     }
 
-    $_createEncryptKey(){
+    $_createEncryptKey(keyDataArr?:string[], result?:string){
+        result = result || '';
         let keyData = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
-        let keyDataArr = keyData.split("");
-
-        return '';
+        keyDataArr = keyDataArr || keyData.split("");
+        if(keyDataArr.length === 0){
+            return result;
+        }
+        let randomNo = Utils.getRandomIntInclusive(0,keyDataArr.length-1);
+        result += keyDataArr[randomNo];
+        keyDataArr.splice(randomNo,1);
+        return this.$_createEncryptKey(keyDataArr, result);
     }
 
 

@@ -1,4 +1,5 @@
 import applicationController from "../../../UnityFrontUtils/controller/applicationController";
+import {ServerPublicConfig} from "../../../UnityFrontUtils/config";
 
 export class IndexController extends applicationController {
         constructor(){
@@ -42,10 +43,11 @@ export class IndexController extends applicationController {
         }
 
     encrypt(){
-            this.$_success({
-                a:this.$_encode({a:1,b:2}),
-                b:this.$_decode('0crVm30crVMj0crVm60crVMj0crVM90crVMG0crVMd0crVMj0crVmO0crVMj0crVM90crVMC0crVmt'),
-            });
+        this.$_success({
+            a:this.$_encode({a:1,b:2}),
+            b:this.$_decode((<string>this.$_encode({a:1,b:2}))),
+            key:ServerPublicConfig.createEncryptKey
+        });
     }
 
 

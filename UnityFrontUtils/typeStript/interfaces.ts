@@ -234,9 +234,27 @@ export interface ControllerInitDataOptions {
      * @return then 返回文件流，catch 失败回调
      */
     $_fileStreamDownload?(fileUrl:string, filename:string, download:boolean, callBcak?:any):Promise<any>; // 文件流下载
-    $_encode?(data:any):string; // 加密
-    $_decode?(str:string):any; // 解密
-    $_createEncryptKey?():string; // 创建一次性密钥
+    /**
+     * 加密
+     * @param data 需要加密的数据
+     * @param newKey 当前密钥, 默认使用全局密码
+     * @return string 返回密文
+     */
+    $_encode?(data:any, newKey?:string):string|boolean; // 加密
+    /**
+     * 解密
+     * @param str 需要解密的数据
+     * @param newKey 当前密钥，默认使用全局密码
+     * @return string 返回明文
+     */
+    $_decode?(str:string, newKey?:string):any; // 解密
+    /**
+     * 创建随机密钥
+     * @param keyDataArr 剩余密钥
+     * @param result 上一段密钥
+     * @return result 最终密钥
+     */
+    $_createEncryptKey?(keyDataArr?:string[], result?:string):string; // 创建随机密钥
 }
 
 export interface TemplateErrorDataOptions {
@@ -316,6 +334,11 @@ export interface UtilsOptions {
      * @param Format {string} 时间格式 例如："YYYY-MM-DD HH:mm:ss week sc"
      */
     dateFormat?(newDate?:any,Format?:string):string;
+
+    /**
+     * 得到一个两数之间的随机整数，包括两个数在内
+     */
+    getRandomIntInclusive(min:number, max:number):number;
 }
 
 export interface encryptOptions {
@@ -336,4 +359,9 @@ export interface encryptOptions {
      * @param str 需要解密的密文
      */
     decode?(str:string):any;
+}
+
+export interface ServerPublicConfigOptions {
+    // 公共密钥,更换密钥可以使用控制器方法$_createEncryptKey获取随机密钥
+    createEncryptKey:string|null;
 }

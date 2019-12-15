@@ -2,7 +2,7 @@
 exports.__esModule = true;
 var encrypt = /** @class */ (function () {
     function encrypt(newKey) {
-        this.key = newKey || "lWIbMmw1xrKscZL0R8kA7DUF4Hgij6OSV2hqyadpfNeGCzQTEJBX9Yn3Ptuo5v";
+        this.key = newKey || "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
     }
     encrypt.prototype.encodeItem = function (id) {
         var chars = this.key;

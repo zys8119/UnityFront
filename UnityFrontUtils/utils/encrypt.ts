@@ -2,7 +2,7 @@ import { encryptOptions } from "../typeStript"
 export default class encrypt implements encryptOptions{
     key:string;
     constructor(newKey?:string){
-        this.key = newKey || "lWIbMmw1xrKscZL0R8kA7DUF4Hgij6OSV2hqyadpfNeGCzQTEJBX9Yn3Ptuo5v";
+        this.key = newKey || "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
     }
 
     encodeItem(id)

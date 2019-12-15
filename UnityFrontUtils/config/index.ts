@@ -3,7 +3,8 @@ const path = require("path");
 import {
     mysqlOptions,
     ServerOptions,
-    TimingTaskQueueOptions
+    TimingTaskQueueOptions,
+    ServerPublicConfigOptions
 } from "../typeStript";
 
 //数据库配置
@@ -18,6 +19,12 @@ export const mysqlConfig = <mysqlOptions>{
         database: 'dome',
         prefix:"uf_"
     }
+};
+
+//服务公共设置，可写入
+export const ServerPublicConfig = <ServerPublicConfigOptions>{
+    // 公共密钥,更换密钥可以使用控制器方法$_createEncryptKey获取随机密钥
+    createEncryptKey:"0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM",
 };
 
 //服务设置
@@ -51,7 +58,7 @@ export const ServerConfig =  <ServerOptions>{
             "__PUBLIC__":"/public",
         }
     },
-    TimingTaskQueue:true
+    TimingTaskQueue:true,
 };
 
 //定时任务设置

@@ -15,6 +15,11 @@ exports.mysqlConfig = {
         prefix: "uf_"
     }
 };
+//服务公共设置，可写入
+exports.ServerPublicConfig = {
+    // 公共密钥,更换密钥可以使用控制器方法$_createEncryptKey获取随机密钥
+    createEncryptKey: "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
+};
 //服务设置
 exports.ServerConfig = {
     port: 8080,
