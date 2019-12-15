@@ -4,6 +4,7 @@ import UnityFrontController from "../controller/controller"
 import { ServerConfig } from "../config"
 import StatusCode from "../../conf/StatusCode"
 import mysql from "../mysql"
+import Axios from "axios"
 module.exports = (request,response)=>{
     return new Promise((resolve, reject) => {
         //获取body数据
@@ -30,7 +31,8 @@ module.exports = (request,response)=>{
                 },
                 __dir:null,
                 $methodName:null,
-                StatusCode:StatusCode
+                StatusCode:StatusCode,
+                $_axios:Axios
             });
         });
     })

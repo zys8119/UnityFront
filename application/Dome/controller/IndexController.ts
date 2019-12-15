@@ -11,4 +11,12 @@ export class IndexController extends  applicationController{
             this.$_success();
         }
 
+        axios(){
+            this.$_axios({
+                url:"http://www.baidu.com"
+            }).then(res=>{
+                this.$_success(res.data);
+            });
+        }
+
 }

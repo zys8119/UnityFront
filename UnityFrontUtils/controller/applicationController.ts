@@ -1,6 +1,7 @@
 import {ControllerInitDataOptions, mysqlOptionsOptions, SqlUtilsOptions, SuccessSendDataOptions, StatusCodeOptions } from "../typeStript"
 import { headersType } from "../typeStript/Types";
 import { ServerConfig } from "../config";
+import { AxiosStatic } from "axios";
 import Utils from "../utils";
 const fs = require('fs');
 const path = require('path');
@@ -25,40 +26,16 @@ export default class applicationController implements ControllerInitDataOptions 
     $urlArrs:any[];
     $ControllerConfig:any;
     StatusCode:StatusCodeOptions;
-
-    /**
-     * 设置header头
-     * @param Headers
-     */
+    $_axios:AxiosStatic;
     setHeaders(Headers:headersType = {}){
         this.$_RequestHeaders = Headers;
     }
-
-    /**
-     * 设置http 状态码
-     * @param Status 状态码
-     */
     setRequestStatus(Status:number){
         this.$_RequestStatus = Status;
     }
-
-    /**
-     * $mysql实例化
-     * @param optionsConfig 数据库配置
-     * @param isEnd 执行完是否放开数据库连接
-     * @constructor
-     */
     DB(optionsConfig?:mysqlOptionsOptions,isEnd?:boolean){
         return this.$mysql(optionsConfig,isEnd);
     }
-
-    /**
-     * 渲染模板
-     * @param TemplatePath 模板路径
-     * @param TemplateData 模板数据
-     * @param bool 是否为主控制器渲染
-     * @constructor
-     */
     Render(TemplatePath?:any,TemplateData?:object,bool?:boolean){
         TemplateData = TemplateData || {};
         if(TemplatePath && typeof TemplatePath == "object"){
@@ -139,11 +116,6 @@ export default class applicationController implements ControllerInitDataOptions 
 
 
     }
-
-    /**
-     * 控制器及url解析
-     * @constructor
-     */
     UrlParse(){
         //todo 首页渲染
         let $$url = this.$_url;
@@ -265,11 +237,6 @@ export default class applicationController implements ControllerInitDataOptions 
             ControllerClassInit[urlArrs[2]]();
         }
     }
-
-    /**
-     * 日志输出
-     * @param args 输出的参数数据
-     */
     $_log(...args){
         let logDirPath = path.resolve(__dirname,"../log");
         let getTime = new Date().getTime();
@@ -287,13 +254,6 @@ export default class applicationController implements ControllerInitDataOptions 
             this.writeLogFile(args,logPath,data);
         });
     }
-
-    /**
-     * 写入日志
-     * @param args 输出的参数数据
-     * @param logPath 日志路径
-     * @param oldData 旧日志数据
-     */
     writeLogFile(args,logPath:string,oldData?:string){
         oldData = oldData || "";
         fs.writeFile(logPath,JSON.stringify({
@@ -315,13 +275,6 @@ export default class applicationController implements ControllerInitDataOptions 
             };
         });
     }
-
-    /**
-     * 成功提示工具
-     * @param msg 提示信息
-     * @param sendData 发送数据
-     * @param code 状态码
-     */
     $_success(msg?:any,sendData?:any,code?:number){
         let newSendData = <SuccessSendDataOptions>{
             code:this.StatusCode.success.code,
@@ -340,13 +293,6 @@ export default class applicationController implements ControllerInitDataOptions 
         newSendData.code = code || newSendData.code;
         this.$_send(newSendData);
     }
-
-    /**
-     * 错误提示工具
-     * @param msg 提示信息
-     * @param sendData 发送数据
-     * @param code 状态码
-     */
     $_error(msg:any = this.StatusCode.error.msg,sendData?:any,code:number = this.StatusCode.error.code){
         this.$_success(msg,sendData,code)
     }

@@ -1,4 +1,5 @@
 import { headersType } from "./Types"
+import { AxiosStatic } from "axios"
 
 export interface mysqlOptions {
     //连接池
@@ -147,6 +148,58 @@ export interface ControllerInitDataOptions {
     $urlArrs?:any[];//控制器url数组
     $ControllerConfig?:any;//控制器配置
     StatusCode?:StatusCodeOptions;//公共状态码定义
+    $_axios?:AxiosStatic;//axios请求工具
+    setHeaders?(Headers:headersType):void;//设置返回头
+    setRequestStatus?(Status:number):void;// 设置http 状态码
+    /**
+     * $mysql实例化
+     * @param optionsConfig 数据库配置
+     * @param isEnd 执行完是否放开数据库连接
+     * @constructor
+     */
+    DB?(optionsConfig?:mysqlOptionsOptions,isEnd?:boolean):SqlUtilsOptions;// $mysql实例化
+    /**
+     * 渲染模板
+     * @param TemplatePath 模板路径
+     * @param TemplateData 模板数据
+     * @param bool 是否为主控制器渲染
+     * @constructor
+     */
+    Render?(TemplatePath?:any,TemplateData?:object,bool?:boolean):void;// 渲染模板
+    /**
+     * 控制器及url解析
+     * @constructor
+     */
+    UrlParse?(TemplatePath?:any,TemplateData?:object,bool?:boolean):void;// 控制器及url解析
+
+    /**
+     * 日志输出
+     * @param args 输出的参数数据
+     */
+    $_log?(...argArray: any[]):void;// 日志输出
+
+    /**
+     * 写入日志
+     * @param args 输出的参数数据
+     * @param logPath 日志路径
+     * @param oldData 旧日志数据
+     */
+    writeLogFile?(args,logPath:string,oldData?:string):void;// 写入日志
+
+    /**
+     * 成功返回工具
+     * @param msg 提示信息
+     * @param sendData 发送数据
+     * @param code 状态码
+     */
+    $_success?(msg?:any,sendData?:any,code?:number):void;// 成功返回工具
+    /**
+     * 错误返回工具
+     * @param msg 提示信息
+     * @param sendData 发送数据
+     * @param code 状态码
+     */
+    $_error?(msg?:any,sendData?:any,code?:number):void;// 错误返回工具
 }
 
 export interface TemplateErrorDataOptions {
@@ -176,4 +229,54 @@ export interface StatusCodeOptions {
 export interface StatusCodeOptions_format{
     code?:number;//状态码
     msg?:string;//状态码描述
+}
+
+export interface UtilsOptions {
+    [propName:string]:any;
+    /**
+     * 获取目录所有文件
+     * @param fileDirPath
+     * @param callback
+     */
+    getJsonFiles?(fileDirPath:string,callback?:Function):any[];
+
+    /**
+     * 替换模板url变量
+     * @param ServerConfig 服务配置
+     * @param data 模板内容
+     * @param TemplateData 模板苏剧
+     * @param space 数据格式化缩进数量
+     */
+    replaceUrlVars?(ServerConfig,data,TemplateData?:object,space?:number):any;
+
+    /**
+     * 渲染错误模板
+     * @param filPath 错误模板路径
+     * @param TemplateData 错误模板数据
+     * @param $_send 发送方法
+     * @constructor
+     */
+    RenderTemplateError?(filePath:string,TemplateData:TemplateErrorDataOptions):void;
+    /**
+     * 注入控制器类公共的初始数据及方法,this上下文为当前控制器解析实体
+     * @param ControllerInitData 控制器数据
+     * @param ControllerClassObj 控制器实体
+     * @param $methodName 当前执行的控制器方法名称
+     * @param ServerConfig 服务配置
+     * @param __dir 当前执行的控制器路径
+     * @param bool 是否是其他控制器渲染
+     * @constructor
+     */
+    ControllerInitData?(ControllerInitData,ControllerClassObj,$methodName,ServerConfig,__dir,bool:boolean):void;
+    /**
+     * 路由数组转换
+     * @param $$url 需要转换的url字符串
+     */
+    getUrlArrs?($$url:string):any[];
+    /**
+     * 时间格式转化
+     * @param newDate {string | Date} 时间数据
+     * @param Format {string} 时间格式 例如："YYYY-MM-DD HH:mm:ss week sc"
+     */
+    dateFormat?(newDate?:any,Format?:string):string;
 }
