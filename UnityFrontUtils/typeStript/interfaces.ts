@@ -255,6 +255,11 @@ export interface ControllerInitDataOptions {
      * @return result 最终密钥
      */
     $_createEncryptKey?(keyDataArr?:string[], result?:string):string; // 创建随机密钥
+    /**
+     * 创建随机svg验证码
+     * @param options {object} 配置
+     */
+    $_getSvgCode?(options?:getSvgCodeOptions):Promise<string>; // 创建随机密钥
 }
 
 export interface TemplateErrorDataOptions {
@@ -364,4 +369,11 @@ export interface encryptOptions {
 export interface ServerPublicConfigOptions {
     // 公共密钥,更换密钥可以使用控制器方法$_createEncryptKey获取随机密钥
     createEncryptKey:string|null;
+}
+
+export interface getSvgCodeOptions {
+    fontSize?:number;// 字体大小，默认50
+    index?:number;// 验证码长度，默认4
+    background?:null|string;// 背景颜色
+    color?:null|string;// 字体颜色，默认为多彩
 }
