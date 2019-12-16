@@ -7,8 +7,8 @@ export class IndexController extends applicationController {
     }
 
     index(){
-        this.$_log("as");
-        console.log("写入成功");
+        // this.$_log("as");
+        // console.log("写入成功");
         this.$_success();
     }
 

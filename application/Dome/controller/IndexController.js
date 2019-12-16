@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var applicationController_1 = require("../../../UnityFrontUtils/controller/applicationController");
 var config_1 = require("../../../UnityFrontUtils/config");
 var IndexController = /** @class */ (function (_super) {
@@ -21,8 +21,8 @@ var IndexController = /** @class */ (function (_super) {
         return _super.call(this) || this;
     }
     IndexController.prototype.index = function () {
-        this.$_log("as");
-        console.log("写入成功");
+        // this.$_log("as");
+        // console.log("写入成功");
         this.$_success();
     };
     IndexController.prototype.axios = function () {
@@ -45,13 +45,13 @@ var IndexController = /** @class */ (function (_super) {
             resolve(result);
         }); }).then(function (res) {
             _this.$_success(res);
-        })["catch"](function (err) {
+        }).catch(function (err) {
             _this.$_error(err);
         });
     };
     IndexController.prototype.fileStreamDownload = function () {
         var _this = this;
-        this.$_fileStreamDownload("http://localhost:8080/public/example.png", false)["catch"](function (err) {
+        this.$_fileStreamDownload("http://localhost:8080/public/example.png", false).catch(function (err) {
             _this.$_error(err);
         });
     };
@@ -63,5 +63,5 @@ var IndexController = /** @class */ (function (_super) {
         });
     };
     return IndexController;
-}(applicationController_1["default"]));
+}(applicationController_1.default));
 exports.IndexController = IndexController;

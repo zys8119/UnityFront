@@ -1,8 +1,8 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var path = require('path');
 var fs = require("fs");
-exports["default"] = {
+exports.default = {
     getJsonFiles: function (fileDirPath, callback) {
         var jsonFiles = [];
         function findJsonFile(filePath) {
@@ -51,7 +51,7 @@ exports["default"] = {
     RenderTemplateError: function (filePath, TemplateData) {
         var _this = this;
         this.setHeaders({
-            'Content-Type': 'text/html; charset=utf-8'
+            'Content-Type': 'text/html; charset=utf-8',
         });
         fs.readFile(filePath, 'utf8', function (terr, tdata) {
             if (terr) {
