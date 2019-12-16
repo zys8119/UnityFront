@@ -31,6 +31,7 @@ export default class applicationController implements ControllerInitDataOptions 
     $ControllerConfig:any;
     StatusCode:StatusCodeOptions;
     $_axios:AxiosStatic;
+    $_cookies:object|null;
     setHeaders(Headers:headersType = {}){
         this.$_RequestHeaders = Headers;
     }

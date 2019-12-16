@@ -55,6 +55,15 @@ export class IndexController extends applicationController {
     codeTest(){
         this.$_success();
     }
+    
+    uploadTest(){
+        this.Render()
+    }
+    
+    upload(){
+        this.$_success("asdas",this.$_cookies)
+        
+    }
 
 
 }

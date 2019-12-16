@@ -149,6 +149,7 @@ export interface ControllerInitDataOptions {
     $ControllerConfig?:any;//控制器配置
     StatusCode?:StatusCodeOptions;//公共状态码定义
     $_axios?:AxiosStatic;//axios请求工具
+    $_cookies?:object|null;//cookies
     setHeaders?(Headers:headersType):void;//设置返回头
     setRequestStatus?(Status:number):void;// 设置http 状态码
     /**
@@ -344,6 +345,12 @@ export interface UtilsOptions {
      * 得到一个两数之间的随机整数，包括两个数在内
      */
     getRandomIntInclusive(min:number, max:number):number;
+    
+    /**
+     * 获取Cookies
+     * @param request
+     */
+    getCookies(request):object|null;
 }
 
 export interface encryptOptions {

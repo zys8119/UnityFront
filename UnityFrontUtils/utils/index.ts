@@ -190,6 +190,15 @@ export default <UtilsOptions>{
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min; //含最大值，含最小值
+    },
+    getCookies(request){
+        let cookie = {};
+        try {
+            (<any>request.headers).cookie.replace(/\s/img,"").split(";").map(e=>e.split("=")).forEach(e=>{
+                cookie[e[0]] = e[1];
+            })
+        }catch (e) {}
+        return cookie;
     }
 }
 

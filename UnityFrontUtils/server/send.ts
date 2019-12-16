@@ -5,6 +5,7 @@ import { ServerConfig } from "../config"
 import StatusCode from "../../conf/StatusCode"
 import mysql from "../mysql"
 import Axios from "axios"
+import Utils from "../utils"
 module.exports = (request,response)=>{
     return new Promise((resolve, reject) => {
         //获取body数据
@@ -32,7 +33,8 @@ module.exports = (request,response)=>{
                 __dir:null,
                 $methodName:null,
                 StatusCode:StatusCode,
-                $_axios:Axios
+                $_axios:Axios,
+                $_cookies:Utils.getCookies(request),
             });
         });
     })
