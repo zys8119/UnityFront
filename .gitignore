@@ -2,4 +2,7 @@
 node_modules/
 v8/
 *.log
-application/*/*/*.js
+application/**/*.js
+conf/**/*.js
+TaskQueue/**/*.js
+UnityFrontUtils/**/*.js
