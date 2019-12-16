@@ -15,6 +15,11 @@ exports.mysqlConfig = {
         prefix: "uf_"
     }
 };
+//服务公共设置，可写入
+exports.ServerPublicConfig = {
+    // 公共密钥,更换密钥可以使用控制器方法$_createEncryptKey获取随机密钥
+    createEncryptKey: "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM"
+};
 //服务设置
 exports.ServerConfig = {
     port: 8080,
@@ -64,12 +69,13 @@ exports.TimingTaskQueue = {
     },
     TaskQueueTime: 500,
     //日志保留时间，当前默认30天
-    // LogsRetainTime:1000*60*60*24*30,
-    LogsRetainTime: 1000 * 6,
+    LogsRetainTime: 1000 * 60 * 60 * 24 * 30,
+    // LogsRetainTime:1000*6,
     isClearLogTime: true,
     //默认允许每天的凌晨的清除日志任务
-    ClearLogAppointTime: function (DateObj) { return DateObj.getTime(); },
-    // ClearLogAppointTime:DateObj=>DateObj.setHours(0,0,0,0),
+    // ClearLogAppointTime:DateObj=>DateObj.getTime(),
+    ClearLogAppointTime: function (DateObj) { return DateObj.setHours(0, 0, 0, 0); },
     //默认允许指定时间的上下范围20000毫秒
-    ClearLogTimeFrame: 0
+    // ClearLogTimeFrame:0,
+    ClearLogTimeFrame: 10000
 };

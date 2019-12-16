@@ -6,6 +6,7 @@ var controller_1 = require("../controller/controller");
 var config_1 = require("../config");
 var StatusCode_1 = require("../../conf/StatusCode");
 var mysql_1 = require("../mysql");
+var axios_1 = require("axios");
 module.exports = function (request, response) {
     return new Promise(function (resolve, reject) {
         //获取body数据
@@ -32,7 +33,8 @@ module.exports = function (request, response) {
                 },
                 __dir: null,
                 $methodName: null,
-                StatusCode: StatusCode_1["default"]
+                StatusCode: StatusCode_1["default"],
+                $_axios: axios_1["default"]
             });
         });
     });

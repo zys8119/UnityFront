@@ -14,6 +14,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 exports.__esModule = true;
 var applicationController_1 = require("../../../UnityFrontUtils/controller/applicationController");
+var config_1 = require("../../../UnityFrontUtils/config");
 var IndexController = /** @class */ (function (_super) {
     __extends(IndexController, _super);
     function IndexController() {
@@ -23,6 +24,43 @@ var IndexController = /** @class */ (function (_super) {
         this.$_log("as");
         console.log("写入成功");
         this.$_success();
+    };
+    IndexController.prototype.axios = function () {
+        var _this = this;
+        this.$_axios({
+            url: "http://www.baidu.com"
+        }).then(function (res) {
+            _this.$_success(res.data);
+        });
+    };
+    IndexController.prototype.dom = function () {
+        var _this = this;
+        this.$_puppeteer("https://www.baidu.com/s?ie=UTF-8&wd=?", function () { return new Promise(function (resolve) {
+            var resData = [];
+            resData.push.apply(resData, document.querySelectorAll(".c-container .t a"));
+            var result = resData.map(function (el) { return ({
+                url: el.href,
+                value: el.innerText
+            }); });
+            resolve(result);
+        }); }).then(function (res) {
+            _this.$_success(res);
+        })["catch"](function (err) {
+            _this.$_error(err);
+        });
+    };
+    IndexController.prototype.fileStreamDownload = function () {
+        var _this = this;
+        this.$_fileStreamDownload("http://localhost:8080/public/example.png", false)["catch"](function (err) {
+            _this.$_error(err);
+        });
+    };
+    IndexController.prototype.encrypt = function () {
+        this.$_success({
+            a: this.$_encode({ a: 1, b: 2 }),
+            b: this.$_decode(this.$_encode({ a: 1, b: 2 })),
+            key: config_1.ServerPublicConfig.createEncryptKey
+        });
     };
     return IndexController;
 }(applicationController_1["default"]));
