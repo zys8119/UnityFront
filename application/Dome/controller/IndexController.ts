@@ -53,7 +53,7 @@ export class IndexController extends applicationController {
     }
     
     codeTest(){
-        this.Render();
+        this.$_success();
     }
 
 
