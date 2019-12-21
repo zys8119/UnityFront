@@ -10,7 +10,7 @@ const http = require('http');
 const https = require('https');
 const pug = require('pug');
 const puppeteer = require('puppeteer');
-export default class applicationController implements ControllerInitDataOptions {
+export default class applicationControllerClass implements ControllerInitDataOptions {
     request?:any;
     response?:any;
     $_body?:any;
@@ -299,6 +299,7 @@ export default class applicationController implements ControllerInitDataOptions 
         this.$_send(newSendData);
     }
     $_error(msg:any = this.StatusCode.error.msg,sendData?:any,code:number = this.StatusCode.error.code){
+        console.error(new Error(msg));
         this.$_success(msg,sendData,code)
     }
     $_puppeteer(url:string,jsContent:any){
@@ -542,3 +543,80 @@ export default class applicationController implements ControllerInitDataOptions 
     }
 
 }
+export const applicationController = applicationControllerClass;
+
+/**
+ * @请求方式修饰器类
+ */
+class methodClass_init {
+    methodName:string;
+    
+    /**
+     * methodClass_init
+     * @param methodName 方法名
+     */
+    constructor(methodName?:string){
+        this.methodName = methodName;
+    }
+    
+    method_init(){
+        /**
+         * @param currentControllerObj {any} 当前控制器对象
+         * @param methodKeyName {string} 控制器方法
+         * @param method {string|function} 请求方式
+         * @param callback {function} 修饰器回调
+         */
+        return (currentControllerObj:any,methodKeyName:string,method?:string|Function,callback?:Function)=>{
+            if(typeof currentControllerObj.prototype[currentControllerObj] !== 'function'){
+                console.error(new Error(`修饰器method${(this.methodName)?'_'+this.methodName:''} 控制器${methodKeyName}方法不存在`))
+                return ;
+            }
+            callback = callback || new Function;
+            method = method || "";
+            if(typeof method === "function"){
+                callback = method;
+                method = "";
+            }
+            let methodArr = method.split("|").filter(e=>e.length !=0);
+            if(this.methodName){
+                methodArr.push(this.methodName);
+            }
+            let oldPostMethod = currentControllerObj.prototype[methodKeyName];
+            if(callback.call(currentControllerObj,methodKeyName)){return;}
+            currentControllerObj.prototype[methodKeyName] = function () {
+                try {
+                    if(!methodArr.some(e=>e.toLocaleLowerCase() === this.$_method.toLocaleLowerCase())){
+                        this.$_error("服务器错误");
+                        this.$_error(`【当前请求为${this.$_method.toLocaleLowerCase()},必须为(${methodArr.join()})】-----url----->  ${this.$_url}`);
+                        return;
+                    }
+                    oldPostMethod.call(this);
+                }catch (e) {
+                    console.log(e)
+                }
+            };
+            return (t,k,d)=>{}
+        }
+    }
+}
+
+/**
+ * @限制请求方式修饰器
+ */
+export const method = new methodClass_init().method_init();
+export const method_get = new methodClass_init('get').method_init();
+export const method_post = new methodClass_init('post').method_init();
+export const method_put = new methodClass_init('put').method_init();
+export const method_patch = new methodClass_init('patch').method_init();
+export const method_delete = new methodClass_init('delete').method_init();
+export const method_copy = new methodClass_init('copy').method_init();
+export const method_head = new methodClass_init('head').method_init();
+export const method_options = new methodClass_init('options').method_init();
+export const method_link = new methodClass_init('link').method_init();
+export const method_unlink = new methodClass_init('unlink').method_init();
+export const method_purge = new methodClass_init('purge').method_init();
+export const method_lock = new methodClass_init('lock').method_init();
+export const method_unlock = new methodClass_init('unlock').method_init();
+export const method_propfind = new methodClass_init('propfind').method_init();
+export const method_view = new methodClass_init('view').method_init();
+export const method_update = new methodClass_init('update').method_init();

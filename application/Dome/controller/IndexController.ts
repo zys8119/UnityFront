@@ -1,4 +1,6 @@
-import applicationController from "../../../UnityFrontUtils/controller/applicationController";
+import {
+    applicationController,
+} from "../../../UnityFrontUtils/controller/applicationController";
 import {ServerPublicConfig} from "../../../UnityFrontUtils/config";
 
 export class IndexController extends applicationController {
