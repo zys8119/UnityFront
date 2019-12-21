@@ -61,12 +61,7 @@ export class IndexController extends applicationController {
     }
     
     upload(){
-        this.$_success({
-            a:this.$_cookies,
-            b:this.$_encode(this.$_query.name),
-            c:this.$_decode(this.$_query.namekey)
-        })
+        console.log(this.$_getRequestFiles().myFileName)
+        this.$_success();
     }
-
-
 }

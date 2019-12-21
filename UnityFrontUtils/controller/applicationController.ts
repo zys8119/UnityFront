@@ -1,4 +1,12 @@
-import {ControllerInitDataOptions, mysqlOptionsOptions, SqlUtilsOptions, SuccessSendDataOptions, StatusCodeOptions, getSvgCodeOptions } from "../typeStript"
+import {
+    ControllerInitDataOptions,
+    mysqlOptionsOptions,
+    SqlUtilsOptions,
+    SuccessSendDataOptions,
+    StatusCodeOptions,
+    getSvgCodeOptions,
+    RequestFiles
+} from "../typeStript"
 import { headersType } from "../typeStript/Types";
 import { ServerConfig, ServerPublicConfig } from "../config";
 import { AxiosStatic } from "axios";
@@ -33,7 +41,7 @@ export default class applicationControllerClass implements ControllerInitDataOpt
     $_axios:AxiosStatic;
     $_cookies:object|null;
     setHeaders(Headers:headersType = {}){
-        this.$_RequestHeaders = Object.assign(this.$_RequestHeaders,Headers);
+        this.$_RequestHeaders = Object.assign(JSON.parse(JSON.stringify(this.$_RequestHeaders)),Headers);
     }
     setRequestStatus(Status:number){
         this.$_RequestStatus = Status;
@@ -540,6 +548,31 @@ export default class applicationControllerClass implements ControllerInitDataOpt
         this.setHeaders({
             'Set-Cookie':this.$_getUrlQueryData(data).split(";"),
         });
+    }
+    
+    $_getRequestFiles(){
+        var resultFileObj:{[key:string]:Array<RequestFiles>};
+        resultFileObj = {};
+        var currentFileName = null;
+        try {
+            for(let key in this.$_body){
+                if(key.match(/.*;.*file$/)){
+                    currentFileName = key.replace(/;.*file$/img,'');
+                    resultFileObj[currentFileName] = [];
+                }else {
+                    if(currentFileName && key.match(/.*Content-Type/)){
+                        resultFileObj[currentFileName].push({
+                           data:this.$_body[key],
+                           type:key.match(/\w*$/)[0],
+                           name: key.replace(/Content-Type.*/img,''),
+                           coding:"utf8"
+                        });
+                    }
+                }
+                
+            }
+        }catch (e) {};
+        return resultFileObj;
     }
 
 }
