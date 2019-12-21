@@ -61,8 +61,12 @@ export class IndexController extends applicationController {
     }
     
     upload(){
-        this.$_success("asdas",this.$_cookies)
-        
+        this.$_setCookie({
+            bb:"s4",
+        });
+        this.$_success({
+            a:this.$_cookies,
+        })
     }
 
 

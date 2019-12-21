@@ -260,7 +260,20 @@ export interface ControllerInitDataOptions {
      * 创建随机svg验证码
      * @param options {object} 配置
      */
-    $_getSvgCode?(options?:getSvgCodeOptions):Promise<string>; // 创建随机密钥
+    $_getSvgCode?(options?:getSvgCodeOptions):Promise<string>; // 创建随机svg验证码
+    /**
+     * 数据转url参数
+     * @param options {object} 数据
+     * @param connectors {string} 连接符号 例如 '='
+     * @param type {string} 分割符号 例如 '&'
+     * @return {string} 例如{a:1,b:2} => "a=1&b=2"
+     */
+    $_getUrlQueryData?(options?:object, connectors?:string, type?:string):string; // 数据转url参数
+    /**
+     * 设置cookie
+     * @param data {object} 需要设置的数据
+     */
+    $_setCookie?(data?:object):void; // 设置cookie
 }
 
 export interface TemplateErrorDataOptions {

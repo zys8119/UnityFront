@@ -33,7 +33,7 @@ export default class applicationController implements ControllerInitDataOptions 
     $_axios:AxiosStatic;
     $_cookies:object|null;
     setHeaders(Headers:headersType = {}){
-        this.$_RequestHeaders = Headers;
+        this.$_RequestHeaders = Object.assign(this.$_RequestHeaders,Headers);
     }
     setRequestStatus(Status:number){
         this.$_RequestStatus = Status;
@@ -517,6 +517,27 @@ export default class applicationController implements ControllerInitDataOptions 
             });
             this.response.write(svg);
             this.response.end();
+        });
+    }
+    
+    $_getUrlQueryData(options?:object, connectors?:string, type?:string){
+        options = options || {};
+        connectors = connectors || "=";
+        type = type || ";";
+        let result = [];
+        for(let k in options){
+            let resultItem = options[k];
+            if(typeof  resultItem === 'object'){
+                resultItem = JSON.stringify(resultItem)
+            }
+            result.push(`${k}${connectors}${resultItem}`)
+        }
+        return result.join(type);
+    }
+    
+    $_setCookie(data?:object){
+        this.setHeaders({
+            'Set-Cookie':this.$_getUrlQueryData(data).split(";"),
         });
     }
 
