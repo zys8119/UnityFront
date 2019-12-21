@@ -1,6 +1,4 @@
-import {
-    applicationController,
-} from "../../../UnityFrontUtils/controller/applicationController";
+import applicationController from "../../../UnityFrontUtils/controller/applicationController";
 import {ServerPublicConfig} from "../../../UnityFrontUtils/config";
 
 export class IndexController extends applicationController {
@@ -63,11 +61,10 @@ export class IndexController extends applicationController {
     }
     
     upload(){
-        this.$_setCookie({
-            bb:"s4",
-        });
         this.$_success({
             a:this.$_cookies,
+            b:this.$_encode(this.$_query.name),
+            c:this.$_decode(this.$_query.namekey)
         })
     }
 

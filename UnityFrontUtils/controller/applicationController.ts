@@ -549,17 +549,12 @@ export const applicationController = applicationControllerClass;
  * @请求方式修饰器类
  */
 class methodClass_init {
-    methodName:string;
-    
+    constructor(){}
     /**
-     * methodClass_init
+     * method_init
      * @param methodName 方法名
      */
-    constructor(methodName?:string){
-        this.methodName = methodName;
-    }
-    
-    method_init(){
+    method_init(methodName?:string){
         /**
          * @param currentControllerObj {any} 当前控制器对象
          * @param methodKeyName {string} 控制器方法
@@ -567,8 +562,8 @@ class methodClass_init {
          * @param callback {function} 修饰器回调
          */
         return (currentControllerObj:any,methodKeyName:string,method?:string|Function,callback?:Function)=>{
-            if(typeof currentControllerObj.prototype[currentControllerObj] !== 'function'){
-                console.error(new Error(`修饰器method${(this.methodName)?'_'+this.methodName:''} 控制器${methodKeyName}方法不存在`))
+            if(typeof currentControllerObj.prototype[methodKeyName] !== 'function'){
+                console.error(new Error(`修饰器method${(methodName)?'_'+methodName:''} 控制器${methodKeyName}方法不存在`))
                 return ;
             }
             callback = callback || new Function;
@@ -578,8 +573,8 @@ class methodClass_init {
                 method = "";
             }
             let methodArr = method.split("|").filter(e=>e.length !=0);
-            if(this.methodName){
-                methodArr.push(this.methodName);
+            if(methodName){
+                methodArr.push(methodName);
             }
             let oldPostMethod = currentControllerObj.prototype[methodKeyName];
             if(callback.call(currentControllerObj,methodKeyName)){return;}
@@ -603,20 +598,21 @@ class methodClass_init {
 /**
  * @限制请求方式修饰器
  */
-export const method = new methodClass_init().method_init();
-export const method_get = new methodClass_init('get').method_init();
-export const method_post = new methodClass_init('post').method_init();
-export const method_put = new methodClass_init('put').method_init();
-export const method_patch = new methodClass_init('patch').method_init();
-export const method_delete = new methodClass_init('delete').method_init();
-export const method_copy = new methodClass_init('copy').method_init();
-export const method_head = new methodClass_init('head').method_init();
-export const method_options = new methodClass_init('options').method_init();
-export const method_link = new methodClass_init('link').method_init();
-export const method_unlink = new methodClass_init('unlink').method_init();
-export const method_purge = new methodClass_init('purge').method_init();
-export const method_lock = new methodClass_init('lock').method_init();
-export const method_unlock = new methodClass_init('unlock').method_init();
-export const method_propfind = new methodClass_init('propfind').method_init();
-export const method_view = new methodClass_init('view').method_init();
-export const method_update = new methodClass_init('update').method_init();
+const methodClass_init_new = new methodClass_init();
+export const method = methodClass_init_new.method_init();
+export const method_get = methodClass_init_new.method_init('get');
+export const method_post = methodClass_init_new.method_init('post');
+export const method_put = methodClass_init_new.method_init('put');
+export const method_patch = methodClass_init_new.method_init('patch');
+export const method_delete = methodClass_init_new.method_init('delete');
+export const method_copy = methodClass_init_new.method_init('copy');
+export const method_head = methodClass_init_new.method_init('head');
+export const method_options = methodClass_init_new.method_init('options');
+export const method_link = methodClass_init_new.method_init('link');
+export const method_unlink = methodClass_init_new.method_init('unlink');
+export const method_purge = methodClass_init_new.method_init('purge');
+export const method_lock = methodClass_init_new.method_init('lock');
+export const method_unlock = methodClass_init_new.method_init('unlock');
+export const method_propfind = methodClass_init_new.method_init('propfind');
+export const method_view = methodClass_init_new.method_init('view');
+export const method_update = methodClass_init_new.method_init('update');
