@@ -132,6 +132,7 @@ export interface ControllerInitDataOptions {
     request?:any;//请求体
     response?:any;//返回体
     $_body?:any;//body数据
+    $_bodySource?:any;//body数据源，返回未node的Buffer缓冲器对象
     $_rawTrailers?:[];
     $_headers?:headersType;//headers数据
     $_rawHeaders?:any;//rawHeaders数据
@@ -278,7 +279,7 @@ export interface ControllerInitDataOptions {
      * 获取上传文件
      * @param data {object} 上传文件对象
      */
-    $_getRequestFiles():{[key:string]:Array<RequestFiles>}; // 获取上传文件
+    $_getRequestFiles?():{[key:string]:Array<RequestFiles>}; // 获取上传文件
 }
 
 export interface RequestFiles {

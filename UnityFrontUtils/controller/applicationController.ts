@@ -22,6 +22,7 @@ export default class applicationControllerClass implements ControllerInitDataOpt
     request?:any;
     response?:any;
     $_body?:any;
+    $_bodySource?:any;
     $_rawTrailers:[];
     $_headers:headersType;
     $_rawHeaders:any;
@@ -41,7 +42,7 @@ export default class applicationControllerClass implements ControllerInitDataOpt
     $_axios:AxiosStatic;
     $_cookies:object|null;
     setHeaders(Headers:headersType = {}){
-        this.$_RequestHeaders = Object.assign(JSON.parse(JSON.stringify(this.$_RequestHeaders)),Headers);
+        this.$_RequestHeaders = (<any>Object).assign(JSON.parse(JSON.stringify(this.$_RequestHeaders)),Headers);
     }
     setRequestStatus(Status:number){
         this.$_RequestStatus = Status;
@@ -488,7 +489,7 @@ export default class applicationControllerClass implements ControllerInitDataOpt
                 "#FFFF00",	"#FFFF33",	"#FFFF66",	"#FFFF99",	"#FFFFCC",   "#FFFFFF",
             ];
             let strArr = [];
-            let svgOptions = Object.assign(<getSvgCodeOptions>{
+            let svgOptions = (<any>Object).assign(<getSvgCodeOptions>{
                 fontSize:50,
                 index:4,
                 background:'rgb(178,200,255)',
@@ -551,6 +552,8 @@ export default class applicationControllerClass implements ControllerInitDataOpt
     }
     
     $_getRequestFiles(){
+        return this.$_bodySource.toString().split("Content-Disposition");
+        //=============================
         var resultFileObj:{[key:string]:Array<RequestFiles>};
         resultFileObj = {};
         var currentFileName = null;
