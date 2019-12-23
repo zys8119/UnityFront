@@ -283,10 +283,11 @@ export interface ControllerInitDataOptions {
 }
 
 export interface RequestFiles {
-    data:any; // 文件数据
-    type:string; // 文件content-type类型
-    name:string;// 文件名称
-    coding:string;// 文件编码，默认utf8
+    data?:any; // 文件数据
+    type?:string; // 文件content-type类型
+    name?:string;// 文件名称
+    field?:string;// 文件字段
+    coding?:string;// 文件编码，默认utf8
     [keyName:string]:any;
 }
 

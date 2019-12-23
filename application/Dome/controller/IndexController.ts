@@ -63,12 +63,12 @@ export class IndexController extends applicationController {
     
     upload(){
         console.log(this.$_getRequestFiles());
-        this.$_success();
+        // this.$_success();
         //===================================================
-        // let myFileName = this.$_getRequestFiles().myFileName[0];
-        // fs.writeFile(path.resolve(__dirname,"../../../public",myFileName.name), myFileName.data, 'utf8', err=>{
-        //     if (err) this.$_error();
-        //     this.$_success();
-        // });
+        let myFileName = this.$_getRequestFiles().myFileName[0];
+        fs.writeFile(path.resolve(__dirname,"../../../public",myFileName.name), myFileName.data, 'utf8', err=>{
+            if (err) this.$_error();
+            this.$_success();
+        });
     }
 }

@@ -552,29 +552,53 @@ export default class applicationControllerClass implements ControllerInitDataOpt
     }
     
     $_getRequestFiles(){
-        return this.$_bodySource.toString().split("Content-Disposition");
-        //=============================
+        let bodyString = this.$_bodySource.toString();
+        let bodyArr = bodyString.split("Content-Disposition");
         var resultFileObj:{[key:string]:Array<RequestFiles>};
         resultFileObj = {};
-        var currentFileName = null;
         try {
-            for(let key in this.$_body){
-                if(key.match(/.*;.*file$/)){
-                    currentFileName = key.replace(/;.*file$/img,'');
-                    resultFileObj[currentFileName] = [];
-                }else {
-                    if(currentFileName && key.match(/.*Content-Type/)){
-                        resultFileObj[currentFileName].push({
-                           data:this.$_body[key],
-                           type:key.match(/\w*$/)[0],
-                           name: key.replace(/Content-Type.*/img,''),
-                           coding:"utf8"
-                        });
+            bodyArr.map(item=>{
+                let itemArr = item.split("Content-Type");
+                let result:RequestFiles;
+                result = {
+                    coding:"utf8"
+                };
+                let itemWhile = itemArr[0];
+                if(itemWhile.indexOf("filename=") > -1){
+                    while (true){
+                        let m = /(?:name="(.{1,})";|filename="(.{1,})")/.exec(itemWhile);
+                        if(m){
+                            if(m[1]){
+                                result.field = m[1];
+                                itemWhile = itemWhile.replace(new RegExp(`name="${m[1]}";`,"img"),"")
+                            }else if(m[2]){
+                                itemWhile = itemWhile.replace(new RegExp(`filename="${m[2]}"`,"img"),"")
+                                result.name = m[2];
+                            }
+                        }else {
+                            break;
+                        }
                     }
+                    let m2 = /^(?:(.*)\r|：(.*)\r)/.exec(itemArr[1]);
+                    if(m2 && m2[1]){
+                        result.type = m2[1].replace(/^: /,"");
+                    };
+                    try {
+                        let m3 = /(?:^.*\r\n\r\n((.|\n|\s)*)\r\n------.*\r\n$)/.exec(itemArr[1]);
+                        if(m3 && m3[1]){
+                            result.data = m3[1];
+                        }
+                    }catch (e) {}
+                    return result
                 }
-                
-            }
-        }catch (e) {};
+                return null
+            }).filter(e=>e).forEach(itomObj=>{
+                resultFileObj[itomObj.field] = resultFileObj[itomObj.field] || [];
+                if(itomObj.data){
+                    resultFileObj[itomObj.field].push(itomObj);
+                }
+            });
+        }catch (e) {}
         return resultFileObj;
     }
 
