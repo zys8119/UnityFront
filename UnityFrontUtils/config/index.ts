@@ -14,10 +14,10 @@ export const mysqlConfig = <mysqlOptions>{
         connectionLimit : 10,
         host: 'localhost',
         user: 'root',
-        password: 'admin123',
+        password: 'root',
         port: '3306',
-        database: 'dome',
-        prefix:"uf_"
+        database: 'test',
+        prefix:""
     }
 };
 

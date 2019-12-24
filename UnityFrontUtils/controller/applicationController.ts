@@ -552,54 +552,61 @@ export default class applicationControllerClass implements ControllerInitDataOpt
     }
     
     $_getRequestFiles(){
-        let bodyString = this.$_bodySource.toString();
-        let bodyArr = bodyString.split("Content-Disposition");
-        var resultFileObj:{[key:string]:Array<RequestFiles>};
-        resultFileObj = {};
-        try {
-            bodyArr.map(item=>{
-                let itemArr = item.split("Content-Type");
-                let result:RequestFiles;
-                result = {
-                    coding:"utf8"
-                };
-                let itemWhile = itemArr[0];
-                if(itemWhile.indexOf("filename=") > -1){
-                    while (true){
-                        let m = /(?:name="(.{1,})";|filename="(.{1,})")/.exec(itemWhile);
-                        if(m){
-                            if(m[1]){
-                                result.field = m[1];
-                                itemWhile = itemWhile.replace(new RegExp(`name="${m[1]}";`,"img"),"")
-                            }else if(m[2]){
-                                itemWhile = itemWhile.replace(new RegExp(`filename="${m[2]}"`,"img"),"")
-                                result.name = m[2];
-                            }
-                        }else {
-                            break;
-                        }
+        Buffer.prototype.split=Buffer.prototype.split||function (spl){
+            let arr=[];
+            let cur=0;
+            let n=0;
+            while((n=this.indexOf(spl,cur))!=-1){
+                arr.push(this.slice(cur,n));
+                cur=n+spl.length
+            }
+            arr.push(this.slice(cur))
+            return arr
+        }
+        let post={};
+        let files={}
+        if(this.request.headers['content-type']){
+            let str=this.request.headers['content-type'].split('; ')[1]
+            if(str){
+                //获取boundary
+                let boundary='--'+str.split('=')[1]
+                //1. 用分隔符切分整个数据
+                let arr=this.$_bodySource.split(boundary)
+                //2. 丢弃头尾两个数据
+                arr.shift()
+                arr.pop()
+                //3. 丢弃每个数据头尾的\r\n
+                arr=arr.map(buffer=>buffer.slice(2,buffer.length-2))
+                //4. 每个数据的第一个‘\r\n\r\n’处切开
+                arr.forEach(buffer=>{
+                    let n=buffer.indexOf('\r\n\r\n');
+                    let disposition=buffer.slice(0,n);
+                    let content=buffer.slice(n+4)
+                    disposition=disposition.toString()
+                    if(disposition.indexOf('\r\n')==-1){
+                        // 普通数据;
+                        content=content.toString();
+                        let name=disposition.split('; ')[1].split('=')[1];
+                        name=name.slice(1,name.length-1)
+                    
+                        post[name]=content;
+                    }else{
+                        // 文件数据
+                        let [line1,line2]=disposition.split('\r\n');
+                        //line1:Content-Disposition: form-data; name="f1"; filename="1.txt"
+                        //line2:Content-Type: text/plain
+                        let [,name,filename]=line1.split('; ');
+                        name=name.split('=')[1]
+                        name=name.slice(1,name.length-1);
+                    
+                        filename=filename.split('=')[1]
+                        filename=filename.slice(1,filename.length-1);
+                        console.log(filename, 111111111111)
                     }
-                    let m2 = /^(?:(.*)\r|：(.*)\r)/.exec(itemArr[1]);
-                    if(m2 && m2[1]){
-                        result.type = m2[1].replace(/^: /,"");
-                    };
-                    try {
-                        let m3 = /(?:^.*\r\n\r\n((.|\n|\s)*)\r\n------.*\r\n$)/.exec(itemArr[1]);
-                        if(m3 && m3[1]){
-                            result.data = m3[1];
-                        }
-                    }catch (e) {}
-                    return result
-                }
-                return null
-            }).filter(e=>e).forEach(itomObj=>{
-                resultFileObj[itomObj.field] = resultFileObj[itomObj.field] || [];
-                if(itomObj.data){
-                    resultFileObj[itomObj.field].push(itomObj);
-                }
-            });
-        }catch (e) {}
-        return resultFileObj;
+                })
+            }
+        }
+        return {};
     }
 
 }
