@@ -552,6 +552,55 @@ export default class applicationControllerClass implements ControllerInitDataOpt
     }
     
     $_getRequestFiles(){
+        let bodyString = this.$_bodySource.toString();
+        let bodyArr = bodyString.split("Content-Disposition");
+        var resultFileObj:{[key:string]:Array<RequestFiles>};
+        resultFileObj = {};
+        try {
+            bodyArr.map(item=>{
+                let itemArr = item.split("Content-Type");
+                let result:RequestFiles;
+                result = {
+                    coding:"utf8"
+                };
+                let itemWhile = itemArr[0];
+                if(itemWhile.indexOf("filename=") > -1){
+                    while (true){
+                        let m = /(?:name="(.{1,})";|filename="(.{1,})")/.exec(itemWhile);
+                        if(m){
+                            if(m[1]){
+                                result.field = m[1];
+                                itemWhile = itemWhile.replace(new RegExp(`name="${m[1]}";`,"img"),"")
+                            }else if(m[2]){
+                                itemWhile = itemWhile.replace(new RegExp(`filename="${m[2]}"`,"img"),"")
+                                result.name = m[2];
+                            }
+                        }else {
+                            break;
+                        }
+                    }
+                    let m2 = /^(?:(.*)\r|：(.*)\r)/.exec(itemArr[1]);
+                    if(m2 && m2[1]){
+                        result.type = m2[1].replace(/^: /,"");
+                    };
+                    try {
+                        let m3 = /(?:^.*\r\n\r\n((.|\n|\s)*)\r\n------.*\r\n$)/.exec(itemArr[1]);
+                        if(m3 && m3[1]){
+                            result.data = m3[1];
+                        }
+                    }catch (e) {}
+                    return result
+                }
+                return null
+            }).filter(e=>e).forEach(itomObj=>{
+                resultFileObj[itomObj.field] = resultFileObj[itomObj.field] || [];
+                if(itomObj.data){
+                    resultFileObj[itomObj.field].push(itomObj);
+                }
+            });
+        }catch (e) {}
+        return resultFileObj;
+        /*
         var rems = [];
         var buffer = this.$_bodySource;
         //根据\r\n分离数据和报头
@@ -567,15 +616,15 @@ export default class applicationControllerClass implements ControllerInitDataOpt
         var filename = picmsg_1.match(/filename=".*"/g)[0].split('"')[1];
         //图片数据
         var nbuf = buffer.slice(rems[3]+2,rems[rems.length-2]);
-        console.log(rems);
-        console.log(picmsg_1)
-        console.log(filename)
-        console.log(nbuf)
-        console.log(path.resolve(__dirname,"../../public",filename))
+        // console.log(rems);
+        // console.log(picmsg_1)
+        // console.log(filename)
+        // console.log(nbuf)
+        // console.log(path.resolve(__dirname,"../../public",filename))
         fs.writeFileSync(path.resolve(__dirname,"../../public",filename) , nbuf);
-        console.log("保存"+filename+"成功");
         this.$_success();
-        return {};
+         */
+        // return {};
     }
 
 }
