@@ -552,60 +552,29 @@ export default class applicationControllerClass implements ControllerInitDataOpt
     }
     
     $_getRequestFiles(){
-        Buffer.prototype.split=Buffer.prototype.split||function (spl){
-            let arr=[];
-            let cur=0;
-            let n=0;
-            while((n=this.indexOf(spl,cur))!=-1){
-                arr.push(this.slice(cur,n));
-                cur=n+spl.length
-            }
-            arr.push(this.slice(cur))
-            return arr
-        }
-        let post={};
-        let files={}
-        if(this.request.headers['content-type']){
-            let str=this.request.headers['content-type'].split('; ')[1]
-            if(str){
-                //获取boundary
-                let boundary='--'+str.split('=')[1]
-                //1. 用分隔符切分整个数据
-                let arr=this.$_bodySource.split(boundary)
-                //2. 丢弃头尾两个数据
-                arr.shift()
-                arr.pop()
-                //3. 丢弃每个数据头尾的\r\n
-                arr=arr.map(buffer=>buffer.slice(2,buffer.length-2))
-                //4. 每个数据的第一个‘\r\n\r\n’处切开
-                arr.forEach(buffer=>{
-                    let n=buffer.indexOf('\r\n\r\n');
-                    let disposition=buffer.slice(0,n);
-                    let content=buffer.slice(n+4)
-                    disposition=disposition.toString()
-                    if(disposition.indexOf('\r\n')==-1){
-                        // 普通数据;
-                        content=content.toString();
-                        let name=disposition.split('; ')[1].split('=')[1];
-                        name=name.slice(1,name.length-1)
-                    
-                        post[name]=content;
-                    }else{
-                        // 文件数据
-                        let [line1,line2]=disposition.split('\r\n');
-                        //line1:Content-Disposition: form-data; name="f1"; filename="1.txt"
-                        //line2:Content-Type: text/plain
-                        let [,name,filename]=line1.split('; ');
-                        name=name.split('=')[1]
-                        name=name.slice(1,name.length-1);
-                    
-                        filename=filename.split('=')[1]
-                        filename=filename.slice(1,filename.length-1);
-                        console.log(filename, 111111111111)
-                    }
-                })
+        var rems = [];
+        var buffer = this.$_bodySource;
+        //根据\r\n分离数据和报头
+        for(var i=0;i<buffer.length;i++){
+            var v = buffer[i];
+            var v2 = buffer[i+1];
+            if(v==13 && v2==10){
+                rems.push(i);
             }
         }
+        //图片信息
+        var picmsg_1 = buffer.slice(rems[0]+2,rems[1]).toString();
+        var filename = picmsg_1.match(/filename=".*"/g)[0].split('"')[1];
+        //图片数据
+        var nbuf = buffer.slice(rems[3]+2,rems[rems.length-2]);
+        console.log(rems);
+        console.log(picmsg_1)
+        console.log(filename)
+        console.log(nbuf)
+        console.log(path.resolve(__dirname,"../../public",filename))
+        fs.writeFileSync(path.resolve(__dirname,"../../public",filename) , nbuf);
+        console.log("保存"+filename+"成功");
+        this.$_success();
         return {};
     }
 

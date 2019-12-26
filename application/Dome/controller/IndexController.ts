@@ -63,7 +63,7 @@ export class IndexController extends applicationController {
     
     upload(){
         this.$_getRequestFiles();
-        this.$_success();
+        // this.$_success();
         //===================================================
         // let myFileName = this.$_getRequestFiles().myFileName[0];
         // fs.writeFile(path.resolve(__dirname,"../../../public",myFileName.name), myFileName.data, 'utf8', err=>{
