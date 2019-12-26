@@ -586,7 +586,8 @@ export default class applicationControllerClass implements ControllerInitDataOpt
                     try {
                         let m3 = /(?:^.*\r\n\r\n((.|\n|\s)*)\r\n------.*\r\n$)/.exec(itemArr[1]);
                         if(m3 && m3[1]){
-                            result.data = m3[1];
+                            let index = bodyString.indexOf(m3[1]);
+                            result.data = Buffer.from(this.$_bodySource).slice(index,m3[1].length);
                         }
                     }catch (e) {}
                     return result
@@ -600,31 +601,6 @@ export default class applicationControllerClass implements ControllerInitDataOpt
             });
         }catch (e) {}
         return resultFileObj;
-        /*
-        var rems = [];
-        var buffer = this.$_bodySource;
-        //根据\r\n分离数据和报头
-        for(var i=0;i<buffer.length;i++){
-            var v = buffer[i];
-            var v2 = buffer[i+1];
-            if(v==13 && v2==10){
-                rems.push(i);
-            }
-        }
-        //图片信息
-        var picmsg_1 = buffer.slice(rems[0]+2,rems[1]).toString();
-        var filename = picmsg_1.match(/filename=".*"/g)[0].split('"')[1];
-        //图片数据
-        var nbuf = buffer.slice(rems[3]+2,rems[rems.length-2]);
-        // console.log(rems);
-        // console.log(picmsg_1)
-        // console.log(filename)
-        // console.log(nbuf)
-        // console.log(path.resolve(__dirname,"../../public",filename))
-        fs.writeFileSync(path.resolve(__dirname,"../../public",filename) , nbuf);
-        this.$_success();
-         */
-        // return {};
     }
 
 }
