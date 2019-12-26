@@ -279,15 +279,13 @@ export interface ControllerInitDataOptions {
      * 获取上传文件
      * @param data {object} 上传文件对象
      */
-    $_getRequestFiles?():{[key:string]:Array<RequestFiles>}; // 获取上传文件
+    $_getRequestFiles?():{[key:string]:Array<RequestFiles>|RequestFiles}; // 获取上传文件
 }
 
 export interface RequestFiles {
     data?:any; // 文件数据
     type?:string; // 文件content-type类型
     name?:string;// 文件名称
-    field?:string;// 文件字段
-    coding?:string;// 文件编码，默认utf8
     [keyName:string]:any;
 }
 

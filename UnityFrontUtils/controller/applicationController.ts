@@ -552,6 +552,50 @@ export default class applicationControllerClass implements ControllerInitDataOpt
     }
     
     $_getRequestFiles(){
+        let resultData:{[key:string]:Array<RequestFiles>|RequestFiles};
+        resultData = {};
+        try {
+            let bodyString = this.$_bodySource.toString();
+            let end = bodyString.match(/------.*--$/img)[0];
+            let start = end.replace(/--$/,"");
+            let bodyArr = bodyString.replace(end,'').split(start).filter(e=>(e && e.length > 0));
+            bodyArr.forEach(item=>{
+                try {
+                    let Disposition = item.match(/^\s.*Content-Disposition.*/img)[0];
+                    let ContentType = null;
+                    try {
+                        ContentType = item.replace(/^\s.*Content-Disposition.*/img,"").match(/^\sContent-Type.*/img)[0];
+                        ContentType = ContentType.replace(/^\s.*Content-Type:\s/img,"")
+                    }catch (e) {}
+                    let DispositionArr = Disposition.split(";");
+                    DispositionArr = DispositionArr.map(e=>{
+                        var m = /(?:(filename|name)="(.*)")/.exec(e);
+                        return (m)?m[2]:null;
+                    }).filter(e=>e);
+                    if(DispositionArr.length === 1){
+                        let dataStr = item.replace(/^\s.*Content-Disposition.*/img,"").replace(/^\sContent-Type.*/img,"").replace(/^\s{2}|\s$/img,"");
+                        let index = bodyString.indexOf(dataStr);
+                        resultData[DispositionArr[0]] = {
+                            name:DispositionArr[0],
+                            type:ContentType,
+                            data:Buffer.from(this.$_bodySource).slice(index,dataStr.length)
+                        }
+                    }
+                    if(DispositionArr.length > 1){
+                        resultData[DispositionArr[0]] = resultData[DispositionArr[0]] || [];
+                        resultData[DispositionArr[0]].push({
+                            name:DispositionArr[1],
+                            type:ContentType,
+                            data:item.replace(/^\s.*Content-Disposition.*/img,"").replace(/^\sContent-Type.*/img,"")
+                        })
+                    }
+                }catch (e) {}
+            });
+        }catch (e) {}
+        console.log(resultData)
+        return resultData;
+
+        /*
         let bodyString = this.$_bodySource.toString();
         let bodyArr = bodyString.split("Content-Disposition");
         var resultFileObj:{[key:string]:Array<RequestFiles>};
@@ -601,6 +645,7 @@ export default class applicationControllerClass implements ControllerInitDataOpt
             });
         }catch (e) {}
         return resultFileObj;
+         */
     }
 
 }
