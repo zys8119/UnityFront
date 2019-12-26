@@ -556,16 +556,17 @@ export default class applicationControllerClass implements ControllerInitDataOpt
         resultData = {};
         try {
             let bodyString = this.$_bodySource.toString();
-            let end = bodyString.match(/------.*--$/img)[0];
-            let start = end.replace(/--$/,"");
+            let end = bodyString.match(/\s------.*--\s*$/)[0];
+            let start = end.replace(/^\s|--\s*$/img,"");
             let bodyArr = bodyString.replace(end,'').split(start).filter(e=>(e && e.length > 0));
             bodyArr.forEach(item=>{
                 try {
-                    let Disposition = item.match(/^\s.*Content-Disposition.*/img)[0];
+                    let Disposition = item.match(/^\s*Content-Disposition.*/)[0];
                     let ContentType = null;
                     try {
-                        ContentType = item.replace(/^\s.*Content-Disposition.*/img,"").match(/^\sContent-Type.*/img)[0];
-                        ContentType = ContentType.replace(/^\s.*Content-Type:\s/img,"")
+                        ContentType = item.replace(/^\s*Content-Disposition.*/,"")
+                            .match(/^\s*Content-Type.*/)[0];
+                        ContentType = ContentType.replace(/^\s*Content-Type:\s/,"")
                     }catch (e) {}
                     let DispositionArr = Disposition.split(";");
                     DispositionArr = DispositionArr.map(e=>{
@@ -573,79 +574,31 @@ export default class applicationControllerClass implements ControllerInitDataOpt
                         return (m)?m[2]:null;
                     }).filter(e=>e);
                     if(DispositionArr.length === 1){
-                        let dataStr = item.replace(/^\s.*Content-Disposition.*/img,"").replace(/^\sContent-Type.*/img,"").replace(/^\s{2}|\s$/img,"");
-                        let index = bodyString.indexOf(dataStr);
-                        resultData[DispositionArr[0]] = {
-                            name:DispositionArr[0],
-                            type:ContentType,
-                            data:Buffer.from(this.$_bodySource).slice(index,dataStr.length)
-                        }
                     }
                     if(DispositionArr.length > 1){
+                        let dataStr = item
+                            .replace(/^\s*/, "")
+                            .replace(/^\s*Content-Disposition.*/, "")
+                            .replace(/^\s*Content-Type.*/, "")
+                            .replace(/^\s*/, "")
+                        let index = bodyString.indexOf(dataStr);
                         resultData[DispositionArr[0]] = resultData[DispositionArr[0]] || [];
                         resultData[DispositionArr[0]].push({
+                            bodyStringLength:bodyString.length,
+                            sum:Buffer.from(this.$_bodySource).length,
+                            index:index,
+                            end:Buffer.from(dataStr).length,
                             name:DispositionArr[1],
                             type:ContentType,
-                            data:item.replace(/^\s.*Content-Disposition.*/img,"").replace(/^\sContent-Type.*/img,"")
-                        })
+                            data:Buffer.from(this.$_bodySource).slice(index,Buffer.from(dataStr).length)
+                        });
                     }
                 }catch (e) {}
             });
         }catch (e) {}
         console.log(resultData)
+        // console.log(this.$_bodySource.toString())
         return resultData;
-
-        /*
-        let bodyString = this.$_bodySource.toString();
-        let bodyArr = bodyString.split("Content-Disposition");
-        var resultFileObj:{[key:string]:Array<RequestFiles>};
-        resultFileObj = {};
-        try {
-            bodyArr.map(item=>{
-                let itemArr = item.split("Content-Type");
-                let result:RequestFiles;
-                result = {
-                    coding:"utf8"
-                };
-                let itemWhile = itemArr[0];
-                if(itemWhile.indexOf("filename=") > -1){
-                    while (true){
-                        let m = /(?:name="(.{1,})";|filename="(.{1,})")/.exec(itemWhile);
-                        if(m){
-                            if(m[1]){
-                                result.field = m[1];
-                                itemWhile = itemWhile.replace(new RegExp(`name="${m[1]}";`,"img"),"")
-                            }else if(m[2]){
-                                itemWhile = itemWhile.replace(new RegExp(`filename="${m[2]}"`,"img"),"")
-                                result.name = m[2];
-                            }
-                        }else {
-                            break;
-                        }
-                    }
-                    let m2 = /^(?:(.*)\r|：(.*)\r)/.exec(itemArr[1]);
-                    if(m2 && m2[1]){
-                        result.type = m2[1].replace(/^: /,"");
-                    };
-                    try {
-                        let m3 = /(?:^.*\r\n\r\n((.|\n|\s)*)\r\n------.*\r\n$)/.exec(itemArr[1]);
-                        if(m3 && m3[1]){
-                            let index = bodyString.indexOf(m3[1]);
-                            result.data = Buffer.from(this.$_bodySource).slice(index,m3[1].length);
-                        }
-                    }catch (e) {}
-                    return result
-                }
-                return null
-            }).filter(e=>e).forEach(itomObj=>{
-                resultFileObj[itomObj.field] = resultFileObj[itomObj.field] || [];
-                if(itomObj.data){
-                    resultFileObj[itomObj.field].push(itomObj);
-                }
-            });
-        }catch (e) {}
-        return resultFileObj;
-         */
     }
 
 }
