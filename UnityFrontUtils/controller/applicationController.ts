@@ -552,47 +552,67 @@ export default class applicationControllerClass implements ControllerInitDataOpt
     }
     
     $_getRequestFiles(){
+        Buffer.prototype.split= Buffer.prototype.split || function (spl) {
+            let arr = [];
+            let cur = 0;
+            let n = 0;
+            while ((n = this.indexOf(spl, cur)) != -1) {
+                arr.push(this.slice(cur, n));
+                cur = n + spl.length
+            }
+            arr.push(this.slice(cur))
+            return arr
+        };
+        let bodyString = this.$_bodySource.toString();
+        let end = bodyString.match(/\s------.*--\s*$/)[0];
+        let start = end.replace(/^\s|--\s*$/img,"");
         let resultData:{[key:string]:Array<RequestFiles>|RequestFiles};
         resultData = {};
-        try {
-            let bodyString = this.$_bodySource.toString();
-            let end = bodyString.match(/\s------.*--\s*$/)[0];
-            let start = end.replace(/^\s|--\s*$/img,"");
-            let bodyArr = bodyString.replace(end,'').split(start).filter(e=>(e && e.length > 0));
-            bodyArr.forEach(item=>{
+        this.$_bodySource.split(start).map(item=>{
+            try {
+                let key  = item.toString().match(/^\s{2}(.*|.*\s{2}.*)\s{4}/)[0];
+                let data = item.split(key)[1];
+                data = data.slice(0,data.length - 2);
+                let DispositionArr = [];
+                let ContentType = null;
                 try {
-                    let Disposition = item.match(/^\s*Content-Disposition.*/)[0];
-                    let ContentType = null;
+                    let Disposition = key.match(/^\s*Content-Disposition.*/)[0];
                     try {
-                        ContentType = item.replace(/^\s*Content-Disposition.*/,"")
+                        ContentType = key.replace(/^\s*Content-Disposition.*/,"")
                             .match(/^\s*Content-Type.*/)[0];
                         ContentType = ContentType.replace(/^\s*Content-Type:\s/,"")
                     }catch (e) {}
-                    let DispositionArr = Disposition.split(";");
+                    DispositionArr = Disposition.split(";");
                     DispositionArr = DispositionArr.map(e=>{
                         var m = /(?:(filename|name)="(.*)")/.exec(e);
                         return (m)?m[2]:null;
                     }).filter(e=>e);
-                    if(DispositionArr.length === 1){
-                    }
-                    if(DispositionArr.length > 1){
-                        let dataStr = item
-                            .replace(/^\s*/, "")
-                            .replace(/^\s*Content-Disposition.*/, "")
-                            .replace(/^\s*Content-Type.*/, "")
-                            .replace(/^\s*/, "");
-                        let index = bodyString.indexOf(dataStr);
-                        resultData[DispositionArr[0]] = resultData[DispositionArr[0]] || [];
-                        resultData[DispositionArr[0]].push({
-                            name:DispositionArr[1],
-                            type:ContentType,
-                            data:this.$_bodySource.slice(index,dataStr.length)
-                        });
-                    }
                 }catch (e) {}
-            });
-        }catch (e) {}
-        console.log(resultData)
+                return  {
+                    DispositionArr,
+                    ContentType,
+                    data
+                };
+            }catch (e) {
+                // return item.toString();
+            }
+        }).filter(e=>e).forEach(item=>{
+            if(item.DispositionArr.length === 1){
+                resultData[item.DispositionArr[0]] = {
+                    name:item.DispositionArr[0],
+                    type:item.ContentType,
+                    value:item.data
+                };
+            }
+            if(item.DispositionArr.length > 1){
+                resultData[item.DispositionArr[0]] = resultData[item.DispositionArr[0]] || [];
+                resultData[item.DispositionArr[0]].push({
+                    name:item.DispositionArr[1],
+                    type:item.ContentType,
+                    data:item.data
+                });
+            }
+        });
         return resultData;
     }
 

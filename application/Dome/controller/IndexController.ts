@@ -1,5 +1,6 @@
 import applicationController from "../../../UnityFrontUtils/controller/applicationController";
 import {ServerPublicConfig} from "../../../UnityFrontUtils/config";
+import {RequestFiles} from "../../../UnityFrontUtils/typeStript";
 const path = require("path")
 const fs = require("fs")
 export class IndexController extends applicationController {
@@ -64,45 +65,17 @@ export class IndexController extends applicationController {
     upload(){
         (async ()=>{
             let a = ()=>{
-                this.getfiles()
-                /*
                 let myFileName = this.$_getRequestFiles().myFileName;
                 if(myFileName){
                     myFileName.forEach(file=>{
-                        fs.writeFile(path.resolve(__dirname,"../../../public",file.name),file.data, 'utf8', err=>{
+                        fs.writeFile(path.resolve(__dirname,"../../../public",Date.now()+file.name),file.data, 'utf8', err=>{
                             if (err) this.$_error();
                         });
                     });
-                }*/
+                }
             };
             await a();
             this.$_success();
         })()
-    }
-
-
-    getfiles(){
-        Buffer.prototype.split= Buffer.prototype.split || function (spl) {
-            let arr = [];
-            let cur = 0;
-            let n = 0;
-            while ((n = this.indexOf(spl, cur)) != -1) {
-                arr.push(this.slice(cur, n));
-                cur = n + spl.length
-            }
-            arr.push(this.slice(cur))
-            return arr
-        };
-        let bodyString = this.$_bodySource.toString();
-        let end = bodyString.match(/\s------.*--\s*$/)[0];
-        let start = end.replace(/^\s|--\s*$/img,"");
-        console.log(this.$_bodySource.split(start).map(item=>{
-            try {
-                return  item.split(item.toString().match(/^\s{2}(.*|.*\s{2}.*)\s{4}/)[0]);
-            }catch (e) {
-                // return item.toString();
-            }
-        }).filter(e=>e).map(e=>e[1].toString()))
-        console.log("===========================================")
     }
 }
