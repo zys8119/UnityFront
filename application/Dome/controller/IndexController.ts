@@ -60,10 +60,12 @@ export class IndexController extends applicationController {
     uploadTest(){
         this.Render()
     }
-    
+
     upload(){
         (async ()=>{
             let a = ()=>{
+                this.getfiles()
+                /*
                 let myFileName = this.$_getRequestFiles().myFileName;
                 if(myFileName){
                     myFileName.forEach(file=>{
@@ -71,10 +73,33 @@ export class IndexController extends applicationController {
                             if (err) this.$_error();
                         });
                     });
-                }
+                }*/
             };
             await a();
             this.$_success();
         })()
+    }
+
+
+    getfiles(){
+        Buffer.prototype.split= Buffer.prototype.split || function (spl) {
+            let arr = [];
+            let cur = 0;
+            let n = 0;
+            while ((n = this.indexOf(spl, cur)) != -1) {
+                arr.push(this.slice(cur, n));
+                cur = n + spl.length
+            }
+            arr.push(this.slice(cur))
+            return arr
+        };
+        let bodyString = this.$_bodySource.toString();
+        let end = bodyString.match(/\s------.*--\s*$/)[0];
+        let start = end.replace(/^\s|--\s*$/img,"");
+        console.log(this.$_bodySource.split(start))
+        console.log("===========================================")
+        console.log(this.$_bodySource.toString())
+        // console.log(this.$_bodySource.toString())
+        // console.log(this.$_bodySource)
     }
 }
