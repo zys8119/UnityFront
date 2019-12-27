@@ -580,19 +580,13 @@ export default class applicationControllerClass implements ControllerInitDataOpt
                             .replace(/^\s*/, "")
                             .replace(/^\s*Content-Disposition.*/, "")
                             .replace(/^\s*Content-Type.*/, "")
-                            .replace(/^\s*/, "")
+                            .replace(/^\s*/, "");
                         let index = bodyString.indexOf(dataStr);
                         resultData[DispositionArr[0]] = resultData[DispositionArr[0]] || [];
                         resultData[DispositionArr[0]].push({
-                            bodyString:bodyString,
-                            dataStr:dataStr,
-                            bodyStringLength:bodyString.length,
-                            sum:Buffer.from(this.$_bodySource).length,
-                            index:index,
-                            end:Buffer.from(dataStr).length,
                             name:DispositionArr[1],
                             type:ContentType,
-                            data:Buffer.from(this.$_bodySource).slice(index,Buffer.from(dataStr).length)
+                            data:this.$_bodySource.slice(index,dataStr.length)
                         });
                     }
                 }catch (e) {}

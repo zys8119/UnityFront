@@ -45,3 +45,9 @@
 [pug模板语言](https://pugjs.org/api/getting-started.html)
 
 [docsify文档工具](https://docsify.js.org/#/zh-cn/quickstart)
+
+## 端口占用查看
+
+```bash
+    netstat -ano | findstr 81
+```
