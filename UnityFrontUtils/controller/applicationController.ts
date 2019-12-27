@@ -19,6 +19,7 @@ const https = require('https');
 const pug = require('pug');
 const puppeteer = require('puppeteer');
 export default class applicationControllerClass implements ControllerInitDataOptions {
+    [key:string]:any;
     request?:any;
     response?:any;
     $_body?:any;
