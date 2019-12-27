@@ -96,10 +96,10 @@ export class IndexController extends applicationController {
         let bodyString = this.$_bodySource.toString();
         let end = bodyString.match(/\s------.*--\s*$/)[0];
         let start = end.replace(/^\s|--\s*$/img,"");
-        console.log(this.$_bodySource.split(start))
+        console.log(this.$_bodySource.split(start).map(e=>({
+            a:e.toString().match(/^\\r\\n.*?\\r\\n\\r\\n/),
+            b:e.toString(),
+        })))
         console.log("===========================================")
-        console.log(this.$_bodySource.toString())
-        // console.log(this.$_bodySource.toString())
-        // console.log(this.$_bodySource)
     }
 }
