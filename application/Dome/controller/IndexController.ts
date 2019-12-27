@@ -68,7 +68,7 @@ export class IndexController extends applicationController {
                 let myFileName = this.$_getRequestFiles().myFileName;
                 if(myFileName){
                     myFileName.forEach(file=>{
-                        fs.writeFile(path.resolve(__dirname,"../../../public",Date.now()+file.name),file.data, 'utf8', err=>{
+                        fs.writeFile(path.resolve(__dirname,"../../../public",file.name),file.data, 'utf8', err=>{
                             if (err) this.$_error();
                         });
                     });
@@ -77,5 +77,9 @@ export class IndexController extends applicationController {
             await a();
             this.$_success();
         })()
+    }
+
+    test(){
+        this.$_success()
     }
 }
