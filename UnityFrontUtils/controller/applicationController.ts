@@ -584,6 +584,8 @@ export default class applicationControllerClass implements ControllerInitDataOpt
                         let index = bodyString.indexOf(dataStr);
                         resultData[DispositionArr[0]] = resultData[DispositionArr[0]] || [];
                         resultData[DispositionArr[0]].push({
+                            bodyString:bodyString,
+                            dataStr:dataStr,
                             bodyStringLength:bodyString.length,
                             sum:Buffer.from(this.$_bodySource).length,
                             index:index,
@@ -597,7 +599,6 @@ export default class applicationControllerClass implements ControllerInitDataOpt
             });
         }catch (e) {}
         console.log(resultData)
-        // console.log(this.$_bodySource.toString())
         return resultData;
     }
 
