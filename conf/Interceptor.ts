@@ -8,6 +8,5 @@ class Interceptor{
         console.log()
     }
 };
-// console.log(Object.keys(new applicationController(true)))
 
 export default Interceptor;

@@ -117,11 +117,9 @@ export default class applicationControllerClass implements ControllerInitDataOpt
     StatusCode:StatusCodeOptions;
     $_axios:AxiosStatic;
     $_cookies:object|null;
-    constructor(bool?:boolean) {
-        if(!bool){
-            // 拦截器注入
-            Interceptor.call(this);
-        }
+    constructor() {
+        // 拦截器注入
+        Interceptor.call(this);
     }
     setHeaders(Headers:headersType = {}){
         this.$_RequestHeaders = (<any>Object).assign(JSON.parse(JSON.stringify(this.$_RequestHeaders)),Headers);
