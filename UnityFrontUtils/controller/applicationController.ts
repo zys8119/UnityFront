@@ -12,12 +12,87 @@ import { ServerConfig, ServerPublicConfig } from "../config";
 import { AxiosStatic } from "axios";
 import Encrypt from "../utils/encrypt";
 import Utils from "../utils";
+import Interceptor from "../../conf/Interceptor";
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const https = require('https');
 const pug = require('pug');
 const puppeteer = require('puppeteer');
+
+/**
+ * @请求方式修饰器类
+ */
+class methodClass_init {
+    constructor(){}
+    /**
+     * method_init
+     * @param methodName 方法名
+     */
+    method_init(methodName?:string){
+        /**
+         * @param currentControllerObj {any} 当前控制器对象
+         * @param methodKeyName {string} 控制器方法
+         * @param method {string|function} 请求方式
+         * @param callback {function} 修饰器回调
+         */
+        return (currentControllerObj:any,methodKeyName:string,method?:string|Function,callback?:Function)=>{
+            if(typeof currentControllerObj.prototype[methodKeyName] !== 'function'){
+                console.error(new Error(`修饰器method${(methodName)?'_'+methodName:''} 控制器${methodKeyName}方法不存在`))
+                return ;
+            }
+            callback = callback || new Function;
+            method = method || "";
+            if(typeof method === "function"){
+                callback = method;
+                method = "";
+            }
+            let methodArr = method.split("|").filter(e=>e.length !=0);
+            if(methodName){
+                methodArr.push(methodName);
+            }
+            let oldPostMethod = currentControllerObj.prototype[methodKeyName];
+            if(callback.call(currentControllerObj,methodKeyName)){return;}
+            currentControllerObj.prototype[methodKeyName] = function () {
+                try {
+                    if(!methodArr.some(e=>e.toLocaleLowerCase() === this.$_method.toLocaleLowerCase())){
+                        this.$_error("服务器错误");
+                        this.$_error(`【当前请求为${this.$_method.toLocaleLowerCase()},必须为(${methodArr.join()})】-----url----->  ${this.$_url}`);
+                        return;
+                    }
+                    oldPostMethod.call(this);
+                }catch (e) {
+                    console.log(e)
+                }
+            };
+            return (t,k,d)=>{}
+        }
+    }
+}
+
+/**
+ * @限制请求方式修饰器
+ */
+const methodClass_init_new = new methodClass_init();
+export const method = methodClass_init_new.method_init();
+export const method_get = methodClass_init_new.method_init('get');
+export const method_post = methodClass_init_new.method_init('post');
+export const method_put = methodClass_init_new.method_init('put');
+export const method_patch = methodClass_init_new.method_init('patch');
+export const method_delete = methodClass_init_new.method_init('delete');
+export const method_copy = methodClass_init_new.method_init('copy');
+export const method_head = methodClass_init_new.method_init('head');
+export const method_options = methodClass_init_new.method_init('options');
+export const method_link = methodClass_init_new.method_init('link');
+export const method_unlink = methodClass_init_new.method_init('unlink');
+export const method_purge = methodClass_init_new.method_init('purge');
+export const method_lock = methodClass_init_new.method_init('lock');
+export const method_unlock = methodClass_init_new.method_init('unlock');
+export const method_propfind = methodClass_init_new.method_init('propfind');
+export const method_view = methodClass_init_new.method_init('view');
+export const method_update = methodClass_init_new.method_init('update');
+
+
 export default class applicationControllerClass implements ControllerInitDataOptions {
     [key:string]:any;
     request?:any;
@@ -42,6 +117,12 @@ export default class applicationControllerClass implements ControllerInitDataOpt
     StatusCode:StatusCodeOptions;
     $_axios:AxiosStatic;
     $_cookies:object|null;
+    constructor(bool?:boolean) {
+        if(!bool){
+            // 拦截器注入
+            Interceptor.call(this);
+        }
+    }
     setHeaders(Headers:headersType = {}){
         this.$_RequestHeaders = (<any>Object).assign(JSON.parse(JSON.stringify(this.$_RequestHeaders)),Headers);
     }
@@ -619,75 +700,3 @@ export default class applicationControllerClass implements ControllerInitDataOpt
 
 }
 export const applicationController = applicationControllerClass;
-
-/**
- * @请求方式修饰器类
- */
-class methodClass_init {
-    constructor(){}
-    /**
-     * method_init
-     * @param methodName 方法名
-     */
-    method_init(methodName?:string){
-        /**
-         * @param currentControllerObj {any} 当前控制器对象
-         * @param methodKeyName {string} 控制器方法
-         * @param method {string|function} 请求方式
-         * @param callback {function} 修饰器回调
-         */
-        return (currentControllerObj:any,methodKeyName:string,method?:string|Function,callback?:Function)=>{
-            if(typeof currentControllerObj.prototype[methodKeyName] !== 'function'){
-                console.error(new Error(`修饰器method${(methodName)?'_'+methodName:''} 控制器${methodKeyName}方法不存在`))
-                return ;
-            }
-            callback = callback || new Function;
-            method = method || "";
-            if(typeof method === "function"){
-                callback = method;
-                method = "";
-            }
-            let methodArr = method.split("|").filter(e=>e.length !=0);
-            if(methodName){
-                methodArr.push(methodName);
-            }
-            let oldPostMethod = currentControllerObj.prototype[methodKeyName];
-            if(callback.call(currentControllerObj,methodKeyName)){return;}
-            currentControllerObj.prototype[methodKeyName] = function () {
-                try {
-                    if(!methodArr.some(e=>e.toLocaleLowerCase() === this.$_method.toLocaleLowerCase())){
-                        this.$_error("服务器错误");
-                        this.$_error(`【当前请求为${this.$_method.toLocaleLowerCase()},必须为(${methodArr.join()})】-----url----->  ${this.$_url}`);
-                        return;
-                    }
-                    oldPostMethod.call(this);
-                }catch (e) {
-                    console.log(e)
-                }
-            };
-            return (t,k,d)=>{}
-        }
-    }
-}
-
-/**
- * @限制请求方式修饰器
- */
-const methodClass_init_new = new methodClass_init();
-export const method = methodClass_init_new.method_init();
-export const method_get = methodClass_init_new.method_init('get');
-export const method_post = methodClass_init_new.method_init('post');
-export const method_put = methodClass_init_new.method_init('put');
-export const method_patch = methodClass_init_new.method_init('patch');
-export const method_delete = methodClass_init_new.method_init('delete');
-export const method_copy = methodClass_init_new.method_init('copy');
-export const method_head = methodClass_init_new.method_init('head');
-export const method_options = methodClass_init_new.method_init('options');
-export const method_link = methodClass_init_new.method_init('link');
-export const method_unlink = methodClass_init_new.method_init('unlink');
-export const method_purge = methodClass_init_new.method_init('purge');
-export const method_lock = methodClass_init_new.method_init('lock');
-export const method_unlock = methodClass_init_new.method_init('unlock');
-export const method_propfind = methodClass_init_new.method_init('propfind');
-export const method_view = methodClass_init_new.method_init('view');
-export const method_update = methodClass_init_new.method_init('update');

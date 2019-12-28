@@ -129,6 +129,7 @@ export interface SqlUtilsOptions {
 }
 
 export interface ControllerInitDataOptions {
+    [key:string]:any;
     request?:any;//请求体
     response?:any;//返回体
     $_body?:any;//body数据
@@ -277,6 +278,7 @@ export interface ControllerInitDataOptions {
     $_setCookie?(data?:object):void; // 设置cookie
     /**
      * 获取上传文件
+     * 目前node版本为【v10.16.0】
      * @param data {object} 上传文件对象
      */
     $_getRequestFiles?():{[key:string]:Array<RequestFiles>|RequestFiles}; // 获取上传文件
