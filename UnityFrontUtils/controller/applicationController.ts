@@ -12,7 +12,7 @@ import { ServerConfig, ServerPublicConfig } from "../config";
 import { AxiosStatic } from "axios";
 import Encrypt from "../utils/encrypt";
 import Utils from "../utils";
-import Interceptor from "../../conf/Interceptor";
+import PublicController from "../../conf/PublicController";
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
@@ -93,7 +93,7 @@ export const method_view = methodClass_init_new.method_init('view');
 export const method_update = methodClass_init_new.method_init('update');
 
 
-export default class applicationControllerClass extends Interceptor implements ControllerInitDataOptions {
+export default class applicationControllerClass extends PublicController implements ControllerInitDataOptions {
     [key:string]:any;
     request?:any;
     response?:any;
