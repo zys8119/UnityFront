@@ -80,6 +80,7 @@ export class IndexController extends applicationController {
     }
 
     test(){
+        console.log(this.aa);
         this.$_success()
     }
 }

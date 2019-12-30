@@ -93,7 +93,7 @@ export const method_view = methodClass_init_new.method_init('view');
 export const method_update = methodClass_init_new.method_init('update');
 
 
-export default class applicationControllerClass implements ControllerInitDataOptions {
+export default class applicationControllerClass extends Interceptor implements ControllerInitDataOptions {
     [key:string]:any;
     request?:any;
     response?:any;
@@ -117,10 +117,6 @@ export default class applicationControllerClass implements ControllerInitDataOpt
     StatusCode:StatusCodeOptions;
     $_axios:AxiosStatic;
     $_cookies:object|null;
-    constructor() {
-        // 拦截器注入
-        Interceptor.call(this);
-    }
     setHeaders(Headers:headersType = {}){
         this.$_RequestHeaders = (<any>Object).assign(JSON.parse(JSON.stringify(this.$_RequestHeaders)),Headers);
     }

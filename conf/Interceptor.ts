@@ -1,12 +1,12 @@
 /**
  * 全局拦截器
  */
-import applicationController from "../UnityFrontUtils/controller/applicationController"
 import {ControllerInitDataOptions} from "../UnityFrontUtils/typeStript";
-class Interceptor{
+class Interceptor implements ControllerInitDataOptions{
     constructor() {
-        console.log()
+
     }
 };
+
 
 export default Interceptor;
