@@ -154,6 +154,7 @@ export interface ControllerInitDataOptions {
     $_cookies?:object|null;//cookies
     setHeaders?(Headers:headersType):void;//设置返回头
     setRequestStatus?(Status:number):void;// 设置http 状态码
+    Interceptor?():Promise<any>;// 全局拦截器
     /**
      * $mysql实例化
      * @param optionsConfig 数据库配置

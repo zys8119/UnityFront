@@ -3,8 +3,17 @@
  */
 import {ControllerInitDataOptions} from "../UnityFrontUtils/typeStript";
 class Interceptor implements ControllerInitDataOptions{
-    constructor() {
+    /**
+     * Interceptor 全局拦截器
+     * @constructor
+     * @return { Promise } then 执行 、 catch 终止
+     */
+    Interceptor(){
+        return Promise.resolve();
+    }
 
+    constructor() {
+        // return true;
     }
 };
 

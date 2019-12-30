@@ -324,7 +324,41 @@ export default class applicationControllerClass extends PublicController impleme
                 return;
             };
             //todo 执行控制器方法5
-            ControllerClassInit[urlArrs[2]]();
+
+            // 拦截器处理
+            if(ControllerClassInit.Interceptor &&
+               typeof ControllerClassInit.Interceptor === 'function'){
+                try {
+                    ControllerClassInit.Interceptor().then(()=>{
+                        ControllerClassInit[urlArrs[2]]();
+                    }).catch(err=>{
+                        Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
+                            title:`拦截器错误`,
+                            error:{
+                                "错误来源 -> ":ServerConfig.Template.ErrorPathSource,
+                                "模块 -> ":urlArrs[0],
+                                "控制器 -> ":ControllerClassName,
+                                "方法 -> ":urlArrs[2],
+                                "描述 -> ":err,
+                            }
+                        });
+                    });
+                }catch (e) {
+                    Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
+                        title:`拦截器错误`,
+                        error:{
+                            "错误来源 -> ":ServerConfig.Template.ErrorPathSource,
+                            "模块 -> ":urlArrs[0],
+                            "控制器 -> ":ControllerClassName,
+                            "方法 -> ":urlArrs[2],
+                            "描述 -> ":"拦截器注入方式错误，Interceptor 必须return一个Promise对象",
+                        },
+                    });
+                }
+
+            }else {
+                ControllerClassInit[urlArrs[2]]();
+            }
         }
     }
     $_log(...args){
