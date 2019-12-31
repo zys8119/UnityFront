@@ -12,7 +12,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var applicationController_1 = require("../../../UnityFrontUtils/controller/applicationController");
 var index_1 = require("../../../UnityFrontUtils/config/index");
 var installController = /** @class */ (function (_super) {
@@ -40,11 +40,11 @@ var installController = /** @class */ (function (_super) {
     installController.prototype.install = function () {
         var _this = this;
         this.DB({
-            multipleStatements: true
+            multipleStatements: true,
         }).query(this.getSql(this.$_body.sql.prefix)).then(function (res) {
             //查询数据库所有表
             _this.queryTableNameList();
-        })["catch"](function (err) {
+        }).catch(function (err) {
             _this.$_error("安装失败");
         });
     };
@@ -89,10 +89,10 @@ var installController = /** @class */ (function (_super) {
                 }
             });
             _this.$_success(TableName);
-        })["catch"](function (err) {
+        }).catch(function (err) {
             _this.$_error();
         });
     };
     return installController;
-}(applicationController_1["default"]));
+}(applicationController_1.default));
 exports.installController = installController;
