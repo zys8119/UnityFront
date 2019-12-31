@@ -1,50 +1,84 @@
 import applicationController from "../../../UnityFrontUtils/controller/applicationController";
-var pdf = require('html-pdf');
-export class IndexController extends  applicationController{
-        constructor(){
-            super();
-        }
+import {ServerPublicConfig} from "../../../UnityFrontUtils/config";
+const path = require("path")
+const fs = require("fs")
+export class IndexController extends applicationController {
+    constructor(){
+        super();
+    }
 
-        index(){
-            console.log(this.StatusCode.error.code);
-            this.$_send("创建成功");
-        }
+    index(){
+        this.$_success();
+    }
 
-        toPdf (template?:any, options?:any, reg?:any, filename?:any) {
-            /**
-             template: html 模板
-             options: 配置
-             reg: 正则匹配规则
-             filename: 输出pdf文件路径及文件名
-             */
-            // 将所有匹配规则在html模板中匹配一遍
-            if (reg && Array.isArray(reg)) {
-                reg.forEach(item => {
-                    template = template.replace(item.relus, item.match);
-                });
-            }
-            pdf.create(template, options).toFile(filename, function(err, res) {
-                if (err) {
-                    return console.log(err);
+    axios(){
+        this.$_axios({
+            url:"http://www.baidu.com"
+        }).then(res=>{
+            this.$_success(res.data);
+        });
+    }
+
+    dom(){
+        this.$_puppeteer("https://www.baidu.com/s?ie=UTF-8&wd="+this.$_query.q,()=>new Promise(resolve=>{
+            let resData = [];
+            resData.push.apply(resData,document.querySelectorAll(".c-container .t a"));
+            let result =  resData.map((el:HTMLAnchorElement)=>({
+                url:el.href,
+                value:el.innerText
+            }));
+            resolve(result)
+        })).then(res=>{
+            this.$_success(res)
+        }).catch(err=>{
+            this.$_error(err);
+        });
+    }
+
+    fileStreamDownload(){
+        this.$_fileStreamDownload("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1576473666143&di=394e5a43bd77b3e34f8460da13fb26f8&imgtype=0&src=http%3A%2F%2Fwww.365heart.com%2Fmeeting%2Fxinjian%2FCICI2015%2F%25E4%25B8%2593%25E5%25AE%25B6%25E4%25B8%25AA%25E4%25BA%25BA%2F%25E9%2599%2588%25E6%2599%2596%2FCICI2015-0002604.JPG").catch((err)=>{
+            this.$_error(err);
+        });
+    }
+
+    encrypt(){
+        this.$_success({
+            a:this.$_encode({a:1,b:2}),
+            b:this.$_decode((<string>this.$_encode({a:1,b:2}))),
+            key:ServerPublicConfig.createEncryptKey,
+        });
+    }
+    
+    getImageCode(){
+        this.$_getSvgCode();
+    }
+    
+    codeTest(){
+        this.$_success();
+    }
+    
+    uploadTest(){
+        this.Render()
+    }
+
+    upload(){
+        (async ()=>{
+            let a = ()=>{
+                let myFileName = this.$_getRequestFiles().myFileName;
+                if(myFileName){
+                    myFileName.forEach(file=>{
+                        fs.writeFile(path.resolve(__dirname,"../../../public",file.name),file.data, 'utf8', err=>{
+                            if (err) this.$_error();
+                        });
+                    });
                 }
-                console.log(res);
-            });
-        }
+            };
+            await a();
+            this.$_success();
+        })()
+    }
 
-        sql(){
-            let a = "or";
-            this.DB(this.$ControllerConfig.mysqlConfig)
-                .update("aa",{
-                    col2:1,
-                    col1:1,
-                    col3:1,
-                    col4:1,
-                }).where({id:`${a}`},true)
-            .query()
-            .then(res=>{
-                this.$_success();
-            }).catch(err=>{
-                this.$_error(err);
-            });
-        }
+    test(){
+        this.$_success()
+    }
 }

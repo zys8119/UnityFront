@@ -1,2 +1,2 @@
-type objectType =  {[key:string]: string|number }
+type objectType =  {[key:string]:any }
 export type headersType =  objectType;

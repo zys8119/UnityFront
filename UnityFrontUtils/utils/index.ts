@@ -1,13 +1,9 @@
 // import "../typeStript"
-import {SendDataOptions, TemplateErrorDataOptions} from "../typeStript"
+import {SendDataOptions, TemplateErrorDataOptions, UtilsOptions } from "../typeStript"
+import { ServerConfig } from "../config"
 const path = require('path');
 const fs = require("fs");
-export default {
-    /**
-     * 获取目录所有文件
-     * @param fileDirPath
-     * @param callback
-     */
+export default <UtilsOptions>{
     getJsonFiles(fileDirPath:string,callback?:Function){
         let jsonFiles = [];
         function findJsonFile(filePath){
@@ -31,14 +27,6 @@ export default {
         findJsonFile(fileDirPath);
         return jsonFiles;
     },
-
-    /**
-     * 替换模板url变量
-     * @param ServerConfig 服务配置
-     * @param data 模板内容
-     * @param TemplateData 模板苏剧
-     * @param space 数据格式化缩进数量
-     */
     replaceUrlVars(ServerConfig,data,TemplateData?:object,space?:number){
         if(typeof space != "number"){
             space = space || 4;
@@ -59,20 +47,23 @@ export default {
         }
         return data;
     },
-
-    /**
-     * 渲染错误模板
-     * @param filPath 错误模板路径
-     * @param TemplateData 错误模板数据
-     * @param $_send 发送方法
-     * @constructor
-     */
     RenderTemplateError(filePath:string,TemplateData:TemplateErrorDataOptions){
         this.setHeaders({
             'Content-Type': 'text/html; charset=utf-8',
         });
         fs.readFile(filePath,'utf8',(terr,tdata)=>{
+            if(!ServerConfig.debug){
+                this.setRequestStatus(500);
+                this.$_send(`
+                            <title>服务器错误</title>
+                            <h1>服务器：500</h1>
+                            <hr>
+                            <div>请求失败</div>
+                        `);
+                return;
+            }
             if (terr) {
+                this.setRequestStatus(500);
                 this.$_send(`
                             <title>服务器错误</title>
                             <h1>服务器：500</h1>
@@ -91,17 +82,6 @@ export default {
             this.$_send(tdata);
         });
     },
-
-    /**
-     * 注入控制器类公共的初始数据及方法,this上下文为当前控制器解析实体
-     * @param ControllerInitData 控制器数据
-     * @param ControllerClassObj 控制器实体
-     * @param $methodName 当前执行的控制器方法名称
-     * @param ServerConfig 服务配置
-     * @param __dir 当前执行的控制器路径
-     * @param bool 是否是其他控制器渲染
-     * @constructor
-     */
     ControllerInitData(ControllerInitData,ControllerClassObj,$methodName,ServerConfig,__dir,bool:boolean){
         for (let keyName in ControllerInitData){
             switch (keyName) {
@@ -139,11 +119,6 @@ export default {
         ControllerClassObj.prototype.__dir = __dir;
         ControllerClassObj.prototype.$methodName = $methodName;
     },
-
-    /**
-     * 路由数组转换
-     * @param $$url 需要转换的url字符串
-     */
     getUrlArrs($$url:string){
         let urlArrs = $$url.replace(/^\/{1}/,"").split("/");
         urlArrs[1] = urlArrs[1] || "Index";
@@ -153,12 +128,6 @@ export default {
         }catch (e) {}
         return urlArrs;
     },
-
-    /**
-     * 时间格式转化
-     * @param newDate 时间数据
-     * @param Format 时间格式
-     */
     dateFormat(newDate?:any,Format?:string){
         newDate = newDate || new Date();
         Format = Format || "YYYY-MM-DD HH:mm:ss week sc";
@@ -228,6 +197,20 @@ export default {
                 break;
         }
         return Format;
+    },
+    getRandomIntInclusive(min:number, max:number) {
+        min = Math.ceil(min);
+        max = Math.floor(max);
+        return Math.floor(Math.random() * (max - min + 1)) + min; //含最大值，含最小值
+    },
+    getCookies(request){
+        let cookie = {};
+        try {
+            (<any>request.headers).cookie.replace(/\s/img,"").split(";").map(e=>e.split("=")).forEach(e=>{
+                cookie[e[0]] = e[1];
+            })
+        }catch (e) {}
+        return cookie;
     }
 }
 

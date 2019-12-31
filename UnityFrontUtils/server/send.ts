@@ -4,15 +4,18 @@ import UnityFrontController from "../controller/controller"
 import { ServerConfig } from "../config"
 import StatusCode from "../../conf/StatusCode"
 import mysql from "../mysql"
+import Axios from "axios"
+import Utils from "../utils"
 module.exports = (request,response)=>{
     return new Promise((resolve, reject) => {
         //获取body数据
-        new bodyData(request,response,body=>{
+        new bodyData(request,response,(body,bodySource)=>{
             //初始化UnityFrontController控制器
             new UnityFrontController(request,response,{
                 request,
                 response,
                 $_body:body,
+                $_bodySource:bodySource,
                 $_rawTrailers:request.rawTrailers,
                 $_headers:request.headers,
                 $_rawHeaders:request.rawHeaders,
@@ -30,7 +33,9 @@ module.exports = (request,response)=>{
                 },
                 __dir:null,
                 $methodName:null,
-                StatusCode:StatusCode
+                StatusCode:StatusCode,
+                $_axios:Axios,
+                $_cookies:Utils.getCookies(request),
             });
         });
     })
