@@ -8,7 +8,7 @@ export class IndexController extends applicationController {
     }
 
     index(){
-        this.$_success("asdasdasdasd");
+        this.$_success();
     }
 
     axios(){
