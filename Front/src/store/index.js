@@ -4,6 +4,7 @@ export default {
     install:{
         sql:{
             dataBaseName:"unity_front",
+            prefix:"uf_",
         },
     },
     CreateNewProjects:{

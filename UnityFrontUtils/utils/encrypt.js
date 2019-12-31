@@ -27,7 +27,7 @@ var encrypt = /** @class */ (function () {
     encrypt.prototype.encode = function (data) {
         var _this = this;
         return JSON.stringify(data).split("").map(function (e) { return _this.encodeItem((function (code) {
-            if (code < 1000) {
+            if (code < 100000) {
                 return code + 100000;
             }
             ;

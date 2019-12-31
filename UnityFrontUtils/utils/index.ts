@@ -1,5 +1,6 @@
 // import "../typeStript"
 import {SendDataOptions, TemplateErrorDataOptions, UtilsOptions } from "../typeStript"
+import { ServerConfig } from "../config"
 const path = require('path');
 const fs = require("fs");
 export default <UtilsOptions>{
@@ -51,7 +52,18 @@ export default <UtilsOptions>{
             'Content-Type': 'text/html; charset=utf-8',
         });
         fs.readFile(filePath,'utf8',(terr,tdata)=>{
+            if(!ServerConfig.debug){
+                this.setRequestStatus(500);
+                this.$_send(`
+                            <title>服务器错误</title>
+                            <h1>服务器：500</h1>
+                            <hr>
+                            <div>请求失败</div>
+                        `);
+                return;
+            }
             if (terr) {
+                this.setRequestStatus(500);
                 this.$_send(`
                             <title>服务器错误</title>
                             <h1>服务器：500</h1>
@@ -190,6 +202,15 @@ export default <UtilsOptions>{
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min + 1)) + min; //含最大值，含最小值
+    },
+    getCookies(request){
+        let cookie = {};
+        try {
+            (<any>request.headers).cookie.replace(/\s/img,"").split(";").map(e=>e.split("=")).forEach(e=>{
+                cookie[e[0]] = e[1];
+            })
+        }catch (e) {}
+        return cookie;
     }
 }
 

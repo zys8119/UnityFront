@@ -14,10 +14,10 @@ export const mysqlConfig = <mysqlOptions>{
         connectionLimit : 10,
         host: 'localhost',
         user: 'root',
-        password: 'admin123',
+        password: 'root',
         port: '3306',
-        database: 'dome',
-        prefix:"uf_"
+        database: 'test',
+        prefix:""
     }
 };
 
@@ -29,7 +29,8 @@ export const ServerPublicConfig = <ServerPublicConfigOptions>{
 
 //服务设置
 export const ServerConfig =  <ServerOptions>{
-    port:8080,
+    port:81,
+    debug:true,
     fsWatch:[
         //listen conf directory
         {path:path.resolve(__dirname,"../../conf"),type:"directory"},

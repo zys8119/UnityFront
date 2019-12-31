@@ -23,6 +23,7 @@ export interface mysqlOptionsOptions {
 export interface ServerOptions {
     host?:string|number;//主机
     port?:string|number;//端口
+    debug?:boolean;//是否开启调试
     fsWatch?:Array<ServerOptions_fsWatch>;//监听文件变化，如果该字段不存在就不监听
     RequestStatus:number;//默认请求状态
     headers?:headersType;//header参数
@@ -129,9 +130,11 @@ export interface SqlUtilsOptions {
 }
 
 export interface ControllerInitDataOptions {
+    [key:string]:any;
     request?:any;//请求体
     response?:any;//返回体
     $_body?:any;//body数据
+    $_bodySource?:any;//body数据源，返回未node的Buffer缓冲器对象
     $_rawTrailers?:[];
     $_headers?:headersType;//headers数据
     $_rawHeaders?:any;//rawHeaders数据
@@ -149,8 +152,10 @@ export interface ControllerInitDataOptions {
     $ControllerConfig?:any;//控制器配置
     StatusCode?:StatusCodeOptions;//公共状态码定义
     $_axios?:AxiosStatic;//axios请求工具
+    $_cookies?:object|null;//cookies
     setHeaders?(Headers:headersType):void;//设置返回头
     setRequestStatus?(Status:number):void;// 设置http 状态码
+    Interceptor?():Promise<any>;// 全局拦截器
     /**
      * $mysql实例化
      * @param optionsConfig 数据库配置
@@ -255,6 +260,37 @@ export interface ControllerInitDataOptions {
      * @return result 最终密钥
      */
     $_createEncryptKey?(keyDataArr?:string[], result?:string):string; // 创建随机密钥
+    /**
+     * 创建随机svg验证码
+     * @param options {object} 配置
+     */
+    $_getSvgCode?(options?:getSvgCodeOptions):Promise<string>; // 创建随机svg验证码
+    /**
+     * 数据转url参数
+     * @param options {object} 数据
+     * @param connectors {string} 连接符号 例如 '='
+     * @param type {string} 分割符号 例如 '&'
+     * @return {string} 例如{a:1,b:2} => "a=1&b=2"
+     */
+    $_getUrlQueryData?(options?:object, connectors?:string, type?:string):string; // 数据转url参数
+    /**
+     * 设置cookie
+     * @param data {object} 需要设置的数据
+     */
+    $_setCookie?(data?:object):void; // 设置cookie
+    /**
+     * 获取上传文件
+     * 目前node版本为【v10.16.0】
+     * @param data {object} 上传文件对象
+     */
+    $_getRequestFiles?():{[key:string]:Array<RequestFiles>|RequestFiles}; // 获取上传文件
+}
+
+export interface RequestFiles {
+    data?:any; // 文件数据
+    type?:string; // 文件content-type类型
+    name?:string;// 文件名称
+    [keyName:string]:any;
 }
 
 export interface TemplateErrorDataOptions {
@@ -339,6 +375,12 @@ export interface UtilsOptions {
      * 得到一个两数之间的随机整数，包括两个数在内
      */
     getRandomIntInclusive(min:number, max:number):number;
+    
+    /**
+     * 获取Cookies
+     * @param request
+     */
+    getCookies(request):object|null;
 }
 
 export interface encryptOptions {
@@ -364,4 +406,11 @@ export interface encryptOptions {
 export interface ServerPublicConfigOptions {
     // 公共密钥,更换密钥可以使用控制器方法$_createEncryptKey获取随机密钥
     createEncryptKey:string|null;
+}
+
+export interface getSvgCodeOptions {
+    fontSize?:number;// 字体大小，默认50
+    index?:number;// 验证码长度，默认4
+    background?:null|string;// 背景颜色
+    color?:null|string;// 字体颜色，默认为多彩
 }

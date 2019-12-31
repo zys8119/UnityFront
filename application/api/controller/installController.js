@@ -18,40 +18,80 @@ var index_1 = require("../../../UnityFrontUtils/config/index");
 var installController = /** @class */ (function (_super) {
     __extends(installController, _super);
     function installController() {
-        var _this = _super.call(this) || this;
-        _this.prefix = "uf_";
-        _this.sql = [
-            "   SET FOREIGN_KEY_CHECKS=0;",
-            //创建表menu_ui
-            "\n            DROP TABLE IF EXISTS `" + _this.prefix + "menu_ui`;\n            CREATE TABLE `" + _this.prefix + "menu_ui` (\n                id  int(11) NOT NULL AUTO_INCREMENT,\n                name  varchar(25) NULL COMMENT 'ui\u540D\u79F0' ,\n                type  varchar(25) NULL COMMENT 'ui\u7C7B\u578B' ,\n                path  varchar(255) NULL COMMENT 'ui\u8DEF\u5F84' ,\n                PRIMARY KEY (id)\n            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;\n            -- ----------------------------\n            -- \u8BB0\u5F55 of uf_menu_ui\n            -- ----------------------------\n            INSERT INTO `" + _this.prefix + "menu_ui` values (1,'input','input','vux/XInput');\n        ",
-            //创建表project
-            "\n            DROP TABLE IF EXISTS `" + _this.prefix + "project`;\n            CREATE TABLE IF NOT EXISTS `" + _this.prefix + "project` (\n                id  int(11) NOT NULL AUTO_INCREMENT,\n                project_name  varchar(25) NULL COMMENT '\u9879\u76EE\u540D\u79F0' ,\n                rmarks  varchar(25) not NULL COMMENT '\u9879\u76EE\u5907\u6CE8' default 'asd',\n                PRIMARY KEY (id)\n            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;\n        ",
-        ];
-        _this.sqlStr = "";
-        _this.sqlStr = _this.sql.join("\n");
-        return _this;
+        return _super.call(this) || this;
     }
     /**
-     * 安装数据
+     * 获取sql
+     * @param prefix 表前缀
+     */
+    installController.prototype.getSql = function (prefix) {
+        if (prefix === void 0) { prefix = index_1.mysqlConfig.options.prefix; }
+        return [
+            "   SET FOREIGN_KEY_CHECKS=0;",
+            //创建表menu_ui
+            "\n            DROP TABLE IF EXISTS `" + prefix + "menu_ui`;\n            CREATE TABLE `" + prefix + "menu_ui` (\n                id  int(11) NOT NULL AUTO_INCREMENT,\n                name  varchar(25) NULL COMMENT 'ui\u540D\u79F0' ,\n                type  varchar(25) NULL COMMENT 'ui\u7C7B\u578B' ,\n                path  varchar(255) NULL COMMENT 'ui\u8DEF\u5F84' ,\n                PRIMARY KEY (id)\n            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;\n            -- ----------------------------\n            -- \u8BB0\u5F55 of menu_ui\n            -- ----------------------------\n            INSERT INTO `" + prefix + "menu_ui` values (1,'input','input','vux/XInput');\n        ",
+            //创建表project
+            "\n            DROP TABLE IF EXISTS `" + prefix + "project`;\n            CREATE TABLE IF NOT EXISTS `" + prefix + "project` (\n                id  int(11) NOT NULL AUTO_INCREMENT,\n                project_name  varchar(25) NULL COMMENT '\u9879\u76EE\u540D\u79F0' ,\n                rmarks  varchar(25) not NULL COMMENT '\u9879\u76EE\u5907\u6CE8' default 'asd',\n                PRIMARY KEY (id)\n            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;\n        ",
+        ].join("\n");
+    };
+    /**
+     * 安装数据表
      */
     installController.prototype.install = function () {
         var _this = this;
         this.DB({
             multipleStatements: true,
-        }).query(this.sqlStr).then(function (res) {
+        }).query(this.getSql(this.$_body.sql.prefix)).then(function (res) {
             //查询数据库所有表
-            _this.DB().select("table_name").from("information_schema.tables").where({
-                table_schema: index_1.mysqlConfig.options.database
-            }).query().then(function (res) {
-                _this.$_success("安装成功", res);
-            }).catch(function (err) {
-                _this.$_error("安装失败");
-            });
+            _this.queryTableNameList();
         }).catch(function (err) {
             _this.$_error("安装失败");
         });
     };
-    installController.prototype.queryTable = function () {
+    /**
+     * 查询已安装的数据表
+     */
+    installController.prototype.queryTableNameList = function () {
+        var _this = this;
+        var sql = this.getSql(this.$_body.sql.prefix);
+        var sqlMatch = sql
+            .match(/DROP TABLE IF EXISTS \`.*\`/img);
+        var TableName = [];
+        if (sqlMatch) {
+            TableName = sqlMatch.map(function (e) {
+                var name = /(?:DROP TABLE IF EXISTS `(.*)`$)/.exec(e);
+                if (name && name[1]) {
+                    return {
+                        name: name[1],
+                        install: false
+                    };
+                }
+                return e;
+            });
+        }
+        ;
+        this.DB().select("table_name").from("information_schema.tables").where({
+            table_schema: index_1.mysqlConfig.options.database
+        }).query().then(function (res) {
+            res.forEach(function (resItem) {
+                var indexName = TableName.some(function (tn) {
+                    if (tn.name == resItem.table_name) {
+                        tn.install = true;
+                        return true;
+                    }
+                    ;
+                });
+                if (!indexName) {
+                    TableName.push({
+                        name: resItem.table_name,
+                        install: true
+                    });
+                }
+            });
+            _this.$_success(TableName);
+        }).catch(function (err) {
+            _this.$_error();
+        });
     };
     return installController;
 }(applicationController_1.default));

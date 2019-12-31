@@ -30,7 +30,7 @@ export default class encrypt implements encryptOptions{
     }
     encode(data){
         return JSON.stringify(data).split("").map(e=>this.encodeItem((code=>{
-            if(code < 1000){
+            if(code < 100000){
                 return code+100000;
             };
             return code;

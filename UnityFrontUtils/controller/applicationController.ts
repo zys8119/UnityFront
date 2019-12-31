@@ -1,19 +1,104 @@
-import {ControllerInitDataOptions, mysqlOptionsOptions, SqlUtilsOptions, SuccessSendDataOptions, StatusCodeOptions } from "../typeStript"
+import {
+    ControllerInitDataOptions,
+    mysqlOptionsOptions,
+    SqlUtilsOptions,
+    SuccessSendDataOptions,
+    StatusCodeOptions,
+    getSvgCodeOptions,
+    RequestFiles
+} from "../typeStript"
 import { headersType } from "../typeStript/Types";
 import { ServerConfig, ServerPublicConfig } from "../config";
 import { AxiosStatic } from "axios";
 import Encrypt from "../utils/encrypt";
 import Utils from "../utils";
+import PublicController from "../../conf/PublicController";
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const https = require('https');
 const pug = require('pug');
 const puppeteer = require('puppeteer');
-export default class applicationController implements ControllerInitDataOptions {
+
+/**
+ * @请求方式修饰器类
+ */
+class methodClass_init {
+    constructor(){}
+    /**
+     * method_init
+     * @param methodName 方法名
+     */
+    method_init(methodName?:string){
+        /**
+         * @param currentControllerObj {any} 当前控制器对象
+         * @param methodKeyName {string} 控制器方法
+         * @param method {string|function} 请求方式
+         * @param callback {function} 修饰器回调
+         */
+        return (currentControllerObj:any,methodKeyName:string,method?:string|Function,callback?:Function)=>{
+            if(typeof currentControllerObj.prototype[methodKeyName] !== 'function'){
+                console.error(new Error(`修饰器method${(methodName)?'_'+methodName:''} 控制器${methodKeyName}方法不存在`))
+                return ;
+            }
+            callback = callback || new Function;
+            method = method || "";
+            if(typeof method === "function"){
+                callback = method;
+                method = "";
+            }
+            let methodArr = method.split("|").filter(e=>e.length !=0);
+            if(methodName){
+                methodArr.push(methodName);
+            }
+            let oldPostMethod = currentControllerObj.prototype[methodKeyName];
+            if(callback.call(currentControllerObj,methodKeyName)){return;}
+            currentControllerObj.prototype[methodKeyName] = function () {
+                try {
+                    if(!methodArr.some(e=>e.toLocaleLowerCase() === this.$_method.toLocaleLowerCase())){
+                        this.$_error("服务器错误");
+                        this.$_error(`【当前请求为${this.$_method.toLocaleLowerCase()},必须为(${methodArr.join()})】-----url----->  ${this.$_url}`);
+                        return;
+                    }
+                    oldPostMethod.call(this);
+                }catch (e) {
+                    console.log(e)
+                }
+            };
+            return (t,k,d)=>{}
+        }
+    }
+}
+
+/**
+ * @限制请求方式修饰器
+ */
+const methodClass_init_new = new methodClass_init();
+export const method = methodClass_init_new.method_init();
+export const method_get = methodClass_init_new.method_init('get');
+export const method_post = methodClass_init_new.method_init('post');
+export const method_put = methodClass_init_new.method_init('put');
+export const method_patch = methodClass_init_new.method_init('patch');
+export const method_delete = methodClass_init_new.method_init('delete');
+export const method_copy = methodClass_init_new.method_init('copy');
+export const method_head = methodClass_init_new.method_init('head');
+export const method_options = methodClass_init_new.method_init('options');
+export const method_link = methodClass_init_new.method_init('link');
+export const method_unlink = methodClass_init_new.method_init('unlink');
+export const method_purge = methodClass_init_new.method_init('purge');
+export const method_lock = methodClass_init_new.method_init('lock');
+export const method_unlock = methodClass_init_new.method_init('unlock');
+export const method_propfind = methodClass_init_new.method_init('propfind');
+export const method_view = methodClass_init_new.method_init('view');
+export const method_update = methodClass_init_new.method_init('update');
+
+
+export default class applicationControllerClass extends PublicController implements ControllerInitDataOptions {
+    [key:string]:any;
     request?:any;
     response?:any;
     $_body?:any;
+    $_bodySource?:any;
     $_rawTrailers:[];
     $_headers:headersType;
     $_rawHeaders:any;
@@ -31,8 +116,9 @@ export default class applicationController implements ControllerInitDataOptions 
     $ControllerConfig:any;
     StatusCode:StatusCodeOptions;
     $_axios:AxiosStatic;
+    $_cookies:object|null;
     setHeaders(Headers:headersType = {}){
-        this.$_RequestHeaders = Headers;
+        this.$_RequestHeaders = (<any>Object).assign(JSON.parse(JSON.stringify(this.$_RequestHeaders)),Headers);
     }
     setRequestStatus(Status:number){
         this.$_RequestStatus = Status;
@@ -238,7 +324,41 @@ export default class applicationController implements ControllerInitDataOptions 
                 return;
             };
             //todo 执行控制器方法5
-            ControllerClassInit[urlArrs[2]]();
+
+            // 拦截器处理
+            if(ControllerClassInit.Interceptor &&
+               typeof ControllerClassInit.Interceptor === 'function'){
+                try {
+                    ControllerClassInit.Interceptor().then(()=>{
+                        ControllerClassInit[urlArrs[2]]();
+                    }).catch(err=>{
+                        Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
+                            title:`拦截器错误`,
+                            error:{
+                                "错误来源 -> ":ServerConfig.Template.ErrorPathSource,
+                                "模块 -> ":urlArrs[0],
+                                "控制器 -> ":ControllerClassName,
+                                "方法 -> ":urlArrs[2],
+                                "描述 -> ":err,
+                            }
+                        });
+                    });
+                }catch (e) {
+                    Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
+                        title:`拦截器错误`,
+                        error:{
+                            "错误来源 -> ":ServerConfig.Template.ErrorPathSource,
+                            "模块 -> ":urlArrs[0],
+                            "控制器 -> ":ControllerClassName,
+                            "方法 -> ":urlArrs[2],
+                            "描述 -> ":"拦截器注入方式错误，Interceptor 必须return一个Promise对象",
+                        },
+                    });
+                }
+
+            }else {
+                ControllerClassInit[urlArrs[2]]();
+            }
         }
     }
     $_log(...args){
@@ -298,6 +418,7 @@ export default class applicationController implements ControllerInitDataOptions 
         this.$_send(newSendData);
     }
     $_error(msg:any = this.StatusCode.error.msg,sendData?:any,code:number = this.StatusCode.error.code){
+        console.error(new Error(msg));
         this.$_success(msg,sendData,code)
     }
     $_puppeteer(url:string,jsContent:any){
@@ -434,6 +555,176 @@ export default class applicationController implements ControllerInitDataOptions 
         keyDataArr.splice(randomNo,1);
         return this.$_createEncryptKey(keyDataArr, result);
     }
-
+    
+    $_getSvgCode(options?:getSvgCodeOptions){
+        return new Promise((resolve, reject) => {
+            options = options || {};
+            let str = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
+            let colorArr = [
+                "#000000",	"#000033",	"#000066",	"#000099",	"#0000CC",   "#0000FF",
+                "#003300",	"#003333",	"#003366",	"#003399",	"#0033CC",   "#0033FF",
+                "#006600",	"#006633",	"#006666",	"#006699",	"#0066CC",   "#0066FF",
+                "#009900",	"#009933",	"#009966",	"#009999",	"#0099CC",   "#0099FF",
+                "#00CC00",	"#00CC33",	"#00CC66",	"#00CC99",	"#00CCCC",   "#00CCFF",
+                "#00FF00",	"#00FF33",	"#00FF66",	"#00FF99",	"#00FFCC",   "#00FFFF",
+                "#330000",	"#330033",	"#330066",	"#330099",	"#3300CC",   "#3300FF",
+                "#333300",	"#333333",	"#333366",	"#333399",	"#3333CC",   "#3333FF",
+                "#336600",	"#336633",	"#336666",	"#336699",	"#3366CC",   "#3366FF",
+                "#339900",	"#339933",	"#339966",	"#339999",	"#3399CC",   "#3399FF",
+                "#33CC00",	"#33CC33",	"#33CC66",	"#33CC99",	"#33CCCC",   "#33CCFF",
+                "#33FF00",	"#33FF33",	"#33FF66",	"#33FF99",	"#33FFCC",   "#33FFFF",
+                "#660000",	"#660033",	"#660066",	"#660099",	"#6600CC",   "#6600FF",
+                "#663300",	"#663333",	"#663366",	"#663399",	"#6633CC",   "#6633FF",
+                "#666600",	"#666633",	"#666666",	"#666699",	"#6666CC",   "#6666FF",
+                "#669900",	"#669933",	"#669966",	"#669999",	"#6699CC",   "#6699FF",
+                "#66CC00",	"#66CC33",	"#66CC66",	"#66CC99",	"#66CCCC",   "#66CCFF",
+                "#66FF00",	"#66FF33",	"#66FF66",	"#66FF99",	"#66FFCC",   "#66FFFF",
+                "#990000",	"#990033",	"#990066",	"#990099",	"#9900CC",   "#9900FF",
+                "#993300",	"#993333",	"#993366",	"#993399",	"#9933CC",   "#9933FF",
+                "#996600",	"#996633",	"#996666",	"#996699",	"#9966CC",   "#9966FF",
+                "#999900",	"#999933",	"#999966",	"#999999",	"#9999CC",   "#9999FF",
+                "#99CC00",	"#99CC33",	"#99CC66",	"#99CC99",	"#99CCCC",   "#99CCFF",
+                "#99FF00",	"#99FF33",	"#99FF66",	"#99FF99",	"#99FFCC",   "#99FFFF",
+                "#CC0000",	"#CC0033",	"#CC0066",	"#CC0099",	"#CC00CC",   "#CC00FF",
+                "#CC3300",	"#CC3333",	"#CC3366",	"#CC3399",	"#CC33CC",   "#CC33FF",
+                "#CC6600",	"#CC6633",	"#CC6666",	"#CC6699",	"#CC66CC",   "#CC66FF",
+                "#CC9900",	"#CC9933",	"#CC9966",	"#CC9999",	"#CC99CC",   "#CC99FF",
+                "#CCCC00",	"#CCCC33",	"#CCCC66",	"#CCCC99",	"#CCCCCC",   "#CCCCFF",
+                "#CCFF00",	"#CCFF33",	"#CCFF66",	"#CCFF99",	"#CCFFCC",   "#CCFFFF",
+                "#FF0000",	"#FF0033",	"#FF0066",	"#FF0099",	"#FF00CC",   "#FF00FF",
+                "#FF3300",	"#FF3333",	"#FF3366",	"#FF3399",	"#FF33CC",   "#FF33FF",
+                "#FF6600",	"#FF6633",	"#FF6666",	"#FF6699",	"#FF66CC",   "#FF66FF",
+                "#FF9900",	"#FF9933",	"#FF9966",	"#FF9999",	"#FF99CC",   "#FF99FF",
+                "#FFCC00",	"#FFCC33",	"#FFCC66",	"#FFCC99",	"#FFCCCC",   "#FFCCFF",
+                "#FFFF00",	"#FFFF33",	"#FFFF66",	"#FFFF99",	"#FFFFCC",   "#FFFFFF",
+            ];
+            let strArr = [];
+            let svgOptions = (<any>Object).assign(<getSvgCodeOptions>{
+                fontSize:50,
+                index:4,
+                background:'rgb(178,200,255)',
+                color:null,
+            },options);
+            for(let i = 0 ; i < svgOptions.index ; i ++){
+                strArr.push(str[Utils.getRandomIntInclusive(0,str.length-1)])
+            }
+            resolve(strArr.join(""));
+            let svgStr = "";
+            strArr.forEach((text, index)=>{
+                let color = colorArr[Utils.getRandomIntInclusive(0,colorArr.length-1)];
+                let rotate = Utils.getRandomIntInclusive(0,45);
+                if(svgOptions.color){
+                    color = svgOptions.color;
+                }
+                svgStr += `<text x="${svgOptions.fontSize*index}" y="${svgOptions.fontSize}" width="${svgOptions.fontSize}" height="${svgOptions.fontSize}" style="fill:${color};font-size: ${svgOptions.fontSize}px;" rotate="${rotate}" >${text}</text>`;
+            });
+            let background = "";
+            if(svgOptions.background){
+                background = `
+                <rect width="${svgOptions.fontSize * strArr.length}" height="${svgOptions.fontSize * 1.5}" style="fill:${svgOptions.background};" />
+            `
+            }
+            let svg = `<?xml version="1.0" standalone="no"?>
+            <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
+            "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+            <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="${svgOptions.fontSize * strArr.length}" height="${svgOptions.fontSize*1.5}">
+            ${background}
+            ${svgStr}
+            </svg>
+            `;
+            this.response.writeHead(200,{
+                "Content-Type":"image/svg+xml"
+            });
+            this.response.write(svg);
+            this.response.end();
+        });
+    }
+    
+    $_getUrlQueryData(options?:object, connectors?:string, type?:string){
+        options = options || {};
+        connectors = connectors || "=";
+        type = type || ";";
+        let result = [];
+        for(let k in options){
+            let resultItem = options[k];
+            if(typeof  resultItem === 'object'){
+                resultItem = JSON.stringify(resultItem)
+            }
+            result.push(`${k}${connectors}${resultItem}`)
+        }
+        return result.join(type);
+    }
+    
+    $_setCookie(data?:object){
+        this.setHeaders({
+            'Set-Cookie':this.$_getUrlQueryData(data).split(";"),
+        });
+    }
+    
+    $_getRequestFiles(){
+        Buffer.prototype.split= Buffer.prototype.split || function (spl) {
+            let arr = [];
+            let cur = 0;
+            let n = 0;
+            while ((n = this.indexOf(spl, cur)) != -1) {
+                arr.push(this.slice(cur, n));
+                cur = n + spl.length
+            }
+            arr.push(this.slice(cur))
+            return arr
+        };
+        let bodyString = this.$_bodySource.toString();
+        let end = bodyString.match(/\s------.*--\s*$/)[0];
+        let start = end.replace(/^\s|--\s*$/img,"");
+        let resultData:{[key:string]:Array<RequestFiles>|RequestFiles};
+        resultData = {};
+        this.$_bodySource.split(start).map(item=>{
+            try {
+                let key  = item.toString().match(/^\s{2}(.*|.*\s{2}.*)\s{4}/)[0];
+                let data = item.split(key)[1];
+                data = data.slice(0,data.length - 2);
+                let DispositionArr = [];
+                let ContentType = null;
+                try {
+                    let Disposition = key.match(/^\s*Content-Disposition.*/)[0];
+                    try {
+                        ContentType = key.replace(/^\s*Content-Disposition.*/,"")
+                            .match(/^\s*Content-Type.*/)[0];
+                        ContentType = ContentType.replace(/^\s*Content-Type:\s/,"")
+                    }catch (e) {}
+                    DispositionArr = Disposition.split(";");
+                    DispositionArr = DispositionArr.map(e=>{
+                        var m = /(?:(filename|name)="(.*)")/.exec(e);
+                        return (m)?m[2]:null;
+                    }).filter(e=>e);
+                }catch (e) {}
+                return  {
+                    DispositionArr,
+                    ContentType,
+                    data
+                };
+            }catch (e) {
+                // return item.toString();
+            }
+        }).filter(e=>e).forEach(item=>{
+            if(item.DispositionArr.length === 1){
+                resultData[item.DispositionArr[0]] = {
+                    name:item.DispositionArr[0],
+                    type:item.ContentType,
+                    value:item.data
+                };
+            }
+            if(item.DispositionArr.length > 1){
+                resultData[item.DispositionArr[0]] = resultData[item.DispositionArr[0]] || [];
+                resultData[item.DispositionArr[0]].push({
+                    name:item.DispositionArr[1],
+                    type:item.ContentType,
+                    data:item.data
+                });
+            }
+        });
+        return resultData;
+    }
 
 }
+export const applicationController = applicationControllerClass;

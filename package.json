@@ -9,5 +9,6 @@
     "ncol": "^0.0.7",
     "pug": "^2.0.4",
     "puppeteer": "^2.0.0"
-  }
+  },
+  "dependencies": {}
 }
