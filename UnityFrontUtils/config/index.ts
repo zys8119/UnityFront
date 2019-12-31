@@ -30,6 +30,7 @@ export const ServerPublicConfig = <ServerPublicConfigOptions>{
 //服务设置
 export const ServerConfig =  <ServerOptions>{
     port:81,
+    debug:true,
     fsWatch:[
         //listen conf directory
         {path:path.resolve(__dirname,"../../conf"),type:"directory"},

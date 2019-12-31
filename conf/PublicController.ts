@@ -7,13 +7,20 @@
  */
 import {ControllerInitDataOptions} from "../UnityFrontUtils/typeStript";
 class Interceptor implements ControllerInitDataOptions{
+    $_success(msg?: any, sendData?: any, code?: number): void {
+    }
+    $_error(msg?: any, sendData?: any, code?: number): void {
+    }
+
+    $_url:string;
+
     /**
      * Interceptor 全局拦截器注入
      * @constructor
      * @return { Promise } then 执行 、 catch 终止
      */
     Interceptor(){
-        return Promise.resolve();
+        return Promise.reject();
     }
 
     constructor() {
