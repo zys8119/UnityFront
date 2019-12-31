@@ -1,6 +1,5 @@
 import applicationController from "../../../UnityFrontUtils/controller/applicationController";
 import {ServerPublicConfig} from "../../../UnityFrontUtils/config";
-import {RequestFiles} from "../../../UnityFrontUtils/typeStript";
 const path = require("path")
 const fs = require("fs")
 export class IndexController extends applicationController {
