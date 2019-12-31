@@ -6,6 +6,6 @@ var __spreadArrays = (this && this.__spreadArrays) || function () {
             r[k] = a[j];
     return r;
 };
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var TaskQueue = require("./Task/index");
-exports["default"] = __spreadArrays(Object.keys(TaskQueue).map(function (Task) { return TaskQueue[Task]; }));
+exports.default = __spreadArrays(Object.keys(TaskQueue).map(function (Task) { return TaskQueue[Task]; }));

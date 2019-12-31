@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var encrypt = /** @class */ (function () {
     function encrypt(newKey) {
         this.key = newKey || "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
@@ -40,4 +40,4 @@ var encrypt = /** @class */ (function () {
     };
     return encrypt;
 }());
-exports["default"] = encrypt;
+exports.default = encrypt;

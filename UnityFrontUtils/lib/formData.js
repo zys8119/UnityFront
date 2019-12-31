@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var a = /** @class */ (function () {
     function a(postData) {
         var postDataObject = {};
@@ -62,4 +62,4 @@ var a = /** @class */ (function () {
     }
     return a;
 }());
-exports["default"] = a;
+exports.default = a;
