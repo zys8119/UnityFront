@@ -20,7 +20,7 @@ class Interceptor implements ControllerInitDataOptions{
      * @return { Promise } then 执行 、 catch 终止
      */
     Interceptor(){
-        return Promise.reject();
+        return Promise.resolve();
     }
 
     constructor() {
