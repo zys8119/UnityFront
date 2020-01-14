@@ -81,6 +81,10 @@ export class IndexController extends applicationController {
 
     //todo less 转 css
     getcss(){
+        if(!this.$_query.color){
+            this.$_error("主题设置失败,颜色字段必填");
+            return;
+        }
         less.render(fs.readFileSync(path.resolve(__dirname,"../../../public/less/nbrd_red_new.less"),{encoding:"utf8"})+`.initTheme(${this.$_query.color});`,{})
         .then(({css})=> {
             if(this.$_query.type === "file"){
@@ -103,8 +107,8 @@ export class IndexController extends applicationController {
                     message: "success"
                 });
             }
-        }).catch(err=>{
-            this.$_error(err.message)
+        }).catch(()=>{
+            this.$_error("主题获取失败");
         });
     }
 }
