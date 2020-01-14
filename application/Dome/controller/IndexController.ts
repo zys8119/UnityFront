@@ -1,7 +1,8 @@
 import applicationController from "../../../UnityFrontUtils/controller/applicationController";
-import {ServerPublicConfig} from "../../../UnityFrontUtils/config";
+import {ServerConfig, ServerPublicConfig} from "../../../UnityFrontUtils/config";
 const path = require("path")
 const fs = require("fs")
+const less = require("less")
 export class IndexController extends applicationController {
     constructor(){
         super();
@@ -78,7 +79,32 @@ export class IndexController extends applicationController {
         })()
     }
 
-    test(){
-        this.$_success()
+    //todo less 转 css
+    getcss(){
+        less.render(fs.readFileSync(path.resolve(__dirname,"../../../public/less/nbrd_red_new.less"),{encoding:"utf8"})+`.initTheme(${this.$_query.color});`,{})
+        .then(({css})=> {
+            if(this.$_query.type === "file"){
+                //todo 文件流返回
+                this.response.writeHead(200,{
+                    'Access-Control-Allow-Origin': "*",
+                    'Access-Control-Allow-Methods':'*',
+                    'Access-Control-Allow-Headers':'*',
+                    'Content-Type':`text/css; charset=utf-8;`,
+                });
+                this.response.end(css);
+            }else {
+                //todo 接口返回
+                this.setHeaders({
+                    'Access-Control-Allow-Headers': '*',
+                });
+                this.$_send({
+                    code: 0,
+                    data: css,
+                    message: "success"
+                });
+            }
+        }).catch(err=>{
+            this.$_error(err.message)
+        });
     }
 }
