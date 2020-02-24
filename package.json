@@ -8,7 +8,9 @@
     "mysql": "^2.17.1",
     "ncol": "^0.0.7",
     "pug": "^2.0.4",
-    "puppeteer": "^2.0.0"
+    "puppeteer": "^2.0.0",
+    "less": "^3.10.3"
   },
-  "dependencies": {}
+  "dependencies": {
+  }
 }
