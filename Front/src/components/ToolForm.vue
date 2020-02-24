@@ -1,7 +1,10 @@
 <template>
-    <div class="ToolForm">
+    <div class="ToolForm" :info="componentInfo">
         <uf-group title="基础属性" open>
-            <x-input class="z_Input" title="组件名称" value="input"></x-input>
+            <x-input class="z_Input" title="组件名称" value="input"
+                     :value="formData.info.name"
+                     @on-change="change"
+            ></x-input>
             <flexbox>
                 <flexbox-item title="width">
                     <x-input class="z_Input" title="width" value="0"></x-input>
@@ -99,13 +102,27 @@
                 value2:"",
                 list:["inherit","relative","absolute","fixed"],
                 floatList:["inherit","left","right","top","bottom","none"],
+                formData:{},
+                index:{},
             }
         },
         components:{
             UfGroup, XInput, Flexbox, FlexboxItem, Selector, UfColor, XTextarea
         },
-        mounted() {
+        computed:{
+            componentInfo(){
+                try {
 
+                    this.formData = _.cloneDeep(this.airforce.UnityFrontView.component.find(e=>e.operate));
+                    return;
+                }catch (e) {}
+                this.formData = {};
+            }
+        },
+        methods:{
+            change(val){
+                console.log(val);
+            }
         }
     }
 </script>

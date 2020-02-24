@@ -27,8 +27,9 @@
             drop(ev)
             {
                 try {
-                    let data = ev.dataTransfer.getData("target");
-                    let target = document.getElementById(data);
+                    let El_id = ev.dataTransfer.getData("target");
+                    let data = JSON.parse(ev.dataTransfer.getData("data"));
+                    let target = document.getElementById(El_id);
                     let targetClone = target.cloneNode(true);
                     let n = 300;
                     let id = Date.now().toString()+parseInt(Math.random()*100000);
@@ -43,6 +44,7 @@
                         top:parseInt((ev.layerY - n/2)),
                         width:n,
                         height:n,
+                        info:data
                     };
                     targetClone.style.left = styles.left + "px";
                     targetClone.style.top = styles.top + "px";
@@ -96,10 +98,18 @@
                 })
             },
             ondblclick(el,id){
-                let component = _.cloneDeep(this.airforce.UnityFrontView.component)
+                let name = "select";
+                let component = _.cloneDeep(this.airforce.UnityFrontView.component);
+                let componentFindObj = component.find(e=>e.operate);
+                if(componentFindObj && componentFindObj.id !== id){
+                    component = component.map(e=>{
+                        let ElObj = document.getElementById(e.id);
+                        ElObj.className = ElObj.className.replace(new RegExp(name,"img"),"");
+                        return {...e,operate:false};
+                    });
+                }
                 let index = component.findIndex(e=>e.id === id);
                 this.action({moduleName:"UnityFrontView", goods:{component:null}});
-                let name = "select";
                 if(el.className.indexOf(name) > -1){
                     component[index].operate = false;
                     el.className = el.className.replace(new RegExp(name,"img"),"");

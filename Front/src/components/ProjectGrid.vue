@@ -7,7 +7,7 @@
                        :id="`draggable_id_${key}`"
                        :key="key"
                        draggable="true"
-                       @dragstart.native="drag">
+                       @dragstart.native="drag($event,item)">
                 <div class="ProjectGridItemBox">
                     <div class="iconfont img" v-html="item.icon"></div>
                     <p class="msg">{{item.name}}</p>
@@ -33,9 +33,10 @@
             }
         },
         methods:{
-            drag(ev)
+            drag(ev, item)
             {
                 ev.dataTransfer.setData("target",ev.target.id);
+                ev.dataTransfer.setData("data",JSON.stringify(item));
             }
         }
     }
