@@ -22,12 +22,22 @@
         methods:{
             oncontextmenu(){
                 window.oncontextmenu=e=>{
+                    e.preventDefault();  //去掉默认的contextmenu事件，否则会和右键事件同时出现。
                     try {
-                        e.preventDefault();  //去掉默认的contextmenu事件，否则会和右键事件同时出现。
                         if(e.path.some(e=>e == this.$parent.$el)){
+                            let offset = e.path.slice(0,e.path.findIndex(e=>e == this.$parent.$el)-1).map(e=>{
+                                return [e.offsetLeft,e.offsetTop]
+                            });
+                            let offsetLeft = 0;
+                            let offsetTop = 0;
+                            try {
+                                offsetLeft = offset.map(e=>e[0]).reduce(function(prev, curr){return prev + curr;});
+                                offsetTop = offset.map(e=>e[1]).reduce(function(prev, curr){return prev + curr;});
+                            }catch (e) {
+                            }
                             this.style = {
-                                left:e.clientX+"px",
-                                top:e.clientY+"px",
+                                left:e.offsetX+offsetLeft+"px",
+                                top:e.offsetY+offsetTop+"px",
                             };
                             this.show = true;
                             this.target = e.path.find(el=>el.getAttribute("draggable_data"));
@@ -78,7 +88,7 @@
 .OnContextMenu{
     overflow: hidden; /*隐藏溢出的元素*/
     box-shadow: 0 1px 1px #888,1px 0 1px #ccc;
-    position: fixed; /*自定义菜单相对与body元素进行定位*/
+    position: absolute; /*自定义菜单相对与body元素进行定位*/
     left: 0;
     top: 0;
     z-index: 100000;

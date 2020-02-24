@@ -151,7 +151,7 @@
             }
         },
         mounted() {
-            // this.windowAddMouseWheel();
+            this.windowAddMouseWheel();
         }
     }
 </script>

@@ -55,6 +55,7 @@
             .grid-item{
                 text-align: center;
                 box-shadow: 0 0 5px rgba(0,0,0,0.5);
+                position: relative;
                 &:hover{
                     background-color:@themeColor;
                 }

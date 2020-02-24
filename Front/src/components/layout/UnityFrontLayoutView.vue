@@ -31,7 +31,7 @@
         top: @UnityFrontLayoutMenuHeight;
         width: ~"calc(100% - @{index} -  @{index})";
         height: ~"calc(100% - @{UnityFrontLayoutMenuHeight})";
-        overflow: auto;
+        overflow: hidden;
         &.toolShow{
             width: ~"calc(100% - @{index})";
         }
