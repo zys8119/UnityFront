@@ -1,5 +1,5 @@
 <template>
-    <div class="UnityFrontLayoutView" :class="{toolShow:toolShow}">
+    <div class="UnityFrontLayoutView webkit-scrollbar" :class="{toolShow:toolShow}">
         <unity-front-view></unity-front-view>
     </div>
 </template>
@@ -31,7 +31,7 @@
         top: @UnityFrontLayoutMenuHeight;
         width: ~"calc(100% - @{index} -  @{index})";
         height: ~"calc(100% - @{UnityFrontLayoutMenuHeight})";
-        overflow: hidden;
+        overflow: auto;
         &.toolShow{
             width: ~"calc(100% - @{index})";
         }

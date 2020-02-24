@@ -13,6 +13,8 @@ export default {
     },
     UnityFrontView:{
         // 视图组件
-        component:[]
+        component:[],
+        width:"500px",
+        height:"600px",
     },
 }

@@ -5,6 +5,10 @@
              v-dragdrop.native.stop dragdrop=".UnityFrontViewContent"
              @drop="drop"
              @dragover="allowDrop"
+             :style="{
+                 width:airforce.UnityFrontView.width,
+                 height:airforce.UnityFrontView.height,
+             }"
         >
             <OnContextMenu ref="OnContextMenu"></OnContextMenu>
         </div>
@@ -55,9 +59,8 @@
                     };
                     this.setOperate(targetClone,id);
                     Directive.dragdrop.inserted(targetClone);
-                    this.$refs.UnityFrontViewContent.appendChild(targetClone);
-                    ev.preventDefault();
                     let component = _.cloneDeep(this.airforce.UnityFrontView.component);
+                    targetClone.style.zIndex = component.length + 10;
                     component.push({
                         id,
                         el:targetClone,
@@ -66,6 +69,8 @@
                     });
                     this.action({moduleName:"UnityFrontView", goods:{component:null}});
                     this.action({moduleName:"UnityFrontView", goods:{component}});
+                    this.$refs.UnityFrontViewContent.appendChild(targetClone);
+                    ev.preventDefault();
                 }catch (e) {}
             },
             allowDrop(ev)
@@ -92,7 +97,6 @@
                             }
                             index -= 0.02;
                         };
-                        this.$refs.OnContextMenu.$el.style.transform = `scale(${1+index})`;
                         this.$refs.UnityFrontViewContent.style.transform = `scale(${index})`;
                     }
                 })
@@ -169,6 +173,35 @@
             height: 100%;
             height: ~"calc(100% - 32px)";
             background-color: @themeColor;
+            background-color: #0078ff;
+            .line(@deg:0){
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+                @color:rgba(255,255,255,0.1);
+                @size:12px;
+                background-size: @size @size;
+                background-repeat: repeat;
+                background-position: center;
+                background-image: linear-gradient(
+                        unit(@deg,deg),
+                        transparent 0,
+                        transparent 10px,
+                        @color 10px,
+                        @color 11px,
+                        transparent 11px
+                );
+            }
+            &:before{
+                content: "";
+                .line(90deg);
+            }
+            &:after{
+                content: "";
+                .line(0deg);
+            }
             &/deep/ .ProjectGridItem{
                 @boderColor:#f00;
                 position: absolute;
@@ -206,7 +239,7 @@
                         width: @s;
                         height: @s;
                         border-radius: 100%;
-                        background-color: @boderColor;
+                        background-color: fadeout(@boderColor,50%);
                         &.top_left{
                             left: -@s/2;
                             top: -@s/2;
