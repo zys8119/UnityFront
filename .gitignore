@@ -6,3 +6,4 @@ application/**/*.js
 conf/**/*.js
 TaskQueue/**/*.js
 UnityFrontUtils/**/*.js
+package-lock.json

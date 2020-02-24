@@ -1,0 +1,34 @@
+.initTheme(@themeColor){
+    body{
+        #app{
+            #topNav{
+                .nav-bottom{
+                    background: @themeColor;
+                }
+            }
+            #leftNav{
+                .Tree{
+                    .checked{
+                        background-color: @themeColor;
+                    }
+                }
+            }
+            .main-content{
+                #tabsNav{
+                    .nav-content{
+                        .content{
+                            ul{
+                                li{
+                                    &.active{
+                                        background: @themeColor;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
