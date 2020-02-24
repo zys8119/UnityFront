@@ -38,17 +38,32 @@
                     targetClone.setAttribute("draggable_data",JSON.stringify({
                         id
                     }));
-                    targetClone.style.left = parseInt((ev.layerX - n/2)) + "px";
-                    targetClone.style.top = parseInt((ev.layerY - n/2)) + "px";
-                    targetClone.style.width = n + "px";
-                    targetClone.style.height = n + "px";
+                    let styles = {
+                        left:parseInt((ev.layerX - n/2)),
+                        top:parseInt((ev.layerY - n/2)),
+                        width:n,
+                        height:n,
+                    };
+                    targetClone.style.left = styles.left + "px";
+                    targetClone.style.top = styles.top + "px";
+                    targetClone.style.width = styles.width + "px";
+                    targetClone.style.height = styles.height + "px";
                     targetClone.ondblclick=()=>{
-                        this.ondblclick(targetClone);
+                        this.ondblclick(targetClone,id);
                     };
                     this.setOperate(targetClone,id);
                     Directive.dragdrop.inserted(targetClone);
                     this.$refs.UnityFrontViewContent.appendChild(targetClone);
                     ev.preventDefault();
+                    let component = _.cloneDeep(this.airforce.UnityFrontView.component);
+                    component.push({
+                        id,
+                        el:targetClone,
+                        operate:false,
+                        ...styles
+                    });
+                    this.action({moduleName:"UnityFrontView", goods:{component:null}});
+                    this.action({moduleName:"UnityFrontView", goods:{component}});
                 }catch (e) {}
             },
             allowDrop(ev)
@@ -80,13 +95,19 @@
                     }
                 })
             },
-            ondblclick(el){
+            ondblclick(el,id){
+                let component = _.cloneDeep(this.airforce.UnityFrontView.component)
+                let index = component.findIndex(e=>e.id === id);
+                this.action({moduleName:"UnityFrontView", goods:{component:null}});
                 let name = "select";
                 if(el.className.indexOf(name) > -1){
+                    component[index].operate = false;
                     el.className = el.className.replace(new RegExp(name,"img"),"");
-                    return;
+                }else {
+                    component[index].operate = true;
+                    el.className += ` ${name}`;
                 }
-                el.className += ` ${name}`;
+                this.action({moduleName:"UnityFrontView", goods:{component}});
             },
             setOperate(el,id){
                 [

@@ -2,7 +2,6 @@
     <div class="ComponentView">
         <unity-front-layout-title title="组件预览"></unity-front-layout-title>
         <uf-box>
-            <div v-for="i in 100">{{i}}</div>
         </uf-box>
     </div>
 </template>

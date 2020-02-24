@@ -49,11 +49,16 @@
                         case "delete":
                             if(this.targetData.id){
                                 document.getElementById(this.targetData.id).remove();
+                                let component = _.cloneDeep(this.airforce.UnityFrontView.component);
+                                this.action({moduleName:"UnityFrontView", goods:{component:null}});
+                                this.action({moduleName:"UnityFrontView", goods:{component:component.filter(e=>e.id !== this.targetData.id),}});
                             }
                             break;
                         case "deleteAll":
                             if(this.targetData.id){
                                 document.querySelectorAll("#UnityFrontViewContent .ProjectGridItem").forEach(el=>el.remove());
+                                this.action({moduleName:"UnityFrontView", goods:{component:null}});
+                                this.action({moduleName:"UnityFrontView", goods:{component:[]}});
                             }
                             break;
                     }

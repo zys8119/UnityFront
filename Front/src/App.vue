@@ -12,16 +12,21 @@ export default {
     window.__vm__ = this;
   },
   mounted() {
-    //全局定时器
-    setInterval(()=>{
-      try {
-        Object.keys(lib_setInterval).forEach(keyName=>{
-          try {
-            lib_setInterval[keyName].call(this,keyName);
-          }catch (e) {};
-        })
-      }catch (e) {};
-    });
+    this.setInterval();
+  },
+  methods:{
+    setInterval(){
+      //全局定时器
+      setInterval(()=>{
+        try {
+          Object.keys(lib_setInterval).forEach(keyName=>{
+            try {
+              lib_setInterval[keyName].call(this,keyName);
+            }catch (e) {};
+          })
+        }catch (e) {};
+      });
+    }
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-    <div class="UnityFrontLayoutView">
+    <div class="UnityFrontLayoutView" :class="{toolShow:toolShow}">
         <unity-front-view></unity-front-view>
     </div>
 </template>
@@ -10,6 +10,13 @@
         name: "UnityFrontLayoutView",
         components:{
             UnityFrontView
+        },
+        computed:{
+            toolShow(){
+                try {
+                    return this.airforce.UnityFrontView.component.find(e=>e.operate);
+                }catch (e) {}
+            }
         }
     }
 </script>
@@ -25,5 +32,8 @@
         width: ~"calc(100% - @{index} -  @{index})";
         height: ~"calc(100% - @{UnityFrontLayoutMenuHeight})";
         overflow: hidden;
+        &.toolShow{
+            width: ~"calc(100% - @{index})";
+        }
     }
 </style>

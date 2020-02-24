@@ -10,5 +10,9 @@ export default {
     CreateNewProjects:{
         project_name:null,
         rmarks:null,
-    }
+    },
+    UnityFrontView:{
+        // 视图组件
+        component:[]
+    },
 }
