@@ -1,21 +1,17 @@
 <template>
     <div class="ProjectGrid">
         <grid class="grid" :cols="3">
-            <grid-item class="grid-item">
-                <div class="iconfont img">&#xe674;</div>
-                <p class="msg">images</p>
-            </grid-item>
-            <grid-item class="grid-item">
-                <div class="iconfont css">&#xe614;</div>
-                <p class="msg">css</p>
-            </grid-item>
-            <grid-item class="grid-item">
-                <div class="iconfont js">&#xe61a;</div>
-                <p class="msg">js</p>
-            </grid-item>
-            <grid-item class="grid-item " title="士大夫士大夫似的法式风格是否多少个">
-                <div class="iconfont preset">&#xe60c;</div>
-                <p class="msg text-overflow">preset</p>
+            <grid-item class="grid-item ProjectGridItem"
+                       v-for="(item,key) in list"
+                       :title="item.msg"
+                       :id="`draggable_id_${key}`"
+                       :key="key"
+                       draggable="true"
+                       @dragstart.native="drag">
+                <div class="ProjectGridItemBox">
+                    <div class="iconfont img" v-html="item.icon"></div>
+                    <p class="msg">{{item.name}}</p>
+                </div>
             </grid-item>
         </grid>
     </div>
@@ -25,7 +21,23 @@
     import { Grid, GridItem } from "vux"
     export default {
         name: "ProjectGrid",
-        components:{ Grid, GridItem }
+        components:{ Grid, GridItem },
+        data(){
+            return {
+                list:[
+                    {name:"images",icon:"&#xe674;"},
+                    {name:"css",icon:"&#xe614;"},
+                    {name:"js",icon:"&#xe61a;"},
+                    {name:"preset",icon:"&#xe60c;"},
+                ]
+            }
+        },
+        methods:{
+            drag(ev)
+            {
+                ev.dataTransfer.setData("target",ev.target.id);
+            }
+        }
     }
 </script>
 

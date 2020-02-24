@@ -11,6 +11,5 @@
     "puppeteer": "^2.0.0",
     "less": "^3.10.3"
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }

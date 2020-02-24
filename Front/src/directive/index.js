@@ -1,7 +1,7 @@
 import dragdropUtils from "./dragdrop"
 export default {
     dragdrop: {
-        inserted: function (el) {
+        inserted: function (el,onmousedown,onmouseup) {
             setTimeout(()=>{
                 let dragdropClassName = el.getAttribute("dragdrop");
                 //获取目标元素
@@ -10,6 +10,7 @@ export default {
                 let disX,disY,oldLeft,oldTop,oldWidth,oldHeight;
                 //鼠标按下的事件
                 el.onmousedown = (e)=>{
+                    try {onmousedown()}catch (e) {};
                     disX = e.clientX;
                     disY = e.clientY;
                     let getStyle = getComputedStyle(dragObj);
@@ -38,12 +39,15 @@ export default {
                         };
                         dragdropUtils[(dragdropClassName || "default")](dragObj,getStyle,left,top,{
                             oldLeft,oldTop,
-                            oldWidth,oldHeight
+                            oldWidth,oldHeight,
                         },dragObjWidth,dragObjHeight);
                     };
+                    e.preventDefault();
+                    e.stopPropagation();
                 };
 
                 window.onmouseup = (e) => {
+                    try {onmouseup()}catch (e) {};
                     disX = null;
                     disY = null;
                     window.onmousemove = null;

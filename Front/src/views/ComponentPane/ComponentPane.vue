@@ -21,8 +21,8 @@
         data(){
             return {
                 list:[
-                    // {name:"视图",open:false,child:[
-                    // ],select:false},
+                    {name:"视图",open:false,child:[
+                    ],select:false},
                 ]
             }
         }
