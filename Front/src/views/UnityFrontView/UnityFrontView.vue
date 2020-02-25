@@ -49,7 +49,7 @@
                    minHTML="0"
                    maxHTML="100"
             ></Range>
-            <x-button class="z_XButton" @click.native="airforce.input({left:0,top:0,scaleIndex:1},'UnityFrontView')">重置</x-button>
+            <x-button class="z_XButton" @click.native="airforce.input({left:0,top:0,scaleIndex:1},'UnityFrontView')">重置视图</x-button>
         </div>
     </div>
 </template>
