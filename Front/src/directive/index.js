@@ -11,10 +11,11 @@ export default {
                 //鼠标按下的事件
                 el.onmousedown = (e)=>{
                     try {
-                        if(dragdropClassName === "draggable_data_operate"){
-                            e.target.setAttribute("draggable_data",e.target.getAttribute("item"));
-                        }
-                        if(dragdropClassName === "draggable_data"){
+                        if([
+                            ".UnityFrontViewContent",
+                            "draggable_data",
+                            "draggable_data_operate"
+                        ].some(draggable_data_name=>draggable_data_name === dragdropClassName)){
                             e.target.setAttribute("draggable_data",e.target.getAttribute("item"));
                         }
                     }catch (e) {}

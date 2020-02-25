@@ -1,5 +1,5 @@
 <template>
-    <div class="UnityFrontLayoutView webkit-scrollbar" :class="{toolShow:toolShow}">
+    <div class="UnityFrontLayoutView webkit-scrollbar">
         <unity-front-view></unity-front-view>
     </div>
 </template>
@@ -10,13 +10,6 @@
         name: "UnityFrontLayoutView",
         components:{
             UnityFrontView
-        },
-        computed:{
-            toolShow(){
-                try {
-                    return this.airforce.UnityFrontView.component.find(e=>e.operate);
-                }catch (e) {}
-            }
         }
     }
 </script>

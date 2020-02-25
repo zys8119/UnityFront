@@ -25,10 +25,8 @@
         data(){
             return {
                 list:[
-                    {name:"images",icon:"&#xe674;"},
-                    {name:"css",icon:"&#xe614;"},
-                    {name:"js",icon:"&#xe61a;"},
-                    {name:"preset",icon:"&#xe60c;"},
+                    {name:"images",icon:"&#xe674;",type:"images"},
+                    {name:"preset",icon:"&#xe60c;",type:"preset"},
                 ]
             }
         },

@@ -1,4 +1,7 @@
 export default {
+    'node':function () {
+
+    },
     oldCalc(oldLeft,left){
         if(isNaN(left)){
             oldLeft = 0;
@@ -75,10 +78,16 @@ export default {
     },
     ".UnityFrontViewContent":function (dragObj, getStyle ,left,top,{ oldHeight, oldLeft, oldTop }) {
         //移动当前元素
-        dragObj.style.left = oldLeft + left + 'px';
-        dragObj.style.top = oldTop + top + 'px';
+        try {
+            let _this = window.__vm__;
+            let draggable_data = JSON.parse(dragObj.getAttribute("draggable_data"));
+            let UnityFrontView = _.cloneDeep(_this.airforce.UnityFrontView);
+            UnityFrontView.left = draggable_data.left + left;
+            UnityFrontView.top = draggable_data.top + top;
+            _this.action({moduleName:"UnityFrontView", goods:UnityFrontView});
+        }catch (e) {}
     },
-    "draggable_data":function (dragObj, getStyle ,left,top,{ oldHeight, oldLeft, oldTop },dragObjWidth,dragObjHeight) {
+    "draggable_data":function (dragObj, getStyle ,left,top) {
         //移动当前元素
         try {
             let _this = window.__vm__;
@@ -89,9 +98,7 @@ export default {
             Obj.top = draggable_data.top + top;
             _this.action({moduleName:"UnityFrontView", goods:{component:null}});
             _this.action({moduleName:"UnityFrontView", goods:{component}});
-        }catch (e) {
-
-        }
+        }catch (e) {}
     },
     "draggable_data_operate":function (dragObj, getStyle ,left,top) {
         //移动当前元素
@@ -144,5 +151,5 @@ export default {
         }
         //*/
 
-    }
+    },
 }

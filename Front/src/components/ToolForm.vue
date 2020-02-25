@@ -1,10 +1,30 @@
 <template>
     <div class="ToolForm" :info="componentInfo">
-        <uf-group title="基础属性" open>
-            <x-input class="z_Input" title="组件名称" value="input"
-                     :value="formData.info.name"
-                     @on-change="change"
+        <uf-group title="视图属性" open>
+            <x-input class="z_Input" title="名称"
+                     :value="airforce.UnityFrontView.title"
+                     @on-change="airforce.input($event,'title','UnityFrontView')"
             ></x-input>
+            <flexbox>
+                <flexbox-item title="width">
+                    <x-input class="z_Input" title="width"
+                             :value="airforce.UnityFrontView.width"
+                             @on-change="airforce.input($event,'width','UnityFrontView')"
+                    ></x-input>
+                </flexbox-item>
+                <flexbox-item title="height">
+                    <x-input class="z_Input" title="height"
+                             :value="airforce.UnityFrontView.height"
+                             @on-change="airforce.input($event,'height','UnityFrontView')"
+                    ></x-input>
+                </flexbox-item>
+            </flexbox>
+        </uf-group>
+        <uf-group title="基础属性" open>
+<!--            <x-input class="z_Input" title="组件名称" value="input"-->
+<!--                     :value="formData.info.name"-->
+<!--                     @on-change="change"-->
+<!--            ></x-input>-->
             <flexbox>
                 <flexbox-item title="width">
                     <x-input class="z_Input" title="width" value="0"></x-input>
@@ -111,11 +131,11 @@
         },
         computed:{
             componentInfo(){
-                try {
-
-                    this.formData = _.cloneDeep(this.airforce.UnityFrontView.component.find(e=>e.operate));
-                    return;
-                }catch (e) {}
+                // try {
+                //
+                //     this.formData = _.cloneDeep(this.airforce.UnityFrontView.component.find(e=>e.operate));
+                //     return;
+                // }catch (e) {}
                 this.formData = {};
             }
         },

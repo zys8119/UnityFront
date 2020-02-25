@@ -1,6 +1,6 @@
 <template>
     <div class="OnContextMenu" v-if="show" :style="style">
-        <div class="menu" v-for="(item,key) in list" @click="menuClick(item)">{{item.name}}</div>
+        <div class="menu" v-for="(item,key) in menus" @click="menuClick(item)">{{item.name}}</div>
     </div>
 </template>
 
@@ -12,9 +12,9 @@
                 show:false,
                 style:{},
                 list:[
-                    {name:"删除",type:"delete"},
                     {name:"删除全部",type:"deleteAll"},
                 ],
+                menus:[],
                 target:null,
                 targetData:{},
             }
@@ -25,6 +25,16 @@
                     e.preventDefault();  //去掉默认的contextmenu事件，否则会和右键事件同时出现。
                     try {
                         if(e.path.some(e=>e == this.$parent.$el)){
+                            if(e.target == document.getElementById("UnityFrontViewContent")){
+                                this.menus = [
+                                    ...this.list,
+                                ]
+                            }else {
+                                this.menus = [
+                                    {name:"删除",type:"delete"},
+                                    ...this.list,
+                                ]
+                            }
                             let offset = e.path.slice(0,e.path.findIndex(e=>e == this.$parent.$el)-1).map(e=>{
                                 return [e.offsetLeft,e.offsetTop]
                             });
@@ -45,7 +55,6 @@
                             try {
                                 this.targetData = JSON.parse(this.target.getAttribute("item"))
                             }catch (e) {}
-                            console.log(this.targetData,e.path)
                         }
                     } catch (e) {}
                 };

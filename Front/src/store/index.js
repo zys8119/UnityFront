@@ -14,7 +14,10 @@ export default {
     UnityFrontView:{
         // 视图组件
         component:[],
-        width:"500px",
-        height:"600px",
+        left:0,
+        top:0,
+        width:500,
+        height:600,
+        title:"测试"
     },
 }

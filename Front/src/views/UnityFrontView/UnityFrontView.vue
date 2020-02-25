@@ -6,9 +6,16 @@
              @drop="drop"
              @dragover="allowDrop"
              :style="{
-                 width:airforce.UnityFrontView.width,
-                 height:airforce.UnityFrontView.height,
+                 left:airforce.UnityFrontView.left+'px',
+                 top:airforce.UnityFrontView.top+'px',
+                 width:airforce.UnityFrontView.width+'px',
+                 height:airforce.UnityFrontView.height+'px',
+                 transform:`scale(${this.scaleIndex})`
              }"
+             :item="JSON.stringify({
+                left:airforce.UnityFrontView.left,
+                top:airforce.UnityFrontView.top,
+             })"
         >
             <div class="ProjectGridItem" v-for="(item,key) in airforce.UnityFrontView.component" :key="key"
                  v-dragdrop dragdrop="draggable_data"
@@ -34,23 +41,34 @@
             </div>
             <OnContextMenu ref="OnContextMenu"></OnContextMenu>
         </div>
+        <div class="Range">
+            <Range class="x-range"
+                   :value="scaleIndex*100"
+                   @on-change="RangeChange"
+                   :min="10" :max="400"
+                   minHTML="0"
+                   maxHTML="100"
+            ></Range>
+            <x-button class="z_XButton" @click.native="scaleIndex = 1, airforce.input({left:0,top:0},'UnityFrontView')">重置</x-button>
+        </div>
     </div>
 </template>
 
 <script>
     import UnityFrontLayoutTitle from "@/components/layout/UnityFrontLayoutTitle"
     import { OnContextMenu } from "@/components/index"
-    import Directive from "@/directive/index"
+    import { Range, XButton } from "vux"
     export default {
         name: "UnityFrontView",
-        components:{ UnityFrontLayoutTitle, OnContextMenu },
+        components:{ UnityFrontLayoutTitle, OnContextMenu, Range, XButton },
         data(){
             return {
                 bool:true,
                 OperateList:[
                     "top_left","top_right","bottom_left","bottom_right",
                     "center_left","center_top","center_right","center_bottom",
-                ]
+                ],
+                scaleIndex:1
             }
         },
         methods:{
@@ -80,24 +98,22 @@
             windowAddMouseWheel(){
                 this.$utils.windowAddMouseWheel((type,e)=>{
                     if(e.path.some(e=>e == this.$refs.UnityFrontViewContent)){
-                        let index = new Number(this.$refs.UnityFrontViewContent.style.transform.replace(/[^0-9.]/img,""));
-                        if(index == 0){
-                            index = 1;
+                        if(this.scaleIndex == 0){
+                            this.scaleIndex = 1;
                         };
                         if(type == "top"){
                             //最大
-                            if(index >= 4){
+                            if(this.scaleIndex >= 4){
                                 return;
                             }
-                            index += 0.02;
+                            this.scaleIndex += 0.02;
                         }else if(type == "down"){
                             //最小
-                            if(index <= 0.1){
+                            if(this.scaleIndex <= 0.1){
                                 return;
                             }
-                            index -= 0.02;
+                            this.scaleIndex -= 0.02;
                         };
-                        this.$refs.UnityFrontViewContent.style.transform = `scale(${index})`;
                     }
                 })
             },
@@ -113,31 +129,8 @@
                 this.action({moduleName:"UnityFrontView", goods:{component:null}});
                 this.action({moduleName:"UnityFrontView", goods:{component}});
             },
-            setOperate(el,id){
-                [
-                    "top_left","top_right","bottom_left","bottom_right",
-                    "center_left","center_top","center_right","center_bottom",
-                ].forEach(className=>{
-                    let span = document.createElement("span");
-                    span.className = className+" operate";
-                    span.setAttribute("dragdrop","draggable_data_operate");
-                    span.setAttribute("draggable_data",JSON.stringify({
-                        type:className,
-                        id,
-                    }));
-                    Directive.dragdrop.inserted(span,()=>{
-                        let dragObj = document.getElementById(id);
-                        span.setAttribute("draggable_data",JSON.stringify({
-                            type:className,
-                            id,
-                            width:parseInt(dragObj.style.width),
-                            height:parseInt(dragObj.style.height),
-                            left:parseInt(dragObj.style.left),
-                            top:parseInt(dragObj.style.top),
-                        }));
-                    });
-                    el.appendChild(span);
-                });
+            RangeChange(val){
+                this.scaleIndex = val/100;
             }
         },
         mounted() {
@@ -149,6 +142,40 @@
 <style scoped lang="less">
     @import "../../assets/less/vars";
     .UnityFrontView {
+        .Range{
+            position: absolute !important;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 50px;
+            background-color: rgba(41,41,41,0.5);
+            text-align: right;
+            .x-range{
+                width: 120px;
+                float: right;
+                margin-top: 27px;
+                margin-right: 45px !important;
+                &/deep/ .range-bar{
+                    .range-handle{
+                        height: 20px;
+                        width: 20px;
+                        top: -11.5px !important;
+                    }
+                    .range-min{
+                        color: @textColor;
+                    }
+                    .range-max{
+                        .range-min;
+                    }
+                }
+            }
+            .z_XButton{
+                float: left;
+                width: auto;
+                margin-left: 15px;
+                margin-top: 12px;
+            }
+        }
         &/deep/ .UnityFrontLayoutTitle{
             .UnityFrontLayoutTitleBox{
                 z-index: 2;
