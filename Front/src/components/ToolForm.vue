@@ -1,6 +1,6 @@
 <template>
     <div class="ToolForm" :info="componentInfo">
-        <uf-group title="视图属性">
+        <uf-group title="视图属性" open>
             <x-input class="z_Input" title="名称"
                      :value="airforce.UnityFrontView.title"
                      @on-change="airforce.input($event,'title','UnityFrontView')"
@@ -155,7 +155,45 @@
                     </cell>
                 </flexbox-item>
             </flexbox>
-
+        </uf-group>
+        <!--形状 -->
+        <uf-group title="形状" open v-if="info && info.type === 'svg'">
+            <flexbox>
+                <flexbox-item title="X">
+                    <x-number class="x_number" title="X" fillable
+                              :value="svgX"
+                              @input="setSvgMatrix($event,0)"
+                    ></x-number>
+                </flexbox-item>
+                <flexbox-item title="top">
+                    <x-number class="x_number" title="Y" fillable
+                              :value="svgY"
+                              @input="setSvgMatrix($event,3)"
+                    ></x-number>
+                </flexbox-item>
+            </flexbox>
+            <flexbox>
+                <flexbox-item>
+                    <uf-color title="fill"
+                              :value="info.style.fill"
+                              @on-change="change($event.hex8,'info.style.fill','UnityFrontView')"
+                    ></uf-color>
+                </flexbox-item>
+                <flexbox-item>
+                    <uf-color title="stroke"
+                              :value="info.style.stroke"
+                              @on-change="change($event.hex8,'info.style.stroke','UnityFrontView')"
+                    ></uf-color>
+                </flexbox-item>
+            </flexbox>
+            <flexbox>
+                <flexbox-item title="strokeWidth">
+                    <x-number class="x_number" title="strokeWidth" fillable
+                              :value="info.style.strokeWidth"
+                              @input="change($event,'info.style.strokeWidth','UnityFrontView')"
+                    ></x-number>
+                </flexbox-item>
+            </flexbox>
         </uf-group>
     </div>
 </template>
@@ -193,9 +231,26 @@
             },
             info(){
                 return this.formData.info
+            },
+            getSvgMatrix(){
+              try {
+                  return  this.formData.info.style.transform.replace(/matrix\(|\)/img,"").split(",").map(e=>parseFloat(e))
+              }catch (e) {}
+              return [];
+            },
+            svgX(){
+                return this.getSvgMatrix[0]*100;
+            },
+            svgY(){
+                return this.getSvgMatrix[3]*100;
             }
         },
         methods:{
+            setSvgMatrix(val,key){
+                let matrix = _.cloneDeep(this.getSvgMatrix);
+                matrix[key] = val/100;
+                this.change(`matrix(${matrix.join(",")})`,"info.style.transform")
+            },
             change(val,key){
                 let component = _.cloneDeep(this.airforce.UnityFrontView.component);
                 component[this.index] = _.set( component[this.index],key,val);

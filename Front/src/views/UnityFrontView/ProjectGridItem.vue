@@ -7,7 +7,15 @@
             <span v-html="data.info.name" :style="data.info.style"></span>
         </div>
         <!--图片-->
-        <img class="ProjectGridItemBox_type_images" :src="data.info.url" v-if="data.info.type === 'images'" :style="data.info.style"></img>
+        <img class="ProjectGridItemBox_type_images" :src="data.info.url" v-else-if="data.info.type === 'images'" :style="data.info.style">
+        <!--SVG-->
+        <div class="ProjectGridItemBox_type_svg" v-else-if="data.info.type === 'svg'" ref="svg">
+            <svg t="1582622641578" class="icon" style="vertical-align: middle;fill: currentColor;overflow: hidden;"
+                 :viewBox="data.info.viewBox"
+                 version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8467"  :style="data.info.style" v-html="data.info.path">
+
+            </svg>
+        </div>
         <!--布局-->
         <div class="ProjectGridItemBox" v-else>
             <div class="iconfont" v-html="data.info.icon"></div>
@@ -31,6 +39,23 @@
                 default:Object
             }
         },
+        watch:{
+          "data.info.style.fill"(){
+              this.getSvgPath().forEach(e=>{
+                  e.style.fill = this.data.info.style.fill;
+              });
+          },
+          "data.info.style.stroke"(){
+              this.getSvgPath().forEach(e=>{
+                  e.style.stroke = this.data.info.style.stroke;
+              });
+          },
+          "data.info.style.strokeWidth"(){
+              this.getSvgPath().forEach(e=>{
+                  e.style.stroke = this.data.info.style.strokeWidth;
+              });
+          }
+        },
         data(){
             return {
                 OperateList:[
@@ -39,6 +64,11 @@
                 ],
             }
         },
+        methods:{
+            getSvgPath(){
+                return this.$refs.svg.querySelectorAll(".ProjectGridItemBox_type_svg svg path");
+            }
+        }
     }
 </script>
 
@@ -154,6 +184,22 @@
             background-size: 100% 100%;
             border:none;
             outline: medium;
+        }
+    }
+    &.type_svg{
+        .ProjectGridItemBox_type_svg{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            svg{
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                height: 100%;
+            }
         }
     }
 
