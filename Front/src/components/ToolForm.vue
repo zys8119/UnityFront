@@ -114,7 +114,7 @@
                     ></uf-color>
                 </flexbox-item>
                 <flexbox-item :span="0.4">
-                    <cell title="对齐" class="z_cell">
+                    <cell title="对齐" class="z_cell" value-align="left">
                         <span class="iconfont textAlign" :class="{select:item.value === info.style.textAlign}"
                               v-for="item in textAlign" :title="item.title" v-html="item.icon"
                               @click="change(item.value,'info.style.textAlign','UnityFrontView')"
@@ -130,7 +130,7 @@
                     ></x-input>
                 </flexbox-item>
                 <flexbox-item :span="0.4">
-                    <cell title="加粗" class="z_cell">
+                    <cell title="加粗" class="z_cell" value-align="left">
                         <span class="iconfont textAlign" :class="{select:info.style.fontWeight === 'bold'}"
                               @click="change((info.style.fontWeight === 'bold')?undefined:'bold','info.style.fontWeight','UnityFrontView')"
                         >&#xe636;</span>
@@ -138,13 +138,32 @@
                 </flexbox-item>
             </flexbox>
         </uf-group>
+        <!--图片 -->
+        <uf-group title="图片" open v-if="info && info.type === 'images'">
+            <flexbox>
+                <flexbox-item>
+                    <x-input class="z_Input" title="地址"
+                             :value="info.url"
+                             @input="change($event,'info.url','UnityFrontView')"
+                    ></x-input>
+                </flexbox-item>
+            </flexbox>
+            <flexbox>
+                <flexbox-item>
+                    <cell title="透明度" class="z_cell" value-align="left">
+                        <Range minHTML="0" maxHTML="1" :value="info.style.opacity*100" @on-change="change($event/100,'info.style.opacity','UnityFrontView')"></Range>
+                    </cell>
+                </flexbox-item>
+            </flexbox>
+
+        </uf-group>
     </div>
 </template>
 
 <script>
     import UfGroup from "./UfGroup"
     import UfColor from "./UfColor"
-    import { XInput, Flexbox, FlexboxItem, Selector, XTextarea, XNumber, Cell } from "vux"
+    import { XInput, Flexbox, FlexboxItem, Selector, XTextarea, XNumber, Cell, Range } from "vux"
     export default {
         name: "ToolForm",
         data(){
@@ -160,7 +179,7 @@
             }
         },
         components:{
-            UfGroup, XInput, Flexbox, FlexboxItem, Selector, UfColor, XTextarea, XNumber, Cell
+            UfGroup, XInput, Flexbox, FlexboxItem, Selector, UfColor, XTextarea, XNumber, Cell, Range
         },
         computed:{
             componentInfo(){
@@ -199,6 +218,9 @@
             width: 30px;
             text-align: center;
             line-height: 30px;
+            &:first-child{
+                margin-left: 10px;
+            }
             &.select{
                 background-color: @themeColor;
             }

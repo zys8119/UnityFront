@@ -7,7 +7,7 @@
             <span v-html="data.info.name" :style="data.info.style"></span>
         </div>
         <!--图片-->
-        <div class="ProjectGridItemBox_type_images" v-if="data.info.type === 'images'" :style="data.info.style"></div>
+        <img class="ProjectGridItemBox_type_images" :src="data.info.url" v-if="data.info.type === 'images'" :style="data.info.style"></img>
         <!--布局-->
         <div class="ProjectGridItemBox" v-else>
             <div class="iconfont" v-html="data.info.icon"></div>
@@ -152,6 +152,8 @@
             background-repeat: no-repeat;
             background-position: center;
             background-size: 100% 100%;
+            border:none;
+            outline: medium;
         }
     }
 

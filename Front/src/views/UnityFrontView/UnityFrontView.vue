@@ -81,8 +81,9 @@
                             ...data,
                             info:{
                                 ...data.info,
+                                url:require("@/assets/logo.png"),
                                 style:{
-                                    backgroundImage:`url(${require("@/assets/logo.png")})`
+                                    opacity:1,
                                 },
                             },
                         };

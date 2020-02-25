@@ -98,7 +98,9 @@ export default {
             Obj.top = draggable_data.top + top;
             _this.action({moduleName:"UnityFrontView", goods:{component:null}});
             _this.action({moduleName:"UnityFrontView", goods:{component}});
-        }catch (e) {}
+        }catch (e) {
+            console.log(e)
+        }
     },
     "draggable_data_operate":function (dragObj, getStyle ,left,top) {
         //移动当前元素

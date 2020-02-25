@@ -16,7 +16,7 @@ export default {
                             "draggable_data",
                             "draggable_data_operate"
                         ].some(draggable_data_name=>draggable_data_name === dragdropClassName)){
-                            e.target.setAttribute("draggable_data",e.target.getAttribute("item"));
+                            el.setAttribute("draggable_data",el.getAttribute("item"));
                         }
                     }catch (e) {}
                     disX = e.clientX;
