@@ -12,7 +12,7 @@ export default {
     window.__vm__ = this;
   },
   mounted() {
-    // this.setInterval();
+    this.setInterval();
   },
   methods:{
     setInterval(){
