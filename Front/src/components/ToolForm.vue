@@ -5,6 +5,15 @@
                      :value="airforce.UnityFrontView.title"
                      @on-change="airforce.input($event,'title','UnityFrontView')"
             ></x-input>
+
+            <flexbox>
+                <flexbox-item title="width">
+                    <x-input class="z_Input" title="缩放"
+                             :value="airforce.UnityFrontView.scaleIndex*100"
+                             @on-change="airforce.input($event/100,'scaleIndex','UnityFrontView')"
+                    ></x-input>
+                </flexbox-item>
+            </flexbox>
             <flexbox>
                 <flexbox-item title="width">
                     <x-number class="x_number" title="width" fillable
@@ -20,11 +29,17 @@
                 </flexbox-item>
             </flexbox>
             <flexbox>
-                <flexbox-item title="width">
-                    <x-input class="z_Input" title="缩放"
-                             :value="airforce.UnityFrontView.scaleIndex*100"
-                             @on-change="airforce.input($event/100,'scaleIndex','UnityFrontView')"
-                    ></x-input>
+                <flexbox-item title="left">
+                    <x-number class="x_number" title="left" fillable
+                             :value="airforce.UnityFrontView.left"
+                             @input="airforce.input($event,'left','UnityFrontView')"
+                    ></x-number>
+                </flexbox-item>
+                <flexbox-item title="top">
+                    <x-number class="x_number" title="top" fillable
+                              :value="airforce.UnityFrontView.top"
+                              @input="airforce.input($event,'top','UnityFrontView')"
+                    ></x-number>
                 </flexbox-item>
             </flexbox>
         </uf-group>
