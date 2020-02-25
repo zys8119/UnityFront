@@ -40,11 +40,12 @@
                                 top:e.offsetY+offsetTop+"px",
                             };
                             this.show = true;
-                            this.target = e.path.find(el=>el.getAttribute("draggable_data"));
+                            this.target = e.path.find(el=>el.getAttribute("item"));
                             this.targetData = {};
                             try {
-                                this.targetData = JSON.parse(this.target.getAttribute("draggable_data"))
+                                this.targetData = JSON.parse(this.target.getAttribute("item"))
                             }catch (e) {}
+                            console.log(this.targetData,e.path)
                         }
                     } catch (e) {}
                 };
@@ -58,7 +59,6 @@
                     switch (item.type) {
                         case "delete":
                             if(this.targetData.id){
-                                document.getElementById(this.targetData.id).remove();
                                 let component = _.cloneDeep(this.airforce.UnityFrontView.component);
                                 this.action({moduleName:"UnityFrontView", goods:{component:null}});
                                 this.action({moduleName:"UnityFrontView", goods:{component:component.filter(e=>e.id !== this.targetData.id),}});
@@ -66,7 +66,6 @@
                             break;
                         case "deleteAll":
                             if(this.targetData.id){
-                                document.querySelectorAll("#UnityFrontViewContent .ProjectGridItem").forEach(el=>el.remove());
                                 this.action({moduleName:"UnityFrontView", goods:{component:null}});
                                 this.action({moduleName:"UnityFrontView", goods:{component:[]}});
                             }
