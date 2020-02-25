@@ -7,15 +7,23 @@
             ></x-input>
             <flexbox>
                 <flexbox-item title="width">
-                    <x-input class="z_Input" title="width"
+                    <x-number class="x_number" title="width" fillable
                              :value="airforce.UnityFrontView.width"
-                             @on-change="airforce.input($event,'width','UnityFrontView')"
-                    ></x-input>
+                             @input="airforce.input($event,'width','UnityFrontView')"
+                    ></x-number>
                 </flexbox-item>
                 <flexbox-item title="height">
-                    <x-input class="z_Input" title="height"
-                             :value="airforce.UnityFrontView.height"
-                             @on-change="airforce.input($event,'height','UnityFrontView')"
+                    <x-number class="x_number" title="height" fillable
+                              :value="airforce.UnityFrontView.height"
+                              @input="airforce.input($event,'height','UnityFrontView')"
+                    ></x-number>
+                </flexbox-item>
+            </flexbox>
+            <flexbox>
+                <flexbox-item title="width">
+                    <x-input class="z_Input" title="缩放"
+                             :value="airforce.UnityFrontView.scaleIndex*100"
+                             @on-change="airforce.input($event/100,'scaleIndex','UnityFrontView')"
                     ></x-input>
                 </flexbox-item>
             </flexbox>
@@ -111,7 +119,7 @@
 <script>
     import UfGroup from "./UfGroup"
     import UfColor from "./UfColor"
-    import { XInput, Flexbox, FlexboxItem, Selector, XTextarea  } from "vux"
+    import { XInput, Flexbox, FlexboxItem, Selector, XTextarea, XNumber  } from "vux"
     export default {
         name: "ToolForm",
         data(){
@@ -127,7 +135,7 @@
             }
         },
         components:{
-            UfGroup, XInput, Flexbox, FlexboxItem, Selector, UfColor, XTextarea
+            UfGroup, XInput, Flexbox, FlexboxItem, Selector, UfColor, XTextarea, XNumber
         },
         computed:{
             componentInfo(){

@@ -14,6 +14,7 @@ export default {
     UnityFrontView:{
         // 视图组件
         component:[],
+        scaleIndex:1,
         left:0,
         top:0,
         width:500,

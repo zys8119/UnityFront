@@ -10,7 +10,7 @@
                  top:airforce.UnityFrontView.top+'px',
                  width:airforce.UnityFrontView.width+'px',
                  height:airforce.UnityFrontView.height+'px',
-                 transform:`scale(${this.scaleIndex})`
+                 transform:`scale(${airforce.UnityFrontView.scaleIndex})`
              }"
              :item="JSON.stringify({
                 left:airforce.UnityFrontView.left,
@@ -43,13 +43,13 @@
         </div>
         <div class="Range">
             <Range class="x-range"
-                   :value="scaleIndex*100"
+                   :value="airforce.UnityFrontView.scaleIndex*100"
                    @on-change="RangeChange"
                    :min="10" :max="400"
                    minHTML="0"
                    maxHTML="100"
             ></Range>
-            <x-button class="z_XButton" @click.native="scaleIndex = 1, airforce.input({left:0,top:0},'UnityFrontView')">重置</x-button>
+            <x-button class="z_XButton" @click.native="airforce.input({left:0,top:0,scaleIndex:1},'UnityFrontView')">重置</x-button>
         </div>
     </div>
 </template>
@@ -68,7 +68,6 @@
                     "top_left","top_right","bottom_left","bottom_right",
                     "center_left","center_top","center_right","center_bottom",
                 ],
-                scaleIndex:1
             }
         },
         methods:{
@@ -98,22 +97,24 @@
             windowAddMouseWheel(){
                 this.$utils.windowAddMouseWheel((type,e)=>{
                     if(e.path.some(e=>e == this.$refs.UnityFrontViewContent)){
-                        if(this.scaleIndex == 0){
-                            this.scaleIndex = 1;
+                        let scaleIndex = this.airforce.UnityFrontView.scaleIndex;
+                        if(scaleIndex == 0){
+                            scaleIndex = 1;
                         };
                         if(type == "top"){
                             //最大
-                            if(this.scaleIndex >= 4){
+                            if(scaleIndex >= 4){
                                 return;
                             }
-                            this.scaleIndex += 0.02;
+                            scaleIndex += 0.02;
                         }else if(type == "down"){
                             //最小
-                            if(this.scaleIndex <= 0.1){
+                            if(scaleIndex <= 0.1){
                                 return;
                             }
-                            this.scaleIndex -= 0.02;
+                            scaleIndex -= 0.02;
                         };
+                        this.action({moduleName:"UnityFrontView", goods:{scaleIndex}});
                     }
                 })
             },
@@ -130,7 +131,7 @@
                 this.action({moduleName:"UnityFrontView", goods:{component}});
             },
             RangeChange(val){
-                this.scaleIndex = val/100;
+                this.action({moduleName:"UnityFrontView", goods:{scaleIndex:val/100}});
             }
         },
         mounted() {

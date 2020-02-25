@@ -124,6 +124,28 @@ p{
     .webkit-input-placeholder;
   }
 }
+.x_number{
+  .z_Input;
+  input{
+    border: none;
+    padding: 0;
+    background-color: transparent;
+    color: @textColor;
+    font-size: 14px;
+  }
+  .vux-number-selector-sub{
+    border: none;
+  }
+  .vux-number-selector-plus{
+    .vux-number-selector-sub;
+  }
+  .vux-cell-primary{
+    & > div{
+      .z_Input.weui-cell__primary;
+      padding: 0;
+    }
+  }
+}
 
 .z_textarea{
   color: @textColor;
