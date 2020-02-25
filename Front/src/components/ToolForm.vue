@@ -94,23 +94,73 @@
                 </flexbox-item>
             </flexbox>
         </uf-group>
+        <!--文字 -->
+        <uf-group title="文字" open v-if="info && info.type === 'text'">
+            <flexbox>
+                <flexbox-item>
+                </flexbox-item>
+            </flexbox>
+            <flexbox>
+                <flexbox-item title="颜色">
+                    <uf-color title="颜色"
+                              :value="info.style.color"
+                              @on-change="change($event.hex8,'info.style.color','UnityFrontView')"
+                    ></uf-color>
+                </flexbox-item>
+                <flexbox-item title="背景颜色">
+                    <uf-color title="背景颜色"
+                              :value="info.style.backgroundColor"
+                              @on-change="change($event.hex8,'info.style.backgroundColor','UnityFrontView')"
+                    ></uf-color>
+                </flexbox-item>
+                <flexbox-item :span="0.4">
+                    <cell title="对齐" class="z_cell">
+                        <span class="iconfont textAlign" :class="{select:item.value === info.style.textAlign}"
+                              v-for="item in textAlign" :title="item.title" v-html="item.icon"
+                              @click="change(item.value,'info.style.textAlign','UnityFrontView')"
+                        ></span>
+                    </cell>
+                </flexbox-item>
+            </flexbox>
+            <flexbox>
+                <flexbox-item>
+                    <x-input class="z_Input" title="字体大小"
+                              :value="info.style.fontSize"
+                              @input="change($event,'info.style.fontSize','UnityFrontView')"
+                    ></x-input>
+                </flexbox-item>
+                <flexbox-item :span="0.4">
+                    <cell title="加粗" class="z_cell">
+                        <span class="iconfont textAlign" :class="{select:info.style.fontWeight === 'bold'}"
+                              @click="change((info.style.fontWeight === 'bold')?undefined:'bold','info.style.fontWeight','UnityFrontView')"
+                        >&#xe636;</span>
+                    </cell>
+                </flexbox-item>
+            </flexbox>
+        </uf-group>
     </div>
 </template>
 
 <script>
     import UfGroup from "./UfGroup"
     import UfColor from "./UfColor"
-    import { XInput, Flexbox, FlexboxItem, Selector, XTextarea, XNumber  } from "vux"
+    import { XInput, Flexbox, FlexboxItem, Selector, XTextarea, XNumber, Cell } from "vux"
     export default {
         name: "ToolForm",
         data(){
             return {
                 formData:{},
                 index:-1,
+                color:"transparent",
+                textAlign:[
+                    {title:"左对齐",icon:"&#xe62d;",value:"left"},
+                    {title:"居中对齐",icon:"&#xe629;",value:"center"},
+                    {title:"右对齐",icon:"&#xe62b;",value:"right"},
+                ],
             }
         },
         components:{
-            UfGroup, XInput, Flexbox, FlexboxItem, Selector, UfColor, XTextarea, XNumber
+            UfGroup, XInput, Flexbox, FlexboxItem, Selector, UfColor, XTextarea, XNumber, Cell
         },
         computed:{
             componentInfo(){
@@ -138,7 +188,20 @@
 </script>
 
 <style scoped lang="less">
+    @import "../assets/less/vars";
     .ToolForm {
-
+        span.textAlign{
+            display: inline-block;
+            font-size: 18px;
+            color: @textColor;
+            cursor: pointer;
+            height: 30px;
+            width: 30px;
+            text-align: center;
+            line-height: 30px;
+            &.select{
+                background-color: @themeColor;
+            }
+        }
     }
 </style>

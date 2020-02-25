@@ -60,13 +60,43 @@
         name: "UnityFrontView",
         components:{ UnityFrontLayoutTitle, OnContextMenu, Range, XButton, ProjectGridItem },
         methods:{
+            getData(data,ev){
+                switch (data.info.type) {
+                    case "text":
+                        data = {
+                            ...data,
+                            info:{
+                                ...data.info,
+                                style:{
+                                    textAlign: "left",
+                                    color: "#ffffff",
+                                    wordWrap: "break-word",
+                                    fontSize: "18px",
+                                }
+                            },
+                        };
+                        break;
+                    case "images":
+                        data = {
+                            ...data,
+                            info:{
+                                ...data.info,
+                                style:{
+                                    backgroundImage:`url(${require("@/assets/logo.png")})`
+                                },
+                            },
+                        };
+                        break;
+                };
+                return data;
+            },
             drop(ev) {
                 try {
                     let data = JSON.parse(ev.dataTransfer.getData("data"));
                     let n = 300;
                     let id = Date.now().toString()+parseInt(Math.random()*100000);
                     let component = _.cloneDeep(this.airforce.UnityFrontView.component);
-                    component.push({
+                    component.push(this.getData({
                         id,
                         operate:false,
                         left:parseInt((ev.layerX - n/2)),
@@ -74,7 +104,7 @@
                         width:n,
                         height:n,
                         info:data
-                    });
+                    },ev));
                     this.action({moduleName:"UnityFrontView", goods:{component:null}});
                     this.action({moduleName:"UnityFrontView", goods:{component}});
                     ev.preventDefault();

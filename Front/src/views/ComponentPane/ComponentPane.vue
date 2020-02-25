@@ -2,7 +2,7 @@
     <div class="ComponentPane">
         <unity-front-layout-title title="组件"></unity-front-layout-title>
         <uf-box>
-            <component-tree :item="item" v-for="item,key in list" :key="key" init></component-tree>
+            <component-tree :item="item" v-for="(item,key) in list" :key="key" init></component-tree>
         </uf-box>
     </div>
 </template>
