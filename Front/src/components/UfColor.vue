@@ -48,6 +48,7 @@
                     _event:{
                         change:val=>{
                             this.$emit("input",val);
+                            this.$emit("on-change",val);
                         }
                     }
                 })

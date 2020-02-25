@@ -10,7 +10,9 @@
                  top:airforce.UnityFrontView.top+'px',
                  width:airforce.UnityFrontView.width+'px',
                  height:airforce.UnityFrontView.height+'px',
-                 transform:`scale(${airforce.UnityFrontView.scaleIndex})`
+                 transform:`scale(${airforce.UnityFrontView.scaleIndex})`,
+                 backgroundColor:airforce.UnityFrontView.backgroundColor,
+                 backgroundImage:`url(${airforce.UnityFrontView.backgroundImage})`
              }"
              :item="JSON.stringify({
                 left:airforce.UnityFrontView.left,
@@ -191,7 +193,9 @@
             height: 100%;
             height: ~"calc(100% - 32px)";
             background-color: @themeColor;
-            background-color: #0078ff;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
             .line(@deg:0){
                 position: absolute;
                 left: 0;
@@ -229,6 +233,7 @@
                 text-align: center;
                 .iconfont{
                     color: #ffffff;
+                    font-size: 18px;
                 }
                 &:before{
                     content: "";
