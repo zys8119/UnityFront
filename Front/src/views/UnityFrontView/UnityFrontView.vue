@@ -19,7 +19,7 @@
                 top:airforce.UnityFrontView.top,
              })"
         >
-            <div class="ProjectGridItem" v-for="(item,key) in airforce.UnityFrontView.component" :key="key"
+            <project-grid-item v-for="(item,key) in airforce.UnityFrontView.component" :key="key"
                  v-dragdrop dragdrop="draggable_data"
                  :id="item.id"
                  :style="{
@@ -30,17 +30,12 @@
                     zIndex:key+10
                 }"
                  :class="{select:item.operate}"
-                 @dblclick="ondblclick(item,key)"
+                 @dblclick.native="ondblclick(item,key)"
                  :item="JSON.stringify({...item,key})"
+                 :data="{...item,key}"
             >
-                <div class="ProjectGridItemBox">
-                    <div class="iconfont" v-html="item.info.icon"></div>
-                    <p class="msg" v-html="item.info.name"></p>
-                </div>
-                <span v-for="(sapnItem,key2) in OperateList" :key="`${key2}-o`" :class="`operate ${sapnItem}`"
-                      v-dragdrop dragdrop="draggable_data_operate"
-                      :item="JSON.stringify({...item,key, type:sapnItem})"></span>
-            </div>
+
+            </project-grid-item>
             <OnContextMenu ref="OnContextMenu"></OnContextMenu>
         </div>
         <div class="Range">
@@ -60,18 +55,10 @@
     import UnityFrontLayoutTitle from "@/components/layout/UnityFrontLayoutTitle"
     import { OnContextMenu } from "@/components/index"
     import { Range, XButton } from "vux"
+    import ProjectGridItem from "./ProjectGridItem"
     export default {
         name: "UnityFrontView",
-        components:{ UnityFrontLayoutTitle, OnContextMenu, Range, XButton },
-        data(){
-            return {
-                bool:true,
-                OperateList:[
-                    "top_left","top_right","bottom_left","bottom_right",
-                    "center_left","center_top","center_right","center_bottom",
-                ],
-            }
-        },
+        components:{ UnityFrontLayoutTitle, OnContextMenu, Range, XButton, ProjectGridItem },
         methods:{
             drop(ev) {
                 try {
@@ -223,100 +210,6 @@
             &:after{
                 content: "";
                 .line(0deg);
-            }
-            &/deep/ .ProjectGridItem{
-                @boderColor:#f00;
-                position: absolute;
-                left: 0;
-                top: 0;
-                border:1px dashed @boderColor;
-                text-align: center;
-                .iconfont{
-                    color: #ffffff;
-                    font-size: 18px;
-                }
-                &:before{
-                    content: "";
-                    border: none;
-                    background-color: transparent;
-                }
-                &:after{
-                    content: "";
-                    border: none;
-                    background-color: transparent;
-                }
-                .ProjectGridItemBox{
-                    position: absolute;
-                    left: 50%;
-                    top: 50%;
-                    transform: translate(-50%,-50%);
-                }
-                &:active{
-                    background-color: transparent;
-                }
-                span{
-                    &.operate{
-                        display: none;
-                        position: absolute;
-                        @s:10px;
-                        width: @s;
-                        height: @s;
-                        border-radius: 100%;
-                        background-color: fadeout(@boderColor,50%);
-                        &.top_left{
-                            left: -@s/2;
-                            top: -@s/2;
-                            cursor: nw-resize;
-                        }
-                        &.top_right{
-                            right: -@s/2;
-                            top: -@s/2;
-                            cursor: sw-resize;
-                        }
-                        &.bottom_left{
-                            left: -@s/2;
-                            bottom: -@s/2;
-                            cursor: sw-resize;
-                        }
-                        &.bottom_right{
-                            right: -@s/2;
-                            bottom: -@s/2;
-                            cursor: nw-resize;
-                        }
-                        &.center_left{
-                            top: 50%;
-                            left: -@s/2;
-                            transform: translateY(-50%);
-                            cursor: e-resize;
-                        }
-                        &.center_top{
-                            left: 50%;
-                            top: -@s/2;
-                            transform: translateX(-50%);
-                            cursor: n-resize;
-                        }
-                        &.center_right{
-                            top: 50%;
-                            right: -@s/2;
-                            transform: translateY(-50%);
-                            cursor: e-resize;
-                        }
-                        &.center_bottom{
-                            left: 50%;
-                            bottom: -@s/2;
-                            transform: translateX(-50%);
-                            cursor: n-resize;
-                        }
-                    }
-                }
-                &.select{
-                    border:1px solid @boderColor;
-                    span{
-                        &.operate{
-                            display: block;
-                        }
-                    }
-                }
             }
         }
     }

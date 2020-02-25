@@ -2,7 +2,7 @@
     <div class="ProjectGrid">
         <grid class="grid" :cols="3">
             <grid-item class="grid-item ProjectGridItem"
-                       v-for="(item,key) in list"
+                       v-for="(item,key) in this.airforce.ProjectGrid"
                        :title="item.msg"
                        :id="`draggable_id_${key}`"
                        :key="key"
@@ -22,14 +22,6 @@
     export default {
         name: "ProjectGrid",
         components:{ Grid, GridItem },
-        data(){
-            return {
-                list:[
-                    {name:"images",icon:"&#xe674;",type:"images"},
-                    {name:"preset",icon:"&#xe60c;",type:"preset"},
-                ]
-            }
-        },
         methods:{
             drag(ev, item)
             {
@@ -65,18 +57,7 @@
                 }
                 .iconfont{
                     font-size: 50px;
-                    &.img{
-                        color: #de0021;
-                    }
-                    &.css{
-                        color: #da920a;
-                    }
-                    &.js{
-                        color: #91b708;
-                    }
-                    &.preset{
-                        color:#02bcd3;
-                    }
+                    color: @textColor;
                 }
             }
         }

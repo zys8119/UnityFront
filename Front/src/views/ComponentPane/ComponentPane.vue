@@ -32,6 +32,6 @@
 <style scoped lang="less">
     .ComponentPane {
         position: relative;
-        height: 70%;
+        height: 30%;
     }
 </style>

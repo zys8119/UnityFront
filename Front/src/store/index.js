@@ -23,4 +23,9 @@ export default {
         height:1080,
         title:"测试"
     },
+    ProjectGrid:[
+        {name:"图片",icon:"&#xe674;",type:"images"},
+        {name:"布局",icon:"&#xe627;",type:"layout"},
+        {name:"文字",icon:"&#xe69b;",type:"text"},
+    ]
 }
