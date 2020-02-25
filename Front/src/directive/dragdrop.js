@@ -78,60 +78,71 @@ export default {
         dragObj.style.left = oldLeft + left + 'px';
         dragObj.style.top = oldTop + top + 'px';
     },
-    ".ProjectGridItem":function (dragObj, getStyle ,left,top,{ oldHeight, oldLeft, oldTop }) {
-        //移动当前元素
-        dragObj.style.left = oldLeft + left + 'px';
-        dragObj.style.top = oldTop + top + 'px';
-    },
     "draggable_data":function (dragObj, getStyle ,left,top,{ oldHeight, oldLeft, oldTop },dragObjWidth,dragObjHeight) {
         //移动当前元素
-        dragObj.style.left = oldLeft + left + 'px';
-        dragObj.style.top = oldTop + top + 'px';
-    },
-    "draggable_data_operate":function (dragObj, getStyle ,left,top,{ oldHeight, oldLeft, oldTop },dragObjWidth,dragObjHeight) {
-        //移动当前元素
         try {
+            let _this = window.__vm__;
             let draggable_data = JSON.parse(dragObj.getAttribute("draggable_data"));
-            let el = document.getElementById(draggable_data.id);
-            switch (draggable_data.type) {
-                case "top_left":
-                    el.style.width = (draggable_data.width - parseInt(left))+"px";
-                    el.style.height = (draggable_data.height - parseInt(top))+"px";
-                    el.style.left = (draggable_data.left + parseInt(left))+"px";
-                    el.style.top = (draggable_data.top + parseInt(top))+"px";
-                    break;
-                case "top_right":
-                    el.style.width = (draggable_data.width + parseInt(left))+"px";
-                    el.style.height = (draggable_data.height - parseInt(top))+"px";
-                    el.style.top = (draggable_data.top + parseInt(top))+"px";
-                    break;
-                case "bottom_left":
-                    el.style.width = (draggable_data.width - parseInt(left))+"px";
-                    el.style.height = (draggable_data.height + parseInt(top))+"px";
-                    el.style.left = (draggable_data.left + parseInt(left))+"px";
-                    break;
-                case "bottom_right":
-                    el.style.width = (draggable_data.width + parseInt(left))+"px";
-                    el.style.height = (draggable_data.height + parseInt(top))+"px";
-                    break;
-                case "center_left":
-                    el.style.width = (draggable_data.width - parseInt(left))+"px";
-                    el.style.left = (draggable_data.left + parseInt(left))+"px";
-                    break;
-                case "center_right":
-                    el.style.width = (draggable_data.width + parseInt(left))+"px";
-                    break;
-                case "center_top":
-                    el.style.height = (draggable_data.height - parseInt(top))+"px";
-                    el.style.top = (draggable_data.top + parseInt(top))+"px";
-                    break;
-                case "center_bottom":
-                    el.style.height = (draggable_data.height + parseInt(top))+"px";
-                    break;
-            }
+            let component = _.cloneDeep(_this.airforce.UnityFrontView.component);
+            let Obj = component[draggable_data.key];
+            Obj.left = draggable_data.left + left;
+            Obj.top = draggable_data.top + top;
+            _this.action({moduleName:"UnityFrontView", goods:{component:null}});
+            _this.action({moduleName:"UnityFrontView", goods:{component}});
         }catch (e) {
 
         }
+    },
+    "draggable_data_operate":function (dragObj, getStyle ,left,top) {
+        //移动当前元素
+        //*
+        try {
+            let _this = window.__vm__;
+            let draggable_data = JSON.parse(dragObj.getAttribute("draggable_data"));
+            let component = _.cloneDeep(_this.airforce.UnityFrontView.component);
+            let Obj = component[draggable_data.key];
+            switch (draggable_data.type) {
+                case "top_left":
+                    Obj.width = (draggable_data.width - parseInt(left));
+                    Obj.height = (draggable_data.height - parseInt(top));
+                    Obj.left = (draggable_data.left + parseInt(left));
+                    Obj.top = (draggable_data.top + parseInt(top));
+                    break;
+                case "top_right":
+                    Obj.width = (draggable_data.width + parseInt(left));
+                    Obj.height = (draggable_data.height - parseInt(top));
+                    Obj.top = (draggable_data.top + parseInt(top));
+                    break;
+                case "bottom_left":
+                    Obj.width = (draggable_data.width - parseInt(left));
+                    Obj.height = (draggable_data.height + parseInt(top));
+                    Obj.left = (draggable_data.left + parseInt(left));
+                    break;
+                case "bottom_right":
+                    Obj.width = (draggable_data.width + parseInt(left));
+                    Obj.height = (draggable_data.height + parseInt(top));
+                    break;
+                case "center_left":
+                    Obj.width = (draggable_data.width - parseInt(left));
+                    Obj.left = (draggable_data.left + parseInt(left));
+                    break;
+                case "center_right":
+                    Obj.width = (draggable_data.width + parseInt(left));
+                    break;
+                case "center_top":
+                    Obj.height = (draggable_data.height - parseInt(top));
+                    Obj.top = (draggable_data.top + parseInt(top));
+                    break;
+                case "center_bottom":
+                    Obj.height = (draggable_data.height + parseInt(top));
+                    break;
+            }
+            _this.action({moduleName:"UnityFrontView", goods:{component:null}});
+            _this.action({moduleName:"UnityFrontView", goods:{component}});
+        }catch (e) {
+
+        }
+        //*/
 
     }
 }

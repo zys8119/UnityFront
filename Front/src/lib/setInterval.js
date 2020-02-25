@@ -22,16 +22,16 @@ export default {
         UnityFrontLayoutView.style.left = parseInt(ComponentPane_w)+borderLineWidth+"px";
     },
     component(){
-        let component = _.cloneDeep(this.airforce.UnityFrontView.component);
-        this.action({moduleName:"UnityFrontView", goods:{component:null}});
-        this.action({moduleName:"UnityFrontView", goods:{component:component.map(e=>{
-            return {
-                ...e,
-                left:parseInt(e.el.style.left),
-                top:parseInt(e.el.style.left),
-                width:e.el.offsetWidth,
-                height:e.el.offsetHeight,
-            }
-        })}});
+        // let component = _.cloneDeep(this.airforce.UnityFrontView.component);
+        // this.action({moduleName:"UnityFrontView", goods:{component:null}});
+        // this.action({moduleName:"UnityFrontView", goods:{component:component.map(e=>{
+        //     return {
+        //         ...e,
+        //         left:parseInt(e.el.style.left),
+        //         top:parseInt(e.el.style.left),
+        //         width:e.el.offsetWidth,
+        //         height:e.el.offsetHeight,
+        //     }
+        // })}});
     }
 }

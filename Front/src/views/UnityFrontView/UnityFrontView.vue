@@ -2,7 +2,7 @@
     <div class="UnityFrontView">
         <unity-front-layout-title title="场景视图"></unity-front-layout-title>
         <div class="UnityFrontViewContent" ref="UnityFrontViewContent" id="UnityFrontViewContent"
-             v-dragdrop.native.stop dragdrop=".UnityFrontViewContent"
+             v-dragdrop dragdrop=".UnityFrontViewContent"
              @drop="drop"
              @dragover="allowDrop"
              :style="{
@@ -10,6 +10,28 @@
                  height:airforce.UnityFrontView.height,
              }"
         >
+            <div class="ProjectGridItem" v-for="(item,key) in airforce.UnityFrontView.component" :key="key"
+                 v-dragdrop dragdrop="draggable_data"
+                 :id="item.id"
+                 :style="{
+                    left:`${item.left}px`,
+                    top:`${item.top}px`,
+                    width:`${item.width}px`,
+                    height:`${item.height}px`,
+                    zIndex:key+10
+                }"
+                 :class="{select:item.operate}"
+                 @dblclick="ondblclick(item,key)"
+                 :item="JSON.stringify({...item,key})"
+            >
+                <div class="ProjectGridItemBox">
+                    <div class="iconfont" v-html="item.info.icon"></div>
+                    <p class="msg" v-html="item.info.name"></p>
+                </div>
+                <span v-for="(sapnItem,key2) in OperateList" :key="`${key2}-o`" :class="`operate ${sapnItem}`"
+                      v-dragdrop dragdrop="draggable_data_operate"
+                      :item="JSON.stringify({...item,key, type:sapnItem})"></span>
+            </div>
             <OnContextMenu ref="OnContextMenu"></OnContextMenu>
         </div>
     </div>
@@ -25,56 +47,34 @@
         data(){
             return {
                 bool:true,
+                OperateList:[
+                    "top_left","top_right","bottom_left","bottom_right",
+                    "center_left","center_top","center_right","center_bottom",
+                ]
             }
         },
         methods:{
-            drop(ev)
-            {
+            drop(ev) {
                 try {
-                    let El_id = ev.dataTransfer.getData("target");
                     let data = JSON.parse(ev.dataTransfer.getData("data"));
-                    let target = document.getElementById(El_id);
-                    let targetClone = target.cloneNode(true);
                     let n = 300;
                     let id = Date.now().toString()+parseInt(Math.random()*100000);
-                    targetClone.removeAttribute("draggable");
-                    targetClone.setAttribute("id",id);
-                    targetClone.setAttribute("dragdrop","draggable_data");
-                    targetClone.setAttribute("draggable_data",JSON.stringify({
-                        id
-                    }));
-                    let styles = {
+                    let component = _.cloneDeep(this.airforce.UnityFrontView.component);
+                    component.push({
+                        id,
+                        operate:false,
                         left:parseInt((ev.layerX - n/2)),
                         top:parseInt((ev.layerY - n/2)),
                         width:n,
                         height:n,
                         info:data
-                    };
-                    targetClone.style.left = styles.left + "px";
-                    targetClone.style.top = styles.top + "px";
-                    targetClone.style.width = styles.width + "px";
-                    targetClone.style.height = styles.height + "px";
-                    targetClone.ondblclick=()=>{
-                        this.ondblclick(targetClone,id);
-                    };
-                    this.setOperate(targetClone,id);
-                    Directive.dragdrop.inserted(targetClone);
-                    let component = _.cloneDeep(this.airforce.UnityFrontView.component);
-                    targetClone.style.zIndex = component.length + 10;
-                    component.push({
-                        id,
-                        el:targetClone,
-                        operate:false,
-                        ...styles
                     });
                     this.action({moduleName:"UnityFrontView", goods:{component:null}});
                     this.action({moduleName:"UnityFrontView", goods:{component}});
-                    this.$refs.UnityFrontViewContent.appendChild(targetClone);
                     ev.preventDefault();
                 }catch (e) {}
             },
-            allowDrop(ev)
-            {
+            allowDrop(ev) {
                 ev.preventDefault();
             },
             windowAddMouseWheel(){
@@ -101,26 +101,16 @@
                     }
                 })
             },
-            ondblclick(el,id){
-                let name = "select";
+            ondblclick(item,key){
                 let component = _.cloneDeep(this.airforce.UnityFrontView.component);
                 let componentFindObj = component.find(e=>e.operate);
-                if(componentFindObj && componentFindObj.id !== id){
+                if(componentFindObj && componentFindObj.id !== item.id){
                     component = component.map(e=>{
-                        let ElObj = document.getElementById(e.id);
-                        ElObj.className = ElObj.className.replace(new RegExp(name,"img"),"");
                         return {...e,operate:false};
                     });
                 }
-                let index = component.findIndex(e=>e.id === id);
+                component[key].operate = !component[key].operate;
                 this.action({moduleName:"UnityFrontView", goods:{component:null}});
-                if(el.className.indexOf(name) > -1){
-                    component[index].operate = false;
-                    el.className = el.className.replace(new RegExp(name,"img"),"");
-                }else {
-                    component[index].operate = true;
-                    el.className += ` ${name}`;
-                }
                 this.action({moduleName:"UnityFrontView", goods:{component}});
             },
             setOperate(el,id){
