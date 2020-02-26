@@ -29,4 +29,19 @@ export default {
             }
         })
     },
+    view_get_project(params){
+        this.$vux.loading.show();
+        return this.action({
+            moduleName:"view",
+            method:"get",
+            url:"view/getProject",
+            params,
+            resthen:()=>{
+                this.action({
+                    moduleName: "view",
+                    goods:null
+                });
+            }
+        })
+    },
 }

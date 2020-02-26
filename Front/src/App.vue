@@ -10,19 +10,7 @@ export default {
   name: 'App',
   created(){
     window.__vm__ = this;
-    if(!this.$route.query.project_id){
-      this.$ZAlert.show({
-        title:"创建新项目",
-        components:"Alert/CreateNewProjects",
-        width:"500px",
-        showClose:false,
-        mask:true,
-        hideOnBlur:false,
-        props:{
-          vm:()=>this
-        }
-      });
-    }
+    this.init();
   },
   mounted() {
     this.setInterval();
@@ -39,6 +27,31 @@ export default {
           })
         }catch (e) {};
       });
+    },
+    init(){
+      if(this.$route.query.project_id){
+        this.api().view_get_project({
+          project_id:this.$route.query.project_id
+        }).then(res=>{
+          try {
+            this.action({moduleName:"UnityFrontView",goods:null});
+            this.action({moduleName:"UnityFrontView",goods:{}});
+            this.action({moduleName:"UnityFrontView",goods:JSON.parse(res.data.config)});
+          }catch (e) {}
+        })
+      }else {
+        this.$ZAlert.show({
+          title:"创建新项目",
+          components:"Alert/CreateNewProjects",
+          width:"500px",
+          showClose:false,
+          mask:true,
+          hideOnBlur:false,
+          props:{
+            vm:()=>this
+          }
+        });
+      }
     }
   }
 }

@@ -47,7 +47,11 @@
                     config:this.airforce.UnityFrontView,
                     project_name:this.airforce.UnityFrontView.title,
                 }).then(res=>{
-                    console.log(res)
+                    if(res.code === 200){
+                        this.$vux.toast.text("保存成功");
+                        return;
+                    }
+                    this.$vux.toast.text(res.data.sqlMessage);
                 })
             }
         }
