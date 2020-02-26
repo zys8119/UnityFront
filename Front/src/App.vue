@@ -34,9 +34,13 @@ export default {
           project_id:this.$route.query.project_id
         }).then(res=>{
           try {
+            let config = res.data.config;
             this.action({moduleName:"UnityFrontView",goods:null});
             this.action({moduleName:"UnityFrontView",goods:{}});
-            this.action({moduleName:"UnityFrontView",goods:JSON.parse(res.data.config)});
+            this.action({moduleName:"UnityFrontView",goods:{
+                ...config,
+                component:config.component || []
+            }});
           }catch (e) {}
         })
       }else {

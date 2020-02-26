@@ -23,7 +23,7 @@ export class viewController extends applicationController{
     update(){
         this.DB().update(this.TabelName,{
             project_name:this.$_body.project_name || '',
-            config:`'${JSON.stringify(this.$_body.config)}'`
+            config:this.$_encode(this.$_body.config)
         }).where({
             project_id:this.$_body.project_id,
         }).query(null,false).then(()=>{
@@ -37,7 +37,14 @@ export class viewController extends applicationController{
         this.DB().select().from(this.TabelName).where({
             project_id:this.$_query.project_id,
         }).query(null,false).then(res=>{
-            this.$_success(res[0] || {});
+            let result = {};
+            try {
+                result = {
+                    ...res[0],
+                    config:this.$_decode(res[0].config)
+                }
+            }catch (e) {}
+            this.$_success(result);
         }).catch(err=>{
             this.$_error(err);
         });

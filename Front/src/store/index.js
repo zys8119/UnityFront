@@ -15,7 +15,7 @@ export default {
         // 视图组件
         component:[],
         scaleIndex:1,
-        backgroundColor:"#0078ff",
+        backgroundColor:"rgba(0,0,0,0)",
         backgroundImage:null,
         left:0,
         top:0,
