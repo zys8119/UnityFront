@@ -132,6 +132,7 @@
                                     borderWidth:0,
                                     border: "0px solid",
                                     borderColor:"#fff",
+                                    backgroundImage:"linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0))",
                                     ...publicStyle
                                 }
                             },

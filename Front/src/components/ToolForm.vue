@@ -251,6 +251,14 @@
                     ></x-number>
                 </flexbox-item>
             </flexbox>
+            <flexbox>
+                <flexbox-item>
+                    <x-input class="z_Input" title="背景图"
+                             :value="info.style.backgroundImage"
+                             @on-change="change($event,'info.style.backgroundImage','UnityFrontView')"
+                    ></x-input>
+                </flexbox-item>
+            </flexbox>
         </uf-group>
         <!--形状 -->
         <uf-group title="形状" open v-if="info && info.type === 'svg'">
