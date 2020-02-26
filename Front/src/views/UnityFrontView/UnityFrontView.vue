@@ -63,7 +63,19 @@
         components:{ UnityFrontLayoutTitle, OnContextMenu, Range, XButton, ProjectGridItem },
         methods:{
             getData(data,ev){
+                let transform = "matrix(1, 0, 0, 1, 0, 0)";
                 switch (data.info.type) {
+                    case "layout":
+                        data = {
+                            ...data,
+                            info:{
+                                ...data.info,
+                                style:{
+                                    transform
+                                }
+                            },
+                        };
+                        break;
                     case "text":
                         data = {
                             ...data,
@@ -74,6 +86,7 @@
                                     color: "#ffffff",
                                     wordWrap: "break-word",
                                     fontSize: "18px",
+                                    transform
                                 }
                             },
                         };
@@ -86,6 +99,7 @@
                                 url:require("@/assets/logo.png"),
                                 style:{
                                     opacity:1,
+                                    transform
                                 },
                             },
                         };
@@ -97,10 +111,10 @@
                                 ...data.info,
                                 viewBox:"0 0 1024 1024",
                                 style:{
-                                    transform:"matrix(1, 0, 0, 1, 0, 0)",
                                     fill:"#fff",
                                     stroke:"#fff",
-                                    strokeWidth:0
+                                    strokeWidth:0,
+                                    transform
                                 }
                             },
                         };
@@ -115,6 +129,7 @@
                                     borderWidth:0,
                                     border: "0px solid",
                                     borderColor:"#fff",
+                                    transform,
                                 }
                             },
                         };

@@ -93,6 +93,49 @@
                     ></x-number>
                 </flexbox-item>
             </flexbox>
+
+            <flexbox>
+                <flexbox-item>
+                    <x-number class="x_number" title="scaleX" fillable
+                              :value="svgX"
+                              @input="setSvgMatrix($event,0)"
+                    ></x-number>
+                </flexbox-item>
+                <flexbox-item>
+                    <x-number class="x_number" title="scaleY" fillable
+                              :value="svgY"
+                              @input="setSvgMatrix($event,3)"
+                    ></x-number>
+                </flexbox-item>
+            </flexbox>
+            <flexbox>
+                <flexbox-item >
+                    <x-number class="x_number" title="skewX" fillable
+                              :value="skewX"
+                              @input="setSvgMatrix($event,1)"
+                    ></x-number>
+                </flexbox-item>
+                <flexbox-item>
+                    <x-number class="x_number" title="skewY" fillable
+                              :value="skewY"
+                              @input="setSvgMatrix($event,2)"
+                    ></x-number>
+                </flexbox-item>
+            </flexbox>
+            <flexbox>
+                <flexbox-item >
+                    <x-number class="x_number" title="X" fillable
+                              :value="translateX"
+                              @input="setSvgMatrix($event,4)"
+                    ></x-number>
+                </flexbox-item>
+                <flexbox-item>
+                    <x-number class="x_number" title="Y" fillable
+                              :value="translateY"
+                              @input="setSvgMatrix($event,5)"
+                    ></x-number>
+                </flexbox-item>
+            </flexbox>
         </uf-group>
         <!--文字 -->
         <uf-group title="文字" open v-if="info && info.type === 'text'">
@@ -156,8 +199,8 @@
                 </flexbox-item>
             </flexbox>
         </uf-group>
-        <!--形状 -->
-        <uf-group title="形状" open v-if="info && info.type === 'rect'">
+        <!--矩形 -->
+        <uf-group title="矩形" open v-if="info && info.type === 'rect'">
             <flexbox>
                 <flexbox-item>
                     <uf-color title="背景颜色"
@@ -183,20 +226,6 @@
         </uf-group>
         <!--形状 -->
         <uf-group title="形状" open v-if="info && info.type === 'svg'">
-            <flexbox>
-                <flexbox-item title="X">
-                    <x-number class="x_number" title="X" fillable
-                              :value="svgX"
-                              @input="setSvgMatrix($event,0)"
-                    ></x-number>
-                </flexbox-item>
-                <flexbox-item title="top">
-                    <x-number class="x_number" title="Y" fillable
-                              :value="svgY"
-                              @input="setSvgMatrix($event,3)"
-                    ></x-number>
-                </flexbox-item>
-            </flexbox>
             <flexbox>
                 <flexbox-item>
                     <uf-color title="fill"
@@ -268,12 +297,29 @@
             },
             svgY(){
                 return this.getSvgMatrix[3]*100;
+            },
+            skewX(){
+                return this.getSvgMatrix[1]*100;
+            },
+            skewY(){
+                return this.getSvgMatrix[2]*100;
+            },
+            translateX(){
+                return this.getSvgMatrix[4];
+            },
+            translateY(){
+                return this.getSvgMatrix[5];
             }
         },
         methods:{
             setSvgMatrix(val,key){
                 let matrix = _.cloneDeep(this.getSvgMatrix);
-                matrix[key] = val/100;
+                if (key === 4 || key === 5){
+                    matrix[key] = val
+                }else {
+                    matrix[key] = val/100;
+                }
+
                 this.change(`matrix(${matrix.join(",")})`,"info.style.transform")
             },
             change(val,key){

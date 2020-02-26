@@ -2,9 +2,10 @@
     <div :class="`ProjectGridItem type_${data.info.type}`">
         <!--文字-->
         <div class="ProjectGridItemBox_type_text"  v-if="data.info.type === 'text'" :style="{
-            textAlign:data.info.style.textAlign
+            textAlign:data.info.style.textAlign,
+            transform:data.info.style.transform,
         }">
-            <span v-html="data.info.name" :style="data.info.style"></span>
+            <span v-html="data.info.name" :style="{...data.info.style,transform:'none'}"></span>
         </div>
         <!--图片-->
         <img class="ProjectGridItemBox_type_images" :src="data.info.url" v-else-if="data.info.type === 'images'" :style="data.info.style">
@@ -12,13 +13,11 @@
         <div class="ProjectGridItemBox_type_svg" v-else-if="data.info.type === 'svg'" ref="svg">
             <svg t="1582622641578" class="icon" style="vertical-align: middle;fill: currentColor;overflow: hidden;"
                  :viewBox="data.info.viewBox"
-                 version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8467"  :style="data.info.style" v-html="data.info.path">
-
-            </svg>
+                 version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8467"  :style="data.info.style" v-html="data.info.path"></svg>
         </div>
         <div class="ProjectGridItemBox_type_rect"  v-else-if="data.info.type === 'rect'" :style="data.info.style"></div>
         <!--布局-->
-        <div class="ProjectGridItemBox" v-else>
+        <div class="ProjectGridItemBox" v-else :style="data.info.style">
             <div class="iconfont" v-html="data.info.icon"></div>
             <p class="msg" v-html="data.info.name"></p>
         </div>
