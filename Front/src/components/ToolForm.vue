@@ -173,7 +173,7 @@
                 </flexbox-item>
             </flexbox>
             <flexbox>
-                <flexbox-item>
+                <flexbox-item :span="1/2">
                     <x-number class="x_number" title="边框大小" fillable
                               :value="parseInt(info.style.borderWidth)"
                               @input="change($event+'px','info.style.borderWidth','UnityFrontView')"

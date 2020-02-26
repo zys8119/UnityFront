@@ -13,6 +13,13 @@
         data(){
             return {
                 show:false,
+                colors:[
+                    '#D0021B', '#F5A623', '#F8E71C', '#8B572A',
+                    '#7ED321', '#417505', '#BD10E0', '#9013FE',
+                    '#0078ff', '#4A90E2', '#50E3C2', '#B8E986',
+                    '#292929', '#000000', '#4A4A4A', '#9B9B9B',
+                    '#b4b4b4', '#FFFFFF', 'rgba(0,0,0,0)'
+                ]
             }
         },
         props:{
@@ -24,10 +31,6 @@
                 type:String | Object,
                 default:null
             },
-            presetColors:{
-                type:Array,
-                default:Array
-            }
         },
         methods:{
             showColorSelect(){
@@ -43,7 +46,7 @@
                     components: "ColorSketch/ColorSketch",
                     props:{
                         color,
-                        presetColors:()=>this.presetColors
+                        colors:()=>this.colors,
                     },
                     _event:{
                         change:val=>{

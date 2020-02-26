@@ -1,6 +1,6 @@
 <template>
     <div class="ColorSketch">
-        <color-sketch-select :value="value" @input="change" :presetColors="presetColors"></color-sketch-select>
+        <color-sketch-select :value="value" @input="change" :preset-colors="colors" ref="Sketch"></color-sketch-select>
     </div>
 </template>
 
@@ -20,7 +20,7 @@
                 type:String | Object,
                 default:null
             },
-            presetColors:{
+            colors:{
                 type:Array,
                 default:Array
             }
