@@ -1,6 +1,6 @@
 <template>
     <div class="ToolPane">
-        <unity-front-layout-title title="工具"></unity-front-layout-title>
+        <unity-front-layout-title title="属性"></unity-front-layout-title>
         <uf-box>
             <tool-form></tool-form>
         </uf-box>

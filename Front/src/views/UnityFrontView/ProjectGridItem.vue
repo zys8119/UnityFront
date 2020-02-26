@@ -66,7 +66,11 @@
         },
         methods:{
             getSvgPath(){
-                return this.$refs.svg.querySelectorAll(".ProjectGridItemBox_type_svg svg path");
+                try {
+                    return this.$refs.svg.querySelectorAll(".ProjectGridItemBox_type_svg svg path");
+                }catch (e) {
+                    return  [];
+                }
             }
         }
     }

@@ -1,6 +1,6 @@
 <template>
     <div class="ToolForm" :info="componentInfo">
-        <uf-group title="视图属性" open>
+        <uf-group title="视图属性">
             <x-input class="z_Input" title="名称"
                      :value="airforce.UnityFrontView.title"
                      @on-change="airforce.input($event,'title','UnityFrontView')"

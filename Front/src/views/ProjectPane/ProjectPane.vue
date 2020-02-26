@@ -1,6 +1,6 @@
 <template>
     <div class="ProjectPane">
-        <unity-front-layout-title title="项目" search></unity-front-layout-title>
+        <unity-front-layout-title title="元件"></unity-front-layout-title>
         <uf-box>
             <project-grid></project-grid>
         </uf-box>

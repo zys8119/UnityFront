@@ -1,17 +1,21 @@
 <template>
     <div class="ComponentTree">
-        <div v-if="item.child" class="ComponentTreeRow" :class="{init:init,open:item.open,select:item.select}" @click.stop="OpenChild(item)">
+        <div v-if="item.child" class="ComponentTreeRow" :class="{init:init,open:item.open,select:item.select,style:styleHover}" @click.stop="OpenChild(item)">
             <p class="msg text-overflow">
                 <span class="iconfont" v-if="item.open">&#xe634;</span>
                 <span class="iconfont" v-else>&#xe638;</span>
-                {{item.name}}
+                <slot :data="item">{{item.name}}</slot>
             </p>
-            <component-tree v-for="itemChild,key in item.child" :item="itemChild" :key="key"></component-tree>
+            <component-tree v-for="(itemChild,key) in item.child" :item="itemChild" :key="key" :styleHover="styleHover">
+                <template slot-scope="{data}">
+                    <slot :data="data">{{data.name}}</slot>
+                </template>
+            </component-tree>
         </div>
-        <div class="ComponentTreeRow" :class="{select:item.select}" v-else @click.stop="SelectChild(item)">
+        <div class="ComponentTreeRow" :class="{select:item.select,init:init,style:styleHover}" v-else @click.stop="SelectChild(item)">
             <p class="msg text-overflow">
                 <span class="iconfont"></span>
-                {{item.name}}
+                <slot :data="item">{{item.name}}</slot>
             </p>
         </div>
     </div>
@@ -29,6 +33,10 @@
             init:{
                 type:Boolean,
                 default:false
+            },
+            styleHover:{
+                type:Boolean,
+                default:true
             }
         },
         methods:{
@@ -37,13 +45,15 @@
                 item.open = !item.open;
             },
             treeDataInit(data){
-                data = data.map(item=>{
-                    item.select = false;
-                    if(item.child){
-                        return this.treeDataInit(item.child);
-                    }
-                    return item;
-                })
+                try {
+                    data = data.map(item=>{
+                        item.select = false;
+                        if(item.child){
+                            return this.treeDataInit(item.child);
+                        }
+                        return item;
+                    })
+                }catch (e) {}
             },
             SelectChild(item){
                 this.treeDataInit(this.treeData);
@@ -72,9 +82,17 @@
                     }
                 }
             }
-            &:hover > .msg{
-                background-color: @themeLogoColor/0.8;
-                color: #FFFFFF;
+            &.style{
+                &:hover > .msg{
+                    background-color: @themeLogoColor/0.8;
+                    color: #FFFFFF;
+                }
+                &.select{
+                    & > .msg{
+                        background-color: @themeLogoColor;
+                        color: #FFFFFF !important;
+                    }
+                }
             }
             &.init{
                 display: block;
@@ -83,12 +101,6 @@
             &.open >  .ComponentTree{
                 & > .ComponentTreeRow{
                     display: block;
-                }
-            }
-            &.select{
-                & > .msg{
-                    background-color: @themeLogoColor;
-                    color: #FFFFFF !important;
                 }
             }
         }

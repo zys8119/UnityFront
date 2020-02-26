@@ -24,6 +24,7 @@
     "vue-color": "^2.7.0",
     "vue-multiselect": "^2.1.6",
     "vue-router": "^3.0.1",
+    "vuedraggable": "^2.23.2",
     "vux": "^2.9.2",
     "vux-loader": "^1.2.9",
     "zi18nz": "^0.0.3"
