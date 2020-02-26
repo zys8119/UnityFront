@@ -16,6 +16,7 @@
 
             </svg>
         </div>
+        <div class="ProjectGridItemBox_type_rect"  v-else-if="data.info.type === 'rect'" :style="data.info.style"></div>
         <!--布局-->
         <div class="ProjectGridItemBox" v-else>
             <div class="iconfont" v-html="data.info.icon"></div>
@@ -182,13 +183,16 @@
 
         }
     }
+    .fn(){
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+    }
     &.type_images{
         .ProjectGridItemBox_type_images{
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
+            .fn();
             background-repeat: no-repeat;
             background-position: center;
             background-size: 100% 100%;
@@ -198,18 +202,15 @@
     }
     &.type_svg{
         .ProjectGridItemBox_type_svg{
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
+            .fn();
             svg{
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
+                .fn();
             }
+        }
+    }
+    &.type_rect{
+        .ProjectGridItemBox_type_rect{
+            .fn();
         }
     }
 

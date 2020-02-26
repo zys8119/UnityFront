@@ -9,7 +9,7 @@
                        draggable="true"
                        @dragstart.native="drag($event,item)">
                 <div class="ProjectGridItemBox">
-                    <div class="iconfont img" v-html="item.icon"></div>
+                    <div class="iconfont img" v-html="item.icon" :style="item.style"></div>
                     <p class="msg">{{item.name}}</p>
                 </div>
             </grid-item>
@@ -44,7 +44,7 @@
             }
             .grid-item{
                 text-align: center;
-                box-shadow: 0 0 5px rgba(0,0,0,0.5);
+                border: 1px solid rgba(0,0,0,0.5);
                 position: relative;
                 &:hover{
                     background-color:@themeColor;
@@ -56,8 +56,13 @@
                     border:none;
                 }
                 .iconfont{
-                    font-size: 50px;
+                    display: inline-block;
+                    font-size: 30px;
                     color: @textColor;
+                    width: 50px;
+                    height: 50px;
+                    line-height: 50px;
+                    text-align: center;
                 }
             }
         }

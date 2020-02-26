@@ -1,5 +1,5 @@
 <template>
-    <div class="UnityFrontView">
+    <div class="UnityFrontView" :class="{preview:airforce.UnityFrontView.preview}">
         <unity-front-layout-title title="场景视图"></unity-front-layout-title>
         <div class="UnityFrontViewContent" ref="UnityFrontViewContent" id="UnityFrontViewContent"
              v-dragdrop dragdrop=".UnityFrontViewContent"
@@ -46,6 +46,8 @@
                    minHTML="0"
                    maxHTML="100"
             ></Range>
+            <x-button class="z_XButton" @click.native="airforce.input({preview:false},'UnityFrontView')" v-if="airforce.UnityFrontView.preview"><span class="iconfont" style="margin-right: 10px">&#xe660;</span>取消预览</x-button>
+            <x-button class="z_XButton" @click.native="airforce.input({preview:true},'UnityFrontView')" v-else><span class="iconfont" style="margin-right: 10px">&#xe660;</span>预览</x-button>
             <x-button class="z_XButton" @click.native="airforce.input({left:0,top:0,scaleIndex:1},'UnityFrontView')">重置视图</x-button>
         </div>
     </div>
@@ -99,6 +101,17 @@
                                     fill:"#fff",
                                     stroke:"#fff",
                                     strokeWidth:0
+                                }
+                            },
+                        };
+                        break;
+                    case "rect":
+                        data = {
+                            ...data,
+                            info:{
+                                ...data.info,
+                                style:{
+                                    backgroundColor: "#fff"
                                 }
                             },
                         };
@@ -256,6 +269,24 @@
             &:after{
                 content: "";
                 .line(0deg);
+            }
+        }
+        &.preview{
+            &/deep/ .UnityFrontViewContent{
+                &:before{
+                    background-image: none;
+                }
+                &:after{
+                    background-image: none;
+                }
+                .ProjectGridItem{
+                    border:none;
+                    &.select{
+                        span.operate{
+                            display: none;
+                        }
+                    }
+                }
             }
         }
     }
