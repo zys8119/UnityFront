@@ -27,9 +27,9 @@
                 this.vm.api().view_create({
                     name:this.vm.airforce.CreateNewProjects.project_name
                 }).then(res=>{
+                    this.vm.airforce.input("",'project_name','CreateNewProjects');
                     this.vm.$router.push({query:{project_id:res.data.project_id}});
                     this.vm.$ZAlert.hide();
-                    this.$root.init();
                 })
             }
         }

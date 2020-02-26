@@ -12,6 +12,11 @@ export default {
     window.__vm__ = this;
     this.init();
   },
+  watch:{
+    $route(){
+      this.init();
+    }
+  },
   mounted() {
     this.setInterval();
   },
@@ -29,32 +34,34 @@ export default {
       });
     },
     init(){
-      if(this.$route.query.project_id){
-        this.api().view_get_project({
-          project_id:this.$route.query.project_id
-        }).then(res=>{
-          try {
-            let config = res.data.config;
-            this.action({moduleName:"UnityFrontView",goods:null});
-            this.action({moduleName:"UnityFrontView",goods:{}});
-            this.action({moduleName:"UnityFrontView",goods:{
-                ...config,
-                component:config.component || []
-            }});
-          }catch (e) {}
-        })
-      }else {
-        this.$ZAlert.show({
-          title:"创建新项目",
-          components:"Alert/CreateNewProjects",
-          width:"500px",
-          showClose:false,
-          mask:true,
-          hideOnBlur:false,
-          props:{
-            vm:()=>this
-          }
-        });
+      if(this.$route.path === "/"){
+        if(this.$route.query.project_id){
+          this.api().view_get_project({
+            project_id:this.$route.query.project_id
+          }).then(res=>{
+            try {
+              let config = res.data.config;
+              this.action({moduleName:"UnityFrontView",goods:null});
+              this.action({moduleName:"UnityFrontView",goods:{}});
+              this.action({moduleName:"UnityFrontView",goods:{
+                  ...config,
+                  component:config.component || []
+                }});
+            }catch (e) {}
+          })
+        }else {
+          this.$ZAlert.show({
+            title:"创建新项目",
+            components:"Alert/CreateNewProjects",
+            width:"500px",
+            showClose:false,
+            mask:true,
+            hideOnBlur:false,
+            props:{
+              vm:()=>this
+            }
+          });
+        }
       }
     }
   }
