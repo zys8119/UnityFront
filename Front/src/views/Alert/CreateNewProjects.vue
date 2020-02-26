@@ -29,6 +29,7 @@
                 }).then(res=>{
                     this.vm.$router.push({query:{project_id:res.data.project_id}});
                     this.vm.$ZAlert.hide();
+                    this.$root.init();
                 })
             }
         }
