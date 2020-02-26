@@ -1,7 +1,7 @@
 <template>
     <div class="ZXDialogAlert">
-        <x-dialog v-dragdrop dragdrop=".ZXDialogAlert .weui-dialog" :mask-z-index="maskZIndex" :dialog-style="{width:width,maxWidth:maxWidthValue}" :hide-on-blur="hideOnBlur" v-model="show" @on-show="onShow" @on-hide="onHide" class="x-dialog">
-            <div class="ZXDialogAlertTitle" v-if="showTitile">
+        <x-dialog :mask-z-index="maskZIndex" :dialog-style="{width:width,maxWidth:maxWidthValue}" :hide-on-blur="hideOnBlur" v-model="show" @on-show="onShow" @on-hide="onHide" class="x-dialog">
+            <div class="ZXDialogAlertTitle" v-if="showTitile"  v-dragdrop dragdrop=".ZXDialogAlert .weui-dialog">
                 <span class="text">{{title}}</span>
                 <span class="iconfont" @click="onClose" v-if="showClose">&#xe6b5;</span>
                 <span class="minTitle" v-if="minTitle">{{minTitle}}</span>

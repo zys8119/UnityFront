@@ -111,7 +111,10 @@
                             info:{
                                 ...data.info,
                                 style:{
-                                    backgroundColor: "#fff"
+                                    backgroundColor: "#fff",
+                                    borderWidth:0,
+                                    border: "0px solid",
+                                    borderColor:"#fff",
                                 }
                             },
                         };
