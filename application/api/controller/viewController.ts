@@ -27,6 +27,5 @@ export class viewController extends applicationController{
         }).catch(err=>{
             this.$_error(err);
         });
-        //this.$_success();
     }
 }
