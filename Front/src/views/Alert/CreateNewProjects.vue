@@ -3,9 +3,6 @@
         <x-input :value="vm.airforce.CreateNewProjects.project_name"
                  @on-change="vm.airforce.input($event,'project_name','CreateNewProjects')"
                  class="z_Input" title="项目名称" :showClear="false"></x-input>
-        <x-textarea :value="vm.airforce.CreateNewProjects.rmarks"
-                    @on-change="vm.airforce.input($event,'rmarks','CreateNewProjects')"
-                    title="项目描述" class="z_textarea palr"></x-textarea>
         <x-button class="z_XButton" @click.native="CreateNewProjects">创建</x-button>
     </div>
 </template>
@@ -26,34 +23,13 @@
                 if(this.vm.$utils.is_S(this.vm.airforce.CreateNewProjects.project_name)){
                     this.vm.$vux.toast.text("请输入项目名称");
                     return;
-                }
-                this.vm.api().CreateNewProjects().then(res=>{
-                    if(res.code == 200){
-                        this.vm.action({
-                            moduleName: "CreateNewProjects",
-                            goods:{
-                                project_name:null,
-                                rmarks:null,
-                            }
-                        });
-                        this.vm.$ZAlert.hide();
-                        try {
-                            this.vm.$parent.MenuList[0].child[2].child = res.data.map(e=>{
-                                return {
-                                    ...e,
-                                    title:e.project_name,
-                                    run:item=>{
-                                        this.vm.$utils.ProjectList.call(this,item);
-                                    }
-                                }
-                            });
-                        }catch (e) {
-
-                        }
-                    }
-                }).catch(err=>{
-                    this.vm.$vux.toast.text(err);
-                });
+                };
+                this.vm.api().view_create({
+                    name:this.vm.airforce.CreateNewProjects.project_name
+                }).then(res=>{
+                    this.vm.$router.push({query:{project_id:res.data.project_id}});
+                    this.vm.$ZAlert.hide();
+                })
             }
         }
     }

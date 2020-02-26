@@ -24,13 +24,6 @@
                 type:Object,
                 default:Object
             }
-        },
-        mounted(){
-            this.api().getProjectList().then(res=>{
-                if(res.code){
-                    this.list = res.data;
-                }
-            })
         }
     }
 </script>

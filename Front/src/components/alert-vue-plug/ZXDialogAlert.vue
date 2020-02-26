@@ -1,5 +1,5 @@
 <template>
-    <div class="ZXDialogAlert">
+    <div class="ZXDialogAlert" :class="{ZXDialogAlertMask:mask}">
         <x-dialog :mask-z-index="maskZIndex" :dialog-style="{width:width,maxWidth:maxWidthValue}" :hide-on-blur="hideOnBlur" v-model="show" @on-show="onShow" @on-hide="onHide" class="x-dialog">
             <div class="ZXDialogAlertTitle" v-if="showTitile"  v-dragdrop dragdrop=".ZXDialogAlert .weui-dialog">
                 <span class="text">{{title}}</span>
@@ -44,6 +44,10 @@
             showClose:{
                 type:Boolean,
                 default:true
+            },
+            mask:{
+                type:Boolean,
+                default:false
             },
             maskZIndex:{
                 type:Number,

@@ -1,5 +1,8 @@
 export const MenuList = [
     { title:"文件" ,child:[
+            { title:"保存" ,groupEnd:true ,icon:"&#xe612;",run:function () {
+                this.save();
+            }},
             { title:"创建新项目" ,icon:"&#xe60e;",run:function (item){
                 this.$ZAlert.show({
                     title:"创建新项目",

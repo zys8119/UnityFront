@@ -25,11 +25,30 @@
                 default:false
             }
         },
+        mounted() {
+            document.onkeydown = (event)=>{
+                // ctrl+s
+                if (event.keyCode == 83 && (navigator.platform.match("Mac") ? event.metaKey : event.ctrlKey)){
+                    event.preventDefault();
+                    event.stopPropagation();
+                    this.save();
+                }
+            }
+        },
         methods:{
             select(item){
                 if(!item.child && typeof item.run == "function"){
                     item.run.call(this,item);
                 }
+            },
+            save(){
+                this.api().view_update({
+                    project_id:this.$route.query.project_id,
+                    config:this.airforce.UnityFrontView,
+                    project_name:this.airforce.UnityFrontView.title,
+                }).then(res=>{
+                    console.log(res)
+                })
             }
         }
     }

@@ -56,7 +56,7 @@
                 </flexbox-item>
             </flexbox>
         </uf-group>
-        <uf-group title="原件基础属性" open v-if="info">
+        <uf-group title="元件基础属性" open v-if="info">
             <flexbox>
                 <flexbox-item title="名称">
                     <x-input class="z_Input" title="名称"

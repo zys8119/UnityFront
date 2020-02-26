@@ -27,36 +27,6 @@
             }
         },
         mounted() {
-            try {
-                this.api().getMenuUi().then(res=>{
-                    if(res.code == 200){
-                        this.MenuList[1].child[0].child = res.data.map(e=>{
-                            return {
-                                ...e,
-                                title:e.name,
-                                run:item=>{
-                                    console.log(item.path)
-                                }
-                            }
-                        });
-                    }
-                });
-            }catch (e) {}
-            try {
-                this.api().getProjectList().then(res=>{
-                    if(res.code == 200){
-                        this.MenuList[0].child[2].child = res.data.map(e=>{
-                            return {
-                                ...e,
-                                title:e.project_name,
-                                run:item=>{
-                                    this.$utils.ProjectList.call(this,item);
-                                }
-                            }
-                        });
-                    }
-                });
-            }catch (e) {}
         }
     }
 </script>

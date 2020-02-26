@@ -18,6 +18,7 @@ const plugin = {
                 opts.maskZIndex = opts.maskZIndex || 1000;
                 opts.title = opts.title || null;
                 opts.minTitle = opts.minTitle || null;
+                opts.mask = opts.mask || null;
                 opts.props = opts.props || {};
                 opts._event = opts._event || {};
                 opts.content = opts.content || null;

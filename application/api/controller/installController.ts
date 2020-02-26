@@ -27,15 +27,14 @@ export class installController extends applicationController{
             -- ----------------------------
             -- 记录 of menu_ui
             -- ----------------------------
-            INSERT INTO \`${prefix}menu_ui\` values (1,'input','input','vux/XInput');
         `,
             //创建表project
             `
             DROP TABLE IF EXISTS \`${prefix}project\`;
             CREATE TABLE IF NOT EXISTS \`${prefix}project\` (
-                id  int(11) NOT NULL AUTO_INCREMENT,
-                project_name  varchar(25) NULL COMMENT '项目名称' ,
-                rmarks  varchar(25) not NULL COMMENT '项目备注' default 'asd',
+                id int(11) NOT NULL AUTO_INCREMENT,
+                project_name varchar(25) NOT NULL COMMENT '项目名称',
+                config varchar(25) NOT NULL COMMENT '项目配置',
                 PRIMARY KEY (id)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
         `,

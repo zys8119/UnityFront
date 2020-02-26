@@ -10,6 +10,19 @@ export default {
   name: 'App',
   created(){
     window.__vm__ = this;
+    if(!this.$route.query.project_id){
+      this.$ZAlert.show({
+        title:"创建新项目",
+        components:"Alert/CreateNewProjects",
+        width:"500px",
+        showClose:false,
+        mask:true,
+        hideOnBlur:false,
+        props:{
+          vm:()=>this
+        }
+      });
+    }
   },
   mounted() {
     this.setInterval();

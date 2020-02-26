@@ -1,6 +1,6 @@
 import install from "./install"
-import Menu from "./Menu"
+import view from "./view"
 export default {
     ...install,
-    ...Menu,
+    ...view,
 }
