@@ -56,7 +56,7 @@
                 </flexbox-item>
             </flexbox>
         </uf-group>
-        <uf-group title="组件基础属性" open v-if="info">
+        <uf-group title="原件基础属性" open v-if="info">
             <flexbox>
                 <flexbox-item title="名称">
                     <x-input class="z_Input" title="名称"
@@ -133,6 +133,34 @@
                     <x-number class="x_number" title="Y" fillable
                               :value="translateY"
                               @input="setSvgMatrix($event,5)"
+                    ></x-number>
+                </flexbox-item>
+            </flexbox>
+            <flexbox>
+                <flexbox-item >
+                    <x-number class="x_number" title="RadiusA" fillable :min="0"
+                              :value="RadiusA"
+                              @input="setRadius($event,0)"
+                    ></x-number>
+                </flexbox-item>
+                <flexbox-item>
+                    <x-number class="x_number" title="RadiusB" fillable :min="0"
+                              :value="RadiusB"
+                              @input="setRadius($event,1)"
+                    ></x-number>
+                </flexbox-item>
+            </flexbox>
+            <flexbox>
+                <flexbox-item >
+                    <x-number class="x_number" title="RadiusC" fillable :min="0"
+                              :value="RadiusC"
+                              @input="setRadius($event,2)"
+                    ></x-number>
+                </flexbox-item>
+                <flexbox-item>
+                    <x-number class="x_number" title="RadiusD" fillable :min="0"
+                              :value="RadiusD"
+                              @input="setRadius($event,3)"
                     ></x-number>
                 </flexbox-item>
             </flexbox>
@@ -292,6 +320,24 @@
               }catch (e) {}
               return [];
             },
+            getRadius(){
+              try {
+                  return  this.formData.info.style.borderRadius.split(" ").map(e=>parseFloat(e))
+              }catch (e) {}
+              return [];
+            },
+            RadiusA(){
+                return this.getRadius[0];
+            },
+            RadiusB(){
+                return this.getRadius[1];
+            },
+            RadiusC(){
+                return this.getRadius[2];
+            },
+            RadiusD(){
+                return this.getRadius[3];
+            },
             svgX(){
                 return this.getSvgMatrix[0]*100;
             },
@@ -312,6 +358,11 @@
             }
         },
         methods:{
+            setRadius(val,key){
+                let Radius = _.cloneDeep(this.getRadius).map(e=>e + 'px');
+                Radius[key] = val+"px";
+                this.change(Radius.join(" "),"info.style.borderRadius")
+            },
             setSvgMatrix(val,key){
                 let matrix = _.cloneDeep(this.getSvgMatrix);
                 if (key === 4 || key === 5){
@@ -319,7 +370,6 @@
                 }else {
                     matrix[key] = val/100;
                 }
-
                 this.change(`matrix(${matrix.join(",")})`,"info.style.transform")
             },
             change(val,key){
