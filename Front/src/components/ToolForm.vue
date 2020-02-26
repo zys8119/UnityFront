@@ -151,7 +151,7 @@
             <flexbox>
                 <flexbox-item>
                     <cell title="透明度" class="z_cell" value-align="left">
-                        <Range minHTML="0" maxHTML="1" :value="info.style.opacity*100" @on-change="change($event/100,'info.style.opacity','UnityFrontView')"></Range>
+                        <Range class="Range" minHTML="0" maxHTML="1" :value="info.style.opacity*100" @on-change="change($event/100,'info.style.opacity','UnityFrontView')"></Range>
                     </cell>
                 </flexbox-item>
             </flexbox>
@@ -279,6 +279,9 @@
             &.select{
                 background-color: @themeColor;
             }
+        }
+        .Range{
+            /*width: 50%;*/
         }
     }
 </style>

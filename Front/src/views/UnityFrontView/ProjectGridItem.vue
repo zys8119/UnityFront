@@ -42,17 +42,23 @@
         watch:{
           "data.info.style.fill"(){
               this.getSvgPath().forEach(e=>{
-                  e.style.fill = this.data.info.style.fill;
+                  try {
+                      e.style.fill = this.data.info.style.fill;
+                  }catch (e) {}
               });
           },
           "data.info.style.stroke"(){
               this.getSvgPath().forEach(e=>{
-                  e.style.stroke = this.data.info.style.stroke;
+                  try {
+                      e.style.stroke = this.data.info.style.stroke;
+                  }catch (e) {}
               });
           },
           "data.info.style.strokeWidth"(){
               this.getSvgPath().forEach(e=>{
-                  e.style.stroke = this.data.info.style.strokeWidth;
+                  try {
+                      e.style.stroke = this.data.info.style.strokeWidth;
+                  }catch (e) {}
               });
           }
         },
