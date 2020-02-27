@@ -1,7 +1,7 @@
 <template>
     <div class="ViewManagementScene">
         <div class="ViewManagementSceneTop">
-            <x-button class="add z_XButton" @click.native="add"><span class="iconfont">&#xe64f;</span>添加场景</x-button>
+            <x-button class="add z_XButton_type" @click.native="add"><span class="iconfont">&#xe64f;</span>添加场景</x-button>
         </div>
         <div class="ViewManagementSceneBottom">
             <div class="SceneItem" v-for="(item,key) in list" :key="key">
@@ -16,7 +16,8 @@
                     {{item.project_name}}
                 </div>
                 <div class="btns">
-                    <XButton class="z_XButton iconfont" @click.native="deleteItem(item)">&#xe613;</XButton>
+                    <XButton class="z_XButton_type iconfont" @click.native="deleteItem(item)" title="删除">&#xe613;</XButton>
+                    <XButton class="z_XButton_type iconfont copy" @click.native="deleteItem(item)" title="复制id">&#xe605;</XButton>
                 </div>
             </div>
         </div>
@@ -89,11 +90,12 @@
     .ViewManagementSceneBottom{
         .SceneItem{
             width: 240px;
-            box-shadow: 0 0 0 2px @borderColor;
+            box-shadow: 0 0 0 2px #d8d8d8;
             float: left;
             margin: 0 15px;
             margin-bottom: 15px;
             border:1px solid transparent;
+            background-color: #ffffff;
             .preview{
                 width: 100%;
                 height: 120px;
@@ -101,6 +103,7 @@
                 background-color: #e5e5e5;
                 background-repeat: no-repeat;
                 background-size: cover;
+                border-bottom: 1px solid #e5e5e5;
                 *{
                     cursor: pointer;
                 }
@@ -136,8 +139,8 @@
             }
             .previewMsg{
                 padding: 15px;
-                color: @textColor;
                 height: 30px;
+                color: @themeLogoColor;
                 line-height: 30px;
             }
             .btns{
@@ -145,7 +148,7 @@
                 margin-bottom: 15px;
                 text-align: right;
                 overflow: hidden;
-                .z_XButton{
+                .z_XButton_type{
                     cursor: pointer;
                     width: auto;
                     margin: 0;
@@ -154,8 +157,13 @@
                     min-width: 50px;
                     text-align: center;
                     font-size: 16px !important;
-                    &+.z_XButton{
+                    background-color: @themeLogoColor*0.9 !important;
+                    color: #ffffff !important;
+                    &+.z_XButton_type{
                         margin-left: 15px;
+                    }
+                    &.copy{
+                        font-size: 24px !important;
                     }
                 }
             }

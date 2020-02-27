@@ -14,16 +14,16 @@ export class installController extends applicationController{
     getSql(prefix:string = mysqlConfig.options.prefix){
         return [
             `   SET FOREIGN_KEY_CHECKS=0;`,
-            //创建表menu_ui
+            //创建表project_view
             `
-            DROP TABLE IF EXISTS \`${prefix}menu_ui\`;
-            CREATE TABLE \`${prefix}menu_ui\` (
-                id  int(11) NOT NULL AUTO_INCREMENT,
-                name  varchar(25) NULL COMMENT 'ui名称' ,
-                type  varchar(25) NULL COMMENT 'ui类型' ,
-                path  varchar(255) NULL COMMENT 'ui路径' ,
-                PRIMARY KEY (id)
-            ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+            DROP TABLE IF EXISTS \`${prefix}project_view\`;
+            CREATE TABLE \`${prefix}project_view\` (
+                \`id\` int(11) NOT NULL AUTO_INCREMENT,
+                \`name\` varchar(255) NOT NULL COMMENT '视图名称',
+                \`project_id\` varchar(255) DEFAULT NULL COMMENT '项目id',
+                \`config\` longtext COMMENT '视图配置',
+                PRIMARY KEY (\`id\`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
             -- ----------------------------
             -- 记录 of menu_ui
             -- ----------------------------

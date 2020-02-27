@@ -13,6 +13,7 @@ export default new Router({
         importVue("ViewManagement/ViewManagementView","/viewManagement","UnityFront视图管理",{meta:{viewKey:"view"}}),
       ]
     }),
+    importVue("UnityFront/UnityFrontPreview","/preview/:id","视图预览"),
     importVue("UnityFront/UnityFront","/view","UnityFront"),
     importVue("install/install","/install","初始化项目"),
     importVue("WebSocketTest/WebSocketTest","/WebSocketTest","WebSocketTest"),

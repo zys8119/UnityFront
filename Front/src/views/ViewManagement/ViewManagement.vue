@@ -37,6 +37,13 @@
 <style scoped lang="less">
 @import "../../assets/less/vars";
 .ViewManagement{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: #efefef;
     .ViewManagementBox{
         padding: 15px;
     }
@@ -50,6 +57,7 @@
             top: 0;
             width: 100%;
             box-shadow: 0 0 5px @themeColor2;
+            background-color: #ffffff;
             .tab{
                 float: left;
                 width: 200px;

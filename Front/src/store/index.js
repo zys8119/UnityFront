@@ -10,6 +10,10 @@ export default {
     CreateNewProjects:{
         project_name:null,
     },
+    CreateNewProjectsView:{
+        project_name:null,
+        project_id:null,
+    },
     UnityFrontView,
     ProjectGrid:[
         {name:"布局",icon:"&#xe627;",type:"layout",style:{fontSize:'40px'}},
