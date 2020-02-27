@@ -4,9 +4,11 @@ const fs = require("fs");
 const path = require("path");
 export class viewController extends applicationController{
     TabelName:string;
+    TabelNameView:string;
     constructor() {
         super();
         this.TabelName = "uf_project";
+        this.TabelNameView = "uf_project_view";
     }
 
     create_project_id(){
@@ -82,7 +84,7 @@ export class viewController extends applicationController{
                 if(res.length > 0){
                     resolve();
                 }else {
-                    this.$_error("项目不存在");
+                    this.$_error("场景不存在");
                     reject();
                 }
             }).catch(err=>{
@@ -135,6 +137,48 @@ export class viewController extends applicationController{
             project_id:this.$_body.project_id
         }).query().then(()=>{
             let filePath = path.resolve(__dirname,"../../../public/img/images",this.$_body.project_id+".png");
+            if (fs.existsSync(filePath)){
+                fs.unlinkSync(filePath);
+            }
+            this.$_success();
+        }).catch(err=>this.$_error(err));
+    }
+
+    viewCreate(){
+        this.isProjectExist().then(()=>{
+            let id = this.create_project_id();
+            this.DB().insert(this.TabelNameView,{
+                id,
+                name:this.$_body.project_name,
+                project_id:this.$_body.project_id,
+            }).query().then(()=>{
+                this.$_success();
+            }).catch(err=>{
+                this.$_error(err);
+            });
+        });
+    }
+
+    viewList(){
+        this.DB().select().from(this.TabelNameView).query().then(res=>{
+            this.$_success(res.map(e=>{
+                let config = this.$_decode(e.config);
+                if(config.image){
+                    config.image = `http://${(ServerConfig.host)?ServerConfig.host:'localhost'}:${ServerConfig.port}/${config.image}`
+                };
+                return {
+                    ...e,
+                    config,
+                }
+            }));
+        }).catch(err=>this.$_error(err));
+    }
+
+    viewDelete(){
+        this.DB().delete().from(this.TabelNameView).where({
+            id:this.$_body.id
+        }).query().then(()=>{
+            let filePath = path.resolve(__dirname,"../../../public/img/images",this.$_body.id+".png");
             if (fs.existsSync(filePath)){
                 fs.unlinkSync(filePath);
             }

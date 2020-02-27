@@ -74,12 +74,57 @@ export default {
             }
         })
     },
+    view_viewDelete(data){
+        this.$vux.loading.show();
+        return this.action({
+            moduleName:"view",
+            method:"post",
+            url:"view/viewDelete",
+            data,
+            resthen:()=>{
+                this.action({
+                    moduleName: "view",
+                    goods:null
+                });
+            }
+        })
+    },
     view_copy(data){
         this.$vux.loading.show();
         return this.action({
             moduleName:"view",
             method:"post",
             url:"view/copy",
+            data,
+            resthen:()=>{
+                this.action({
+                    moduleName: "view",
+                    goods:null
+                });
+            }
+        })
+    },
+    view_viewCreate(data){
+        this.$vux.loading.show();
+        return this.action({
+            moduleName:"view",
+            method:"post",
+            url:"view/viewCreate",
+            data,
+            resthen:()=>{
+                this.action({
+                    moduleName: "view",
+                    goods:null
+                });
+            }
+        })
+    },
+    view_viewList(data){
+        this.$vux.loading.show();
+        return this.action({
+            moduleName:"view",
+            method:"get",
+            url:"view/viewList",
             data,
             resthen:()=>{
                 this.action({

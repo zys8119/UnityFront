@@ -13,7 +13,7 @@
                     <div class="operation"> <span class="iconfont">&#xe601;</span></div>
                 </div>
                 <div class="previewMsg text-overflow">
-                    {{item.project_name}}
+                    {{item.name}}
                 </div>
                 <div class="btns">
                     <XButton class="z_XButton_type iconfont" @click.native="deleteItem(item)">&#xe613;</XButton>
@@ -38,7 +38,9 @@
         },
         methods:{
             init(){
-
+                this.api().view_viewList().then(res=>{
+                    this.list = res.data;
+                });
             },
             add(){
                 this.$ZAlert.show({
@@ -57,9 +59,9 @@
             deleteItem(item){
                 this.$vux.confirm.show({
                     title:"温馨提示",
-                    content:"确定删除此场景吗？",
+                    content:"确定删除此视图吗？",
                     onConfirm:()=>{
-                        this.api().view_delete(item).then(()=>{
+                        this.api().view_viewDelete(item).then(()=>{
                             this.init();
                         });
                     }

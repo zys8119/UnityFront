@@ -18,7 +18,7 @@ export class installController extends applicationController{
             `
             DROP TABLE IF EXISTS \`${prefix}project_view\`;
             CREATE TABLE \`${prefix}project_view\` (
-                \`id\` int(11) NOT NULL AUTO_INCREMENT,
+                \`id\` varchar(255) NOT NULL COMMENT '视图id',
                 \`name\` varchar(255) NOT NULL COMMENT '视图名称',
                 \`project_id\` varchar(255) DEFAULT NULL COMMENT '项目id',
                 \`config\` longtext COMMENT '视图配置',
