@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "alert-vue-plug": "^1.0.0",
+    "html2canvas": "^1.0.0-rc.5",
     "import-vue": "^0.0.7",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",

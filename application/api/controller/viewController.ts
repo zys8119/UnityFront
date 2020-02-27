@@ -1,5 +1,6 @@
 import {applicationController} from "../../../UnityFrontUtils/controller/applicationController";
-
+const fs = require("fs");
+const path = require("path");
 export class viewController extends applicationController{
     TabelName:string;
     constructor() {
@@ -21,32 +22,67 @@ export class viewController extends applicationController{
     }
 
     update(){
-        this.DB().update(this.TabelName,{
-            project_name:this.$_body.project_name || '',
-            config:this.$_encode(this.$_body.config)
-        }).where({
-            project_id:this.$_body.project_id,
-        }).query(null,false).then(()=>{
-            this.$_success();
-        }).catch(err=>{
-            this.$_error(err);
+        let {image,...config} = this.$_body.config;
+        let base64 = image.replace(/^data:image\/\w+;base64,/, "");
+        let dataBuffer = Buffer.from(base64, 'base64');
+        let imageUrl = `public/img/images/${this.$_body.project_id}.png`;
+        let url = path.resolve(__dirname,"../../../",imageUrl);
+        fs.writeFile(url,dataBuffer, 'utf8', err=>{
+            if (err) this.$_error();
+        });
+        config.image = imageUrl;
+        this.isProjectExist().then(()=> {
+            this.DB().update(this.TabelName, {
+                project_name: this.$_body.project_name || '',
+                config: this.$_encode(config)
+            }).where({
+                project_id: this.$_body.project_id,
+            }).query(null, false).then(() => {
+                this.$_success();
+            }).catch(err => {
+                this.$_error(err);
+            });
         });
     }
 
-    getProject(){
-        this.DB().select().from(this.TabelName).where({
-            project_id:this.$_query.project_id,
-        }).query(null,false).then(res=>{
-            let result = {};
-            try {
-                result = {
-                    ...res[0],
-                    config:this.$_decode(res[0].config)
+    isProjectExist(){
+        return new Promise((resolve, reject) => {
+            this.DB().select().from(this.TabelName).where({
+                project_id:this.$_body.project_id || this.$_query.project_id,
+            }).query().then(res=>{
+                if(res.length > 0){
+                    resolve();
+                }else {
+                    this.$_error("项目不存在");
+                    reject();
                 }
-            }catch (e) {}
-            this.$_success(result);
-        }).catch(err=>{
-            this.$_error(err);
+            }).catch(err=>{
+                this.$_error(err);
+                reject();
+            });
+        })
+    }
+
+    getProject(){
+        this.isProjectExist().then(()=>{
+            this.DB().select().from(this.TabelName).where({
+                project_id:this.$_query.project_id,
+            }).query(null,false).then(res=>{
+                let result = {};
+                let config = this.$_decode(res[0].config);
+                if(config.image){
+                    config.image = `http://localhost:81/${config.image}`
+                }
+                try {
+                    result = {
+                        ...res[0],
+                        config:config
+                    }
+                }catch (e) {}
+                this.$_success(result);
+            }).catch(err=>{
+                this.$_error(err);
+            });
         });
     }
 }

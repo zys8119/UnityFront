@@ -1,4 +1,4 @@
-// import { mysqlConfig } from "../../../UnityFrontUtils/config/index"
+import { UnityFrontView } from "@/data"
 export default {
     $t:"zh-cn",
     install:{
@@ -9,21 +9,8 @@ export default {
     },
     CreateNewProjects:{
         project_name:null,
-        rmarks:null,
     },
-    UnityFrontView:{
-        // 视图组件
-        component:[],
-        scaleIndex:1,
-        backgroundColor:"rgba(0,0,0,0)",
-        backgroundImage:null,
-        left:0,
-        top:0,
-        width:1920,
-        height:1080,
-        title:null,
-        preview:false,
-    },
+    UnityFrontView,
     ProjectGrid:[
         {name:"布局",icon:"&#xe627;",type:"layout",style:{fontSize:'40px'}},
         {name:"图片",icon:"&#xe674;",type:"images"},

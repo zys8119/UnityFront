@@ -20,19 +20,19 @@
              })"
         >
             <project-grid-item v-for="(item,key) in airforce.UnityFrontView.component" :key="key"
-                 v-dragdrop dragdrop="draggable_data"
-                 :id="item.id"
-                 :style="{
+                               v-dragdrop dragdrop="draggable_data"
+                               :id="item.id"
+                               :style="{
                     left:`${item.left}px`,
                     top:`${item.top}px`,
                     width:`${item.width}px`,
                     height:`${item.height}px`,
                     zIndex:key+10
                 }"
-                 :class="{select:item.operate}"
-                 @dblclick.native="ondblclick(item,key)"
-                 :item="JSON.stringify({...item,key})"
-                 :data="{...item,key}"
+                               :class="{select:item.operate}"
+                               @dblclick.native="ondblclick(item,key)"
+                               :item="JSON.stringify({...item,key})"
+                               :data="{...item,key}"
             >
 
             </project-grid-item>
@@ -285,12 +285,12 @@
                 );
             }
             &:before{
-                content: "";
-                .line(90deg);
+                //content: "";
+                //.line(90deg);
             }
             &:after{
-                content: "";
-                .line(0deg);
+                //content: "";
+                //.line(0deg);
             }
         }
         &.preview{

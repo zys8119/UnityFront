@@ -1,3 +1,4 @@
+// 菜单
 export const MenuList = [
     { title:"文件" ,child:[
             { title:"保存" ,groupEnd:true ,icon:"&#xe612;",run:function () {
@@ -48,4 +49,19 @@ export const MenuList = [
             this.$router.push("/install");
         }}
     ]},
-]
+];
+
+// 视图
+export const UnityFrontView = {
+    component:[],
+    scaleIndex:1,
+    image:null,// 缩略图
+    backgroundColor:"rgba(0,120,255,1)",
+    backgroundImage:null,
+    left:0,
+    top:0,
+    width:1920,
+    height:1080,
+    title:null,
+    preview:false,
+};

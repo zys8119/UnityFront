@@ -1,8 +1,8 @@
 <template>
     <div class="ComponentPane">
-        <unity-front-layout-title title="分类"></unity-front-layout-title>
+        <unity-front-layout-title title="缩略图"></unity-front-layout-title>
         <uf-box>
-            <component-tree :item="item" v-for="(item,key) in list" :key="key" init></component-tree>
+            <img class="thumbnail" :src="airforce.UnityFrontView.image">
         </uf-box>
     </div>
 </template>
@@ -31,5 +31,14 @@
     .ComponentPane {
         position: relative;
         height: 30%;
+        .thumbnail{
+            position: absolute;
+            left: 50%;
+            bottom: 50%/2;
+            width: 90%;
+            max-height: 90%;
+            max-height: ~"calc(100% - 50px)";
+            transform: translate(-50%,50%/2);
+        }
     }
 </style>

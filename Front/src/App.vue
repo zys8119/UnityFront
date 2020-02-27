@@ -6,6 +6,8 @@
 
 <script>
 import lib_setInterval from "@/lib/setInterval"
+import { UnityFrontView } from "@/data"
+import html2canvas from "html2canvas";
 export default {
   name: 'App',
   created(){
@@ -33,6 +35,11 @@ export default {
         }catch (e) {};
       });
     },
+    setUnityFrontView(config){
+      this.action({moduleName:"UnityFrontView",goods:null});
+      this.action({moduleName:"UnityFrontView",goods:{}});
+      this.action({moduleName:"UnityFrontView",goods:config});
+    },
     init(){
       if(this.$route.path === "/"){
         if(this.$route.query.project_id){
@@ -41,12 +48,21 @@ export default {
           }).then(res=>{
             try {
               let config = res.data.config;
-              this.action({moduleName:"UnityFrontView",goods:null});
-              this.action({moduleName:"UnityFrontView",goods:{}});
-              this.action({moduleName:"UnityFrontView",goods:{
-                  ...config,
-                  component:config.component || []
-                }});
+              if(!config){
+                config = UnityFrontView;
+              }
+              config.component = config.component || [];
+              if(!config.image){
+                html2canvas(document.getElementById("UnityFrontViewContent"),{
+                  allowTaint:true,
+                  useCORS:true,
+                  copyStyles:true,
+                }).then(canvas => {
+                  config.image = canvas.toDataURL("image/png");
+                  this.setUnityFrontView(config);
+                });
+              }
+              this.setUnityFrontView(config);
             }catch (e) {}
           })
         }else {

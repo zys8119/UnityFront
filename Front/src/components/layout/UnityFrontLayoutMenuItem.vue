@@ -13,6 +13,7 @@
 </template>
 
 <script>
+    import html2canvas from "html2canvas"
     export default {
         name: "UnityFrontLayoutMenuItem",
         props:{
@@ -42,17 +43,27 @@
                 }
             },
             save(){
-                this.api().view_update({
-                    project_id:this.$route.query.project_id,
-                    config:this.airforce.UnityFrontView,
-                    project_name:this.airforce.UnityFrontView.title,
-                }).then(res=>{
-                    if(res.code === 200){
-                        this.$vux.toast.text("保存成功");
-                        return;
-                    }
-                    this.$vux.toast.text(res.data.sqlMessage);
-                })
+                html2canvas(document.getElementById("UnityFrontViewContent"),{
+                    allowTaint:true,
+                    useCORS:true,
+                    copyStyles:true,
+                }).then(canvas => {
+                    let image = canvas.toDataURL("image/png");
+                    this.action({moduleName:"UnityFrontView", goods:{image}});
+                    this.api().view_update({
+                        project_id:this.$route.query.project_id,
+                        config:this.airforce.UnityFrontView,
+                        project_name:this.airforce.UnityFrontView.title,
+                    }).then(res=>{
+                        if(res.code === 200){
+                            this.$vux.toast.text("保存成功");
+                            return;
+                        }
+                        if(res.code !== 403){
+                            this.$vux.toast.text(res.data.sqlMessage);
+                        }
+                    })
+                });
             }
         }
     }
