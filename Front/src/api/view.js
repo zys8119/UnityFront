@@ -74,12 +74,12 @@ export default {
             }
         })
     },
-    view_viewDelete(data){
+    view_copy(data){
         this.$vux.loading.show();
         return this.action({
             moduleName:"view",
             method:"post",
-            url:"view/viewDelete",
+            url:"view/copy",
             data,
             resthen:()=>{
                 this.action({
@@ -89,12 +89,12 @@ export default {
             }
         })
     },
-    view_copy(data){
+    view_viewDelete(data){
         this.$vux.loading.show();
         return this.action({
             moduleName:"view",
             method:"post",
-            url:"view/copy",
+            url:"view/viewDelete",
             data,
             resthen:()=>{
                 this.action({
@@ -126,6 +126,21 @@ export default {
             method:"get",
             url:"view/viewList",
             data,
+            resthen:()=>{
+                this.action({
+                    moduleName: "view",
+                    goods:null
+                });
+            }
+        })
+    },
+    view_getView(params){
+        this.$vux.loading.show();
+        return this.action({
+            moduleName:"view",
+            method:"get",
+            url:"view/getView",
+            params,
             resthen:()=>{
                 this.action({
                     moduleName: "view",

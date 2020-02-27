@@ -6,7 +6,7 @@
         <div class="ViewManagementSceneBottom">
             <div class="SceneItem" v-for="(item,key) in list" :key="key">
                 <div class="preview"
-                     @click="$router.push('/preview/'+item.project_id)"
+                     @click="$router.push('/preview/'+item.id)"
                     :style="{
                     backgroundImage:(item.config && item.config.image)?`url(${item.config.image})`:null
                 }">

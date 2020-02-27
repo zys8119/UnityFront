@@ -185,4 +185,45 @@ export class viewController extends applicationController{
             this.$_success();
         }).catch(err=>this.$_error(err));
     }
+
+    isViewExist(){
+        return new Promise((resolve, reject) => {
+            this.DB().select().from(this.TabelNameView).where({
+                id:this.$_body.id || this.$_query.id,
+            }).query().then(res=>{
+                if(res.length > 0){
+                    resolve();
+                }else {
+                    this.$_error("视图不存在");
+                    reject();
+                }
+            }).catch(err=>{
+                this.$_error(err);
+                reject();
+            });
+        })
+    }
+
+    getView(){
+        this.isViewExist().then(()=>{
+            this.DB().select().from(this.TabelNameView).where({
+                id:this.$_query.id,
+            }).query(null,false).then(res=>{
+                let result = {};
+                let config = this.$_decode(res[0].config);
+                if(config.image){
+                    config.image = `http://${(ServerConfig.host)?ServerConfig.host:'localhost'}:${ServerConfig.port}/${config.image}`
+                }
+                try {
+                    result = {
+                        ...res[0],
+                        config:config
+                    }
+                }catch (e) {}
+                this.$_success(result);
+            }).catch(err=>{
+                this.$_error(err);
+            });
+        });
+    }
 }
