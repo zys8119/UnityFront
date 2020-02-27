@@ -32,11 +32,12 @@ export class installController extends applicationController{
             `
             DROP TABLE IF EXISTS \`${prefix}project\`;
             CREATE TABLE IF NOT EXISTS \`${prefix}project\` (
-                id int(11) NOT NULL AUTO_INCREMENT,
-                project_name varchar(25) NOT NULL COMMENT '项目名称',
-                config varchar(25) NOT NULL COMMENT '项目配置',
-                PRIMARY KEY (id)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+                \`id\` int(11) NOT NULL AUTO_INCREMENT,
+                \`project_id\` varchar(255) DEFAULT NULL COMMENT '项目id',
+                \`project_name\` varchar(25) NOT NULL COMMENT '项目名称',
+                \`config\` longtext COMMENT '项目配置',
+              PRIMARY KEY (\`id\`)
+            ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
         `,
         ].join("\n");
     }
