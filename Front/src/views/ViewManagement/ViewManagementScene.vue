@@ -12,8 +12,11 @@
                 }">
                     <div class="operation"> <span class="iconfont">&#xe601;</span></div>
                 </div>
-                <div class="previewMsg">
+                <div class="previewMsg text-overflow">
                     {{item.project_name}}
+                </div>
+                <div class="btns">
+                    <XButton class="z_XButton iconfont" @click.native="deleteItem(item)">&#xe613;</XButton>
                 </div>
             </div>
         </div>
@@ -37,7 +40,6 @@
             init(){
                 this.api().view_list().then(res=>{
                     this.list = res.data;
-                    console.log(this.list)
                 });
             },
             add(){
@@ -51,6 +53,17 @@
                     },
                     _event:{
                         save:this.init,
+                    }
+                });
+            },
+            deleteItem(item){
+                this.$vux.confirm.show({
+                    title:"温馨提示",
+                    content:"确定删除此场景吗？",
+                    onConfirm:()=>{
+                        this.api().view_delete(item).then(()=>{
+                            this.init();
+                        });
                     }
                 });
             }
@@ -75,7 +88,7 @@
     }
     .ViewManagementSceneBottom{
         .SceneItem{
-            width: 200px;
+            width: 240px;
             box-shadow: 0 0 0 2px @borderColor;
             float: left;
             margin: 0 15px;
@@ -124,6 +137,27 @@
             .previewMsg{
                 padding: 15px;
                 color: @textColor;
+                height: 30px;
+                line-height: 30px;
+            }
+            .btns{
+                padding: 0 15px;
+                margin-bottom: 15px;
+                text-align: right;
+                overflow: hidden;
+                .z_XButton{
+                    cursor: pointer;
+                    width: auto;
+                    margin: 0;
+                    float: left;
+                    line-height: 40px;
+                    min-width: 50px;
+                    text-align: center;
+                    font-size: 16px !important;
+                    &+.z_XButton{
+                        margin-left: 15px;
+                    }
+                }
             }
             &:hover{
                 border-color: @themeLogoColor;

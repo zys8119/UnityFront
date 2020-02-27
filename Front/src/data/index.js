@@ -27,9 +27,9 @@ export const MenuList = [
             // { title:"打开记录",groupEnd:true ,icon:"&#xe64c;" , child:[
             //     ]},
             // { title:"设置" ,icon:"&#xe621;",fontSize:"18px"},
-            // { title:"退出" ,icon:"&#xe673;" ,run:()=>{
-            //         window.close();
-            //     }},
+            { title:"退出" ,icon:"&#xe673;" ,run(){
+                    this.$router.back();
+            }},
         ]},
     // { title:"编辑",child:[
     //     { title:"创建UI" ,groupEnd:true ,child:[]}

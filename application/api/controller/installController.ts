@@ -34,7 +34,7 @@ export class installController extends applicationController{
             CREATE TABLE IF NOT EXISTS \`${prefix}project\` (
                 \`id\` int(11) NOT NULL AUTO_INCREMENT,
                 \`project_id\` varchar(255) DEFAULT NULL COMMENT '项目id',
-                \`project_name\` varchar(25) NOT NULL COMMENT '项目名称',
+                \`project_name\` varchar(255) NOT NULL COMMENT '项目名称',
                 \`config\` longtext COMMENT '项目配置',
               PRIMARY KEY (\`id\`)
             ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;

@@ -59,4 +59,19 @@ export default {
             }
         })
     },
+    view_delete(data){
+        this.$vux.loading.show();
+        return this.action({
+            moduleName:"view",
+            method:"post",
+            url:"view/delete",
+            data,
+            resthen:()=>{
+                this.action({
+                    moduleName: "view",
+                    goods:null
+                });
+            }
+        })
+    },
 }

@@ -101,4 +101,16 @@ export class viewController extends applicationController{
             }));
         }).catch(err=>this.$_error(err));
     }
+
+    delete(){
+        this.DB().delete().from(this.TabelName).where({
+            project_id:this.$_body.project_id
+        }).query().then(()=>{
+            let filePath = path.resolve(__dirname,"../../../public/img/images",this.$_body.project_id+".png");
+            if (fs.existsSync(filePath)){
+                fs.unlinkSync(filePath);
+            }
+            this.$_success();
+        }).catch(err=>this.$_error(err));
+    }
 }
