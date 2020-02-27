@@ -1,4 +1,5 @@
 import {applicationController} from "../../../UnityFrontUtils/controller/applicationController";
+import {ServerConfig} from "../../../UnityFrontUtils/config";
 const fs = require("fs");
 const path = require("path");
 export class viewController extends applicationController{
@@ -71,7 +72,7 @@ export class viewController extends applicationController{
                 let result = {};
                 let config = this.$_decode(res[0].config);
                 if(config.image){
-                    config.image = `http://localhost:81/${config.image}`
+                    config.image = `http://${(ServerConfig.host)?ServerConfig.host:'localhost'}:${ServerConfig.port}/${config.image}`
                 }
                 try {
                     result = {
