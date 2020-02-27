@@ -1,38 +1,25 @@
 <template>
     <div class="UnityFrontPreview" :style="{
-        width:layout.width+'px',
-        height:layout.height+'px',
+        ...getStyle(layout,null,true),
         backgroundColor:layout.backgroundColor,
         backgroundImage:`url(${layout.backgroundImage})`,
     }">
         <template v-for="(item,key) in layout_component">
             <template v-if="item.info.type === 'layout'">
                 <div class="layout" :style="{
-                    left:item.left+'px',
-                    top:item.top+'px',
-                    width:item.width+'px',
-                    height:item.height+'px',
-                    zIndex:key+10,
+                    ...getStyle(item,key),
                     ...item.info.style
                 }"></div>
             </template>
             <template v-if="item.info.type === 'text'">
                 <div class="text" :style="{
-                    left:item.left+'px',
-                    top:item.top+'px',
-                    width:item.width+'px',
-                    height:item.height+'px',
-                    zIndex:key+10,
+                    ...getStyle(item,key),
                     ...item.info.style
                 }">{{item.info.name}}</div>
             </template>
             <template v-if="item.info.type === 'rect'">
                 <div class="rect" :style="{
-                    left:item.left+'px',
-                    top:item.top+'px',
-                    width:item.width+'px',
-                    height:item.height+'px',
-                    zIndex:key+10,
+                    ...getStyle(item,key),
                     ...item.info.style
                 }"></div>
             </template>
@@ -40,22 +27,12 @@
                 <img class="images"
                      :src="item.info.url"
                      :style="{
-                    left:item.left+'px',
-                    top:item.top+'px',
-                    width:item.width+'px',
-                    height:item.height+'px',
-                    zIndex:key+10,
+                    ...getStyle(item,key),
                     ...item.info.style
                 }">
             </template>
             <template v-if="item.info.type === 'svg'">
-                <div :style="{
-                left:item.left+'px',
-                top:item.top+'px',
-                width:item.width+'px',
-                height:item.height+'px',
-                zIndex:key+10,
-                }" class="svgBox">
+                <div :style="getStyle(item,key)" class="svgBox">
                     <svg t="1582622641578" class="icon" style="vertical-align: middle;fill: currentColor;overflow: hidden;"
                          :viewBox="item.info.viewBox"
                          version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8467"  :style="item.info.style" v-html="item.info.path"></svg>
@@ -72,6 +49,7 @@
             return {
                 view:{},
                 project:{},
+                auto:true,
             }
         },
         computed:{
@@ -105,6 +83,42 @@
                         this.project = resp.data;
                     });
                 });
+            },
+            getStyle(item,key,bool){
+                try {
+                    let resUltStyle = {
+                        width:item.width+'px',
+                        height:item.height+'px',
+                    };
+                    if(this.auto && bool){
+                        resUltStyle = {
+                            width:window.innerWidth+'px',
+                            height:window.innerHeight+'px',
+                        }
+                    }
+                    if(!bool){
+                        resUltStyle = {
+                            ...resUltStyle,
+                            left:item.left+'px',
+                            top:item.top+'px',
+                            zIndex:key+10,
+                        }
+
+                        if(this.auto){
+                            resUltStyle = {
+                                ...resUltStyle,
+                                width:100/window.innerWidth*item.width+'%',
+                                height:100/window.innerHeight*item.height+'%',
+                                left:100/window.innerWidth*item.left+'%',
+                                top:100/window.innerHeight*item.top+'%',
+                            }
+                        }
+                    }
+                    return resUltStyle;
+                }catch (e) {
+                    return {};
+                }
+
             }
         }
     }
