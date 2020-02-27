@@ -1,5 +1,5 @@
 <template>
-    <div class="UnityFrontPreview" :style="{
+    <div class="UnityFrontPreview" :class="{auto:auto}" :style="{
         ...getStyle(layout,null,true),
         backgroundColor:layout.backgroundColor,
         backgroundImage:`url(${layout.backgroundImage})`,
@@ -90,12 +90,6 @@
                         width:item.width+'px',
                         height:item.height+'px',
                     };
-                    if(this.auto && bool){
-                        resUltStyle = {
-                            width:window.innerWidth+'px',
-                            height:window.innerHeight+'px',
-                        }
-                    }
                     if(!bool){
                         resUltStyle = {
                             ...resUltStyle,
@@ -105,16 +99,13 @@
                         }
 
                         if(this.auto){
+                            // 响应式处理
                             resUltStyle = {
                                 ...resUltStyle,
-                                width:100/window.innerWidth*(window.innerWidth/this.layout.width)*item.width+'%',
-                                height:100/window.innerHeight*(window.innerHeight/this.layout.height)*item.height+'%',
-                                left:100/window.innerWidth*(window.innerWidth/this.layout.width)*item.left+'%',
-                                top:100/window.innerHeight*(window.innerHeight/this.layout.height)*item.top+'%',
-                                // width:100/window.innerWidth*item.width+'%',
-                                // height:100/window.innerHeight*item.height+'%',
-                                // left:100/window.innerWidth*item.left+'%',
-                                // top:100/window.innerHeight*item.top+'%',
+                                width:item.width/this.layout.width*100+'%',
+                                height:item.height/this.layout.height*100+'%',
+                                left:item.left/this.layout.width*100+'%',
+                                top:item.top/this.layout.height*100+'%',
                             }
                         }
                     }
@@ -134,6 +125,13 @@
     background-position: center;
     background-size: cover;
     overflow: hidden;
+    &.auto{
+        position: fixed;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+    }
     .layout,.text,.rect,.images,.svgBox{
         position: absolute;
     }
