@@ -74,4 +74,19 @@ export default {
             }
         })
     },
+    view_copy(data){
+        this.$vux.loading.show();
+        return this.action({
+            moduleName:"view",
+            method:"post",
+            url:"view/copy",
+            data,
+            resthen:()=>{
+                this.action({
+                    moduleName: "view",
+                    goods:null
+                });
+            }
+        })
+    },
 }

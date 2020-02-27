@@ -9,6 +9,7 @@ export default {
     },
     CreateNewProjects:{
         project_name:null,
+        project_id:null,
     },
     CreateNewProjectsView:{
         project_name:null,

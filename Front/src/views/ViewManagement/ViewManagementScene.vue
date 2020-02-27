@@ -17,7 +17,8 @@
                 </div>
                 <div class="btns">
                     <XButton class="z_XButton_type iconfont" @click.native="deleteItem(item)" title="删除">&#xe613;</XButton>
-                    <XButton class="z_XButton_type iconfont copy" @click.native="deleteItem(item)" title="复制id">&#xe605;</XButton>
+                    <XButton class="z_XButton_type iconfont copy" @click.native="onCopy(item.project_id)" title="复制">&#xe605;</XButton>
+                    <XButton class="z_XButton_type iconfont copy" title="复制场景id" v-clipboard:copy="item.project_id">&#xe680;</XButton>
                 </div>
             </div>
         </div>
@@ -66,6 +67,13 @@
                             this.init();
                         });
                     }
+                });
+            },
+            onCopy(project_id){
+                this.api().view_copy({
+                    project_id
+                }).then(()=>{
+                    this.init();
                 });
             }
         }

@@ -30,6 +30,10 @@ Object.keys(directive).forEach(directiveName=>{
     Vue.directive(directiveName, directive[directiveName])
 });
 
+//复制到粘贴板插件
+import VueClipboard from 'vue-clipboard2'
+VueClipboard.config.autoSetContainer = true
+Vue.use(VueClipboard)
 
 //Vux插件
 //todo 按需加载===============

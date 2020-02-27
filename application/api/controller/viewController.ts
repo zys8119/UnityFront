@@ -8,8 +8,13 @@ export class viewController extends applicationController{
         super();
         this.TabelName = "uf_project";
     }
+
+    create_project_id(){
+        return `${Date.now()}${parseInt(`${Math.random()*100000000}`)}`
+    }
+
     create(){
-        let project_id = `${Date.now()}${parseInt(`${Math.random()*100000000}`)}`;
+        let project_id = this.create_project_id();
         this.DB().insert(this.TabelName,{
             project_id,
             project_name:this.$_body.name,
@@ -19,6 +24,29 @@ export class viewController extends applicationController{
             });
         }).catch(err=>{
             this.$_error(err);
+        });
+    }
+
+    copy(){
+        this.isProjectExist().then(()=> {
+            this.DB().select().from(this.TabelName).where({
+                project_id: this.$_body.project_id,
+            }).query(null, false).then(res => {
+                let {id, ...data} = res[0];
+                let project_id = this.create_project_id();
+                this.DB().insert(this.TabelName,{
+                    ...data,
+                    project_id,
+                }).query().then(()=>{
+                    this.$_success({
+                        project_id
+                    });
+                }).catch(err=>{
+                    this.$_error(err);
+                });
+            }).catch(err => {
+                this.$_error(err);
+            })
         });
     }
 

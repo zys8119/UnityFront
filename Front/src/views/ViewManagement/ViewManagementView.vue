@@ -38,9 +38,7 @@
         },
         methods:{
             init(){
-                this.api().view_list().then(res=>{
-                    this.list = res.data;
-                });
+
             },
             add(){
                 this.$ZAlert.show({
