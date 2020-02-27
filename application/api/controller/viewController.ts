@@ -23,16 +23,16 @@ export class viewController extends applicationController{
     }
 
     update(){
-        let {image,...config} = this.$_body.config;
-        let base64 = image.replace(/^data:image\/\w+;base64,/, "");
-        let dataBuffer = Buffer.from(base64, 'base64');
-        let imageUrl = `public/img/images/${this.$_body.project_id}.png`;
-        let url = path.resolve(__dirname,"../../../",imageUrl);
-        fs.writeFile(url,dataBuffer, 'utf8', err=>{
-            if (err) this.$_error();
-        });
-        config.image = imageUrl;
         this.isProjectExist().then(()=> {
+            let {image,...config} = this.$_body.config;
+            let base64 = image.replace(/^data:image\/\w+;base64,/, "");
+            let dataBuffer = Buffer.from(base64, 'base64');
+            let imageUrl = `public/img/images/${this.$_body.project_id}.png`;
+            let url = path.resolve(__dirname,"../../../",imageUrl);
+            fs.writeFile(url,dataBuffer, 'utf8', err=>{
+                if (err) this.$_error();
+            });
+            config.image = imageUrl;
             this.DB().update(this.TabelName, {
                 project_name: this.$_body.project_name || '',
                 config: this.$_encode(config)
