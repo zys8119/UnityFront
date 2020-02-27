@@ -107,10 +107,14 @@
                         if(this.auto){
                             resUltStyle = {
                                 ...resUltStyle,
-                                width:100/window.innerWidth*item.width+'%',
-                                height:100/window.innerHeight*item.height+'%',
-                                left:100/window.innerWidth*item.left+'%',
-                                top:100/window.innerHeight*item.top+'%',
+                                width:100/window.innerWidth*(window.innerWidth/this.layout.width)*item.width+'%',
+                                height:100/window.innerHeight*(window.innerHeight/this.layout.height)*item.height+'%',
+                                left:100/window.innerWidth*(window.innerWidth/this.layout.width)*item.left+'%',
+                                top:100/window.innerHeight*(window.innerHeight/this.layout.height)*item.top+'%',
+                                // width:100/window.innerWidth*item.width+'%',
+                                // height:100/window.innerHeight*item.height+'%',
+                                // left:100/window.innerWidth*item.left+'%',
+                                // top:100/window.innerHeight*item.top+'%',
                             }
                         }
                     }
