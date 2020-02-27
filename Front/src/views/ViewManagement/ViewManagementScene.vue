@@ -5,7 +5,9 @@
         </div>
         <div class="ViewManagementSceneBottom">
             <div class="SceneItem" v-for="(item,key) in list" :key="key">
-                <div class="preview" :style="{
+                <div class="preview"
+                     @click="$router.push('/view?project_id='+item.project_id)"
+                    :style="{
                     backgroundImage:(item.config && item.config.image)?`url(${item.config.image})`:null
                 }">
                     <div class="operation"> <span class="iconfont">&#xe601;</span></div>
