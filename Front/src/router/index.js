@@ -6,7 +6,14 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    importVue("UnityFront/UnityFront","/","UnityFront"),
+    importVue({
+      name:"ViewManagement/ViewManagement",
+      children:[
+        importVue("ViewManagement/ViewManagementScene","/","UnityFront场景管理",{meta:{viewKey:"scene"}}),
+        importVue("ViewManagement/ViewManagementView","/viewManagement","UnityFront视图管理",{meta:{viewKey:"view"}}),
+      ]
+    }),
+    importVue("UnityFront/UnityFront","/view","UnityFront"),
     importVue("install/install","/install","初始化项目"),
     importVue("WebSocketTest/WebSocketTest","/WebSocketTest","WebSocketTest"),
   ]

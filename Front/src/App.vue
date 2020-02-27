@@ -10,22 +10,29 @@ import { UnityFrontView } from "@/data"
 import html2canvas from "html2canvas";
 export default {
   name: 'App',
+  data(){
+    return {
+      time:null
+    }
+  },
   created(){
     window.__vm__ = this;
-    this.init();
   },
   watch:{
     $route(){
+      try {
+        clearInterval(this.time);
+      }catch (e) {}
       this.init();
     }
   },
   mounted() {
-    this.setInterval();
+    this.init();
   },
   methods:{
     setInterval(){
       //全局定时器
-      setInterval(()=>{
+      this.time = setInterval(()=>{
         try {
           Object.keys(lib_setInterval).forEach(keyName=>{
             try {
@@ -41,7 +48,8 @@ export default {
       this.action({moduleName:"UnityFrontView",goods:config});
     },
     init(){
-      if(this.$route.path === "/"){
+      if(this.$route.path === "/view"){
+        this.setInterval();
         if(this.$route.query.project_id){
           this.api().view_get_project({
             project_id:this.$route.query.project_id

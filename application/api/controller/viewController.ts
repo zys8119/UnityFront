@@ -86,4 +86,10 @@ export class viewController extends applicationController{
             });
         });
     }
+
+    list(){
+        this.DB().select().from(this.TabelName).query().then(res=>{
+            this.$_success(res);
+        }).catch(err=>this.$_error(err));
+    }
 }

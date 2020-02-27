@@ -16,7 +16,14 @@
             vm:{
                 type:Object,
                 default:Object
-            }
+            },
+            scene:{
+                type:Boolean,
+                default:false
+            },
+        },
+        mounted() {
+            this.vm.airforce.input("",'project_name','CreateNewProjects');
         },
         methods:{
             CreateNewProjects(){
@@ -28,8 +35,11 @@
                     name:this.vm.airforce.CreateNewProjects.project_name
                 }).then(res=>{
                     this.vm.airforce.input("",'project_name','CreateNewProjects');
-                    this.vm.$router.push({query:{project_id:res.data.project_id}});
+                    if(!this.scene){
+                        this.vm.$router.push({query:{project_id:res.data.project_id}});
+                    }
                     this.vm.$ZAlert.hide();
+                    this.$emit("save")
                 })
             }
         }

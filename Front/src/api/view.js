@@ -44,4 +44,19 @@ export default {
             }
         })
     },
+    view_list(params){
+        this.$vux.loading.show();
+        return this.action({
+            moduleName:"view",
+            method:"get",
+            url:"view/list",
+            params,
+            resthen:()=>{
+                this.action({
+                    moduleName: "view",
+                    goods:null
+                });
+            }
+        })
+    },
 }
