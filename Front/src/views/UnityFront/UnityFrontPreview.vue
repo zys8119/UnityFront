@@ -1,6 +1,67 @@
 <template>
-    <div class="UnityFrontPreview">
-        sdfsdfs
+    <div class="UnityFrontPreview" :style="{
+        width:layout.width+'px',
+        height:layout.height+'px',
+        backgroundColor:layout.backgroundColor,
+        backgroundImage:`url(${layout.backgroundImage})`,
+    }">
+        <template v-for="(item,key) in layout_component">
+            <template v-if="item.info.type === 'layout'">
+                <div class="layout" :style="{
+                    left:item.left+'px',
+                    top:item.top+'px',
+                    width:item.width+'px',
+                    height:item.height+'px',
+                    zIndex:key+10,
+                    ...item.info.style
+                }"></div>
+            </template>
+            <template v-if="item.info.type === 'text'">
+                <div class="text" :style="{
+                    left:item.left+'px',
+                    top:item.top+'px',
+                    width:item.width+'px',
+                    height:item.height+'px',
+                    zIndex:key+10,
+                    ...item.info.style
+                }">{{item.info.name}}</div>
+            </template>
+            <template v-if="item.info.type === 'rect'">
+                <div class="rect" :style="{
+                    left:item.left+'px',
+                    top:item.top+'px',
+                    width:item.width+'px',
+                    height:item.height+'px',
+                    zIndex:key+10,
+                    ...item.info.style
+                }"></div>
+            </template>
+            <template v-if="item.info.type === 'images'">
+                <img class="images"
+                     :src="item.info.url"
+                     :style="{
+                    left:item.left+'px',
+                    top:item.top+'px',
+                    width:item.width+'px',
+                    height:item.height+'px',
+                    zIndex:key+10,
+                    ...item.info.style
+                }">
+            </template>
+            <template v-if="item.info.type === 'svg'">
+                <div :style="{
+                left:item.left+'px',
+                top:item.top+'px',
+                width:item.width+'px',
+                height:item.height+'px',
+                zIndex:key+10,
+                }" class="svgBox">
+                    <svg t="1582622641578" class="icon" style="vertical-align: middle;fill: currentColor;overflow: hidden;"
+                         :viewBox="item.info.viewBox"
+                         version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8467"  :style="item.info.style" v-html="item.info.path"></svg>
+                </div>
+            </template>
+        </template>
     </div>
 </template>
 
@@ -11,6 +72,22 @@
             return {
                 view:{},
                 project:{},
+            }
+        },
+        computed:{
+            layout(){
+                try {
+                    return this.project.config || {};
+                }catch (e) {
+                    return  {};
+                }
+            },
+            layout_component(){
+                try {
+                    return this.layout.component || [];
+                }catch (e) {
+                    return  [];
+                }
             }
         },
         mounted() {
@@ -25,7 +102,7 @@
                     this.api().view_get_project({
                         project_id:res.data.project_id,
                     }).then(resp=>{
-                        this.project = resp;
+                        this.project = resp.data;
                     });
                 });
             }
@@ -34,5 +111,13 @@
 </script>
 
 <style scoped lang="less">
-
+.UnityFrontPreview{
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    overflow: hidden;
+    .layout,.text,.rect,.images,.svgBox{
+        position: absolute;
+    }
+}
 </style>
