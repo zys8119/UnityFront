@@ -11,6 +11,7 @@ export class viewController extends applicationController{
         this.TabelNameView = "uf_project_view";
     }
 
+
     create_project_id(){
         return `${Date.now()}${parseInt(`${Math.random()*100000000}`)}`
     }

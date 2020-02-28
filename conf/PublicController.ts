@@ -11,6 +11,9 @@ class Interceptor implements ControllerInitDataOptions{
     }
     $_error(msg?: any, sendData?: any, code?: number): void {
     }
+    setHeaders(Headers: any): void {
+    }
+    $_method:string;
 
     $_url:string;
 
@@ -20,11 +23,20 @@ class Interceptor implements ControllerInitDataOptions{
      * @return { Promise } then 执行 、 catch 终止
      */
     Interceptor(){
+        this.setHeaders({
+            'Content-Type': 'text/json; charset=utf-8',
+            'Access-Control-Allow-Origin': "*",
+            'Access-Control-Allow-Methods':'*',
+            'Access-Control-Allow-Headers':'*',
+        });
+        if(this.$_method === 'OPTIONS'){
+            this.$_success();
+            return Promise.reject();
+        }
         return Promise.resolve();
     }
 
     constructor() {
-        // return true;
     }
 };
 
