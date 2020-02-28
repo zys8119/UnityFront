@@ -97,7 +97,7 @@
     }
     .ViewManagementSceneBottom{
         .SceneItem{
-            width: 240px;
+            width: 280px;
             box-shadow: 0 0 0 2px #d8d8d8;
             float: left;
             margin: 0 15px;

@@ -1,5 +1,5 @@
 <template>
-    <div class="UnityFrontPreview" v-if="watchAuto" :class="{auto:layout.auto || auto}" :style="{
+    <div class="UnityFrontPreview" id="UnityFrontPreview" v-if="watchAuto" :class="{auto:layout.auto || auto}" :style="{
         ...getStyle(layout,null,true),
         backgroundColor:layout.backgroundColor,
         backgroundImage:`url(${layout.backgroundImage})`,
@@ -66,6 +66,7 @@
     export default {
         name: "UnityFrontPreview",
         props:{
+            id:{type:String,default:null},
             auto:{type:Boolean,default:false},
         },
         data(){
@@ -114,12 +115,11 @@
                     });
                 }
             };
-            this.dashboard = window.dashboard;
         },
         methods:{
             init(){
                 this.api().view_getView({
-                    id:this.$route.params.id
+                    id:(this.id)?this.id:this.$route.params.id
                 }).then(res=>{
                     this.view = res.data;
                     this.api().view_get_project({
@@ -175,11 +175,25 @@
                         layout:()=>layout,
                         getStyle:()=>getStyle,
                     },
-                    components:"Alert/BindingComponents"
+                    components:"Alert/BindingComponents",
+                    _event:{
+                        save:()=>{
+                            this.$ZAlert.hide();
+                            this.init();
+                        }
+                    }
                 })
             },
-            unBindingComponents(){
-
+            unBindingComponents(item){
+                this.api().view_viewUpdate({
+                    id:this.$route.params.id,
+                    c_name:"",
+                    c_key:item.id
+                }).then(res=>{
+                    if(res.code === 200){
+                        this.init();
+                    }
+                });
             }
         }
     }
@@ -210,7 +224,7 @@
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(255,255,255,0.8);
+            background-color: rgba(255,255,255,0.2);
             z-index: 1000000;
             .layoutEditorContent{
                 position: absolute;

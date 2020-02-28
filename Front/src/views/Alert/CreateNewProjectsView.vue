@@ -21,8 +21,8 @@
                 default:Object
             },
             scene:{
-                type:Boolean,
-                default:false
+                type:Object,
+                default:Object
             },
         },
         data(){
@@ -33,6 +33,10 @@
         mounted() {
             this.vm.airforce.input("",'project_name','CreateNewProjectsView');
             this.vm.airforce.input("",'project_id','CreateNewProjectsView');
+            if(this.scene){
+                this.vm.airforce.input(this.scene.name,'project_name','CreateNewProjectsView');
+                this.vm.airforce.input(this.scene.project_id,'project_id','CreateNewProjectsView');
+            }
         },
         methods:{
             CreateNewProjectsView(){
@@ -44,7 +48,19 @@
                     this.vm.$vux.toast.text("请输入场景id");
                     return;
                 };
-                this.vm.api().view_viewCreate(this.vm.airforce.CreateNewProjectsView).then(res=>{
+                let Api = null;
+                if(this.scene){
+                    // 修改
+                    Api = this.vm.api().view_viewUpdate({
+                        ...this.vm.airforce.CreateNewProjectsView,
+                        id:this.scene.id,
+                        config:this.scene.config,
+                    });
+                }else {
+                    // 创建
+                    Api = this.vm.api().view_viewCreate(this.vm.airforce.CreateNewProjectsView);
+                }
+                Api.then(res=>{
                     if(res.code === 200){
                         this.vm.airforce.input("",'project_name','CreateNewProjectsView');
                         this.vm.airforce.input("",'project_id','CreateNewProjectsView');

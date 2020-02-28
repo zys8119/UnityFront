@@ -147,11 +147,22 @@ export class viewController extends applicationController{
     viewCreate(){
         this.isProjectExist().then(()=>{
             let id = this.create_project_id();
-            this.DB().insert(this.TabelNameView,{
+            let insertData = <any>{
                 id,
                 name:this.$_body.project_name,
                 project_id:this.$_body.project_id,
-            }).query().then(()=>{
+            };
+            let config = null;
+            if(this.$_body.config){
+                config = {};
+                try {
+                    config = this.$_encode(this.$_body.config) || {};
+                }catch (e) {};
+            }
+            if(config){
+                insertData.config = config;
+            }
+            this.DB().insert(this.TabelNameView,insertData).query().then(()=>{
                 this.$_success();
             }).catch(err=>{
                 this.$_error(err);
@@ -233,13 +244,25 @@ export class viewController extends applicationController{
                 id:this.$_body.id,
             }).query(null,false).then(data=>{
                 let config = {};
-                try {
-                    config = this.$_decode(data[0]).config || {};
-                }catch (e) {};
-                config[this.$_body.c_key] = this.$_body.c_name;
-                this.DB().update(this.TabelNameView, {
+                if(this.$_body.config){
+                    config = this.$_body.config;
+                }else {
+                    try {
+                        config = this.$_decode(data[0]).config || {};
+                    }catch (e) {};
+                    config[this.$_body.c_key] = this.$_body.c_name;
+                }
+                let updateData = {
                     config: this.$_encode(config)
-                }).where({
+                };
+                if(this.$_body.config){
+                    updateData = <any>{
+                        ...updateData,
+                        name:this.$_body.project_name,
+                        project_id:this.$_body.project_id,
+                    }
+                }
+                this.DB().update(this.TabelNameView, updateData).where({
                     id: this.$_body.id,
                 }).query(null, false).then(() => {
                     this.$_success();
@@ -249,7 +272,6 @@ export class viewController extends applicationController{
             }).catch(err=>{
                 this.$_error(err);
             });
-
         });
     }
 }

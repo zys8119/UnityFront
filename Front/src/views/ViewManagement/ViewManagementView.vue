@@ -11,13 +11,16 @@
                     backgroundImage:(item.config && item.config.image)?`url(${item.config.image})`:null
                 }">
                     <div class="operation"> <span class="iconfont">&#xe660;</span></div>
+                    <unity-front-preview class="preview" :id="item.id" auto></unity-front-preview>
                 </div>
                 <div class="previewMsg text-overflow">
                     {{item.name}}
                 </div>
                 <div class="btns">
-                    <XButton class="z_XButton_type iconfont" @click.native="deleteItem(item)">&#xe613;</XButton>
-                    <XButton class="z_XButton_type iconfont" @click.native="$router.push('/preview/'+item.id+'?type=editor')">&#xe601;</XButton>
+                    <XButton class="z_XButton_type iconfont" title="删除" @click.native="deleteItem(item)">&#xe613;</XButton>
+                    <XButton class="z_XButton_type iconfont" title="复制" @click.native="copy(item)">&#xe605;</XButton>
+                    <XButton class="z_XButton_type iconfont" title="编辑" @click.native="$router.push('/preview/'+item.id+'?type=editor')">&#xe601;</XButton>
+                    <XButton class="z_XButton_type iconfont" title="设置" @click.native="setView(item)">&#xe617;</XButton>
                 </div>
             </div>
         </div>
@@ -44,6 +47,20 @@
                     this.list = res.data;
                 });
             },
+            setView(item){
+                this.$ZAlert.show({
+                    title:"修改视图",
+                    components:"Alert/CreateNewProjectsView",
+                    width:"500px",
+                    props:{
+                        vm:()=>this,
+                        scene:()=>JSON.parse(JSON.stringify(item)),
+                    },
+                    _event:{
+                        save:this.init,
+                    }
+                });
+            },
             add(){
                 this.$ZAlert.show({
                     title:"创建视图",
@@ -51,7 +68,6 @@
                     width:"500px",
                     props:{
                         vm:()=>this,
-                        scene:true,
                     },
                     _event:{
                         save:this.init,
@@ -68,6 +84,17 @@
                         });
                     }
                 });
+            },
+            copy(item){
+                this.api().view_viewCreate({
+                    project_name:item.name,
+                    project_id:item.project_id,
+                    config:item.config,
+                }).then(res=>{
+                    if(res.code === 200){
+                        this.init();
+                    }
+                })
             }
         }
     }
@@ -90,7 +117,7 @@
     }
     .ViewManagementSceneBottom{
         .SceneItem{
-            width: 240px;
+            width: 280px;
             box-shadow: 0 0 0 2px #d8d8d8;
             float: left;
             margin: 0 15px;
@@ -105,8 +132,17 @@
                 background-repeat: no-repeat;
                 background-size: cover;
                 border-bottom: 1px solid #e5e5e5;
+                overflow: hidden;
                 *{
                     cursor: pointer;
+                }
+                .preview{
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 1;
                 }
                 .operation{
                     opacity: 0;
@@ -116,6 +152,7 @@
                     width: 100%;
                     height: 100%;
                     background-color: rgba(0,0,0,0.3);
+                    z-index: 2;
                     .iconfont{
                         position: absolute;
                         left: 50%;
