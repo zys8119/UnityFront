@@ -1,5 +1,5 @@
 <template>
-    <div class="UnityFrontPreview" v-if="watchAuto" :class="{auto:layout.auto}" :style="{
+    <div class="UnityFrontPreview" v-if="watchAuto" :class="{auto:layout.auto || auto}" :style="{
         ...getStyle(layout,null,true),
         backgroundColor:layout.backgroundColor,
         backgroundImage:`url(${layout.backgroundImage})`,
@@ -9,7 +9,9 @@
                 <div class="layout" :style="{
                     ...getStyle(item,key),
                     ...item.info.style
-                }"></div>
+                }">
+                        <component is="d-test-test"></component>
+                </div>
             </template>
             <template v-if="item.info.type === 'text'">
                 <div class="text" :style="{
@@ -45,6 +47,10 @@
 <script>
     export default {
         name: "UnityFrontPreview",
+        props:{
+            id:{type:String,default:null},
+            auto:{type:Boolean,default:false},
+        },
         data(){
             return {
                 view:{},
@@ -84,7 +90,7 @@
         methods:{
             init(){
                 this.api().view_getView({
-                    id:this.$route.params.id
+                    id:(this.id)?this.id:this.$route.params.id
                 }).then(res=>{
                     this.view = res.data;
                     this.api().view_get_project({
@@ -108,7 +114,7 @@
                             zIndex:key+10,
                         }
 
-                        if(this.layout.auto){
+                        if(this.layout.auto || this.auto){
                             // 响应式处理
                             let b = window.innerWidth/this.layout.width;
                             resUltStyle = {
@@ -146,6 +152,9 @@
         top: 0 !important;
         width: 100% !important;
         height: 100% !important;
+    }
+    .layout{
+        overflow: hidden;
     }
     .layout,.text,.rect,.images,.svgBox{
         position: absolute;

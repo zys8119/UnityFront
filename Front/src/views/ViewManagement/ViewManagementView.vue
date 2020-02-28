@@ -24,10 +24,11 @@
 </template>
 
 <script>
+    import UnityFrontPreview from "../UnityFront/UnityFrontPreview"
     import { XButton } from "vux"
     export default {
         name: "ViewManagementScene",
-        components:{ XButton },
+        components:{ XButton, UnityFrontPreview },
         data(){
             return {
                 list:[]
