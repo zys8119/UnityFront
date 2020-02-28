@@ -10,7 +10,19 @@
                     ...getStyle(item,key),
                     ...item.info.style
                 }">
-                        <component is="d-test-test" :config="item" :layout="layout" :getStyle="getStyle(item,key)"></component>
+                    <component is="DTestTest" :config="item" :layout="layout" :getStyle="getStyle(item,key)"></component>
+                    <div v-if="editor" class="layoutEditor">
+                        <div class="layoutEditorContent">
+                            <div class="layoutEditorContentBtn" @click="bindingComponents(item,layout,getStyle(item,key))">
+                                <span class="iconfont">&#xe708;</span>
+                                <p>绑定组件</p>
+                            </div>
+                            <div class="layoutEditorContentBtn" @click="unBindingComponents(item,layout,getStyle(item,key))">
+                                <span class="iconfont">&#xe709;</span>
+                                <p>解绑组件</p>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </template>
             <template v-if="item.info.type === 'text'">
@@ -56,6 +68,7 @@
                 view:{},
                 project:{},
                 watchAuto:true,
+                dashboard:[],
             }
         },
         computed:{
@@ -72,6 +85,13 @@
                 }catch (e) {
                     return  [];
                 }
+            },
+            editor(){
+                let bool = this.$route.query.type === "editor";
+                if(bool){
+                    document.title = "视图编辑"
+                }
+                return bool;
             }
         },
         mounted() {
@@ -85,7 +105,8 @@
                         this.watchAuto = true;
                     });
                 }
-            }
+            };
+            this.dashboard = window.dashboard;
         },
         methods:{
             init(){
@@ -135,12 +156,27 @@
                     return {};
                 }
 
+            },
+            bindingComponents(item,layout,getStyle){
+                this.$ZAlert.show({
+                    title:"绑定组件",
+                    props: {
+                        item:()=>item,
+                        layout:()=>layout,
+                        getStyle:()=>getStyle
+                    },
+                    components:"Alert/BindingComponents"
+                })
+            },
+            unBindingComponents(){
+
             }
         }
     }
 </script>
 
 <style scoped lang="less">
+@import "../../assets/less/vars";
 .UnityFrontPreview{
     background-repeat: no-repeat;
     background-position: center;
@@ -153,11 +189,56 @@
         width: 100% !important;
         height: 100% !important;
     }
-    .layout{
-        overflow: hidden;
-    }
     .layout,.text,.rect,.images,.svgBox{
         position: absolute;
+    }
+    .layout{
+        overflow: hidden;
+        .layoutEditor{
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255,255,255,0.8);
+            z-index: 1000000;
+            .layoutEditorContent{
+                position: absolute;
+                left: 50%;
+                top: 50%;
+                transform: translate(-50%,-50%);
+                color: #666666;
+                .layoutEditorContentBtn{
+                    display: inline-block;
+                    cursor: pointer;
+                    position: relative;
+                    text-align: center;
+                    span{
+                        &.iconfont{
+                            font-size: 40px;
+                        }
+                    }
+                    &+.layoutEditorContentBtn{
+                        margin-left: 15px;
+                    }
+                    &:hover{
+                        color: @themeLogoColor;
+                    }
+                    &:active{
+                        color: @themeLogoColor*0.9;
+                    }
+                    &:before{
+                        content: "";
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+
+            }
+        }
     }
 }
 </style>

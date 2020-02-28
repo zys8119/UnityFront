@@ -42,7 +42,7 @@
                 }catch (e) {}
                 this.$ZAlert.show({
                     title:`【${this.title}】颜色选择`,
-                    width:"220px",
+                    width:"250px",
                     components: "ColorSketch/ColorSketch",
                     props:{
                         color,

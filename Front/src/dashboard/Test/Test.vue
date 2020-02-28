@@ -1,6 +1,6 @@
 <template>
     <div class="Test">
-        <Echarts :data="test" :height="getStyle.height"></Echarts>
+        <Echarts :data="test" :height="(getStyle.height.indexOf('%') > -1)? '100%':getStyle.height"></Echarts>
     </div>
 </template>
 

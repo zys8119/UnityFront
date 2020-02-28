@@ -1,6 +1,8 @@
 <template>
     <div class="ColorSketch">
-        <color-sketch-select :value="value" @input="change" :preset-colors="colors" ref="Sketch"></color-sketch-select>
+        <div class="ColorSketchBox">
+            <color-sketch-select :value="value" @input="change" :preset-colors="colors" ref="Sketch"></color-sketch-select>
+        </div>
     </div>
 </template>
 
@@ -44,6 +46,8 @@
 
 <style scoped lang="less">
     .ColorSketch {
-
+        .ColorSketchBox{
+            width: 100%;
+        }
     }
 </style>

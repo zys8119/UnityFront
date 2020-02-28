@@ -10,13 +10,14 @@
                     :style="{
                     backgroundImage:(item.config && item.config.image)?`url(${item.config.image})`:null
                 }">
-                    <div class="operation"> <span class="iconfont">&#xe601;</span></div>
+                    <div class="operation"> <span class="iconfont">&#xe660;</span></div>
                 </div>
                 <div class="previewMsg text-overflow">
                     {{item.name}}
                 </div>
                 <div class="btns">
                     <XButton class="z_XButton_type iconfont" @click.native="deleteItem(item)">&#xe613;</XButton>
+                    <XButton class="z_XButton_type iconfont" @click.native="$router.push('/preview/'+item.id+'?type=editor')">&#xe601;</XButton>
                 </div>
             </div>
         </div>
@@ -159,7 +160,7 @@
                     font-size: 16px !important;
                     background-color: @themeLogoColor*0.9 !important;
                     color: #ffffff !important;
-                    &+.z_XButton{
+                    &+.z_XButton_type{
                         margin-left: 15px;
                     }
                 }
