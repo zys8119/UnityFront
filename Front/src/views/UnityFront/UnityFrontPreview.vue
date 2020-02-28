@@ -1,5 +1,5 @@
 <template>
-    <div class="UnityFrontPreview" :class="{auto:layout.auto}" :style="{
+    <div class="UnityFrontPreview" v-if="watchAuto" :class="{auto:layout.auto}" :style="{
         ...getStyle(layout,null,true),
         backgroundColor:layout.backgroundColor,
         backgroundImage:`url(${layout.backgroundImage})`,
@@ -13,8 +13,8 @@
             </template>
             <template v-if="item.info.type === 'text'">
                 <div class="text" :style="{
+                    ...item.info.style,
                     ...getStyle(item,key),
-                    ...item.info.style
                 }">{{item.info.name}}</div>
             </template>
             <template v-if="item.info.type === 'rect'">
@@ -49,6 +49,7 @@
             return {
                 view:{},
                 project:{},
+                watchAuto:true,
             }
         },
         computed:{
@@ -69,6 +70,16 @@
         },
         mounted() {
             this.init();
+            let winOnresize = window.onresize || new Function();
+            window.onresize = ()=>{
+                winOnresize();
+                if(this.layout.auto){
+                    this.watchAuto = false;
+                    this.$nextTick(()=>{
+                        this.watchAuto = true;
+                    });
+                }
+            }
         },
         methods:{
             init(){
@@ -99,12 +110,17 @@
 
                         if(this.layout.auto){
                             // 响应式处理
+                            let b = window.innerWidth/this.layout.width;
                             resUltStyle = {
                                 ...resUltStyle,
                                 width:item.width/this.layout.width*100+'%',
                                 height:item.height/this.layout.height*100+'%',
                                 left:item.left/this.layout.width*100+'%',
                                 top:item.top/this.layout.height*100+'%',
+                            };
+                            if(item.info.type === 'text' && item.info.style.fontSize){
+                                let fontSize = b*parseInt(item.info.style.fontSize)*9;
+                                resUltStyle.fontSize = fontSize + "%";
                             }
                         }
                     }
@@ -125,7 +141,7 @@
     background-size: cover;
     overflow: hidden;
     &.auto{
-        position: fixed;
+        position: absolute;
         left: 0 !important;
         top: 0 !important;
         width: 100% !important;
