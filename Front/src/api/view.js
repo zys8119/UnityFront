@@ -149,4 +149,19 @@ export default {
             }
         })
     },
+    view_viewUpdate(data){
+        this.$vux.loading.show();
+        return this.action({
+            moduleName:"view",
+            method:"post",
+            url:"view/viewUpdate",
+            data,
+            resthen:()=>{
+                this.action({
+                    moduleName: "view",
+                    goods:null
+                });
+            }
+        })
+    },
 }

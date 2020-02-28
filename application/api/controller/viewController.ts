@@ -229,25 +229,27 @@ export class viewController extends applicationController{
 
     viewUpdate(){
         this.isViewExist().then(()=> {
-            // let {image,...config} = this.$_body.config;
-            // let base64 = image.replace(/^data:image\/\w+;base64,/, "");
-            // let dataBuffer = Buffer.from(base64, 'base64');
-            // let imageUrl = `public/img/images/${this.$_body.project_id}.png`;
-            // let url = path.resolve(__dirname,"../../../",imageUrl);
-            // fs.writeFile(url,dataBuffer, 'utf8', err=>{
-            //     if (err) this.$_error();
-            // });
-            // config.image = imageUrl;
-            this.DB().update(this.TabelNameView, {
-                // project_name: this.$_body.project_name || '',
-                // config: this.$_encode(config)
-            }).where({
-                id: this.$_body.id,
-            }).query(null, false).then(() => {
-                this.$_success();
-            }).catch(err => {
+            this.DB().select().from(this.TabelNameView).where({
+                id:this.$_body.id,
+            }).query(null,false).then(data=>{
+                let config = {};
+                try {
+                    config = this.$_decode(data[0]).config || {};
+                }catch (e) {};
+                config[this.$_body.c_key] = this.$_body.c_name;
+                this.DB().update(this.TabelNameView, {
+                    config: this.$_encode(config)
+                }).where({
+                    id: this.$_body.id,
+                }).query(null, false).then(() => {
+                    this.$_success();
+                }).catch(err => {
+                    this.$_error(err);
+                });
+            }).catch(err=>{
                 this.$_error(err);
             });
+
         });
     }
 }

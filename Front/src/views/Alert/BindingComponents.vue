@@ -47,8 +47,14 @@
             init(){
                 this.height = window.innerHeight*0.6+'px'
             },
-            binding(bindId,name){
-                console.log(this.id,bindId,name);
+            binding(c_key,c_name){
+                this.api().view_viewUpdate({
+                    id:this.id,
+                    c_name,
+                    c_key
+                }).then(res=>{
+                    console.log(res)
+                });
             }
         }
     }
