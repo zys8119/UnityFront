@@ -18,6 +18,12 @@
                               @on-change="airforce.input($event.hex8,'backgroundColor','UnityFrontView')"
                     ></uf-color>
                 </flexbox-item>
+                <flexbox-item title="width">
+                    <x-switch title="响应式" class="x_switch"
+                              :value="airforce.UnityFrontView.auto"
+                              @on-change="airforce.input($event,'auto','UnityFrontView')"
+                    ></x-switch>
+                </flexbox-item>
             </flexbox>
             <flexbox>
                 <flexbox-item title="width">
@@ -291,7 +297,7 @@
 <script>
     import UfGroup from "./UfGroup"
     import UfColor from "./UfColor"
-    import { XInput, Flexbox, FlexboxItem, Selector, XTextarea, XNumber, Cell, Range } from "vux"
+    import { XInput, Flexbox, FlexboxItem, Selector, XTextarea, XNumber, Cell, Range, XSwitch  } from "vux"
     export default {
         name: "ToolForm",
         data(){
@@ -307,7 +313,7 @@
             }
         },
         components:{
-            UfGroup, XInput, Flexbox, FlexboxItem, Selector, UfColor, XTextarea, XNumber, Cell, Range
+            UfGroup, XInput, Flexbox, FlexboxItem, Selector, UfColor, XTextarea, XNumber, Cell, Range, XSwitch
         },
         computed:{
             componentInfo(){

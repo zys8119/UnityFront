@@ -158,6 +158,32 @@ p{
   }
 }
 
+.x_switch{
+  .weui-label{
+    color: @textColor;
+  }
+  .weui-switch, .weui-switch-cp__box{
+    height: 30px;
+    border:none;
+    background-color: @themeColor;
+    box-shadow: inset 0 0 3px #000000;
+    &:before{
+      height: 30px;
+      background-color: transparent;
+    }
+    &:after{
+      height: 30px;
+      width: 30px;
+      background-color: @textColor;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+    }
+  }
+  .weui-switch:checked, .weui-switch-cp__input:checked ~ .weui-switch-cp__box{
+    border-color: @viewsColor;
+    background-color: @viewsColor;
+  }
+}
+
 .z_cell{
   padding: 0 !important;
   .vux-label{

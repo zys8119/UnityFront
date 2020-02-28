@@ -64,4 +64,5 @@ export const UnityFrontView = {
     height:1080,
     title:null,
     preview:false,
+    auto:false
 };

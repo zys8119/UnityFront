@@ -1,5 +1,5 @@
 <template>
-    <div class="UnityFrontPreview" :class="{auto:auto}" :style="{
+    <div class="UnityFrontPreview" :class="{auto:layout.auto}" :style="{
         ...getStyle(layout,null,true),
         backgroundColor:layout.backgroundColor,
         backgroundImage:`url(${layout.backgroundImage})`,
@@ -49,7 +49,6 @@
             return {
                 view:{},
                 project:{},
-                auto:true,
             }
         },
         computed:{
@@ -98,7 +97,7 @@
                             zIndex:key+10,
                         }
 
-                        if(this.auto){
+                        if(this.layout.auto){
                             // 响应式处理
                             resUltStyle = {
                                 ...resUltStyle,
