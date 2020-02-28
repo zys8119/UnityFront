@@ -10,7 +10,7 @@
                     ...getStyle(item,key),
                     ...item.info.style
                 }">
-                        <component is="d-test-test"></component>
+                        <component is="d-test-test" :config="item" :layout="layout" :getStyle="getStyle(item,key)"></component>
                 </div>
             </template>
             <template v-if="item.info.type === 'text'">

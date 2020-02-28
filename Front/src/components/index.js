@@ -11,3 +11,4 @@ export const ProjectGrid = ivTo("ProjectGrid");
 export const ToolForm = ivTo("ToolForm");
 export const UfGroup = ivTo("UfGroup");
 export const OnContextMenu = ivTo("OnContextMenu");
+export const Echarts = ivTo("Echarts");
