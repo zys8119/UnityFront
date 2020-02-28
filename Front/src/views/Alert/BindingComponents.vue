@@ -2,7 +2,10 @@
     <div class="BindingComponents">
         <x-input placeholder="请输入关键字" class="search vux-1px-b" :showClear="false"></x-input>
         <div class="BindingComponentsBox webkit-scrollbar" :style="{height:height}">
-            <component v-for="(name,key) in dashboard" :key="key" :is="name" :config="item" :layout="layout" :getStyle="getStyle"></component>
+            <div class="BindingComponentsBoxItem" v-for="(name,key) in dashboard" :key="key">
+                <component :is="name" :config="item" :layout="layout" :getStyle="getStyle"></component>
+                <span class="iconfont BindingComponentsBoxItemSelect" :class="{select:name === config[item.id]}">&#xe62e;{{item.config}}</span>
+            </div>
         </div>
     </div>
 </template>
@@ -14,6 +17,7 @@
         components:{ XInput },
         props: {
             item:{type:Object,default:Object},
+            view:{type:Object,default:Object},
             layout:{type:Object,default:Object},
             getStyle:{type:Object,default:Object}
         },
@@ -21,6 +25,12 @@
             return {
                 height:null,
                 dashboard:[],
+                value:null
+            }
+        },
+        computed:{
+            config(){
+                return this.view.config || {};
             }
         },
         mounted() {
@@ -41,10 +51,51 @@
 </script>
 
 <style scoped lang="less">
+@import "../../assets/less/vars";
 .BindingComponents{
     background-color: #ffffff !important;
     .BindingComponentsBox{
         overflow: auto;
+        position: relative;
+        .BindingComponentsBoxItem{
+            position: relative;
+            width: 50%;
+            float: left;
+            height: 500px;
+            border:1px solid transparent;
+            box-shadow: 0 0 2px #e5e5e5;
+            .BindingComponentsBoxItemSelect{
+                position: absolute;
+                right: 0;
+                bottom: 0;
+                width: 50px;
+                height: 50px;
+                line-height: 50px;
+                color: #e5e5e5;
+                font-size: 30px;
+                background-color: #ffffff;
+                text-align: center;
+                z-index: 100000;
+                box-shadow: -4px -4px 4px #666666;
+                cursor: pointer;
+                &:hover{
+                    background-color: @themeLogoColor;
+                    color: #ffffff;
+                }
+                &.select{
+                    background-color: @themeLogoColor*0.9;
+                    color: #ffffff;
+                }
+            }
+            &:hover{
+                border:1px solid @themeLogoColor;
+                transition: border-left-color,
+                            border-right-color,
+                            border-bottom-color,
+                            border-top-color
+                            ease-in 0.3s;
+            }
+        }
     }
     .search{
         text-align: center;

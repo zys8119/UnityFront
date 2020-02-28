@@ -10,14 +10,20 @@
                     ...getStyle(item,key),
                     ...item.info.style
                 }">
-                    <component is="DTestTest" :config="item" :layout="layout" :getStyle="getStyle(item,key)"></component>
+                    <component
+                            v-if="config[item.id]"
+                           :is="config[item.id]"
+                           :config="item"
+                           :layout="layout"
+                           :getStyle="getStyle(item,key)"
+                    ></component>
                     <div v-if="editor" class="layoutEditor">
                         <div class="layoutEditorContent">
-                            <div class="layoutEditorContentBtn" @click="bindingComponents(item,layout,getStyle(item,key))">
+                            <div class="layoutEditorContentBtn" @click="bindingComponents(item, view,layout,getStyle(item,key))">
                                 <span class="iconfont">&#xe708;</span>
                                 <p>绑定组件</p>
                             </div>
-                            <div class="layoutEditorContentBtn" @click="unBindingComponents(item,layout,getStyle(item,key))">
+                            <div class="layoutEditorContentBtn" @click="unBindingComponents(item, view, layout,getStyle(item,key))">
                                 <span class="iconfont">&#xe709;</span>
                                 <p>解绑组件</p>
                             </div>
@@ -92,6 +98,9 @@
                     document.title = "视图编辑"
                 }
                 return bool;
+            },
+            config(){
+                return this.view.config || {};
             }
         },
         mounted() {
@@ -157,11 +166,12 @@
                 }
 
             },
-            bindingComponents(item,layout,getStyle){
+            bindingComponents(item, view, layout,getStyle){
                 this.$ZAlert.show({
                     title:"绑定组件",
                     props: {
                         item:()=>item,
+                        view:()=>view,
                         layout:()=>layout,
                         getStyle:()=>getStyle
                     },
