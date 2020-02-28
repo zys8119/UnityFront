@@ -4,7 +4,7 @@
         <div class="BindingComponentsBox webkit-scrollbar" :style="{height:height}">
             <div class="BindingComponentsBoxItem" v-for="(name,key) in dashboard" :key="key">
                 <component :is="name" :config="item" :layout="layout" :getStyle="getStyle"></component>
-                <span class="iconfont BindingComponentsBoxItemSelect" :class="{select:name === config[item.id]}">&#xe62e;{{item.config}}</span>
+                <span class="iconfont BindingComponentsBoxItemSelect" @click="binding(item.id, name)" :class="{select:name === config[item.id]}">&#xe62e;{{item.config}}</span>
             </div>
         </div>
     </div>
@@ -16,6 +16,7 @@
         name: "BindingComponents",
         components:{ XInput },
         props: {
+            id:{type:String,default:null},
             item:{type:Object,default:Object},
             view:{type:Object,default:Object},
             layout:{type:Object,default:Object},
@@ -45,6 +46,9 @@
         methods:{
             init(){
                 this.height = window.innerHeight*0.6+'px'
+            },
+            binding(bindId,name){
+                console.log(this.id,bindId,name);
             }
         }
     }

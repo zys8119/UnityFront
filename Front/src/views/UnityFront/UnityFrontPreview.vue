@@ -66,7 +66,6 @@
     export default {
         name: "UnityFrontPreview",
         props:{
-            id:{type:String,default:null},
             auto:{type:Boolean,default:false},
         },
         data(){
@@ -120,7 +119,7 @@
         methods:{
             init(){
                 this.api().view_getView({
-                    id:(this.id)?this.id:this.$route.params.id
+                    id:this.$route.params.id
                 }).then(res=>{
                     this.view = res.data;
                     this.api().view_get_project({
@@ -170,10 +169,11 @@
                 this.$ZAlert.show({
                     title:"绑定组件",
                     props: {
+                        id:this.$route.params.id,
                         item:()=>item,
                         view:()=>view,
                         layout:()=>layout,
-                        getStyle:()=>getStyle
+                        getStyle:()=>getStyle,
                     },
                     components:"Alert/BindingComponents"
                 })
