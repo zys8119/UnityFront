@@ -74,5 +74,95 @@ export default {
      */
     ProjectList(item){
         console.log(item)
-    }
+    },
+
+    /**
+     * 获取临时id
+     */
+    getId(){
+        return Date.now().toString()+parseInt(Math.random()*100000);
+    },
+
+    /**
+     * 获取数据
+     */
+    getData(data){
+        let publicStyle = {
+            transform:"matrix(1, 0, 0, 1, 0, 0)",
+            borderRadius:"0 0 0 0",
+        };
+        switch (data.info.type) {
+            case "layout":
+                data = {
+                    ...data,
+                    info:{
+                        ...data.info,
+                        style:{
+                            ...publicStyle
+                        }
+                    },
+                };
+                break;
+            case "text":
+                data = {
+                    ...data,
+                    info:{
+                        ...data.info,
+                        style:{
+                            textAlign: "left",
+                            color: "#ffffff",
+                            wordWrap: "break-word",
+                            fontSize: "18px",
+                            ...publicStyle
+                        }
+                    },
+                };
+                break;
+            case "images":
+                data = {
+                    ...data,
+                    info:{
+                        ...data.info,
+                        url:require("@/assets/logo.png"),
+                        style:{
+                            opacity:1,
+                            ...publicStyle
+                        },
+                    },
+                };
+                break;
+            case "svg":
+                data = {
+                    ...data,
+                    info:{
+                        ...data.info,
+                        viewBox:"0 0 1024 1024",
+                        style:{
+                            fill:"#fff",
+                            stroke:"#fff",
+                            strokeWidth:0,
+                            ...publicStyle
+                        }
+                    },
+                };
+                break;
+            case "rect":
+                data = {
+                    ...data,
+                    info:{
+                        ...data.info,
+                        style:{
+                            backgroundColor: "#fff",
+                            borderWidth:0,
+                            border: "0px solid",
+                            borderColor:"#fff",
+                            backgroundImage:"linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0))",
+                            ...publicStyle
+                        }
+                    },
+                };
+                break;
+        };
+        return data;
+    },
 }

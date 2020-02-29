@@ -34,6 +34,15 @@
                     event.stopPropagation();
                     this.save();
                 }
+                if(event.keyCode === 32){
+                    this.airforce.input({cursorMove:true},'UnityFrontView');
+                }
+            };
+
+            document.onkeyup = (event)=>{
+                if(event.keyCode === 32){
+                    this.airforce.input({cursorMove:false},'UnityFrontView');
+                }
             }
         },
         methods:{

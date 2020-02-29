@@ -1,5 +1,8 @@
 <template>
-    <div class="UnityFrontView" :class="{preview:airforce.UnityFrontView.preview}">
+    <div class="UnityFrontView" :class="{
+        preview:airforce.UnityFrontView.preview,
+        cursorMove:airforce.UnityFrontView.cursorMove,
+    }">
         <unity-front-layout-title title="场景视图"></unity-front-layout-title>
         <div class="UnityFrontViewContent" ref="UnityFrontViewContent" id="UnityFrontViewContent"
              v-dragdrop dragdrop=".UnityFrontViewContent"
@@ -62,92 +65,13 @@
         name: "UnityFrontView",
         components:{ UnityFrontLayoutTitle, OnContextMenu, Range, XButton, ProjectGridItem },
         methods:{
-            getData(data,ev){
-                let publicStyle = {
-                    transform:"matrix(1, 0, 0, 1, 0, 0)",
-                    borderRadius:"0 0 0 0",
-                };
-                switch (data.info.type) {
-                    case "layout":
-                        data = {
-                            ...data,
-                            info:{
-                                ...data.info,
-                                style:{
-                                    ...publicStyle
-                                }
-                            },
-                        };
-                        break;
-                    case "text":
-                        data = {
-                            ...data,
-                            info:{
-                                ...data.info,
-                                style:{
-                                    textAlign: "left",
-                                    color: "#ffffff",
-                                    wordWrap: "break-word",
-                                    fontSize: "18px",
-                                    ...publicStyle
-                                }
-                            },
-                        };
-                        break;
-                    case "images":
-                        data = {
-                            ...data,
-                            info:{
-                                ...data.info,
-                                url:require("@/assets/logo.png"),
-                                style:{
-                                    opacity:1,
-                                    ...publicStyle
-                                },
-                            },
-                        };
-                        break;
-                    case "svg":
-                        data = {
-                            ...data,
-                            info:{
-                                ...data.info,
-                                viewBox:"0 0 1024 1024",
-                                style:{
-                                    fill:"#fff",
-                                    stroke:"#fff",
-                                    strokeWidth:0,
-                                    ...publicStyle
-                                }
-                            },
-                        };
-                        break;
-                    case "rect":
-                        data = {
-                            ...data,
-                            info:{
-                                ...data.info,
-                                style:{
-                                    backgroundColor: "#fff",
-                                    borderWidth:0,
-                                    border: "0px solid",
-                                    borderColor:"#fff",
-                                    backgroundImage:"linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0))",
-                                    ...publicStyle
-                                }
-                            },
-                        };
-                        break;
-                };
-                return data;
-            },
             drop(ev) {
                 try {
                     let data = JSON.parse(ev.dataTransfer.getData("data"));
                     let n = 300;
-                    let id = Date.now().toString()+parseInt(Math.random()*100000);
+                    let id = this.$utils.getId();
                     let component = _.cloneDeep(this.airforce.UnityFrontView.component);
-                    component.push(this.getData({
+                    component.push(this.$utils.getData({
                         id,
                         operate:false,
                         left:parseInt((ev.layerX - n/2)),
@@ -285,12 +209,35 @@
                 );
             }
             &:before{
-                //content: "";
-                //.line(90deg);
+                content: "";
+                .line(90deg);
             }
             &:after{
-                //content: "";
-                //.line(0deg);
+                content: "";
+                .line(0deg);
+            }
+        }
+        &.cursorMove{
+            &/deep/ .UnityFrontViewContent{
+                cursor: move;
+                &:before{
+                    background-image: none !important;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 1000000000000000000;
+                }
+                &:after{
+                    background-image: none !important;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 1000000000000000000;
+                }
             }
         }
         &.preview{

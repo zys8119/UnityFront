@@ -31,6 +31,7 @@
                                 ]
                             }else {
                                 this.menus = [
+                                    {name:"复制",type:"copy"},
                                     {name:"删除",type:"delete"},
                                     ...this.list,
                                 ]
@@ -78,6 +79,17 @@
                                 this.action({moduleName:"UnityFrontView", goods:{component:null}});
                                 this.action({moduleName:"UnityFrontView", goods:{component:[]}});
                             }
+                            break;
+                        case "copy":
+                            let component = _.cloneDeep(this.airforce.UnityFrontView.component);
+                            component = component.map(e=>({...e,operate:false}));
+                            let targetData = _.cloneDeep(this.targetData);
+                            targetData.id = this.$utils.getId();
+                            targetData.left += 5;
+                            targetData.top += 5;
+                            component.push(this.$utils.getData(targetData));
+                            this.action({moduleName:"UnityFrontView", goods:{component:null}});
+                            this.action({moduleName:"UnityFrontView", goods:{component:component}});
                             break;
                     }
                 }catch (e) {
