@@ -251,10 +251,8 @@ export class viewController extends applicationController{
                     try {
                         config = this.$_decode(data[0].config) || {};
                     }catch (e) {};
-                    console.log(data,config)
                     config[this.$_body.c_key] = this.$_body.c_name;
                 }
-                console.log(config)
                 let updateData = {
                     config: this.$_encode(config)
                 };
