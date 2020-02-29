@@ -1,5 +1,5 @@
 <template>
-    <div class="UnityFrontPreview" id="UnityFrontPreview" v-if="watchAuto" :class="{auto:layout.auto || auto}" :style="{
+    <div class="UnityFrontPreview" id="UnityFrontPreview" v-if="watchAuto" :class="{auto:layout.auto || auto,editor:editor}" :style="{
         ...getStyle(layout,null,true),
         backgroundColor:layout.backgroundColor,
         backgroundImage:`url(${layout.backgroundImage})`,
@@ -225,21 +225,25 @@
             width: 100%;
             height: 100%;
             background-color: rgba(255,255,255,0.2);
-            z-index: 1000000;
+            z-index: 100000000;
             .layoutEditorContent{
                 position: absolute;
                 left: 50%;
                 top: 50%;
                 transform: translate(-50%,-50%);
                 color: #666666;
+                overflow: hidden;
+                width: 120px+15px;
                 .layoutEditorContentBtn{
-                    display: inline-block;
                     cursor: pointer;
                     position: relative;
                     text-align: center;
+                    font-size: 14px;
+                    float: left;
+                    width: 60px;
                     span{
                         &.iconfont{
-                            font-size: 40px;
+                            font-size: 30px;
                         }
                     }
                     &+.layoutEditorContentBtn{
@@ -262,6 +266,11 @@
                 }
 
             }
+        }
+    }
+    &.editor{
+        .layout{
+            overflow: initial;
         }
     }
 }
