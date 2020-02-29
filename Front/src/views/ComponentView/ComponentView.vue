@@ -7,8 +7,11 @@
                     :animation="500"
                     :componentList="componentList"
             >
-                <component-tree v-for="(item,key) in list" :item="item" :key="key" init :styleHover="false">
-                    <div slot-scope="{data}" class="treeItem" :class="{operate:data.operate}" @click="treeClick(key)">{{data.info.name}}</div>
+                <component-tree v-for="(item,key) in list" :item="item" :key="key" init :styleHover="false" class="tree">
+                    <div slot-scope="{data}" class="treeItem text-overflow" :class="{operate:data.operate}" @click="treeClick(key)">
+                        {{data.info.name}}
+                        <span class="iconfont" @click.stop="deleteItem(item)">&#xe6b5;</span>
+                    </div>
                 </component-tree>
             </draggable>
         </uf-box>
@@ -52,6 +55,11 @@
                 }
                 this.action({moduleName:"UnityFrontView", goods:{component:null}});
                 this.action({moduleName:"UnityFrontView", goods:{component}});
+            },
+            deleteItem(item){
+                let component = _.cloneDeep(this.airforce.UnityFrontView.component);
+                this.action({moduleName:"UnityFrontView", goods:{component:null}});
+                this.action({moduleName:"UnityFrontView", goods:{component:component.filter(e=>e.id !== item.id),}});
             }
         }
     }
@@ -62,12 +70,28 @@
     .ComponentView {
         position: relative;
         height: 30%;
-        .treeItem{
-            &.operate{
-                color: #0078ff;
+        &/deep/ .tree{
+            .iconfont{
+                display: none;
             }
-            &:hover{
-                background-color: @themeColor;
+            .treeItem{
+                padding: 0 15px;
+                &.operate{
+                    color: #0078ff;
+                }
+                .iconfont{
+                    font-size: 12px !important;
+                    float: right !important;
+                    text-align: center;
+                    display: block;
+                    &:hover{
+                        color: @themeLogoColor !important;
+                        cursor: pointer !important;
+                    }
+                }
+                &:hover{
+                    background-color: @themeColor;
+                }
             }
         }
     }
