@@ -37,7 +37,9 @@
             onload(){
                 setTimeout(()=>{
                     var map = new BMapGL.Map("allmap");    // 创建Map实例
-                    map.centerAndZoom(new BMapGL.Point(118.5, 27.5), 5);  // 初始化地图,设置中心点坐标和地图级别
+                    // map.centerAndZoom(new BMapGL.Point(118.5, 27.5), 5);  // 初始化地图,设置中心点坐标和地图级别
+                    // map.centerAndZoom(new BMapGL.Point(121.6311992500,29.8659869100), 18);  // 初始化地图,设置中心点坐标和地图级别
+                    map.centerAndZoom(new BMapGL.Point(121.6311992500,29.8659869100), 0);  // 初始化地图,设置中心点坐标和地图级别
                     map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
                     map.setMapType(BMAP_EARTH_MAP);
                     let time = setInterval(()=>{
@@ -49,8 +51,11 @@
                             }catch (e) {
 
                             }
-                            let cxt = canvas[0].getContext('2d');
-                            console.log(canvas[0],cxt)
+                            // setInterval(()=>{
+                            //     let cxt = canvas[0].getContext('webgl');
+                            //     console.log(cxt,cxt.COLOR_BUFFER_BIT)
+                            //     cxt.clear(cxt.COLOR_BUFFER_BIT)
+                            // });
                         }
                     })
                 })
