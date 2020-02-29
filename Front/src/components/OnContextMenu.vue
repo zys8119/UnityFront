@@ -87,7 +87,7 @@
                             targetData.id = this.$utils.getId();
                             targetData.left += 5;
                             targetData.top += 5;
-                            component.push(this.$utils.getData(targetData));
+                            component.push(targetData);
                             this.action({moduleName:"UnityFrontView", goods:{component:null}});
                             this.action({moduleName:"UnityFrontView", goods:{component:component}});
                             break;
