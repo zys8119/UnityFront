@@ -49,7 +49,8 @@
                             }catch (e) {
 
                             }
-                            console.log(canvas[0])
+                            let cxt = canvas[0].getContext('2d');
+                            console.log(canvas[0],cxt)
                         }
                     })
                 })
