@@ -10,7 +10,8 @@
                 <component-tree v-for="(item,key) in list" :item="item" :key="key" init :styleHover="false" class="tree">
                     <div slot-scope="{data}" class="treeItem text-overflow" :class="{operate:data.operate}" @click="treeClick(key)">
                         {{data.info.name}}
-                        <span class="iconfont" @click.stop="deleteItem(item)">&#xe6b5;</span>
+                        <span class="iconfont" @click.stop="deleteItem(item)" title="删除">&#xe6b5;</span>
+                        <span class="iconfont copy" @click.stop="copyItem(item)" title="复制">&#xe605;</span>
                     </div>
                 </component-tree>
             </draggable>
@@ -60,6 +61,17 @@
                 let component = _.cloneDeep(this.airforce.UnityFrontView.component);
                 this.action({moduleName:"UnityFrontView", goods:{component:null}});
                 this.action({moduleName:"UnityFrontView", goods:{component:component.filter(e=>e.id !== item.id),}});
+            },
+            copyItem(item){
+                let component = _.cloneDeep(this.airforce.UnityFrontView.component);
+                component = component.map(e=>({...e,operate:false}));
+                let targetData = _.cloneDeep(item);
+                targetData.id = this.$utils.getId();
+                targetData.left += 5;
+                targetData.top += 5;
+                component.push(targetData);
+                this.action({moduleName:"UnityFrontView", goods:{component:null}});
+                this.action({moduleName:"UnityFrontView", goods:{component:component}});
             }
         }
     }
@@ -87,6 +99,9 @@
                     &:hover{
                         color: @themeLogoColor !important;
                         cursor: pointer !important;
+                    }
+                    &.copy{
+                        font-size: 16px !important;
                     }
                 }
                 &:hover{
