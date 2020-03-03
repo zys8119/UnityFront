@@ -293,7 +293,11 @@ export class viewController extends applicationController{
                     try {
                         config = this.$_decode(data[0].config) || {};
                     }catch (e) {};
-                    config[this.$_body.c_key] = this.$_body.c_name;
+                    if(!this.$_body.c_name){
+                        delete config[this.$_body.c_key];
+                    }else {
+                        config[this.$_body.c_key] = this.$_body.c_name;
+                    }
                 }
                 let updateData = {
                     config: this.$_encode(config)

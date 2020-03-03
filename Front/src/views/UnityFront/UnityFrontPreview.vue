@@ -200,7 +200,7 @@
             unBindingComponents(item){
                 this.api().view_viewUpdate({
                     id:this.$route.params.id,
-                    c_name:"",
+                    c_name:null,
                     c_key:item.id
                 }).then(res=>{
                     if(res.code === 200){
