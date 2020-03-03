@@ -30,7 +30,7 @@
 <style scoped lang="less">
     .ComponentPane {
         position: relative;
-        height: 30%;
+        height: 150px;
         .thumbnail{
             position: absolute;
             left: 50%;

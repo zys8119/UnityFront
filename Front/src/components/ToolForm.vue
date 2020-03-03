@@ -170,6 +170,19 @@
                     ></x-number>
                 </flexbox-item>
             </flexbox>
+            <flexbox>
+                <flexbox-item>
+                    <x-number class="x_number" title="rotate" fillable
+                              :value="rotate"
+                              @input="setSvgMatrix($event,6)"
+                    ></x-number>
+                </flexbox-item>
+                <flexbox-item>
+                    <cell title="透明度" class="z_cell" value-align="left">
+                        <Range class="Range" minHTML="0" maxHTML="1" :value="(info.style.opacity || 1)*100" @on-change="change($event/100,'info.style.opacity','UnityFrontView')"></Range>
+                    </cell>
+                </flexbox-item>
+            </flexbox>
         </uf-group>
         <!--文字 -->
         <uf-group title="文字" open v-if="info && info.type === 'text'">
@@ -225,13 +238,6 @@
                     ></x-input>
                 </flexbox-item>
             </flexbox>
-            <flexbox>
-                <flexbox-item>
-                    <cell title="透明度" class="z_cell" value-align="left">
-                        <Range class="Range" minHTML="0" maxHTML="1" :value="info.style.opacity*100" @on-change="change($event/100,'info.style.opacity','UnityFrontView')"></Range>
-                    </cell>
-                </flexbox-item>
-            </flexbox>
         </uf-group>
         <!--矩形 -->
         <uf-group title="矩形" open v-if="info && info.type === 'rect'">
@@ -250,6 +256,45 @@
                 </flexbox-item>
             </flexbox>
             <flexbox>
+                <flexbox-item :span="1/2">
+                    <x-number class="x_number" title="边框大小" fillable
+                              :value="parseInt(info.style.borderWidth)"
+                              @input="change($event+'px','info.style.borderWidth','UnityFrontView')"
+                    ></x-number>
+                </flexbox-item>
+            </flexbox>
+            <flexbox>
+                <flexbox-item>
+                    <x-input class="z_Input" title="背景图"
+                             :value="info.style.backgroundImage"
+                             @on-change="change($event,'info.style.backgroundImage','UnityFrontView')"
+                    ></x-input>
+                </flexbox-item>
+            </flexbox>
+        </uf-group>
+        <!--矩形 -->
+        <uf-group title="素材" open v-if="info && info.type === 'material'">
+            <flexbox>
+                <flexbox-item>
+                    <uf-color title="背景颜色"
+                              :value="info.style.backgroundColor"
+                              @on-change="change($event.hex8,'info.style.backgroundColor','UnityFrontView')"
+                    ></uf-color>
+                </flexbox-item>
+                <flexbox-item>
+                    <uf-color title="边框颜色"
+                              :value="info.style.borderColor"
+                              @on-change="change($event.hex8,'info.style.borderColor','UnityFrontView')"
+                    ></uf-color>
+                </flexbox-item>
+            </flexbox>
+            <flexbox>
+                <flexbox-item>
+                    <uf-color title="颜色"
+                              :value="info.style.color"
+                              @on-change="change($event.hex8,'info.style.color','UnityFrontView')"
+                    ></uf-color>
+                </flexbox-item>
                 <flexbox-item :span="1/2">
                     <x-number class="x_number" title="边框大小" fillable
                               :value="parseInt(info.style.borderWidth)"
@@ -369,6 +414,9 @@
             },
             translateY(){
                 return this.getSvgMatrix[5];
+            },
+            rotate(){
+                return this.getSvgMatrix[6] || 0;
             }
         },
         methods:{
@@ -379,12 +427,14 @@
             },
             setSvgMatrix(val,key){
                 let matrix = _.cloneDeep(this.getSvgMatrix);
-                if (key === 4 || key === 5){
+                if (key === 4 || key === 5 || key === 6){
                     matrix[key] = val
                 }else {
                     matrix[key] = val/100;
                 }
-                this.change(`matrix(${matrix.join(",")})`,"info.style.transform")
+                let rotate = matrix[6] || 0;
+                matrix = matrix.slice(0,6);
+                this.change(`matrix(${matrix.join(",")}) rotate(${rotate}deg)`,"info.style.transform")
             },
             change(val,key){
                 let component = _.cloneDeep(this.airforce.UnityFrontView.component);
@@ -399,6 +449,7 @@
 <style scoped lang="less">
     @import "../assets/less/vars";
     .ToolForm {
+        min-width: 400px;
         span.textAlign{
             display: inline-block;
             font-size: 18px;

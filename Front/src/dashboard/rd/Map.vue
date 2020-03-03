@@ -1,66 +1,184 @@
 <template>
-    <div class="Map" id="allmap"></div>
+    <div class="Map" id="allmap" :class="{isTop:!areaObj}"></div>
 </template>
 
 <script>
+    import { ChinaAddressV4Data } from "vux"
     export default {
-        title:"地图-地球",
+        title:"地图",
         name: "Map",
         data(){
             return {
-                ak:"IBZ2es6q8DfMTDwUxlYae1l9l34NFUsE"
+                ak:"IBZ2es6q8DfMTDwUxlYae1l9l34NFUsE",
+                color:[
+                    "#000000",	"#000033",	"#000066",	"#000099",	"#0000cc",   "#0000ff",
+                    "#003300",	"#003333",	"#003366",	"#003399",	"#0033cc",   "#0033ff",
+                    "#006600",	"#006633",	"#006666",	"#006699",	"#0066cc",   "#0066ff",
+                    "#009900",	"#009933",	"#009966",	"#009999",	"#0099cc",   "#0099ff",
+                    "#00cc00",	"#00cc33",	"#00cc66",	"#00cc99",	"#00cccc",   "#00ccff",
+                    "#00ff00",	"#00ff33",	"#00ff66",	"#00ff99",	"#00ffcc",   "#00ffff",
+                    "#330000",	"#330033",	"#330066",	"#330099",	"#3300cc",   "#3300ff",
+                    "#333300",	"#333333",	"#333366",	"#333399",	"#3333cc",   "#3333ff",
+                    "#336600",	"#336633",	"#336666",	"#336699",	"#3366cc",   "#3366ff",
+                    "#339900",	"#339933",	"#339966",	"#339999",	"#3399cc",   "#3399ff",
+                    "#33cc00",	"#33cc33",	"#33cc66",	"#33cc99",	"#33cccc",   "#33ccff",
+                    "#33ff00",	"#33ff33",	"#33ff66",	"#33ff99",	"#33ffcc",   "#33ffff",
+                    "#660000",	"#660033",	"#660066",	"#660099",	"#6600cc",   "#6600ff",
+                    "#663300",	"#663333",	"#663366",	"#663399",	"#6633cc",   "#6633ff",
+                    "#666600",	"#666633",	"#666666",	"#666699",	"#6666cc",   "#6666ff",
+                    "#669900",	"#669933",	"#669966",	"#669999",	"#6699cc",   "#6699ff",
+                    "#66cc00",	"#66cc33",	"#66cc66",	"#66cc99",	"#66cccc",   "#66ccff",
+                    "#66ff00",	"#66ff33",	"#66ff66",	"#66ff99",	"#66ffcc",   "#66ffff",
+                    "#990000",	"#990033",	"#990066",	"#990099",	"#9900cc",   "#9900ff",
+                    "#993300",	"#993333",	"#993366",	"#993399",	"#9933cc",   "#9933ff",
+                    "#996600",	"#996633",	"#996666",	"#996699",	"#9966cc",   "#9966ff",
+                    "#999900",	"#999933",	"#999966",	"#999999",	"#9999cc",   "#9999ff",
+                    "#99cc00",	"#99cc33",	"#99cc66",	"#99cc99",	"#99cccc",   "#99ccff",
+                    "#99ff00",	"#99ff33",	"#99ff66",	"#99ff99",	"#99ffcc",   "#99ffff",
+                    "#cc0000",	"#cc0033",	"#cc0066",	"#cc0099",	"#cc00cc",   "#cc00ff",
+                    "#cc3300",	"#cc3333",	"#cc3366",	"#cc3399",	"#cc33cc",   "#cc33ff",
+                    "#cc6600",	"#cc6633",	"#cc6666",	"#cc6699",	"#cc66cc",   "#cc66ff",
+                    "#cc9900",	"#cc9933",	"#cc9966",	"#cc9999",	"#cc99cc",   "#cc99ff",
+                    "#cccc00",	"#cccc33",	"#cccc66",	"#cccc99",	"#cccccc",   "#ccccff",
+                    "#ccff00",	"#ccff33",	"#ccff66",	"#ccff99",	"#ccffcc",   "#ccffff",
+                    "#ff0000",	"#ff0033",	"#ff0066",	"#ff0099",	"#ff00cc",   "#ff00ff",
+                    "#ff3300",	"#ff3333",	"#ff3366",	"#ff3399",	"#ff33cc",   "#ff33ff",
+                    "#ff6600",	"#ff6633",	"#ff6666",	"#ff6699",	"#ff66cc",   "#ff66ff",
+                    "#ff9900",	"#ff9933",	"#ff9966",	"#ff9999",	"#ff99cc",   "#ff99ff",
+                    "#ffcc00",	"#ffcc33",	"#ffcc66",	"#ffcc99",	"#ffcccc",   "#ffccff",
+                    "#ffff00",	"#ffff33",	"#ffff66",	"#ffff99",	"#ffffcc",   "#ffffff",
+                ],
+                ChinaAddressV4Data:ChinaAddressV4Data,
+                areaObj:null,
             }
         },
         mounted() {
+            // let baiduMapCss = document.getElementById("baiduMapCss")
+            // if(baiduMapCss){
+            //     baiduMapCss.remove();
+            // }
+            // let css = document.createElement("link");
+            // css.href = `http://api.map.baidu.com/res/webgl/10/bmap.css`;
+            // css.id = "baiduMapCss";
+            // css.rel = "stylesheet";
+            // css.type = "text/css";
+            // document.head.append(css);
+
             let baiduMap = document.getElementById("baiduMap")
             if(baiduMap){
                 baiduMap.remove();
             }
-            let baiduMapCss = document.getElementById("baiduMapCss")
-            if(baiduMapCss){
-                baiduMapCss.remove();
-            }
-            let css = document.createElement("link");
-            css.href = `http://api.map.baidu.com/res/webgl/10/bmap.css`;
-            css.id = "baiduMapCss";
-            css.rel = "stylesheet";
-            css.type = "text/css";
-            document.head.append(css);
             let js = document.createElement("script");
-            js.src = `http://api.map.baidu.com/getscript?type=webgl&v=1.0&ak=${this.ak}&services=&t=11111111`;
+            js.src = `http://api.map.baidu.com/getscript?v=3.0&ak=${this.ak}&services=&t=20200109192240`;
             js.id = "baiduMap";
             js.type = "text/javascript";
             js.onload = this.onload;
             document.head.append(js);
         },
         methods:{
-            onload(){
-                setTimeout(()=>{
-                    var map = new BMapGL.Map("allmap");    // 创建Map实例
-                    // map.centerAndZoom(new BMapGL.Point(118.5, 27.5), 5);  // 初始化地图,设置中心点坐标和地图级别
-                    // map.centerAndZoom(new BMapGL.Point(121.6311992500,29.8659869100), 18);  // 初始化地图,设置中心点坐标和地图级别
-                    map.centerAndZoom(new BMapGL.Point(121.6311992500,29.8659869100), 0);  // 初始化地图,设置中心点坐标和地图级别
-                    map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
-                    map.setMapType(BMAP_EARTH_MAP);
-                    let time = setInterval(()=>{
-                        let canvas = document.getElementsByTagName("canvas")
-                        if(canvas.length == 2){
-                            clearInterval(time);
-                            try {
-                                canvas[1].remove()
-                            }catch (e) {
-
-                            }
-                            // setInterval(()=>{
-                            //     let cxt = canvas[0].getContext('webgl');
-                            //     console.log(cxt,cxt.COLOR_BUFFER_BIT)
-                            //     cxt.clear(cxt.COLOR_BUFFER_BIT)
-                            // });
-                        }
+            getBoundary(map,item,setViewport){
+                var bdary = new BMap.Boundary();
+                bdary.get(item.name,(rs)=>{       //获取行政区域
+                    var count = rs.boundaries.length; //行政区域的点有多少个
+                    if (count === 0) {
+                        console.log(item.name,'未能获取当前输入行政区域')
+                        return ;
+                    }
+                    var pointArray = [];
+                    for (var i = 0; i < count; i++) {
+                        var ply = new BMap.Polygon(rs.boundaries[i], {
+                            strokeWeight: 2,
+                            strokeColor: "#ff0",
+                            fillColor:item.fillColor,
+                            fillOpacity:(this.areaObj)? 0.2 : 1,
+                        }); //建立多边形覆盖物
+                        map.addOverlay(ply);  //添加覆盖物
+                        pointArray = pointArray.concat(ply.getPath());
+                        ply.addEventListener("click",()=>{
+                            map.clearOverlays();        //清除地图覆盖物
+                            this.areaObj = item;
+                            this.getBoundary(map,{
+                                ...item,
+                                fillColor:this.color[parseInt(Math.random()*this.color.length)] || "#ffffff"
+                            },true);
+                            this.ChinaAddressV4Data.filter(e=>e.parent === item.value).forEach(childItem=>{
+                                this.getBoundary(map,{
+                                    ...childItem,
+                                    fillColor:this.color[parseInt(Math.random()*this.color.length)] || "#ffffff"
+                                });
+                            })
+                        });
+                    }
+                    if(setViewport){
+                        map.setViewport(pointArray);    //调整视野
+                    }
+                });
+            },
+            backArea(map){
+                if(this.areaObj){
+                    if(this.areaObj.parent){
+                        map.clearOverlays();        //清除地图覆盖物
+                        let parent = this.ChinaAddressV4Data.find(e=>e.value === this.areaObj.parent);
+                        this.areaObj = parent;
+                        this.getBoundary(map,{
+                            ...parent,
+                            fillColor:this.color[parseInt(Math.random()*this.color.length)] || "#ffffff"
+                        },true);
+                        this.ChinaAddressV4Data.filter(e=>e.parent === parent.value).forEach(childItem=>{
+                            this.getBoundary(map,{
+                                ...childItem,
+                                fillColor:this.color[parseInt(Math.random()*this.color.length)] || "#ffffff"
+                            });
+                        })
+                    }else {
+                        this.areaObj = null;
+                        this.initData(map);
+                    }
+                }
+            },
+            initData(map){
+                map.clearOverlays();        //清除地图覆盖物
+                this.ChinaAddressV4Data.filter(e=>!e.parent).forEach(item=>{
+                    this.getBoundary(map,{
+                        ...item,
+                        fillColor:this.color[parseInt(Math.random()*this.color.length)] || "#ffffff"
                     })
-                })
-
-            }
+                });
+                this.centerAndZoom(map);
+            },
+            centerAndZoom(map){
+                map.centerAndZoom(new BMap.Point(104.3765966300, 39.9157932400), 5);
+            },
+            init(){
+                //todo =========== 行政区域划分
+                // 百度地图API功能
+                var map = new BMap.Map("allmap",{minZoom:5});
+                this.centerAndZoom(map);
+                // map.disableDragging();// 禁止拖拽
+                // map.disableScrollWheelZoom();// 禁用滚轮放大缩小
+                // map.disableDoubleClickZoom();// 禁用双击放大
+                map.enableScrollWheelZoom();
+                map.setMapStyleV2({
+                    styleId: 'f0d0415694fc98ff678b2123c65289a3'
+                });
+                this.initData(map);
+                var menu = new BMap.ContextMenu();
+                var txtMenuItem = [
+                    {
+                        text:'返回上一区域',
+                        callback:()=>{
+                            this.backArea(map);
+                        }
+                    }
+                ];
+                for(var i=0; i < txtMenuItem.length; i++){
+                    menu.addItem(new BMap.MenuItem(txtMenuItem[i].text,txtMenuItem[i].callback,100));
+                }
+                map.addContextMenu(menu);
+            },
+            onload(){
+                this.init();
+            },
         }
     }
 </script>
@@ -73,6 +191,7 @@
     width: 100%;
     height: 100%;
     background-image: none !important;
+    background-color: transparent !important;
     &/deep/ canvas{
         background: transparent !important;
     }
@@ -81,6 +200,11 @@
     }
     &/deep/ .anchorBL{
        display: none;
+    }
+    &.isTop{
+        &/deep/ canvas{
+            display: none !important;
+        }
     }
 }
 </style>

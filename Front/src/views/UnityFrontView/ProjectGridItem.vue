@@ -15,7 +15,9 @@
                  :viewBox="data.info.viewBox"
                  version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="8467"  :style="data.info.style" v-html="data.info.path"></svg>
         </div>
+        <!--矩形-->
         <div class="ProjectGridItemBox_type_rect"  v-else-if="data.info.type === 'rect'" :style="data.info.style"></div>
+        <component class="ProjectGridItemBox_type_material" v-else-if="data.info.type === 'material'" :is="`material-${data.info.mapName}`" :config="data"></component>
         <!--布局-->
         <div class="ProjectGridItemBox" v-else :style="data.info.style">
             <div class="iconfont" v-html="data.info.icon"></div>
@@ -209,6 +211,11 @@
     }
     &.type_rect{
         .ProjectGridItemBox_type_rect{
+            .fn();
+        }
+    }
+    &.type_material{
+        .ProjectGridItemBox_type_material{
             .fn();
         }
     }

@@ -6,7 +6,7 @@
         <div class="ViewManagementSceneBottom">
             <div class="SceneItem" v-for="(item,key) in list" :key="key">
                 <div class="preview"
-                     @click="$router.push('/preview/'+item.id)"
+                     @click="$utils.go('/preview/'+item.id)"
                     :style="{
                     backgroundImage:(item.config && item.config.image)?`url(${item.config.image})`:null
                 }">
@@ -19,7 +19,7 @@
                 <div class="btns">
                     <XButton class="z_XButton_type iconfont" title="删除" @click.native="deleteItem(item)">&#xe613;</XButton>
                     <XButton class="z_XButton_type iconfont" title="复制" @click.native="copy(item)">&#xe605;</XButton>
-                    <XButton class="z_XButton_type iconfont" title="编辑" @click.native="$router.push('/preview/'+item.id+'?type=editor')">&#xe601;</XButton>
+                    <XButton class="z_XButton_type iconfont" title="编辑" @click.native="$utils.go('/preview/'+item.id+'?type=editor')">&#xe601;</XButton>
                     <XButton class="z_XButton_type iconfont" title="设置" @click.native="setView(item)">&#xe617;</XButton>
                 </div>
             </div>

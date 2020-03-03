@@ -17,8 +17,8 @@ export default {
     },
     UnityFrontView,
     ProjectGrid:[
-        {name:"布局",icon:"&#xe627;",type:"layout",style:{fontSize:'40px'}},
-        {name:"图片",icon:"&#xe674;",type:"images"},
+        {name:"布局",icon:"&#xe627;",type:"layout",style:{fontSize:'34px'}},
+        {name:"图片",icon:"&#xe674;",type:"images",style:{fontSize:'28px'}},
         {name:"文字",icon:"&#xe69b;",type:"text"},
         {name:"矩形",icon:"&#xe6aa;",type:"rect"},
         {name:"星型",icon:"&#xe61b;",type:"svg",path:`
@@ -27,5 +27,7 @@ export default {
         {name:"三角形",icon:"&#xe651;",type:"svg",path:`
             <path d="M71.675 893.33l440.325-762.683 440.325 762.683z" p-id="13955" data-spm-anchor-id="a313x.7781069.0.i5"></path>
         `},
+        {name:"渐变线",type:"material",mapName:"line",icon:"<hr>"},
+        {name:"角线",type:"material",mapName:"HornyLine",icon:"<hr>"},
     ]
 }

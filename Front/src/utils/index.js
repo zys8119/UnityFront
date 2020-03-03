@@ -88,8 +88,9 @@ export default {
      */
     getData(data){
         let publicStyle = {
-            transform:"matrix(1, 0, 0, 1, 0, 0)",
+            transform:"matrix(1, 0, 0, 1, 0, 0) rotate(0deg)",
             borderRadius:"0 0 0 0",
+            opacity:1,
         };
         switch (data.info.type) {
             case "layout":
@@ -125,7 +126,6 @@ export default {
                         ...data.info,
                         url:require("@/assets/logo.png"),
                         style:{
-                            opacity:1,
                             ...publicStyle
                         },
                     },
@@ -162,7 +162,27 @@ export default {
                     },
                 };
                 break;
+            case "material":
+                data = {
+                    ...data,
+                    info:{
+                        ...data.info,
+                        style:{
+                            backgroundColor: "#fff",
+                            borderWidth:0,
+                            border: "0px solid",
+                            borderColor:"#fff",
+                            color:"#fff",
+                            backgroundImage:"linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,0))",
+                            ...publicStyle
+                        }
+                    },
+                };
+                break;
         };
         return data;
     },
+    go(link){
+        window.open(`/#${link}`)
+    }
 }

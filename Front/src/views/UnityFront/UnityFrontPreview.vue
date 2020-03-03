@@ -51,6 +51,19 @@
                     ...item.info.style
                 }">
             </template>
+            <template v-if="item.info.type === 'material'">
+                <div class="material" :style="{
+                    ...getStyle(item,key),
+                }">
+                    <component
+                            v-if="item.info.mapName"
+                            :is="`material-${item.info.mapName}`"
+                            :config="item"
+                            :layout="layout"
+                            :getStyle="getStyle(item,key)"
+                    ></component>
+                </div>
+            </template>
             <template v-if="item.info.type === 'svg'">
                 <div :style="getStyle(item,key)" class="svgBox">
                     <svg t="1582622641578" class="icon" style="vertical-align: middle;fill: currentColor;overflow: hidden;"
@@ -213,7 +226,7 @@
         width: 100% !important;
         height: 100% !important;
     }
-    .layout,.text,.rect,.images,.svgBox{
+    .layout,.text,.rect,.images,.svgBox,.material{
         position: absolute;
     }
     .layout{

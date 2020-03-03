@@ -39,7 +39,7 @@ export default {
     ".UnityFrontLayoutTool":function (dragObj, getStyle ,left,top,{ oldWidth }) {
         let width = oldWidth - left;
         //边界判断
-        if(width >= window.innerWidth / 3 ||　width <= 100){
+        if(width >= window.innerWidth / 2 ||　width <= 180){
             return;
         }
         //移动当前元素
@@ -48,7 +48,7 @@ export default {
     ".UnityFrontLayoutComponentPane":function (dragObj, getStyle ,left,top,{ oldWidth }) {
         let width = oldWidth + left;
         //边界判断
-        if(width >= window.innerWidth / 3 ||　width <= 100){
+        if(width >= window.innerWidth / 2 ||　width <= 180){
             return;
         }
         //移动当前元素

@@ -19,6 +19,9 @@ router.beforeEach((to,from,next)=>{
 // 仪表盘组件注入
 import "./dashboard/index"
 
+// 素材组件注入
+import "./material/index"
+
 //国际化
 import zi18nz from "zi18nz"
 Vue.use(zi18nz);

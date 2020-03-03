@@ -12,10 +12,16 @@ export class viewController extends applicationController{
     }
 
 
+    /**
+     * 创建一个唯一id
+     */
     create_project_id(){
         return `${Date.now()}${parseInt(`${Math.random()*100000000}`)}`
     }
 
+    /**
+     * 创建项目
+     */
     create(){
         let project_id = this.create_project_id();
         this.DB().insert(this.TabelName,{
@@ -30,6 +36,9 @@ export class viewController extends applicationController{
         });
     }
 
+    /**
+     * 拷贝项目
+     */
     copy(){
         this.isProjectExist().then(()=> {
             this.DB().select().from(this.TabelName).where({
@@ -53,6 +62,9 @@ export class viewController extends applicationController{
         });
     }
 
+    /**
+     * 更新项目
+     */
     update(){
         this.isProjectExist().then(()=> {
             let {image,...config} = this.$_body.config;
@@ -77,6 +89,9 @@ export class viewController extends applicationController{
         });
     }
 
+    /**
+     * 判断项目是否存在
+     */
     isProjectExist(){
         return new Promise((resolve, reject) => {
             this.DB().select().from(this.TabelName).where({
@@ -95,6 +110,9 @@ export class viewController extends applicationController{
         })
     }
 
+    /**
+     * 获取项目详情
+     */
     getProject(){
         this.isProjectExist().then(()=>{
             this.DB().select().from(this.TabelName).where({
@@ -118,6 +136,9 @@ export class viewController extends applicationController{
         });
     }
 
+    /**
+     * 项目列表
+     */
     list(){
         this.DB().select().from(this.TabelName).query().then(res=>{
             this.$_success(res.map(e=>{
@@ -133,6 +154,9 @@ export class viewController extends applicationController{
         }).catch(err=>this.$_error(err));
     }
 
+    /**
+     * 删除项目
+     */
     delete(){
         this.DB().delete().from(this.TabelName).where({
             project_id:this.$_body.project_id
@@ -145,6 +169,9 @@ export class viewController extends applicationController{
         }).catch(err=>this.$_error(err));
     }
 
+    /**
+     * 创建视图
+     */
     viewCreate(){
         this.isProjectExist().then(()=>{
             let id = this.create_project_id();
@@ -171,6 +198,9 @@ export class viewController extends applicationController{
         });
     }
 
+    /**
+     * 视图列表
+     */
     viewList(){
         this.DB().select().from(this.TabelNameView).query().then(res=>{
             this.$_success(res.map(e=>{
@@ -186,6 +216,9 @@ export class viewController extends applicationController{
         }).catch(err=>this.$_error(err));
     }
 
+    /**
+     * 视图删除
+     */
     viewDelete(){
         this.DB().delete().from(this.TabelNameView).where({
             id:this.$_body.id
@@ -198,6 +231,9 @@ export class viewController extends applicationController{
         }).catch(err=>this.$_error(err));
     }
 
+    /**
+     * 判断视图是否存在
+     */
     isViewExist(){
         return new Promise((resolve, reject) => {
             this.DB().select().from(this.TabelNameView).where({
@@ -216,6 +252,9 @@ export class viewController extends applicationController{
         })
     }
 
+    /**
+     * 获取视图详情
+     */
     getView(){
         this.isViewExist().then(()=>{
             this.DB().select().from(this.TabelNameView).where({
@@ -239,6 +278,9 @@ export class viewController extends applicationController{
         });
     }
 
+    /**
+     * 视图更新
+     */
     viewUpdate(){
         this.isViewExist().then(()=> {
             this.DB().select().from(this.TabelNameView).where({

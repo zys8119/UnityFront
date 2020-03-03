@@ -8,9 +8,9 @@
                        :key="key"
                        draggable="true"
                        @dragstart.native="drag($event,item)">
-                <div class="ProjectGridItemBox">
+                <div class="ProjectGridItemBox" :title="item.name">
                     <div class="iconfont img" v-html="item.icon" :style="item.style"></div>
-                    <p class="msg">{{item.name}}</p>
+                    <p class="msg text-overflow">{{item.name}}</p>
                 </div>
             </grid-item>
         </grid>
@@ -46,6 +46,7 @@
                 text-align: center;
                 border: 1px solid rgba(0,0,0,0.5);
                 position: relative;
+                padding: 10px 0;
                 &:hover{
                     background-color:@themeColor;
                 }
@@ -57,12 +58,13 @@
                 }
                 .iconfont{
                     display: inline-block;
-                    font-size: 30px;
+                    font-size: 28px;
                     color: @textColor;
-                    width: 50px;
-                    height: 50px;
-                    line-height: 50px;
                     text-align: center;
+                    height: 30px;
+                    width: 30px;
+                    line-height: 30px;
+                    overflow: hidden;
                 }
             }
         }

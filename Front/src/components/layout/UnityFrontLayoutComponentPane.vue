@@ -22,7 +22,7 @@
         position: fixed;
         left: 0;
         top: @UnityFrontLayoutMenuHeight;
-        width: 400px;
+        width: @layoutWidth;
         height: ~"calc(100% - @{UnityFrontLayoutMenuHeight})";
         background-color: @themeColor2;
         border-right: @borderLine;

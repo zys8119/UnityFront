@@ -8,8 +8,8 @@
                     :componentList="componentList"
             >
                 <component-tree v-for="(item,key) in list" :item="item" :key="key" init :styleHover="false" class="tree">
-                    <div slot-scope="{data}" class="treeItem text-overflow" :class="{operate:data.operate}" @click="treeClick(key)">
-                        {{data.info.name}}
+                    <div slot-scope="{data}" class="treeItem" :class="{operate:data.operate}" @click="treeClick(key)">
+                        <span class="title text-overflow" :title="data.info.name">{{data.info.name}}</span>
                         <span class="iconfont" @click.stop="deleteItem(item)" title="删除">&#xe6b5;</span>
                         <span class="iconfont copy" @click.stop="copyItem(item)" title="复制">&#xe605;</span>
                     </div>
@@ -88,24 +88,42 @@
             }
             .treeItem{
                 padding: 0 15px;
+                overflow: hidden;
+                position: relative;
                 &.operate{
                     color: #0078ff;
+                }
+                .title{
+                    width: 50%;
+                    line-height: 30px;
+                    cursor: pointer;
+                    height: auto;
                 }
                 .iconfont{
                     font-size: 12px !important;
                     float: right !important;
                     text-align: center;
                     display: block;
+                    line-height: 30px;
+                    height: 30px;
+                    position: absolute;
+                    right: 15px;
+                    top: 0;
+                    background-color: @themeColor2;
                     &:hover{
                         color: @themeLogoColor !important;
                         cursor: pointer !important;
                     }
                     &.copy{
                         font-size: 16px !important;
+                        right: 45px;
                     }
                 }
                 &:hover{
                     background-color: @themeColor;
+                    .iconfont{
+                        background-color: @themeColor;
+                    }
                 }
             }
         }

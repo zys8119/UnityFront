@@ -21,6 +21,6 @@
     .ProjectPane {
         position: relative;
         height: 70%;
-        #div1 {width:198px; height:66px;padding:10px;border:1px solid #aaaaaa;}
+        height: ~"calc(100% - 150px)";
     }
 </style>
