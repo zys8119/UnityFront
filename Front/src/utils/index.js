@@ -184,5 +184,17 @@ export default {
     },
     go(link){
         window.open(`/#${link}`)
+    },
+    /**
+     * 获取字体大小
+     * @param fontSize
+     * @param fontSizeLng
+     * @param layoutWidth
+     * @return {string}
+     */
+    getFontSize(fontSize,fontSizeLng,layoutWidth){
+        fontSize = parseInt(fontSize);
+        let fontSizeWidth = fontSize*fontSizeLng;
+        return fontSizeWidth/layoutWidth*100/fontSizeLng +'em';
     }
 }

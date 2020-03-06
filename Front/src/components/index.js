@@ -12,3 +12,4 @@ export const ToolForm = ivTo("ToolForm");
 export const UfGroup = ivTo("UfGroup");
 export const OnContextMenu = ivTo("OnContextMenu");
 export const Echarts = ivTo("Echarts");
+export const UfTable = ivTo("UfTable");

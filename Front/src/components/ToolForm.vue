@@ -375,7 +375,8 @@
             },
             getSvgMatrix(){
               try {
-                  return  this.formData.info.style.transform.replace(/matrix\(|\)/img,"").split(",").map(e=>parseFloat(e))
+                  let transformData = this.formData.info.style.transform.match(/(matrix|rotate)\(.*?\)/img).map(e=>e.replace(/matrix\(|rotate\(|\)|deg/img,"").split(","));
+                  return  _.flatten(transformData).map(e=>parseFloat(e))
               }catch (e) {}
               return [];
             },
@@ -416,7 +417,7 @@
                 return this.getSvgMatrix[5];
             },
             rotate(){
-                return this.getSvgMatrix[6] || 0;
+                return this.getSvgMatrix[6];
             }
         },
         methods:{
@@ -432,7 +433,7 @@
                 }else {
                     matrix[key] = val/100;
                 }
-                let rotate = matrix[6] || 0;
+                let rotate = matrix[6];
                 matrix = matrix.slice(0,6);
                 this.change(`matrix(${matrix.join(",")}) rotate(${rotate}deg)`,"info.style.transform")
             },
@@ -449,7 +450,7 @@
 <style scoped lang="less">
     @import "../assets/less/vars";
     .ToolForm {
-        min-width: 400px;
+        min-width: @layoutWidth - 30px;
         span.textAlign{
             display: inline-block;
             font-size: 18px;

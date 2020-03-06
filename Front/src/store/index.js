@@ -28,6 +28,7 @@ export default {
             <path d="M71.675 893.33l440.325-762.683 440.325 762.683z" p-id="13955" data-spm-anchor-id="a313x.7781069.0.i5"></path>
         `},
         {name:"渐变线",type:"material",mapName:"line",icon:"<hr>"},
-        {name:"角线",type:"material",mapName:"HornyLine",icon:"<hr>"},
+        {name:"四角线",type:"material",mapName:"HornyLine",icon:"&#xe650;"},
+        {name:"单角线",type:"material",mapName:"UnicornousLine",icon:"&#xe606;"},
     ]
 }

@@ -16,6 +16,7 @@
                            :config="item"
                            :layout="layout"
                            :getStyle="getStyle(item,key)"
+                           :px="px"
                     ></component>
                     <div v-if="editor" class="layoutEditor">
                         <div class="layoutEditorContent">
@@ -35,7 +36,7 @@
                 <div class="text" :style="{
                     ...item.info.style,
                     ...getStyle(item,key),
-                }">{{item.info.name}}</div>
+                }" v-html="item.info.name"></div>
             </template>
             <template v-if="item.info.type === 'rect'">
                 <div class="rect" :style="{
@@ -61,6 +62,9 @@
                             :config="item"
                             :layout="layout"
                             :getStyle="getStyle(item,key)"
+                            :style="{
+                                transform:item.info.style.transform
+                            }"
                     ></component>
                 </div>
             </template>
@@ -167,8 +171,7 @@
                                 top:item.top/this.layout.height*100+'%',
                             };
                             if(item.info.type === 'text' && item.info.style.fontSize){
-                                let fontSize = b*parseInt(item.info.style.fontSize)*9;
-                                resUltStyle.fontSize = fontSize + "%";
+                                resUltStyle.fontSize = this.$utils.getFontSize(item.info.style.fontSize,item.info.name.length,this.layout.width)
                             }
                         }
                     }
@@ -177,6 +180,9 @@
                     return {};
                 }
 
+            },
+            px(fontSize,lng){
+                return (this.layout.auto)?this.$utils.getFontSize(fontSize,lng,this.layout.width):null;
             },
             bindingComponents(item, view, layout,getStyle){
                 this.$ZAlert.show({
@@ -187,6 +193,7 @@
                         view:()=>view,
                         layout:()=>layout,
                         getStyle:()=>getStyle,
+                        px:()=>this.px,
                     },
                     components:"Alert/BindingComponents",
                     _event:{

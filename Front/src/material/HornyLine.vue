@@ -1,6 +1,6 @@
 <template>
     <div class="HornyLine">
-        <div v-for="i in 4" :class="`HL HL_${i}`"
+        <div v-for="i in index" :class="`HL HL_${i}`"
             :style="{
                 borderWidth:config.info.style.borderWidth,
                 borderColor:config.info.style.color
@@ -13,7 +13,8 @@
     export default {
         name: "HornyLine",
         props:{
-            config:{type:Object,default:Object}
+            config:{type:Object,default:Object},
+            index:{type:Number,default:4},
         }
     }
 </script>

@@ -1,7 +1,7 @@
 <template>
     <div class="Time">
-        <span class="iconfont" v-if="icon">&#xe73c;</span>
-        <span>{{time}}</span>
+        <span class="iconfont" v-if="icon" :style="{fontSize:px(20,1)}">&#xe73c;</span>
+        <span :style="{fontSize:px(20,fmt.length)}">{{time}}</span>
     </div>
 </template>
 
@@ -13,6 +13,7 @@
         props:{
             icon:{type:Boolean,default:false},
             fmt:{type:String,default:"YYYY-MM-DD HH:mm:ss"},
+            px:Function
         },
         data(){
             return {

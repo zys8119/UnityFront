@@ -16,7 +16,7 @@ export default {
         // 图表类型，如不需要内置类型，可为customize类型，自定义配置
         type:{
             type:String,
-            default:"line"
+            default:"default"
         },
         // 图表初始化选项，将会覆盖对应类型配置
         options:{

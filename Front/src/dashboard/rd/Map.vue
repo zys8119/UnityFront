@@ -90,7 +90,7 @@
                             strokeWeight: 2,
                             strokeColor: "#ff0",
                             fillColor:item.fillColor,
-                            fillOpacity:(this.areaObj)? 0.2 : 1,
+                            fillOpacity:(this.areaObj)? 0.05 : 0.7,
                         }); //建立多边形覆盖物
                         map.addOverlay(ply);  //添加覆盖物
                         pointArray = pointArray.concat(ply.getPath());

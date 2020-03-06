@@ -3,7 +3,7 @@
         <x-input placeholder="请输入关键字" class="search vux-1px-b" :showClear="false" v-model="search"></x-input>
         <div class="BindingComponentsBox webkit-scrollbar" :style="{height:height}">
             <div class="BindingComponentsBoxItem" v-for="(dashboardItem,key) in currentDashboard" :key="key">
-                <component :is="dashboardItem.name" :config="item" :layout="layout" :getStyle="getStyle"></component>
+                <component :is="dashboardItem.name" :config="item" :layout="layout" :getStyle="getStyle" :px="px"></component>
                 <span class="iconfont BindingComponentsBoxItemSelect"
                       @click="binding(item.id, dashboardItem.name)"
                       :class="{select:dashboardItem.name === config[item.id]}">
@@ -27,6 +27,7 @@
             view:{type:Object,default:Object},
             layout:{type:Object,default:Object},
             getStyle:{type:Object,default:Object},
+            px:Function,
         },
         data(){
             return {
@@ -91,6 +92,7 @@
             border:1px solid transparent;
             box-shadow: 0 0 2px #e5e5e5;
             overflow: hidden;
+            background-color: @themeColor;
             &:hover{
                 border:1px solid @themeLogoColor;
                 transition: border-left-color,

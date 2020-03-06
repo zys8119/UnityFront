@@ -1,6 +1,6 @@
 <template>
     <div class="Since">
-        <span v-for="i in value">{{i}}</span>
+        <span v-for="i in value" :style="{fontSize:px(44,1)}">{{i}}</span>
     </div>
 </template>
 
@@ -8,6 +8,7 @@
     export default {
         name: "Since",
         title:"全市履职数量",
+        props:{px:Function},
         data(){
             return {
                 value:"2633"

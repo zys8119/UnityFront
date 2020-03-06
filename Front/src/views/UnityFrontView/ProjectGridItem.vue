@@ -17,7 +17,14 @@
         </div>
         <!--矩形-->
         <div class="ProjectGridItemBox_type_rect"  v-else-if="data.info.type === 'rect'" :style="data.info.style"></div>
-        <component class="ProjectGridItemBox_type_material" v-else-if="data.info.type === 'material'" :is="`material-${data.info.mapName}`" :config="data"></component>
+        <component class="ProjectGridItemBox_type_material"
+                   v-else-if="data.info.type === 'material'"
+                   :is="`material-${data.info.mapName}`"
+                   :config="data"
+                   :style="{
+                       transform:data.info.style.transform
+                   }"
+        ></component>
         <!--布局-->
         <div class="ProjectGridItemBox" v-else :style="data.info.style">
             <div class="iconfont" v-html="data.info.icon"></div>
