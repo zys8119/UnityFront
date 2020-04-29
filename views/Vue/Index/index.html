@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>VueDome</title>
+</head>
+<body>
+WebSocket测试
+<script>
+    // 打开一个 web socket
+    var ws = new WebSocket("ws://localhost:82/");
+
+    ws.onopen = function()
+    {
+        // Web Socket 已连接上，使用 send() 方法发送数据
+        ws.send(JSON.stringify({{$td.q}}));
+    };
+
+    ws.onmessage = function (evt)
+    {
+        var received_msg = evt.data;
+        console.log(evt,received_msg)
+    };
+
+    ws.onclose = function()
+    {
+        // 关闭 websocket
+    };
+</script>
+</body>
+</html>

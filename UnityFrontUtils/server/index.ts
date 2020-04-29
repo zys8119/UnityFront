@@ -1,5 +1,6 @@
 import "../typeStript"
 import {ServerConfig, TimingTaskQueue} from "../config"
+import webSocketServe from "../webSocket/serve"
 const http = require("http");
 const app = require('./app');
 //定时任务
@@ -12,4 +13,8 @@ http.createServer(app).listen({
     port: ServerConfig.port,
 });
 console.log(`Server running at http://${ServerConfig.host || "localhost"}:${ServerConfig.port}/`);
+if(ServerConfig.ws_port){
+    new webSocketServe();
+}
+
 
