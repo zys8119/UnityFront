@@ -1,8 +1,7 @@
 {
   "scripts": {
     "start": "npm run serve",
-    "serve": "node UnityFrontUtils/server/index.js",
-    "ws": "node UnityFrontUtils/webSocket/serve.js"
+    "serve": "node UnityFrontUtils/server/index.js"
   },
   "devDependencies": {
     "axios": "^0.19.0",
