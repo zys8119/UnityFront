@@ -2,12 +2,28 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>VueDome</title>
+    <title>{{$td.title}}</title>
+    <script src="__PUBLIC__/js/vue.min.js"></script>
+    <script src="__PUBLIC__/js/app.bundle.js"></script>
+    <style>
+        a{
+            transition: width ease-in 2s revert;
+        }
+    </style>
 </head>
 <body>
-WebSocket测试
+<div id="app">
+    <app></app>
+</div>
 <script>
-    // 打开一个 web socket
+    Vue.component('app',UI);
+    var vm = new Vue({
+        components:{
+        }
+    }).$mount("#app")
+
+
+    //todo 打开一个 web socket
     var ws = new WebSocket("ws://localhost:82/");
 
     ws.onopen = function()
