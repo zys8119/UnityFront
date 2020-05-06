@@ -10,7 +10,8 @@ export class IndexController extends applicationController {
 
     index(){
         this.Render({
-            q:JSON.stringify(this.$_query)
+            q:JSON.stringify(this.$_query),
+            title:"vue测试啊手动阀实打实"
         })
     }
 
