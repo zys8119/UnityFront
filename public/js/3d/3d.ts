@@ -185,7 +185,7 @@ class My3D {
 
         // 接收阴影的片面段，也会对阴影产生一定的效果，片面段越多，阴影分辨率越清晰
         let planeGeometry = new THREE.PlaneGeometry(300, 300, 300, 300);
-        let planeMaterial = new THREE.MeshLambertMaterial({color: 0x666666});
+        let planeMaterial = new THREE.MeshLambertMaterial({color: "#666666"});
         let plane = new THREE.Mesh(planeGeometry, planeMaterial);
 
         // 绕 x 轴旋转 -90 度
@@ -195,10 +195,10 @@ class My3D {
         this.scene.add(plane);
 
         let cubeGeometry = new THREE.CubeGeometry(20, 5, 10);
-        let cubeMaterial = new THREE.MeshLambertMaterial({color: 0x99CCCC});
+        let cubeMaterial = new THREE.MeshLambertMaterial({color: "#ff0"});
         let cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
         cube.castShadow = true;
-        cube.position.y = 15;
+        cube.position.y = 0;
 
         this.scene.add(cube);
 
@@ -246,7 +246,7 @@ class My3D {
         this.initContent();
         this.initGui();
 
-        window.addEventListener('resize', this.onWindowResize, false);
+        window.addEventListener('resize', this.onWindowResize.bind(this), false);
     }
 
     /**

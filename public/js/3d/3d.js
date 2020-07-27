@@ -138,17 +138,17 @@ var My3D = /** @class */ (function () {
     My3D.prototype.initContent = function () {
         // 接收阴影的片面段，也会对阴影产生一定的效果，片面段越多，阴影分辨率越清晰
         var planeGeometry = new THREE.PlaneGeometry(300, 300, 300, 300);
-        var planeMaterial = new THREE.MeshLambertMaterial({ color: 0x666666 });
+        var planeMaterial = new THREE.MeshLambertMaterial({ color: "#666666" });
         var plane = new THREE.Mesh(planeGeometry, planeMaterial);
         // 绕 x 轴旋转 -90 度
         plane.rotation.x = -0.5 * Math.PI;
         plane.receiveShadow = true;
         this.scene.add(plane);
         var cubeGeometry = new THREE.CubeGeometry(20, 5, 10);
-        var cubeMaterial = new THREE.MeshLambertMaterial({ color: 0x99CCCC });
+        var cubeMaterial = new THREE.MeshLambertMaterial({ color: "#ff0" });
         var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
         cube.castShadow = true;
-        cube.position.y = 15;
+        cube.position.y = 0;
         this.scene.add(cube);
     };
     /**
@@ -186,7 +186,7 @@ var My3D = /** @class */ (function () {
         this.initControls();
         this.initContent();
         this.initGui();
-        window.addEventListener('resize', this.onWindowResize, false);
+        window.addEventListener('resize', this.onWindowResize.bind(this), false);
     };
     /**
      * 窗口变动触发的方法
