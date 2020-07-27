@@ -12,5 +12,13 @@
     "less": "^3.10.3"
   },
   "dependencies": {
+    "baidu-aip-sdk": "^2.4.6",
+    "html-pdf": "^2.2.0",
+    "html2pdf": "0.0.11",
+    "htmltopdf": "0.0.8",
+    "http-proxy": "^1.18.1",
+    "pdf2json": "^1.2.0",
+    "pdf2png-mp2": "^1.0.3",
+    "three": "^0.118.3"
   }
 }

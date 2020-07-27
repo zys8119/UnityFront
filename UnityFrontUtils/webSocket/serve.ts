@@ -20,7 +20,7 @@ export default class webSocket {
             host: ServerConfig.host,
             port: ServerConfig.ws_port,
         });
-        console.warn(`【WS】 Server running at http://${ServerConfig.host || "localhost"}:${ServerConfig.ws_port}/`);
+        console.warn(`【WS】 Server running at ws://${ServerConfig.host || "localhost"}:${ServerConfig.ws_port}/`);
     }
 
     onceData(socket, buffer){

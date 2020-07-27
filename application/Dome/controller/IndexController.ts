@@ -3,6 +3,7 @@ import {ServerConfig, ServerPublicConfig} from "../../../UnityFrontUtils/config"
 const path = require("path")
 const fs = require("fs")
 const less = require("less")
+const htmltopdf = require("htmltopdf")
 export class IndexController extends applicationController {
     constructor(){
         super();
@@ -12,103 +13,25 @@ export class IndexController extends applicationController {
         this.$_success();
     }
 
-    axios(){
-        this.$_axios({
-            url:"http://www.baidu.com"
-        }).then(res=>{
-            this.$_success(res.data);
-        });
-    }
-
-    dom(){
-        this.$_puppeteer("https://www.baidu.com/s?ie=UTF-8&wd="+this.$_query.q,()=>new Promise(resolve=>{
-            let resData = [];
-            resData.push.apply(resData,document.querySelectorAll(".c-container .t a"));
-            let result =  resData.map((el:HTMLAnchorElement)=>({
-                url:el.href,
-                value:el.innerText
-            }));
-            resolve(result)
-        })).then(res=>{
-            this.$_success(res)
-        }).catch(err=>{
-            this.$_error(err);
-        });
-    }
-
-    fileStreamDownload(){
-        this.$_fileStreamDownload("https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1576473666143&di=394e5a43bd77b3e34f8460da13fb26f8&imgtype=0&src=http%3A%2F%2Fwww.365heart.com%2Fmeeting%2Fxinjian%2FCICI2015%2F%25E4%25B8%2593%25E5%25AE%25B6%25E4%25B8%25AA%25E4%25BA%25BA%2F%25E9%2599%2588%25E6%2599%2596%2FCICI2015-0002604.JPG").catch((err)=>{
-            this.$_error(err);
-        });
-    }
-
-    encrypt(){
-        this.$_success({
-            a:this.$_encode({a:1,b:2}),
-            b:this.$_decode((<string>this.$_encode({a:1,b:2}))),
-            key:ServerPublicConfig.createEncryptKey,
-        });
-    }
-    
-    getImageCode(){
-        this.$_getSvgCode();
-    }
-    
-    codeTest(){
-        this.$_success();
-    }
-    
-    uploadTest(){
-        this.Render()
-    }
-
-    upload(){
-        (async ()=>{
-            let a = ()=>{
-                let myFileName = this.$_getRequestFiles().myFileName;
-                if(myFileName){
-                    myFileName.forEach(file=>{
-                        fs.writeFile(path.resolve(__dirname,"../../../public",file.name),file.data, 'utf8', err=>{
-                            if (err) this.$_error();
-                        });
-                    });
-                }
-            };
-            await a();
+    topdf(){
+        htmltopdf.createFromHtml(`
+            <div>哈哈哈啥哈哈实打实阿斯顿卡萨丁和喀什的</div>
+            <style>
+                div{color:#f00}
+            </style>
+        `,path.resolve(this.__dir,"../pdfName.pdf"),  (err, success)=> {
             this.$_success();
-        })()
+        });
+    }
+    sf(){
+        this.Render();
     }
 
-    //todo less 转 css
-    getcss(){
-        if(!this.$_query.color){
-            this.$_error("主题设置失败,颜色字段必填");
-            return;
-        }
-        less.render(fs.readFileSync(path.resolve(__dirname,"../../../public/less/nbrd_red_new.less"),{encoding:"utf8"})+`.initTheme(${this.$_query.color});`,{})
-        .then(({css})=> {
-            if(this.$_query.type === "file"){
-                //todo 文件流返回
-                this.response.writeHead(200,{
-                    'Access-Control-Allow-Origin': "*",
-                    'Access-Control-Allow-Methods':'*',
-                    'Access-Control-Allow-Headers':'*',
-                    'Content-Type':`text/css; charset=utf-8;`,
-                });
-                this.response.end(css);
-            }else {
-                //todo 接口返回
-                this.setHeaders({
-                    'Access-Control-Allow-Headers': '*',
-                });
-                this.$_send({
-                    code: 0,
-                    data: css,
-                    message: "success"
-                });
-            }
-        }).catch(()=>{
-            this.$_error("主题获取失败");
-        });
+    xss(){
+        this.$_success({a:1});
+    }
+
+    '3d'(){
+        this.Render()
     }
 }

@@ -37,8 +37,12 @@ export default class staticIndex {
                 case ".htm":
                     this.getFileData(filePath,"text/html;","utf8",".htm");
                     break;
+                case ".less":
                 case ".vue":
                     this.getFileData(filePath,"text/plain;","utf8");
+                    break;
+                case ".pdf":
+                    this.getFileData(filePath,"application/pdf;");
                     break;
                 default:
                     this.send404();
