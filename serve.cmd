@@ -1,6 +1,6 @@
 
 @IF EXIST "%~dp0\node.exe" (
-  "%~dp0\node.exe"  "%~dp0\..\mocha\bin\_mocha" %*
+  "%~dp0\node.exe"  "%~dp0\UnityFrontUtils\server\index.js" %*
 ) ELSE (
   @SETLOCAL
   @SET PATHEXT=%PATHEXT:;.JS;=;%
