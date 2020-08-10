@@ -4,6 +4,7 @@ const path = require("path")
 const fs = require("fs")
 const less = require("less")
 const htmltopdf = require("htmltopdf")
+const crypto = require('crypto');
 export class IndexController extends applicationController {
     constructor(){
         super();
@@ -33,5 +34,30 @@ export class IndexController extends applicationController {
 
     '3d'(){
         this.Render()
+    }
+
+    translate(){
+        let appid = "20170503000046224";
+        let salt = Math.random();
+        let key = "W42YGW_DMl4slaX75hal";
+        let query = this.$_query.q;
+        this.$_axios({
+            url:"http://api.fanyi.baidu.com/api/trans/vip/translate",
+            method:"get",
+            params:{
+                q:query,
+                from:"auto",
+                to:"auto",
+                appid,
+                salt,
+                sign:crypto.createHash('md5').update(`${appid}${query}${salt}${key}`).digest("hex"),
+            }
+        }).then(res=>{
+            try {
+                this.$_success(null,res.data.trans_result[0].dst);
+            }catch (e) {
+                this.$_error();
+            }
+        }).catch(this.$_error)
     }
 }
