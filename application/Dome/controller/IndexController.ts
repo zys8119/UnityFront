@@ -40,14 +40,14 @@ export class IndexController extends applicationController {
         let appid = "20170503000046224";
         let salt = Math.random();
         let key = "W42YGW_DMl4slaX75hal";
-        let query = this.$_query.q;
+        let query = this.$_body.q;
         this.$_axios({
             url:"http://api.fanyi.baidu.com/api/trans/vip/translate",
             method:"get",
             params:{
                 q:query,
-                from:"auto",
-                to:"auto",
+                from:"zh",
+                to:"en",
                 appid,
                 salt,
                 sign:crypto.createHash('md5').update(`${appid}${query}${salt}${key}`).digest("hex"),
