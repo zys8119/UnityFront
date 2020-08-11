@@ -5,7 +5,6 @@ import {
     SuccessSendDataOptions,
     StatusCodeOptions,
     getSvgCodeOptions,
-    RequestFiles
 } from "../typeStript"
 import { headersType } from "../typeStript/Types";
 import { ServerConfig, ServerPublicConfig } from "../config";
@@ -555,7 +554,7 @@ export default class applicationControllerClass extends PublicController impleme
         keyDataArr.splice(randomNo,1);
         return this.$_createEncryptKey(keyDataArr, result);
     }
-    
+
     $_getSvgCode(options?:getSvgCodeOptions){
         return new Promise((resolve, reject) => {
             options = options || {};
@@ -639,7 +638,7 @@ export default class applicationControllerClass extends PublicController impleme
             this.response.end();
         });
     }
-    
+
     $_getUrlQueryData(options?:object, connectors?:string, type?:string){
         options = options || {};
         connectors = connectors || "=";
@@ -654,76 +653,72 @@ export default class applicationControllerClass extends PublicController impleme
         }
         return result.join(type);
     }
-    
+
     $_setCookie(data?:object){
         this.setHeaders({
             'Set-Cookie':this.$_getUrlQueryData(data).split(";"),
         });
     }
-    
-    $_getRequestFiles(){
-        Buffer.prototype.split= Buffer.prototype.split || function (spl) {
-            let arr = [];
-            let cur = 0;
-            let n = 0;
-            while ((n = this.indexOf(spl, cur)) != -1) {
-                arr.push(this.slice(cur, n));
-                cur = n + spl.length
-            }
-            arr.push(this.slice(cur))
-            return arr
-        };
-        let bodyString = this.$_bodySource.toString();
-        let end = bodyString.match(/\s------.*--\s*$/)[0];
-        let start = end.replace(/^\s|--\s*$/img,"");
-        let resultData:{[key:string]:Array<RequestFiles>|RequestFiles};
-        resultData = {};
-        this.$_bodySource.split(start).map(item=>{
-            try {
-                let key  = item.toString().match(/^\s{2}(.*|.*\s{2}.*)\s{4}/)[0];
-                let data = item.split(key)[1];
-                data = data.slice(0,data.length - 2);
-                let DispositionArr = [];
-                let ContentType = null;
-                try {
-                    let Disposition = key.match(/^\s*Content-Disposition.*/)[0];
-                    try {
-                        ContentType = key.replace(/^\s*Content-Disposition.*/,"")
-                            .match(/^\s*Content-Type.*/)[0];
-                        ContentType = ContentType.replace(/^\s*Content-Type:\s/,"")
-                    }catch (e) {}
-                    DispositionArr = Disposition.split(";");
-                    DispositionArr = DispositionArr.map(e=>{
-                        var m = /(?:(filename|name)="(.*)")/.exec(e);
-                        return (m)?m[2]:null;
-                    }).filter(e=>e);
-                }catch (e) {}
-                return  {
-                    DispositionArr,
-                    ContentType,
-                    data
-                };
-            }catch (e) {
-                // return item.toString();
-            }
-        }).filter(e=>e).forEach(item=>{
-            if(item.DispositionArr.length === 1){
-                resultData[item.DispositionArr[0]] = {
-                    name:item.DispositionArr[0],
-                    type:item.ContentType,
-                    value:item.data
-                };
-            }
-            if(item.DispositionArr.length > 1){
-                resultData[item.DispositionArr[0]] = resultData[item.DispositionArr[0]] || [];
-                resultData[item.DispositionArr[0]].push({
-                    name:item.DispositionArr[1],
-                    type:item.ContentType,
-                    data:item.data
-                });
+
+    bufferSplit(buff,splitter){
+        let buffTter = Buffer.from(splitter);
+        let index = buff.indexOf(buffTter);
+        let resUlt = [];
+        if(index > -1){
+            resUlt = resUlt.concat(buff.slice(0,index));
+            let buffChild = buff.slice(index+buffTter.length);
+            resUlt = resUlt.concat(this.bufferSplit(buffChild,splitter));
+        }else {
+            resUlt = resUlt.concat(buff)
+        }
+        return resUlt;
+    }
+
+    $_getRequestFormData(){
+        return new Promise((resolve,reject) => {
+            if(this.$_bodySource.length > 0){
+                let bodyFormData = this.bufferSplit(this.$_bodySource,"------").map(e=>{
+                    let buffArr = this.bufferSplit(e,"\r\n\r\n");
+                    if(buffArr.length === 2){
+                        let resUlt:any = {};
+                        let info:any = this.bufferSplit(buffArr[0],"\; ").map(e=>e.toString());
+                        if(buffArr[0].indexOf(Buffer.from("Content-Type")) > -1){
+                            // 文件
+                            resUlt.type = "file";
+                            // keyName
+                            let split = Buffer.from("name=\"");
+                            resUlt.keyName = info[1].slice(info[1].indexOf(split)+split.length,info[1].length-1);
+
+                            let fileInfo = this.bufferSplit(info[2],"\r\n");
+
+                            // fileType
+                            try {
+                                resUlt.fileType = this.bufferSplit(fileInfo[1]," ")[1];
+                            }catch (e) {}
+                            // filename
+                            let splitFileName = Buffer.from("filename=\"");
+                            resUlt.fileName = fileInfo[0].slice(fileInfo[0].indexOf(splitFileName)+splitFileName.length,fileInfo[0].length - 1);
+                            // fileBuff
+                            resUlt.fileBuff = buffArr[1].slice(0,buffArr[1].length-Buffer.from("\r\n").length);
+                        }else {
+                            // 数据
+                            resUlt.type = "data";
+                            // keyName
+                            let split = Buffer.from("name=\"");
+                            resUlt.keyName = info[1].slice(info[1].indexOf(split)+split.length,info[1].length-1);
+                            // keyValue
+                            let splitVal = Buffer.from("\r\n");
+                            resUlt.keyValue = buffArr[1].slice(0,buffArr[1].indexOf(splitVal)).toString();
+                        }
+                        return resUlt;
+                    }
+                    return null;
+                }).filter(e=>e);
+                resolve(bodyFormData);
+            }else {
+                reject();
             }
         });
-        return resultData;
     }
 
 }

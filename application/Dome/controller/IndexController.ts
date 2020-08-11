@@ -49,34 +49,21 @@ export class IndexController extends applicationController {
             key:ServerPublicConfig.createEncryptKey,
         });
     }
-    
+
     getImageCode(){
         this.$_getSvgCode();
     }
-    
+
     codeTest(){
         this.$_success();
     }
-    
+
     uploadTest(){
         this.Render()
     }
 
     upload(){
-        (async ()=>{
-            let a = ()=>{
-                let myFileName = this.$_getRequestFiles().myFileName;
-                if(myFileName){
-                    myFileName.forEach(file=>{
-                        fs.writeFile(path.resolve(__dirname,"../../../public",file.name),file.data, 'utf8', err=>{
-                            if (err) this.$_error();
-                        });
-                    });
-                }
-            };
-            await a();
-            this.$_success();
-        })()
+
     }
 
     //todo less 转 css

@@ -279,17 +279,26 @@ export interface ControllerInitDataOptions {
      */
     $_setCookie?(data?:object):void; // 设置cookie
     /**
-     * 获取上传文件
-     * 目前node版本为【v10.16.0】
-     * @param data {object} 上传文件对象
+     * 获取FormData及上传的文件
      */
-    $_getRequestFiles?():{[key:string]:Array<RequestFiles>|RequestFiles}; // 获取上传文件
+    $_getRequestFormData?():Promise<RequestFormData>; // 获取上传文件
+
+    /**
+     * Buffer分割，类似字符串的split方法
+     * @param buff
+     * @param splitter
+     */
+    //@ts-ignore
+    bufferSplit?(buff:Buffer,splitter:string):Buffer[];
 }
 
-export interface RequestFiles {
-    data?:any; // 文件数据
-    type?:string; // 文件content-type类型
-    name?:string;// 文件名称
+export interface RequestFormData {
+    type?:string | "file" | "data"; // 文件数据
+    keyName?:string; // 数据字段
+    keyValue?:string; // 数据值,type = data 时生效
+    fileType?:string; // 文件Content-Type,type = file 时生效
+    fileName?:string; // 文件名称,type = file 时生效
+    fileBuff?:string; // 文件数据,buff类型,type = file 时生效
     [keyName:string]:any;
 }
 
@@ -375,7 +384,7 @@ export interface UtilsOptions {
      * 得到一个两数之间的随机整数，包括两个数在内
      */
     getRandomIntInclusive(min:number, max:number):number;
-    
+
     /**
      * 获取Cookies
      * @param request
