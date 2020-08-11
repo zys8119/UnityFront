@@ -18,6 +18,7 @@ const http = require('http');
 const https = require('https');
 const pug = require('pug');
 const puppeteer = require('puppeteer');
+const ncol = require('ncol');
 
 /**
  * @请求方式修饰器类
@@ -360,36 +361,47 @@ export default class applicationControllerClass extends PublicController impleme
             }
         }
     }
-    $_log(...args){
+
+    $_createLog(args,logFileName){
         let logDirPath = path.resolve(__dirname,"../log");
         let getTime = new Date().getTime();
-        // let logFileName = Utils.dateFormat(getTime,"YYYY-MM-DD")+".log";
-        let logFileName = Utils.dateFormat(getTime,"YYYY-MM-DD HH-mm-ss")+"__Time__"+getTime.toString()+".log";
+        logFileName = logFileName || Utils.dateFormat(getTime,"YYYY-MM-DD HH-mm-ss")+"__Time__"+getTime.toString()+".log";
         let logPath = path.resolve(logDirPath,logFileName);
         //判断日志文件是否存在，不存在则创建，并写入
         if(!fs.existsSync(logPath)){
+            fs.mkdirSync(path.resolve(logPath,"../"));
             this.writeLogFile(args,logPath,"");
-            return;
+            return logPath;
         }
         //存在直接写入
         fs.readFile(logPath,'utf8',(err,data)=> {
             if (err) throw err;
             this.writeLogFile(args,logPath,data);
         });
+        return logPath;
     }
+
+    $_log(...args){
+        this.$_createLog(args,"log");
+    }
+
     writeLogFile(args,logPath:string,oldData?:string){
         oldData = oldData || "";
+        let logData = {
+            "时间":Utils.dateFormat(),
+            "日志目录":logPath,
+            "来源":{
+                "控制器目录":this.__dir,
+                "控制器方法":this.$methodName,
+            },
+            "日志数据":args
+        };
+        ncol.color( ()=> {
+            ncol.infoBG("【LOG】").info(JSON.stringify(logData))
+        });
         fs.writeFile(logPath,JSON.stringify({
             "【log_start】":"===================================================",
-            "【log_message】":{
-                "时间":Utils.dateFormat(),
-                "日志目录":logPath,
-                "来源":{
-                    "控制器目录":this.__dir,
-                    "控制器方法":this.$methodName,
-                },
-                "日志数据":args
-            },
+            "【log_message】":logData,
             "【log_end】":"=====================================================",
         },null,4)+"\n\n\n"+oldData,"utf8",(err)=>{
             if (err) {
@@ -418,6 +430,9 @@ export default class applicationControllerClass extends PublicController impleme
         }else {
             newSendData.code = code || newSendData.code;
         }
+        ncol.color(()=>{
+            ncol.successBG("【res】").success(JSON.stringify(newSendData))
+        })
         this.$_send(newSendData);
     }
     $_error(msg:any = this.StatusCode.error.msg,sendData?:any,code:number = this.StatusCode.error.code){

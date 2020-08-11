@@ -7,3 +7,4 @@ conf/**/*.js
 TaskQueue/**/*.js
 UnityFrontUtils/**/*.js
 package-lock.json
+/UnityFrontUtils/log
