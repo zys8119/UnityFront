@@ -98,4 +98,9 @@ export class IndexController extends applicationController {
             this.$_error("主题获取失败");
         });
     }
+
+    log(){
+        this.$_log("Asdas");
+        this.$_success()
+    }
 }

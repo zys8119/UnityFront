@@ -16,13 +16,12 @@ export class LogTask {
         let getTime =  +JSON.stringify(DateObj.getTime());
         //指定时间内才执行,以减少服务器资源消耗
         if(TimingTaskQueue.ClearLogAppointTime){
-            return;
-        }
-        let AppointTime =  TimingTaskQueue.ClearLogAppointTime(DateObj);
-        let AppointTimeMin = AppointTime-TimingTaskQueue.ClearLogTimeFrame;
-        let AppointTimeMax = AppointTime+TimingTaskQueue.ClearLogTimeFrame;
-        if(AppointTime && getTime >= AppointTimeMin && getTime <= AppointTimeMax){
-            return;
+            let AppointTime =  TimingTaskQueue.ClearLogAppointTime(DateObj);
+            let AppointTimeMin = AppointTime-TimingTaskQueue.ClearLogTimeFrame;
+            let AppointTimeMax = AppointTime+TimingTaskQueue.ClearLogTimeFrame;
+            if(AppointTime && getTime >= AppointTimeMin && getTime <= AppointTimeMax){
+                return;
+            }
         }
         let RetainTime = TimingTaskQueue.LogsRetainTime;
         let MaxTime = getTime - RetainTime;
