@@ -413,7 +413,11 @@ export default class applicationControllerClass extends PublicController impleme
         if(sendData){
             newSendData.data = sendData;
         }
-        newSendData.code = code || newSendData.code;
+        if(Object.prototype.toString.call(code) === "[object Number]"){
+            newSendData.code = code
+        }else {
+            newSendData.code = code || newSendData.code;
+        }
         this.$_send(newSendData);
     }
     $_error(msg:any = this.StatusCode.error.msg,sendData?:any,code:number = this.StatusCode.error.code){
