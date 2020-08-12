@@ -98,7 +98,7 @@ export class IndexController extends applicationController {
     @method_post(IndexController,"upload")
     upload(){
         this.$_getRequestFormData().then(res=>{
-            fs.writeFileSync(path.resolve(ServerConfig.Template.publicPath,'./upload',Math.random()+res[1].fileName),res[1].fileBuff)
+            fs.writeFileSync(path.resolve(ServerConfig.Template.publicPath,'./upload',res[1].fileName),res[1].fileBuff)
             this.$_success("上传成功",null,0);
         });
     }

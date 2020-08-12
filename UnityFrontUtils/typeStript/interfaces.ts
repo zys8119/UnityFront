@@ -181,9 +181,10 @@ export interface ControllerInitDataOptions {
      * @param paramsKeyArr UrlParams数据
      * @param isApp 是否为app配置
      * @param $moduleRouteConfig 对应配置数据
+     * @param confPath 配置路径
      * @constructor
      */
-    UrlParams?<T = string,TT = string[]>($$url:T,urlArrs:TT,paramsKeyArr:{[key:string]:any}, isApp:boolean, $moduleRouteConfig:any):{
+    UrlParams?<T = string,TT = string[]>($$url:T,urlArrs:TT,paramsKeyArr:{[key:string]:any}, isApp:boolean, $moduleRouteConfig:any,confPath:string):{
         $$url:T;
         urlArrs:TT;
     };// UrlParams解析

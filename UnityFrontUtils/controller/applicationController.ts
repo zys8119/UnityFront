@@ -208,7 +208,7 @@ export default class applicationControllerClass extends PublicController impleme
 
     }
 
-    UrlParams($$url,urlArrs,paramsKeyArr, isApp:boolean, $moduleRouteConfig:any){
+    UrlParams($$url,urlArrs,paramsKeyArr, isApp:boolean, $moduleRouteConfig:any,confPath){
         try {
             //应用路由配置
             if($moduleRouteConfig && $moduleRouteConfig.default){
@@ -231,6 +231,17 @@ export default class applicationControllerClass extends PublicController impleme
                         if(this.$_url.indexOf(paramsKey) === 0){
                             let paramsUrl = $moduleRouteConfig.default[paramsKey+'/'+paramsStr];
                             if(paramsUrl && $_url_params){
+                                if(ServerConfig.debug){
+                                    ncol.color(()=>{
+                                        ncol.successBG("【route】")
+                                            .infoBG("【")
+                                            .infoBG(this.$_url)
+                                            .infoBG("--->")
+                                            .infoBG(paramsUrl)
+                                            .infoBG("】")
+                                            .info(confPath)
+                                    });
+                                }
                                 let paramsValueArr = $_url_params.split("/");
                                 paramsStr.split("/").forEach((e,i)=>{
                                     let k = e.replace(/^:/,"");
@@ -253,6 +264,9 @@ export default class applicationControllerClass extends PublicController impleme
     }
 
     UrlParse(){
+        if(ServerConfig.debug){
+            ncol.warn(`【${this.$_method}】==================================================================【START】`);
+        }
         //todo 首页渲染
         let $$url = this.$_url;
         let urlArrs = Utils.getUrlArrs($$url);
@@ -260,13 +274,15 @@ export default class applicationControllerClass extends PublicController impleme
         //todo 自定义路由配置===start
         //应用路由配置
         try {
-            let a_conf = this.UrlParams($$url,urlArrs,paramsKeyArr,true,require(path.resolve(ServerConfig.Template.applicationPath,"conf/route")));
+            let confPath = path.resolve(ServerConfig.Template.applicationPath,"conf/route");
+            let a_conf = this.UrlParams($$url,urlArrs,paramsKeyArr,true,require(confPath),confPath);
             $$url = a_conf.$$url;
             urlArrs = a_conf.urlArrs;
         }catch (e) {}
         //控制器路由配置
         try {
-            let c_conf = this.UrlParams($$url,urlArrs,paramsKeyArr,false,require(path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"conf/route")));
+            let confPath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"conf/route");
+            let c_conf = this.UrlParams($$url,urlArrs,paramsKeyArr,false,require(confPath),confPath);
             $$url = c_conf.$$url;
             urlArrs = c_conf.urlArrs;
         }catch (e) {}
@@ -383,7 +399,6 @@ export default class applicationControllerClass extends PublicController impleme
                             this.$_send(null);
                         }else {
                             if(ServerConfig.debug){
-                                ncol.warn("==================================================================");
                                 ncol.color(()=>{
                                     ncol.successBG("【请求】")
                                         .info(`【${this.$_method}】`)
