@@ -31,6 +31,7 @@ export const ServerPublicConfig = <ServerPublicConfigOptions>{
 export const ServerConfig =  <ServerOptions>{
     port:81,
     debug:true,
+    CORS:true,
     fsWatch:[
         //listen conf directory
         {path:path.resolve(__dirname,"../../conf"),type:"directory"},

@@ -8,3 +8,4 @@ TaskQueue/**/*.js
 UnityFrontUtils/**/*.js
 package-lock.json
 /UnityFrontUtils/log
+/application/Dome/controller/nvidia-smi.

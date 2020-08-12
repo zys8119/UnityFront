@@ -24,6 +24,7 @@ export interface ServerOptions {
     host?:string|number;//主机
     port?:string|number;//端口
     debug?:boolean;//是否开启调试
+    CORS?:boolean;//是否允许跨域，全局CORS
     fsWatch?:Array<ServerOptions_fsWatch>;//监听文件变化，如果该字段不存在就不监听
     RequestStatus:number;//默认请求状态
     headers?:headersType;//header参数
@@ -196,8 +197,9 @@ export interface ControllerInitDataOptions {
      * @param msg 提示信息
      * @param sendData 发送数据
      * @param code 状态码
+     * @param error 是否为错误消息
      */
-    $_success?(msg?:any,sendData?:any,code?:number):void;// 成功返回工具
+    $_success?(msg?:any,sendData?:any,code?:number, error?:boolean):void;// 成功返回工具
     /**
      * 错误返回工具
      * @param msg 提示信息
@@ -305,6 +307,7 @@ export interface RequestFormData {
 export interface TemplateErrorDataOptions {
     title?:string;//错误标题
     error?:object;//错误详情
+    interceptorErr?:object;//拦截器错误详情
 }
 
 export interface TimingTaskQueueOptions {

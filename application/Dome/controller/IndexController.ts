@@ -1,4 +1,4 @@
-import applicationController from "../../../UnityFrontUtils/controller/applicationController";
+import applicationController, {method_post} from "../../../UnityFrontUtils/controller/applicationController";
 import {ServerConfig, ServerPublicConfig} from "../../../UnityFrontUtils/config";
 const path = require("path")
 const fs = require("fs")
@@ -62,10 +62,6 @@ export class IndexController extends applicationController {
         this.Render()
     }
 
-    upload(){
-
-    }
-
     //todo less 转 css
     getcss(){
         if(!this.$_query.color){
@@ -99,8 +95,11 @@ export class IndexController extends applicationController {
         });
     }
 
-    log(){
-        this.$_log("Asdas");
+    upload(){
+        // this.$_getRequestFormData().then(res=>{
+        //     fs.writeFileSync(path.resolve(this.__dir,"../",res[1].fileName),res[1].fileBuff)
+        //     this.$_success("上传成功",null,0);
+        // });
         this.$_success()
     }
 }

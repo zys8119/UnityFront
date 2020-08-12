@@ -55,9 +55,10 @@ class methodClass_init {
             if(callback.call(currentControllerObj,methodKeyName)){return;}
             currentControllerObj.prototype[methodKeyName] = function () {
                 try {
-                    if(!methodArr.some(e=>e.toLocaleLowerCase() === this.$_method.toLocaleLowerCase())){
-                        this.$_error("服务器错误");
-                        this.$_error(`【当前请求为${this.$_method.toLocaleLowerCase()},必须为(${methodArr.join()})】-----url----->  ${this.$_url}`);
+                    let $_method = this.$_method.toLocaleLowerCase();
+                    if($_method !== "options" && !methodArr.some(e=>e.toLocaleLowerCase() === $_method)){
+                        this.$_error(`不予许${this.$_method}请求`);
+                        this.$_error(`【当前请求为${$_method},必须为(${methodArr.join()})】-----url----->  ${this.$_url}`);
                         return;
                     }
                     oldPostMethod.call(this);
@@ -330,7 +331,23 @@ export default class applicationControllerClass extends PublicController impleme
                typeof ControllerClassInit.Interceptor === 'function'){
                 try {
                     ControllerClassInit.Interceptor().then(()=>{
-                        ControllerClassInit[urlArrs[2]]();
+
+                        if(this.$_method.toLocaleLowerCase() === 'options' && ServerConfig.CORS){
+                            this.setHeaders({
+                                "Access-Control-Allow-Headers":"*",
+                            });
+                            this.$_send(null);
+                        }else {
+                            if(ServerConfig.debug){
+                                ncol.warn("==================================================================");
+                                ncol.color(()=>{
+                                    ncol.successBG("【请求】")
+                                        .info(`【${this.$_method}】`)
+                                        .log(`【${this.$_url}】`)
+                                });
+                            }
+                            ControllerClassInit[urlArrs[2]]();
+                        }
                     }).catch(err=>{
                         Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
                             title:`拦截器错误`,
@@ -340,7 +357,8 @@ export default class applicationControllerClass extends PublicController impleme
                                 "控制器 -> ":ControllerClassName,
                                 "方法 -> ":urlArrs[2],
                                 "描述 -> ":err,
-                            }
+                            },
+                            interceptorErr:err,
                         });
                     });
                 }catch (e) {
@@ -353,6 +371,7 @@ export default class applicationControllerClass extends PublicController impleme
                             "方法 -> ":urlArrs[2],
                             "描述 -> ":"拦截器注入方式错误，Interceptor 必须return一个Promise对象",
                         },
+                        interceptorErr:e,
                     });
                 }
 
@@ -410,7 +429,7 @@ export default class applicationControllerClass extends PublicController impleme
             };
         });
     }
-    $_success(msg?:any,sendData?:any,code?:number){
+    $_success(msg?:any,sendData?:any,code?:number, error?:boolean){
         let newSendData = <SuccessSendDataOptions>{
             code:this.StatusCode.success.code,
             data:null,
@@ -430,14 +449,33 @@ export default class applicationControllerClass extends PublicController impleme
         }else {
             newSendData.code = code || newSendData.code;
         }
-        ncol.color(()=>{
-            ncol.successBG("【res】").success(JSON.stringify(newSendData))
-        })
+        if(!error && ServerConfig.debug){
+            ncol.color(()=>{
+                ncol.successBG("【响应】")
+                    .info(`【${this.$_method}】`)
+                    .log(`【${this.$_url}】`)
+                    .success(JSON.stringify(newSendData))
+            });
+        }
         this.$_send(newSendData);
     }
     $_error(msg:any = this.StatusCode.error.msg,sendData?:any,code:number = this.StatusCode.error.code){
-        console.error(new Error(msg));
-        this.$_success(msg,sendData,code)
+        if(ServerConfig.debug){
+            this.$_log({
+                type:"响应",
+                method:this.$_method,
+                url:this.$_url,
+                msg:msg,
+            });
+            ncol.color(()=>{
+                ncol.errorBG("【响应】")
+                    .info(`【${this.$_method}】`)
+                    .error(`【${this.$_url}】`)
+                    .errorBG(JSON.stringify(msg))
+            });
+            console.error(new Error(msg));
+        }
+        this.$_success(msg,sendData,code,true)
     }
     $_puppeteer(url:string,jsContent:any){
         return new Promise((resolve, reject) => {
