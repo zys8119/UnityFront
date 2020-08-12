@@ -111,7 +111,7 @@ export default class applicationControllerClass extends PublicController impleme
     $_RequestHeaders:headersType;
     $mysql?(optionsConfig?:object,isEnd?:boolean):SqlUtilsOptions;
     __dir:string;
-    $urlParams:any;
+    $_params:any;
     $methodName:string;
     $urlArrs:any[];
     $ControllerConfig:any;
@@ -207,22 +207,10 @@ export default class applicationControllerClass extends PublicController impleme
 
 
     }
-    UrlParse(){
-        //todo 首页渲染
-        let $$url = this.$_url;
-        //自定义路由配置===start
-        //应用路由配置
-        try {
-            let $appRouteConfig = require(path.resolve(ServerConfig.Template.applicationPath,"conf/route"));
-            if($appRouteConfig && $appRouteConfig.default && $appRouteConfig.default[this.$_url]){
-                $$url = $appRouteConfig.default[this.$_url];
-            }
-        }catch (e) {}
-        let urlArrs = Utils.getUrlArrs($$url);
-        //控制器路由配置
-        try {
-            let $moduleRouteConfig = require(path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"conf/route"));
 
+    UrlParams($$url,urlArrs,paramsKeyArr, isApp:boolean, $moduleRouteConfig:any){
+        try {
+            //应用路由配置
             if($moduleRouteConfig && $moduleRouteConfig.default){
                 if($moduleRouteConfig.default[this.$_url]){
                     $$url = $moduleRouteConfig.default[this.$_url];
@@ -236,7 +224,7 @@ export default class applicationControllerClass extends PublicController impleme
                             paramsMap[(<any>e).match(/^.*?:/).toString().replace(/(\/|\/:)$/,"")] = ":"+e.replace(/^.*?:/,"")
                         }catch (e) {}
                     });
-                    let paramsKey = "/"+urlArrs.slice(0,2).join("/");
+                    let paramsKey = "/"+urlArrs.slice(0,isApp?1:2).join("/");
                     let paramsStr = paramsMap[paramsKey];
                     let $_url_params = this.$_url.slice(paramsKey.length+1);
                     if(paramsStr){
@@ -244,12 +232,11 @@ export default class applicationControllerClass extends PublicController impleme
                             let paramsUrl = $moduleRouteConfig.default[paramsKey+'/'+paramsStr];
                             if(paramsUrl && $_url_params){
                                 let paramsValueArr = $_url_params.split("/");
-                                let paramsKeyArr = paramsStr.split("/")
-                                    .map((e,i)=>{
-                                        let k = e.replace(/^:/,"");
-                                        return `${k}/${paramsValueArr[i]}`
-                                    });
-                                $$url = paramsUrl+"/"+paramsKeyArr.join("/");
+                                paramsStr.split("/").forEach((e,i)=>{
+                                    let k = e.replace(/^:/,"");
+                                    paramsKeyArr[k] = paramsValueArr[i];
+                                });
+                                $$url = paramsUrl;
                                 try {
                                     urlArrs = Utils.getUrlArrs($$url);
                                 }catch (e) {}
@@ -259,7 +246,31 @@ export default class applicationControllerClass extends PublicController impleme
                 }
             }
         }catch (e) {}
-        //==================end
+        return {
+            $$url,
+            urlArrs,
+        }
+    }
+
+    UrlParse(){
+        //todo 首页渲染
+        let $$url = this.$_url;
+        let urlArrs = Utils.getUrlArrs($$url);
+        let paramsKeyArr = {};
+        //todo 自定义路由配置===start
+        //应用路由配置
+        try {
+            let a_conf = this.UrlParams($$url,urlArrs,paramsKeyArr,true,require(path.resolve(ServerConfig.Template.applicationPath,"conf/route")));
+            $$url = a_conf.$$url;
+            urlArrs = a_conf.urlArrs;
+        }catch (e) {}
+        //控制器路由配置
+        try {
+            let c_conf = this.UrlParams($$url,urlArrs,paramsKeyArr,false,require(path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"conf/route")));
+            $$url = c_conf.$$url;
+            urlArrs = c_conf.urlArrs;
+        }catch (e) {}
+        //todo ==================end
         if($$url == "/"){
             this.Render(null,null,true);
         }else {
@@ -314,14 +325,7 @@ export default class applicationControllerClass extends PublicController impleme
             //扩展公共数据及方法
             ControllerClassObj.prototype.$urlArrs = urlArrs;
             // $urlParams
-            if($$url){
-                let paramsArr = $$url.split("/").slice(4);
-                let resUlt = {};
-                for(let k = 0; k < paramsArr.length; k+=2){
-                    resUlt[paramsArr[k]] = paramsArr[k+1];
-                }
-                ControllerClassObj.prototype.$urlParams = resUlt;
-            }
+            ControllerClassObj.prototype.$_params = paramsKeyArr;
 
             //自定义配置文件===start
             let $ControllerConfig = {};

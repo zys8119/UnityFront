@@ -1,3 +1,3 @@
 export default {
-    // "/Dome/a/:id/:b":"/Dome//Index/urlParams",
+    "/Dome/urlParams/:id/:b":"/Dome/Index/urlParams",
 }

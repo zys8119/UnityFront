@@ -98,13 +98,12 @@ export class IndexController extends applicationController {
     @method_post(IndexController,"upload")
     upload(){
         this.$_getRequestFormData().then(res=>{
-            fs.writeFileSync(path.resolve(this.__dir,"../",res[1].fileName),res[1].fileBuff)
+            fs.writeFileSync(path.resolve(ServerConfig.Template.publicPath,res[1].fileName),res[1].fileBuff)
             this.$_success("上传成功",null,0);
         });
     }
 
     urlParams(){
-        console.log(this.$urlParams,1111111111111111)
-        this.$_success();
+        this.$_success(this.$_params);
     }
 }

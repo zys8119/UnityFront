@@ -32,7 +32,7 @@ module.exports = (request,response)=>{
                     return new mysql(optionsConfig,isEnd);
                 },
                 __dir:null,
-                $urlParams:{},
+                $_params:{},
                 $methodName:null,
                 StatusCode:StatusCode,
                 $_axios:Axios,

@@ -39,7 +39,8 @@ export interface ServerOptions_fsWatch {
 
 export interface ServerOptions_Template {
     viewsPath?:string;//公共模板路径
-    applicationPath?:string;//公共应用路径
+    applicationPath?:string;//应用目录路径
+    publicPath?:string;//应用公共目录路径
     TemplatePath?:string;//UnityFront主模板渲染路径
     TemplateErrorPath?:string;//错误模板渲染路径
     ErrorPathSource?:string;//错误来源路径
@@ -148,7 +149,7 @@ export interface ControllerInitDataOptions {
     $_RequestHeaders?:headersType;//headers头设置
     $mysql?(optionsConfig?:object,isEnd?:boolean):SqlUtilsOptions;//sql工具
     __dir?:string;//当前控制器位置
-    $urlParams?:any;//url Params 数据
+    $_params?:any;//url Params 数据
     $methodName?:string;//当前控制器执行的方法名称
     $urlArrs?:any[];//控制器url数组
     $ControllerConfig?:any;//控制器配置
@@ -173,6 +174,19 @@ export interface ControllerInitDataOptions {
      * @constructor
      */
     Render?(TemplatePath?:any,TemplateData?:object,bool?:boolean):void;// 渲染模板
+    /**
+     * UrlParams解析
+     * @param $$url 请求路径
+     * @param urlArrs url数组
+     * @param paramsKeyArr UrlParams数据
+     * @param isApp 是否为app配置
+     * @param $moduleRouteConfig 对应配置数据
+     * @constructor
+     */
+    UrlParams?<T = string,TT = string[]>($$url:T,urlArrs:TT,paramsKeyArr:{[key:string]:any}, isApp:boolean, $moduleRouteConfig:any):{
+        $$url:T;
+        urlArrs:TT;
+    };// UrlParams解析
     /**
      * 控制器及url解析
      * @constructor
