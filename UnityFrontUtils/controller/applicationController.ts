@@ -111,6 +111,7 @@ export default class applicationControllerClass extends PublicController impleme
     $_RequestHeaders:headersType;
     $mysql?(optionsConfig?:object,isEnd?:boolean):SqlUtilsOptions;
     __dir:string;
+    $urlParams:any;
     $methodName:string;
     $urlArrs:any[];
     $ControllerConfig:any;
@@ -221,11 +222,41 @@ export default class applicationControllerClass extends PublicController impleme
         //控制器路由配置
         try {
             let $moduleRouteConfig = require(path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"conf/route"));
-            if($moduleRouteConfig && $moduleRouteConfig.default && $moduleRouteConfig.default[this.$_url]){
-                $$url = $moduleRouteConfig.default[this.$_url];
-                try {
-                    urlArrs = Utils.getUrlArrs($$url);
-                }catch (e) {}
+
+            if($moduleRouteConfig && $moduleRouteConfig.default){
+                if($moduleRouteConfig.default[this.$_url]){
+                    $$url = $moduleRouteConfig.default[this.$_url];
+                    try {
+                        urlArrs = Utils.getUrlArrs($$url);
+                    }catch (e) {}
+                }else {
+                    let paramsMap = {};
+                    Object.keys($moduleRouteConfig.default).forEach(e=>{
+                        try {
+                            paramsMap[(<any>e).match(/^.*?:/).toString().replace(/(\/|\/:)$/,"")] = ":"+e.replace(/^.*?:/,"")
+                        }catch (e) {}
+                    });
+                    let paramsKey = "/"+urlArrs.slice(0,2).join("/");
+                    let paramsStr = paramsMap[paramsKey];
+                    let $_url_params = this.$_url.slice(paramsKey.length+1);
+                    if(paramsStr){
+                        if(this.$_url.indexOf(paramsKey) === 0){
+                            let paramsUrl = $moduleRouteConfig.default[paramsKey+'/'+paramsStr];
+                            if(paramsUrl && $_url_params){
+                                let paramsValueArr = $_url_params.split("/");
+                                let paramsKeyArr = paramsStr.split("/")
+                                    .map((e,i)=>{
+                                        let k = e.replace(/^:/,"");
+                                        return `${k}/${paramsValueArr[i]}`
+                                    });
+                                $$url = paramsUrl+"/"+paramsKeyArr.join("/");
+                                try {
+                                    urlArrs = Utils.getUrlArrs($$url);
+                                }catch (e) {}
+                            }
+                        }
+                    }
+                }
             }
         }catch (e) {}
         //==================end
@@ -282,6 +313,16 @@ export default class applicationControllerClass extends PublicController impleme
             Utils.ControllerInitData.call(this,this,ControllerClassObj,urlArrs[2],ServerConfig,ControllerPath,true);
             //扩展公共数据及方法
             ControllerClassObj.prototype.$urlArrs = urlArrs;
+            // $urlParams
+            if($$url){
+                let paramsArr = $$url.split("/").slice(4);
+                let resUlt = {};
+                for(let k = 0; k < paramsArr.length; k+=2){
+                    resUlt[paramsArr[k]] = paramsArr[k+1];
+                }
+                ControllerClassObj.prototype.$urlParams = resUlt;
+            }
+
             //自定义配置文件===start
             let $ControllerConfig = {};
             //应用配置

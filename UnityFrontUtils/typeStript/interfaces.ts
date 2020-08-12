@@ -148,6 +148,7 @@ export interface ControllerInitDataOptions {
     $_RequestHeaders?:headersType;//headers头设置
     $mysql?(optionsConfig?:object,isEnd?:boolean):SqlUtilsOptions;//sql工具
     __dir?:string;//当前控制器位置
+    $urlParams?:any;//url Params 数据
     $methodName?:string;//当前控制器执行的方法名称
     $urlArrs?:any[];//控制器url数组
     $ControllerConfig?:any;//控制器配置
