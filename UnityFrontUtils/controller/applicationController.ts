@@ -17,7 +17,6 @@ const path = require('path');
 const http = require('http');
 const https = require('https');
 const pug = require('pug');
-const puppeteer = require('puppeteer');
 const ncol = require('ncol');
 
 /**
@@ -478,6 +477,8 @@ export default class applicationControllerClass extends PublicController impleme
         this.$_success(msg,sendData,code,true)
     }
     $_puppeteer(url:string,jsContent:any){
+        // "puppeteer": "^2.0.0"
+        const puppeteer = require('puppeteer');
         return new Promise((resolve, reject) => {
             try {
                 puppeteer.launch().then(async browser => {
