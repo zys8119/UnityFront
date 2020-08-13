@@ -194,6 +194,14 @@ export interface ControllerInitDataOptions {
      */
     UrlParse?(TemplatePath?:any,TemplateData?:object,bool?:boolean):void;// 控制器及url解析
 
+
+    /**
+     * 创建日志文件
+     * @param args 日志数据
+     * @param logFileName 日志文件名称
+     */
+    $_createLog?(args?:any,logFileName?:string):void;// 创建日志文件
+
     /**
      * 日志输出
      * @param args 输出的参数数据
