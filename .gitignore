@@ -6,6 +6,7 @@ application/**/*.js
 conf/**/*.js
 TaskQueue/**/*.js
 UnityFrontUtils/**/*.js
+model/**/*.js
 package-lock.json
 /UnityFrontUtils/log
 /application/Dome/controller/nvidia-smi.
