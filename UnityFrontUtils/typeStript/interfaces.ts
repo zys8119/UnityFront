@@ -55,6 +55,7 @@ export interface SendDataOptions {
 }
 
 export interface SqlUtilsOptions {
+    sqlFormat(sqlArr,type:string ,join?:string):string;
     /**
      *
      * @param sqlStr sql字符串
@@ -80,6 +81,32 @@ export interface SqlUtilsOptions {
      * @param type 类型，默认=，精准匹配
      */
     where(WhereArr:object|string,showSqlStr?:boolean,type?:string):SqlUtilsOptions;
+
+    /**
+     * OR 语句
+     * @constructor
+     */
+    OR():SqlUtilsOptions;
+
+    /**
+     * AND 语句
+     * @constructor
+     */
+    AND():SqlUtilsOptions;
+
+    /**
+     *
+     * @param WhereArr 条件数据
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     * @param type 类型，默认=，精准匹配
+     * @param join 类型，默认AND，链接符号
+     */
+    concat(WhereArr:((this:SqlUtilsOptions)=>void)|object|string,type?:string,join?:string):SqlUtilsOptions;
+
+    /**
+     * 显示sql
+     */
+    show():SqlUtilsOptions;
     /**
      *
      * @param TabelName 表名
@@ -237,7 +264,7 @@ export interface ControllerInitDataOptions {
      * @param jsContent
      * @return Promise
      * //=============示例========================
-        this.puppeteer('http://www.baidu.com',()=>new Promise((resolve, reject) => {
+     this.puppeteer('http://www.baidu.com',()=>new Promise((resolve, reject) => {
             ///可执行上下文
             resolve([]);
         })).then(res=>{

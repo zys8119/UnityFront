@@ -1,8 +1,9 @@
 import "../typeStript"
 import { mysqlConfig} from "../config"
+import {SqlUtilsOptions} from "../typeStript";
 let mysqlTool = require('mysql');
 let ncol = require('ncol');
-class mysql {
+class mysql implements SqlUtilsOptions{
     private connection:any;
     private selectSql = '';
     private showSqlStrBool = false;
@@ -39,7 +40,7 @@ class mysql {
      * @param type 条件符号
      * @param join 连接符号
      */
-    private sqlFormat(sqlArr,type = '=',join = "AND"){
+    sqlFormat(sqlArr,type = '=',join = "AND"){
         let sqlStr = ``;
         switch (typeof  sqlArr) {
             case "object":
@@ -142,6 +143,30 @@ class mysql {
                 this.selectSql += `WHERE ${this.sqlFormat(WhereArr,type)} `;
                 break;
         }
+        return this;
+    }
+
+    OR(){
+        this.selectSql += 'OR ';
+        return this;
+    }
+
+    AND(){
+        this.selectSql += 'AND ';
+        return this;
+    }
+
+    concat(WhereArr:((this:SqlUtilsOptions)=>void)|object|string,type:string = '=',join:string = "AND"){
+        if(Object.prototype.toString.call(WhereArr) === '[object Function]'){
+            (<any>WhereArr).call(this);
+            return this;
+        }
+        this.selectSql += this.sqlFormat(WhereArr,type,join);
+        return this;
+    }
+
+    show(){
+        this.showSqlStrBool = true;
         return this;
     }
 
@@ -274,5 +299,3 @@ class mysql {
 
 }
 export default mysql;
-
-
