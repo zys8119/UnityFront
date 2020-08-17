@@ -1,5 +1,6 @@
 import { headersType } from "./Types"
 import { AxiosStatic } from "axios"
+import a from "../lib/formData";
 
 export interface mysqlOptions {
     //连接池
@@ -158,6 +159,14 @@ export interface SqlUtilsOptions {
     join(data:object|string,showSqlStr?:boolean):SqlUtilsOptions;
 }
 
+export interface SqlModel {
+    [key:string]:SqlModelTable;
+}
+
+export interface  SqlModelTable extends SqlUtilsOptions{
+    new (optionsConfig?:object,isEnd?:boolean):void;
+}
+
 export interface ControllerInitDataOptions {
     [key:string]:any;
     request?:any;//请求体
@@ -175,6 +184,7 @@ export interface ControllerInitDataOptions {
     $_RequestStatus?:number;// 请求状态设置
     $_RequestHeaders?:headersType;//headers头设置
     $mysql?(optionsConfig?:object,isEnd?:boolean):SqlUtilsOptions;//sql工具
+    $sqlModel?:SqlModel;//sql模型
     __dir?:string;//当前控制器位置
     $_params?:any;//url Params 数据
     $methodName?:string;//当前控制器执行的方法名称

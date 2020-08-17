@@ -1,6 +1,5 @@
 import applicationController, {method_post} from "../../../UnityFrontUtils/controller/applicationController";
 import {ServerConfig, ServerPublicConfig} from "../../../UnityFrontUtils/config";
-import SqlModel from "../../../UnityFrontUtils/mysql/SqlModel";
 const path = require("path")
 const fs = require("fs")
 const less = require("less")
@@ -111,7 +110,7 @@ export class IndexController extends applicationController {
     }
 
     userModel(){
-        new SqlModel.UserModel().select().from("a").query();
+        new this.$sqlModel.a();
         this.$_success()
     }
 }

@@ -5,6 +5,7 @@ import {
     SuccessSendDataOptions,
     StatusCodeOptions,
     getSvgCodeOptions,
+    SqlModel,
 } from "../typeStript"
 import { headersType } from "../typeStript/Types";
 import { ServerConfig, ServerPublicConfig } from "../config";
@@ -110,6 +111,7 @@ export default class applicationControllerClass extends PublicController impleme
     $_RequestStatus:number;
     $_RequestHeaders:headersType;
     $mysql?(optionsConfig?:object,isEnd?:boolean):SqlUtilsOptions;
+    $sqlModel?:SqlModel;
     __dir:string;
     $_params:any;
     $methodName:string;
