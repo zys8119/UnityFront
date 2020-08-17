@@ -1,6 +1,6 @@
 import { headersType } from "./Types"
 import { AxiosStatic } from "axios"
-import a from "../lib/formData";
+import {SqlModel} from "../../model/interfaces";
 
 export interface mysqlOptions {
     //连接池
@@ -56,7 +56,7 @@ export interface SendDataOptions {
 }
 
 export interface SqlUtilsOptions {
-    sqlFormat(sqlArr,type:string ,join?:string):string;
+    sqlFormat?(sqlArr,type:string ,join?:string):string;
     /**
      *
      * @param sqlStr sql字符串
@@ -68,32 +68,32 @@ export interface SqlUtilsOptions {
      * @param TableFieldName 选择的字段名称
      * @param showSqlStr 是否输出sql字符串，默认不输出
      */
-    select(TableFieldName?:string,showSqlStr?:boolean):SqlUtilsOptions;
+    select?(TableFieldName?:string,showSqlStr?:boolean):SqlUtilsOptions;
     /**
      *
      * @param TableName 表名
      * @param showSqlStr  是否输出sql字符串，默认不输出
      */
-    from(TableName:string,showSqlStr?:boolean):SqlUtilsOptions;
+    from?(TableName:string,showSqlStr?:boolean):SqlUtilsOptions;
     /**
      *
      * @param WhereArr 条件数据
      * @param showSqlStr 是否输出sql字符串，默认不输出
      * @param type 类型，默认=，精准匹配
      */
-    where(WhereArr:object|string,showSqlStr?:boolean,type?:string):SqlUtilsOptions;
+    where?(WhereArr:object|string,showSqlStr?:boolean,type?:string):SqlUtilsOptions;
 
     /**
      * OR 语句
      * @constructor
      */
-    OR():SqlUtilsOptions;
+    OR?():SqlUtilsOptions;
 
     /**
      * AND 语句
      * @constructor
      */
-    AND():SqlUtilsOptions;
+    AND?():SqlUtilsOptions;
 
     /**
      *
@@ -102,12 +102,12 @@ export interface SqlUtilsOptions {
      * @param type 类型，默认=，精准匹配
      * @param join 类型，默认AND，链接符号
      */
-    concat(WhereArr:((this:SqlUtilsOptions)=>void)|object|string,type?:string,join?:string):SqlUtilsOptions;
+    concat?(WhereArr:((this:SqlUtilsOptions)=>void)|object|string,type?:string,join?:string):SqlUtilsOptions;
 
     /**
      * 显示sql
      */
-    show():SqlUtilsOptions;
+    show?():SqlUtilsOptions;
     /**
      *
      * @param TabelName 表名
@@ -117,26 +117,26 @@ export interface SqlUtilsOptions {
      * @param indexMore  当前多条索引
      * @param indexMaxMore 总条数
      */
-    insert(TabelName:string,ArrData:Array<any>|Object,insertMore?:boolean,showSqlStr?:boolean,indexMore?:number,indexMaxMore?:number):SqlUtilsOptions;
+    insert?(TabelName:string,ArrData:Array<any>|Object,insertMore?:boolean,showSqlStr?:boolean,indexMore?:number,indexMaxMore?:number):SqlUtilsOptions;
     /**
      *
      * @param showSqlStr 是否输出sql字符串，默认不输出
      */
-    delete(showSqlStr?:boolean):SqlUtilsOptions;
+    delete?(showSqlStr?:boolean):SqlUtilsOptions;
     /**
      *
      * @param TabelName 表名
      * @param newData 新数据
      * @param showSqlStr  是否输出sql字符串，默认不输出
      */
-    update(TabelName:string,newData?:object|string|[],showSqlStr?:boolean):SqlUtilsOptions;
+    update?(TabelName:string,newData?:object|string|[],showSqlStr?:boolean):SqlUtilsOptions;
     /**
      *
      * @param FieldName 需要排序的字段名
      * @param desc 倒叙或正序
      * @param showSqlStr 是否输出sql字符串，默认不输出
      */
-    asc(FieldName:string,desc?:boolean,showSqlStr?:boolean):SqlUtilsOptions;
+    asc?(FieldName:string,desc?:boolean,showSqlStr?:boolean):SqlUtilsOptions;
     /**
      *
      * @param FieldName 字段名称
@@ -144,27 +144,19 @@ export interface SqlUtilsOptions {
      * @param desc 倒叙或正序
      * @param showSqlStr 是否输出sql字符串，默认不输出
      */
-    limit(FieldName:string,index:string|number,desc?:boolean,showSqlStr?:boolean):SqlUtilsOptions;
+    limit?(FieldName:string,index:string|number,desc?:boolean,showSqlStr?:boolean):SqlUtilsOptions;
     /**
      *
      * @param WhereArr 模糊查询条件数据
      * @param showSqlStr 是否输出sql字符串，默认不输出
      */
-    like(WhereArr:object|string,showSqlStr?:boolean):SqlUtilsOptions;
+    like?(WhereArr:object|string,showSqlStr?:boolean):SqlUtilsOptions;
     /**
      *
      * @param data 需要链表的数据
      * @param showSqlStr 是否输出sql字符串，默认不输出
      */
-    join(data:object|string,showSqlStr?:boolean):SqlUtilsOptions;
-}
-
-export interface SqlModel {
-    [key:string]:SqlModelTable;
-}
-
-export interface  SqlModelTable extends SqlUtilsOptions{
-    new (optionsConfig?:object,isEnd?:boolean):void;
+    join?(data:object|string,showSqlStr?:boolean):SqlUtilsOptions;
 }
 
 export interface ControllerInitDataOptions {

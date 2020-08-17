@@ -4,7 +4,7 @@ import UnityFrontController from "../controller/controller"
 import { ServerConfig } from "../config"
 import StatusCode from "../../conf/StatusCode"
 import mysql from "../mysql"
-import SqlModel from "../mysql/SqlModel"
+import SqlModel from "../../model/SqlModel"
 import Axios from "axios"
 import Utils from "../utils"
 module.exports = (request,response)=>{

@@ -5,7 +5,6 @@ import {
     SuccessSendDataOptions,
     StatusCodeOptions,
     getSvgCodeOptions,
-    SqlModel,
 } from "../typeStript"
 import { headersType } from "../typeStript/Types";
 import { ServerConfig, ServerPublicConfig } from "../config";
@@ -13,6 +12,7 @@ import { AxiosStatic } from "axios";
 import Encrypt from "../utils/encrypt";
 import Utils from "../utils";
 import PublicController from "../../conf/PublicController";
+import { SqlModel } from "../../model/interfaces";
 const fs = require('fs');
 const path = require('path');
 const http = require('http');

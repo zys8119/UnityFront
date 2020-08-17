@@ -39,6 +39,8 @@ export const ServerConfig =  <ServerOptions>{
         {path:path.resolve(__dirname,"../"),type:"directory"},
         //listen application directory
         {path:path.resolve(__dirname,"../../application"),type:"directory"},
+        //listen model directory
+        {path:path.resolve(__dirname,"../../model"),type:"directory"},
     ],
     RequestStatus:200,
     headers:{
