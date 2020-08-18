@@ -69,6 +69,18 @@ export interface SqlUtilsOptions {
      * @param showSqlStr 是否输出sql字符串，默认不输出
      */
     select?(TableFieldName?:string,showSqlStr?:boolean):SqlUtilsOptions;
+
+    /**
+     * @param condition 条件
+     */
+    count?(condition?:any):SqlUtilsOptions;
+
+    /**
+     * @param pageNo 页数
+     * @param pageSize 每页数量
+     */
+    pagination?(pageNo:number,pageSize?:number):SqlUtilsOptions;
+
     /**
      *
      * @param TableName 表名

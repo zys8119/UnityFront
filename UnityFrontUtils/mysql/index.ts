@@ -115,6 +115,17 @@ class mysql implements SqlUtilsOptions{
         return this;
     }
 
+    count(condition: any = "*"): SqlUtilsOptions{
+        return this.select(`count(${condition}) as total`);
+    }
+
+    pagination(pageNo: number, pageSize: number = 10): SqlUtilsOptions {
+        let p = parseInt((<any>pageNo));
+        let sum = parseInt((<any>pageSize));
+        let offset = (p-1)*sum;
+        return this.join(`limit ${offset}, ${sum} `);
+    }
+
     /**
      *
      * @param TableName 表名

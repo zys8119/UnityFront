@@ -1,4 +1,5 @@
 import mysql from "../UnityFrontUtils/mysql";
+import {SqlUtilsOptions} from "../UnityFrontUtils/typeStript";
 
 export interface PublicModelInterface {
     // 表名
@@ -23,6 +24,10 @@ export default class extends mysql implements PublicModelInterface{
             TableFieldName = Object.keys(this.$sqlFieldConfig).join(",");
         }
         return super.select(TableFieldName || "*", showSqlStr);
+    }
+
+    count(condition: any = "*"): SqlUtilsOptions{
+        return super.count(condition).from(this.$TableName);
     }
 
     from(TableName?: string, showSqlStr?: boolean): this {

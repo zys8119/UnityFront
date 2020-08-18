@@ -111,11 +111,47 @@ export class IndexController extends applicationController {
 
     userModel(){
         let UserModel = new this.$sqlModel.UserModel();
+        let name = this.$_query.search || "";
+        let pageNo = this.$_query.pageNo || 1;
+        let pageSize = this.$_query.pageSize || 10;
+        let like = {
+            name:false,
+            id:true,
+        };
+        let likeData = null;
+        let likeFilter = Object.keys(like).filter(k=>like[k]);
+        if(likeFilter.length > 0){
+            likeData = {};
+            likeData[`CONCAT(${likeFilter.join(",")})`] = `%${name}%`;
+        }
         UserModel
-            // .select(`name, count(case when id then 1 end) as a`)
-            .select(`name, count(case when id then 1 end) as a`)
-            .from()
-            .query()
-            .then(res=>this.$_success(res)).catch(()=>this.$_error());
+            .count().concat(function () {
+                if(likeData){
+                    this.like(likeData)
+                }
+                return this;
+            })
+            .query().then( total=>{
+                UserModel.select().from().concat(function () {
+                        if(likeData){
+                            this.like(likeData)
+                        }
+                        if(pageNo != 0){
+                            this.pagination(pageNo,pageSize)
+                        }
+                        return this;
+                    })
+                    .query().then(res=>{
+                        let data:any = {
+                            total:total[0].total,
+                            list:res,
+                        };
+                        if(pageNo != 0){
+                            data.pageNo = pageNo;
+                            data.pageSize = pageSize;
+                        }
+                        this.$_success(data)
+                    }).catch(()=>this.$_error())
+            }).catch(()=>this.$_error());
     }
 }
