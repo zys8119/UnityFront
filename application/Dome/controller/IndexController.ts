@@ -111,11 +111,28 @@ export class IndexController extends applicationController {
 
     userModel(){
         let UserModel = new this.$sqlModel.UserModel();
-
         UserModel.getPage({
-
+            pageNo:1,
+            like:{
+                id:true
+            },
+            search:"1"
         }).then(res=>{
-            this.$_success(res);
-        }).catch((err)=>this.$_error(err.message));
+            Promise.all(res.list.map(e=>{
+                return this.DB().select()
+                    .from("test2")
+                    .where({
+                        pid:e.id,
+                    }).query()
+            })).then(bb=>{
+                this.$_success({
+                    ...res,
+                    list:res.list.map((e,i)=>({
+                        ...e,
+                        data:bb[i],
+                    }))
+                });
+            }).catch((err)=>this.$_error(err));
+        }).catch((err)=>this.$_error(err));
     }
 }
