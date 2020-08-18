@@ -110,7 +110,8 @@ export class IndexController extends applicationController {
     }
 
     userModel(){
-        new this.$sqlModel.UserModel().select().from().show().query().then();
-        this.$_success()
+        new this.$sqlModel.UserModel().select().from().where({
+            id:1,
+        },void (0),'>').query().then(res=>this.$_success(res)).catch(()=>this.$_error());
     }
 }

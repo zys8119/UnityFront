@@ -1,9 +1,9 @@
 import PublicModel, {$sqlFieldConfigType, PublicModelInterface} from "./PublicModel";
 
 export default class extends PublicModel implements PublicModelInterface{
-    $TableName = "user";
+    $TableName = "test";
     $sqlFieldConfig:$sqlFieldConfigType = {
         id:"int",
-        b:"int",
+        name:"string",
     }
 }
