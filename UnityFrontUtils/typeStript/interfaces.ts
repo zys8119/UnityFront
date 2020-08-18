@@ -117,7 +117,7 @@ export interface SqlUtilsOptions {
      * @param indexMore  当前多条索引
      * @param indexMaxMore 总条数
      */
-    insert?(TabelName:string,ArrData:Array<any>|Object,insertMore?:boolean,showSqlStr?:boolean,indexMore?:number,indexMaxMore?:number):SqlUtilsOptions;
+    insert?(TabelName?:string|Array<any>|object,ArrData?:Array<any>|object,insertMore?:boolean,showSqlStr?:boolean,indexMore?:number,indexMaxMore?:number):SqlUtilsOptions;
     /**
      *
      * @param showSqlStr 是否输出sql字符串，默认不输出
@@ -129,7 +129,7 @@ export interface SqlUtilsOptions {
      * @param newData 新数据
      * @param showSqlStr  是否输出sql字符串，默认不输出
      */
-    update?(TabelName:string,newData?:object|string|[],showSqlStr?:boolean):SqlUtilsOptions;
+    update?(TabelName?:string|object|string|[],newData?:object|string|[],showSqlStr?:boolean):SqlUtilsOptions;
     /**
      *
      * @param FieldName 需要排序的字段名

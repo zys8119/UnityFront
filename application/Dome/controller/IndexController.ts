@@ -110,8 +110,12 @@ export class IndexController extends applicationController {
     }
 
     userModel(){
-        new this.$sqlModel.UserModel().select().from().where({
-            id:1,
-        },void (0),'>').query().then(res=>this.$_success(res)).catch(()=>this.$_error());
+        let UserModel = new this.$sqlModel.UserModel();
+        UserModel
+            // .select(`name, count(case when id then 1 end) as a`)
+            .select(`name, count(case when id then 1 end) as a`)
+            .from()
+            .query()
+            .then(res=>this.$_success(res)).catch(()=>this.$_error());
     }
 }

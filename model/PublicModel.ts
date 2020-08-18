@@ -18,8 +18,8 @@ export default class extends mysql implements PublicModelInterface{
         super(optionsConfig);
     }
 
-    select(TableFieldName: string = "all", showSqlStr?: boolean): this {
-        if(TableFieldName === "all"){
+    select(TableFieldName?: string, showSqlStr?: boolean): this {
+        if(Object.prototype.toString.call(TableFieldName) !== "[object String]"){
             TableFieldName = Object.keys(this.$sqlFieldConfig).join(",");
         }
         return super.select(TableFieldName || "*", showSqlStr);
@@ -27,5 +27,21 @@ export default class extends mysql implements PublicModelInterface{
 
     from(TableName?: string, showSqlStr?: boolean): this {
         return super.from(TableName || this.$TableName, showSqlStr);
+    }
+
+    update(TabelName?: string, newData?: object | string | [], showSqlStr?: boolean): this {
+        if(Object.prototype.toString.call(TabelName) === "[object Object]"){
+            newData = TabelName;
+            TabelName = null;
+        }
+        return super.update(TabelName || this.$TableName, newData, showSqlStr);
+    }
+
+    insert(TabelName?: string, ArrData: any = [], insertMore?: boolean, showSqlStr?: boolean, indexMore?: number, indexMaxMore?: number): this {
+        if(Object.prototype.toString.call(TabelName) === "[object Object]"){
+            ArrData = TabelName;
+            TabelName = null;
+        }
+        return super.insert(TabelName || this.$TableName, ArrData, insertMore, showSqlStr, indexMore, indexMaxMore);
     }
 }
