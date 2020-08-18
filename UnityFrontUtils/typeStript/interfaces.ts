@@ -74,7 +74,7 @@ export interface SqlUtilsOptions {
      * @param TableName 表名
      * @param showSqlStr  是否输出sql字符串，默认不输出
      */
-    from?(TableName:string,showSqlStr?:boolean):SqlUtilsOptions;
+    from?(TableName?:string,showSqlStr?:boolean):SqlUtilsOptions;
     /**
      *
      * @param WhereArr 条件数据
