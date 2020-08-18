@@ -112,11 +112,11 @@ export class IndexController extends applicationController {
     userModel(){
         let UserModel = new this.$sqlModel.UserModel();
         let name = this.$_query.search || "";
-        let pageNo = this.$_query.pageNo || 1;
+        let pageNo = this.$_query.pageNo || 0;
         let pageSize = this.$_query.pageSize || 10;
         let like = {
             name:false,
-            id:true,
+            id:false,
         };
         let likeData = null;
         let likeFilter = Object.keys(like).filter(k=>like[k]);
@@ -145,11 +145,12 @@ export class IndexController extends applicationController {
                         let data:any = {
                             total:total[0].total,
                             list:res,
+                            pageNo,
+                            pageSize,
                         };
-                        if(pageNo != 0){
-                            data.pageNo = pageNo;
-                            data.pageSize = pageSize;
-                        }
+                        if(pageNo == 0){
+                            data = res;
+                        };
                         this.$_success(data)
                     }).catch(()=>this.$_error())
             }).catch(()=>this.$_error());
