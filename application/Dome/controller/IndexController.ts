@@ -113,10 +113,6 @@ export class IndexController extends applicationController {
         let UserModel = new this.$sqlModel.UserModel();
         UserModel.getPage({
             pageNo:1,
-            like:{
-                id:true
-            },
-            search:"1"
         }).then(res=>{
             Promise.all(res.list.map(e=>{
                 return this.DB().select()
