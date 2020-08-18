@@ -55,6 +55,19 @@ export interface SendDataOptions {
     RequestStatus?:number;//请求的状态码
 }
 
+export type getPagePageConfigType  = {
+    TableName?:string;// 表名称
+    pageNo?:number;// 当前页数
+    pageSize?:number;// 每页数量
+    search?:any;// 模糊搜索字段
+    like?:getPagePageConfigTypeLike;// 模糊搜索字段配置
+}
+
+export type getPagePageConfigTypeLike = {
+    // 需要被模糊查询的字段，值为true时被查询
+    [key:string]:boolean;
+}
+
 export interface SqlUtilsOptions {
     sqlFormat?(sqlArr,type:string ,join?:string):string;
     /**
@@ -80,6 +93,12 @@ export interface SqlUtilsOptions {
      * @param pageSize 每页数量
      */
     pagination?(pageNo:number,pageSize?:number):SqlUtilsOptions;
+
+    /**
+     * @param pageConfig 分页配置
+     * @param concatCallBack 连接回调，上下文为SqlUtilsOptions
+     */
+    getPage?(pageConfig?:getPagePageConfigType,concatCallBack?:(this:SqlUtilsOptions)=>void):Promise<any>;
 
     /**
      *

@@ -1,6 +1,6 @@
 import "../typeStript"
 import { mysqlConfig} from "../config"
-import {SqlUtilsOptions} from "../typeStript";
+import {SqlUtilsOptions, getPagePageConfigType} from "../typeStript";
 let mysqlTool = require('mysql');
 let ncol = require('ncol');
 class mysql implements SqlUtilsOptions{
@@ -126,12 +126,58 @@ class mysql implements SqlUtilsOptions{
         return this.join(`limit ${offset}, ${sum} `);
     }
 
+    getPage(pageConfig: getPagePageConfigType = {}, concatCallBack: (this: SqlUtilsOptions) => void = Function) {
+        return new Promise((resolve,reject)=>{
+            let name = pageConfig.search || "";
+            let pageNo = pageConfig.pageNo || 0;
+            let pageSize = pageConfig.pageSize || 10;
+            let like = pageConfig.like || {};
+            let likeData = null;
+            let likeFilter = Object.keys(like).filter(k=>like[k]);
+            if(likeFilter.length > 0){
+                likeData = {};
+                likeData[`CONCAT(${likeFilter.join(",")})`] = `%${name}%`;
+            }
+            this.count().concat(function () {
+                if(likeData){
+                    this.like(likeData)
+                }
+                concatCallBack.call(this,false);
+                return this;
+            })
+                .query().then( total=>{
+                this.select().from(pageConfig.TableName).concat(function () {
+                    if(likeData){
+                        this.like(likeData)
+                    }
+                    if(pageNo != 0){
+                        this.pagination(pageNo,pageSize)
+                    }
+                    concatCallBack.call(this,true);
+                    return this;
+                })
+                    .query().then(res=>{
+                    let data:any = {
+                        total:total[0].total,
+                        list:res,
+                        pageNo,
+                        pageSize,
+                    };
+                    if(pageNo == 0){
+                        data = res;
+                    };
+                    resolve(data);
+                }).catch(reject);
+            }).catch(reject);
+        });
+    }
+
     /**
      *
      * @param TableName 表名
      * @param showSqlStr  是否输出sql字符串，默认不输出
      */
-    from(TableName:string,showSqlStr?:boolean){
+    from(TableName?:string,showSqlStr?:boolean){
         if(showSqlStr){this.showSqlStrBool = showSqlStr;}
         this.selectSql += `FROM ${TableName} `;
         return this;
