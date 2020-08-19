@@ -24,6 +24,8 @@ export interface mysqlOptionsOptions {
 export interface ServerOptions {
     host?:string|number;//主机
     port?:string|number;//端口
+    ws_port?:string|number;//webSocket 端口,如果不存在就不创建
+    ws_user?:{[key:string]:any};//webSocket 用户链接池
     debug?:boolean;//是否开启调试
     CORS?:boolean;//是否允许跨域，全局CORS
     fsWatch?:Array<ServerOptions_fsWatch>;//监听文件变化，如果该字段不存在就不监听
@@ -53,6 +55,19 @@ export interface SendDataOptions {
     data?:any;//发送的数据
     headers?:headersType;//发送的请求头
     RequestStatus?:number;//请求的状态码
+}
+
+export interface webSocketApp {
+    new (data:webSocketAppData):void
+}
+
+export interface webSocketAppData {
+    toSocket?:any;// 链接对象
+    socket?:any;// 链接对象socket
+    write?(any:string):any;// 返回数据
+    data?:any;// 数据
+    requestData?:any;// 请求数
+    headers?:any;// 请求头
 }
 
 export type getPagePageConfigType  = {
@@ -498,6 +513,24 @@ export interface encryptOptions {
      * @param str 需要解密的密文
      */
     decode?(str:string):any;
+    /**
+     * @ws 服务
+     * 解密接收数据
+     * @param data
+     */
+    decodeWsFrame?(data:any):object
+    /**
+     *  @ws 服务
+     * 加密接收数据
+     * @param data
+     */
+    encodeWsFrame?(data:any):string[]
+    /**
+     *  @ws 服务
+     * 反序列化header
+     * @param str
+     */
+    parseHeader?(str:string):object
 }
 
 export interface ServerPublicConfigOptions {

@@ -1,7 +1,9 @@
 import "../typeStript"
 import {ServerConfig, TimingTaskQueue} from "../config"
+import webSocketServe from "../webSocket/serve"
 const http = require("http");
 const app = require('./app');
+const ncol = require('ncol');
 //定时任务
 if(TimingTaskQueue && ServerConfig.TimingTaskQueue  && TimingTaskQueue.TaskQueue){
     setInterval(TimingTaskQueue.TaskQueue,TimingTaskQueue.TaskQueueTime);
@@ -11,5 +13,8 @@ http.createServer(app).listen({
     host: ServerConfig.host,
     port: ServerConfig.port,
 });
-console.log(`Server running at http://${ServerConfig.host || "localhost"}:${ServerConfig.port}/`);
+ncol.info(`Server running at http://${ServerConfig.host || "localhost"}:${ServerConfig.port}/`);
+if(ServerConfig.ws_port){
+    new webSocketServe();
+}
 

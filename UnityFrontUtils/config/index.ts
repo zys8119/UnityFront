@@ -30,6 +30,8 @@ export const ServerPublicConfig = <ServerPublicConfigOptions>{
 //服务设置
 export const ServerConfig =  <ServerOptions>{
     port:81,
+    ws_port:82,
+    ws_user:{},
     debug:true,
     CORS:true,
     fsWatch:[
