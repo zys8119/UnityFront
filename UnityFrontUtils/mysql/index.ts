@@ -152,11 +152,11 @@ class mysql implements SqlUtilsOptions{
                     if(likeData){
                         this.like(likeData)
                     }
-                    if(pageNo != 0){
-                        this.pagination(pageNo,pageSize)
-                    }
                     if(Object.prototype.toString.call(concatCallBack) === '[object Function]'){
                         concatCallBack.call(this,true);
+                    }
+                    if(pageNo != 0){
+                        this.pagination(pageNo,pageSize)
                     }
                     return this;
                 })

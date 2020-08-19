@@ -110,33 +110,8 @@ export class IndexController extends applicationController {
     }
 
     userModel(){
-        let UserModel = new this.$sqlModel.UserModel();
-        UserModel.getPage({
-            TableName:UserModel.$TableName + " as a",
-            select:`a.id,a.name `,
-        },function (bool) {
-            if(bool){
-                this.join({
-                    'test2 as b':'a.id = b.pid'
-                })
-            }
-        }).then(res=>{
-            this.$_success(res);
-            // Promise.all(res.list.map(e=>{
-            //     return this.DB().select()
-            //         .from("test2")
-            //         .where({
-            //             pid:e.id,
-            //         }).query()
-            // })).then(bb=>{
-            //     this.$_success({
-            //         ...res,
-            //         list:res.list.map((e,i)=>({
-            //             ...e,
-            //             data:bb[i],
-            //         }))
-            //     });
-            // }).catch((err)=>this.$_error(err));
-        }).catch((err)=>this.$_error(err));
+        new this.$sqlModel.UserModel().getPage({
+            pageNo:this.$_query.pageNo,
+        }).then(res=>this.$_success(res)).catch(()=>this.$_error());
     }
 }
