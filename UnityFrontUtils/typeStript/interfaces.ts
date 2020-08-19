@@ -99,7 +99,7 @@ export interface SqlUtilsOptions {
      * @param pageConfig 分页配置
      * @param concatCallBack 连接回调，上下文为SqlUtilsOptions
      */
-    getPage?(pageConfig?:getPagePageConfigType,concatCallBack?:(this:SqlUtilsOptions)=>void):Promise<any>;
+    getPage?(pageConfig?:getPagePageConfigType,concatCallBack?:(this:SqlUtilsOptions,bool?:boolean)=>void):Promise<any>;
 
     /**
      *
