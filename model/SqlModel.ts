@@ -1,5 +1,5 @@
 import {SqlModel} from "./interfaces";
-import UserModel from "./UserModel"
+import UserModel from "./User/UserModel"
 const SqlModelDefault:SqlModel = {
     UserModel:UserModel
 };
