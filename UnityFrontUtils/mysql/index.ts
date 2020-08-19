@@ -146,7 +146,7 @@ class mysql implements SqlUtilsOptions{
                 return this;
             })
                 .query().then( total=>{
-                this.select().from(pageConfig.TableName).concat(function () {
+                this.select(pageConfig.select).from(pageConfig.TableName).concat(function () {
                     if(likeData){
                         this.like(likeData)
                     }

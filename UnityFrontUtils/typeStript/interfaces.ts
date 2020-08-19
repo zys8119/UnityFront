@@ -56,6 +56,7 @@ export interface SendDataOptions {
 }
 
 export type getPagePageConfigType  = {
+    select?:string;// 选择字段
     TableName?:string;// 表名称
     pageNo?:number;// 当前页数
     pageSize?:number;// 每页数量
