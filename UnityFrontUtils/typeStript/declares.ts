@@ -8,6 +8,26 @@ interface GlobalPromise <T>{
     then<TResult1 = any>(onfulfilled:(value:any)=>TResult1): Promise<any>;
 }
 
+interface process{
+    arch:string;
+    exit(n?:number):void;
+    argv:string[];
+    argv0:string;
+    env:{
+        TERM: string;
+        SHELL: string;
+        USER: string;
+        PATH: string;
+        PWD: string;
+        EDITOR: string;
+        SHLVL: string;
+        HOME: string;
+        LOGNAME: string;
+        _: string;
+        [key:string]:string
+    }
+}
+
 declare module "path" {
     namespace path {
         interface PlatformPath {
@@ -30,7 +50,7 @@ declare module "fs" {
 }
 
 declare const require:any;
-declare const process:any;
+declare const process:process;
 declare const Promise:GlobalPromise<any>;
 declare const __dirname:string;
 declare const module:any;
