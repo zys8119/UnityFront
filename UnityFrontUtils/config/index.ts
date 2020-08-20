@@ -18,7 +18,8 @@ export const mysqlConfig = <mysqlOptions>{
         port: '3306',
         database: 'test',
         prefix:""
-    }
+    },
+    sqlModelAuto:true,
 };
 
 //服务公共设置，可写入

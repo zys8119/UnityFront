@@ -7,6 +7,8 @@ export interface mysqlOptions {
     createPool:object;
     //连接选项
     options:mysqlOptionsOptions
+    //是否自动创建model
+    sqlModelAuto:boolean
 }
 
 export interface mysqlOptionsOptions {
