@@ -12,16 +12,18 @@ export default class sqlModelAuto{
                         switch ($sqlFieldConfig[k]){
                             case "int":
                                 console.log(SqlModelObj.$TableName)
-                                this.DB().query(`DROP TABLE IF EXISTS 'inventory';`+
-                                    `CREATE TABLE 'inventory'  (`+
-                                    `'id' varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '1' COMMENT '物料id',`+
-                                    `PRIMARY KEY ('id') USING BTREE`+
-                                    `) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '库存表' ROW_FORMAT = Dynamic;`
-                                ).then(res=>{
-                                    console.log(res)
-                                }).catch(err=>{
-                                    // console.error(err)
-                                })
+                                this.DB({
+                                    multipleStatements:true,
+                                }).query([
+                                    `DROP TABLE IF EXISTS \`inventory\`;
+                                    CREATE TABLE \`inventory\`  (
+                                      \`id\` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '1' COMMENT '物料id',
+                                      \`name\` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '物料名称',
+                                      \`create_time\` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '更新时间',
+                                      \`state\` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT '1' COMMENT '状态(1：未删除，2：删除)',
+                                      PRIMARY KEY (\`id\`) USING BTREE
+                                    ) ENGINE = MyISAM CHARACTER SET = utf8 COLLATE = utf8_unicode_ci COMMENT = '库存表' ROW_FORMAT = Dynamic;`
+                                ].join("\n"))
                                 break;
                             case "string":
                                 break;
@@ -31,7 +33,6 @@ export default class sqlModelAuto{
             }
             console.log($sqlFieldConfig)
         })
-        // process.exit();
     }
 
     DB(optionsConfig?:mysqlOptionsOptions,isEnd?:boolean){
