@@ -2,7 +2,6 @@ import applicationController, {method_post} from "../../../UnityFrontUtils/contr
 import {ServerConfig, ServerPublicConfig} from "../../../UnityFrontUtils/config";
 const path = require("path")
 const fs = require("fs")
-const less = require("less")
 export class IndexController extends applicationController {
     constructor(){
         super();
@@ -64,6 +63,7 @@ export class IndexController extends applicationController {
 
     //todo less 转 css
     getcss(){
+        const less = require("less")
         if(!this.$_query.color){
             this.$_error("主题设置失败,颜色字段必填");
             return;
