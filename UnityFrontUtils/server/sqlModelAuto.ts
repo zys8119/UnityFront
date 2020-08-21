@@ -11,13 +11,12 @@ export default class sqlModelAuto{
                     case "[object String]":
                         switch ($sqlFieldConfig[k]){
                             case "int":
-                                console.log(SqlModelObj.$TableName)
                                 this.DB({
                                     multipleStatements:true,
                                 }).query([
-                                    `DROP TABLE IF EXISTS \`inventory\`;
-                                    CREATE TABLE \`inventory\`  (
-                                      \`id\` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '1' COMMENT '物料id',
+                                    `DROP TABLE IF EXISTS \`${SqlModelObj.$TableName}\`;
+                                    CREATE TABLE \`${SqlModelObj.$TableName}\`  (
+                                      \`${k}\` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL DEFAULT '1' COMMENT '物料id',
                                       \`name\` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '物料名称',
                                       \`create_time\` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT NULL COMMENT '更新时间',
                                       \`state\` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NULL DEFAULT '1' COMMENT '状态(1：未删除，2：删除)',
