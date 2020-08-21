@@ -5,11 +5,26 @@ export interface PublicModelInterface {
     // 表名
     $TableName:string;
     // 表字段sql配置
-    $sqlFieldConfig?:$sqlFieldConfigType
+    $sqlFieldConfig?:$sqlFieldConfigType;
+
+    PRIMARY_KEY?:string;// 主键
+    'CHARACTER SET'?:string | 'utf8';// 编码
+    COLLATE?:string | 'utf8_unicode_ci';// 编码
+    COMMENT?:string | `'数据库'`;// 备注
+    [key:string]:any;
 }
 
 export type $sqlFieldConfigType = {
-    [key:string]:'int'|'string'|'float'|'datetime';
+    // 字段类型
+    'varchar'?:string | '(255)';
+    'int'?:string | '(10)';
+
+    'CHARACTER SET'?:string | 'utf8';// 编码
+    COLLATE?:string | 'utf8_unicode_ci';// 编码
+    NOT?:string | 'NULL';// 不为空
+    DEFAULT?:string | `'默认值'`;// 默认值
+    COMMENT?:string | `'字段备注'`;// 备注
+    [key:string]:string |  $sqlFieldConfigType;
 }
 
 export default class extends mysql implements PublicModelInterface{
