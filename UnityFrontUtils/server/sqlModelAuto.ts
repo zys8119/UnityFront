@@ -115,9 +115,22 @@ export default class sqlModelAuto{
             }else {
                 let FieldSql = this.getTableFieldSql(config,COLUMN_NAME, false);
                 if(FieldSql){
+                    let appendSql = "";
+                    if(config.SqlModelObj.PRIMARY_KEY){
+                        FieldSql += `, PRIMARY KEY ${config.SqlModelObj.PRIMARY_KEY} USING BTREE`
+                    }
+                    if(config.SqlModelObj['CHARACTER SET']){
+                        appendSql += `CHARACTER SET = ${config.SqlModelObj['CHARACTER SET']}`
+                    }
+                    if(config.SqlModelObj.COLLATE){
+                        appendSql += ` COLLATE = ${config.SqlModelObj.COLLATE}`
+                    }
+                    if(config.SqlModelObj.COMMENT){
+                        appendSql += ` COMMENT = ${config.SqlModelObj.COMMENT}`
+                    }
                     this.DB({multipleStatements:true,})
                         .query([
-                            `create table ${config.SqlModelObj.$TableName} (${FieldSql}) engine innodb;`
+                            `create table ${config.SqlModelObj.$TableName} (${FieldSql})  ENGINE = MyISAM ${appendSql} ROW_FORMAT = Dynamic`
                         ].join("\n"))
                 }
 
