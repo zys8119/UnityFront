@@ -22,7 +22,9 @@ declare module "fs" {
     namespace fs {
         interface PlatformFs{
             readdirSync(path:string):string[];
-            existsSync(path:string):number;
+            existsSync(path:string):string[];
+            readFileSync(path:string,options?:object):any;
+            readFileSync(option?:object):any;
         }
     }
     const fs:fs.PlatformFs;
