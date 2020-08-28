@@ -5,6 +5,7 @@ import webSocketApp from "../../webSocket"
 // 引入net模块
 const net = require('net')
 const crypto = require('crypto')
+const ncol = require('ncol')
 export default class webSocket {
     server:any;
     encryptInit:any;
@@ -20,7 +21,7 @@ export default class webSocket {
             host: ServerConfig.host,
             port: ServerConfig.ws_port,
         });
-        console.warn(`【WS】 Server running at ws://${ServerConfig.host || "localhost"}:${ServerConfig.ws_port}/`);
+        ncol.info(`【WS】 Server running at ws://${ServerConfig.host || "localhost"}:${ServerConfig.ws_port}/`);
     }
 
     onceData(socket, buffer){
@@ -28,17 +29,18 @@ export default class webSocket {
         const str = buffer.toString()
         // console.log(str)
         // 4. 将请求头数据转为对象
+        console.log(this.encryptInit)
         const headers = this.encryptInit.parseHeader(str)
         // console.log(headers)
 
         // 5. 判断请求是否为WebSocket连接
         if (headers['upgrade'] !== 'websocket') {
             // 若当前请求不是WebSocket连接，则关闭连接
-            console.log('非WebSocket连接')
+            ncol.error('非WebSocket连接')
             socket.end()
         } else if (headers['sec-websocket-version'] !== '13') {
             // 判断WebSocket版本是否为13，防止是其他版本，造成兼容错误
-            console.log('WebSocket版本错误')
+            ncol.error('WebSocket版本错误')
             socket.end()
         } else {
             // 6. 校验Sec-WebSocket-Key，完成连接

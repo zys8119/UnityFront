@@ -3,6 +3,7 @@ import {SendDataOptions, TemplateErrorDataOptions, UtilsOptions } from "../typeS
 import { ServerConfig } from "../config"
 const path = require('path');
 const fs = require("fs");
+const ncol = require('ncol');
 export default <UtilsOptions>{
     getJsonFiles(fileDirPath:string,callback?:Function){
         let jsonFiles = [];
@@ -52,6 +53,7 @@ export default <UtilsOptions>{
             'Content-Type': 'text/html; charset=utf-8',
         });
         fs.readFile(filePath,'utf8',(terr,tdata)=>{
+            this.$_log(TemplateData);
             if(!ServerConfig.debug){
                 this.setRequestStatus(500);
                 this.$_send(`
@@ -62,6 +64,17 @@ export default <UtilsOptions>{
                         `);
                 return;
             }
+            ncol.color(()=>{
+                ncol.errorBG(`【请求:${TemplateData.title}】`)
+                    .info(`【${this.$_method}】`)
+                    .log(`【${this.$_url}】`)
+                    .success(JSON.stringify(TemplateData))
+            });
+
+            if(TemplateData.interceptorErr){
+                console.error(TemplateData.interceptorErr);
+            }
+
             if (terr) {
                 this.setRequestStatus(500);
                 this.$_send(`

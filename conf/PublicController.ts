@@ -12,8 +12,6 @@ class Interceptor implements ControllerInitDataOptions{
     $_error(msg?: any, sendData?: any, code?: number): void {
     }
 
-    $_url:string;
-
     /**
      * Interceptor 全局拦截器注入
      * @constructor
