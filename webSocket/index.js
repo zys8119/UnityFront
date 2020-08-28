@@ -6,10 +6,10 @@ var index = /** @class */ (function () {
         var _a, _b, _c, _d;
         this.encryptInit = new encrypt_1.default();
         try {
-            this[_b = (_a = data.data) === null || _a === void 0 ? void 0 : _a.ws_emit, (_b !== null && _b !== void 0 ? _b : 'init')](data);
+            this[(_b = (_a = data.data) === null || _a === void 0 ? void 0 : _a.ws_emit) !== null && _b !== void 0 ? _b : 'init'](data);
         }
         catch (e) {
-            console.error(new Error("\u3010ws_emit\u3011" + (_d = (_c = data.data) === null || _c === void 0 ? void 0 : _c.emit, (_d !== null && _d !== void 0 ? _d : 'init')) + " is not a function"));
+            console.error(new Error("\u3010ws_emit\u3011" + ((_d = (_c = data.data) === null || _c === void 0 ? void 0 : _c.emit) !== null && _d !== void 0 ? _d : 'init') + " is not a function"));
         }
     }
     class_1.prototype.init = function (_a) {
