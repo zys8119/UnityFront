@@ -796,47 +796,51 @@ export default class applicationControllerClass extends PublicController impleme
 
     $_getRequestFormData(){
         return new Promise((resolve,reject) => {
-            if(this.$_bodySource.length > 0){
-                let bodyFormData = this.bufferSplit(this.$_bodySource,"------").map(e=>{
-                    let buffArr = this.bufferSplit(e,"\r\n\r\n");
-                    if(buffArr.length === 2){
-                        let resUlt:any = {};
-                        let info:any = this.bufferSplit(buffArr[0],"\; ").map(e=>e.toString());
-                        if(buffArr[0].indexOf(Buffer.from("Content-Type")) > -1){
-                            // 文件
-                            resUlt.type = "file";
-                            // keyName
-                            let split = Buffer.from("name=\"");
-                            resUlt.keyName = info[1].slice(info[1].indexOf(split)+split.length,info[1].length-1);
+            try {
+                if(this.$_bodySource.length > 0){
+                    let bodyFormData = this.bufferSplit(this.$_bodySource,"------").map(e=>{
+                        let buffArr = this.bufferSplit(e,"\r\n\r\n");
+                        if(buffArr.length === 2){
+                            let resUlt:any = {};
+                            let info:any = this.bufferSplit(buffArr[0],"\; ").map(e=>e.toString());
+                            if(buffArr[0].indexOf(Buffer.from("Content-Type")) > -1){
+                                // 文件
+                                resUlt.type = "file";
+                                // keyName
+                                let split = Buffer.from("name=\"");
+                                resUlt.keyName = info[1].slice(info[1].indexOf(split)+split.length,info[1].length-1);
 
-                            let fileInfo = this.bufferSplit(info[2],"\r\n");
+                                let fileInfo = this.bufferSplit(info[2],"\r\n");
 
-                            // fileType
-                            try {
-                                resUlt.fileType = this.bufferSplit(fileInfo[1]," ")[1];
-                            }catch (e) {}
-                            // filename
-                            let splitFileName = Buffer.from("filename=\"");
-                            resUlt.fileName = fileInfo[0].slice(fileInfo[0].indexOf(splitFileName)+splitFileName.length,fileInfo[0].length - 1);
-                            // fileBuff
-                            resUlt.fileBuff = buffArr[1].slice(0,buffArr[1].length-Buffer.from("\r\n").length);
-                        }else {
-                            // 数据
-                            resUlt.type = "data";
-                            // keyName
-                            let split = Buffer.from("name=\"");
-                            resUlt.keyName = info[1].slice(info[1].indexOf(split)+split.length,info[1].length-1);
-                            // keyValue
-                            let splitVal = Buffer.from("\r\n");
-                            resUlt.keyValue = buffArr[1].slice(0,buffArr[1].indexOf(splitVal)).toString();
+                                // fileType
+                                try {
+                                    resUlt.fileType = this.bufferSplit(fileInfo[1]," ")[1];
+                                }catch (e) {}
+                                // filename
+                                let splitFileName = Buffer.from("filename=\"");
+                                resUlt.fileName = fileInfo[0].slice(fileInfo[0].indexOf(splitFileName)+splitFileName.length,fileInfo[0].length - 1);
+                                // fileBuff
+                                resUlt.fileBuff = buffArr[1].slice(0,buffArr[1].length-Buffer.from("\r\n").length);
+                            }else {
+                                // 数据
+                                resUlt.type = "data";
+                                // keyName
+                                let split = Buffer.from("name=\"");
+                                resUlt.keyName = info[1].slice(info[1].indexOf(split)+split.length,info[1].length-1);
+                                // keyValue
+                                let splitVal = Buffer.from("\r\n");
+                                resUlt.keyValue = buffArr[1].slice(0,buffArr[1].indexOf(splitVal)).toString();
+                            }
+                            return resUlt;
                         }
-                        return resUlt;
-                    }
-                    return null;
-                }).filter(e=>e);
-                resolve(bodyFormData);
-            }else {
-                reject();
+                        return null;
+                    }).filter(e=>e);
+                    resolve(bodyFormData);
+                }else {
+                    resolve([]);
+                }
+            }catch (err){
+                reject(err);
             }
         });
     }
