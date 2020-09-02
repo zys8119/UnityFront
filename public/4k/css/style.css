@@ -62,16 +62,19 @@ body .pictureFooter {
 body .pictureFooter span {
   margin-left: 15px;
 }
-body .pictureFooter span.prev {
+body .pictureFooter .prev {
   cursor: pointer;
 }
-body .pictureFooter span.prev:hover {
+body .pictureFooter .prev:hover {
   color: #0078ff;
 }
-body .pictureFooter span.next {
+body .pictureFooter .next {
   cursor: pointer;
 }
-body .pictureFooter span.next:hover {
+body .pictureFooter .next:hover {
   color: #0078ff;
+}
+body .pictureFooter .go {
+  width: 50px;
 }
 /*# sourceMappingURL=style.css.map */

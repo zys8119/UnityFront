@@ -23,6 +23,7 @@ window['4k_init'] = /** @class */ (function () {
                         data: [],
                     },
                     pageNo: 0,
+                    pageSize: 20,
                 };
             },
             computed: {
@@ -69,7 +70,21 @@ window['4k_init'] = /** @class */ (function () {
                     staticClass: "pictureFooter"
                 }, []
                     .concat(createElement("span", { staticClass: "total" }, "\u5171" + this.total + "\u4E2A"))
-                    .concat(createElement("span", { staticClass: "pageNo" }, "\u7B2C" + (this.pageNo + 1) + "\u9875"))
+                    .concat(createElement("span", { staticClass: "pageNo" }, "\u7B2C" + (this.pageNo + 1) + "\u9875, \u8DF3\u8F6C\u5230 "))
+                    .concat(createElement("input", {
+                    staticClass: "go",
+                    domProps: {
+                        value: this.pageNo + 1,
+                    },
+                    on: {
+                        input: function (e) {
+                            var pageNo = parseInt(e.target.value);
+                            if (!isNaN(pageNo)) {
+                                _this.pageNo = pageNo;
+                            }
+                        }
+                    }
+                }))
                     .concat(createElement("span", { staticClass: "prev", on: { click: function () { return _this.pageNo -= 1; } } }, "\u4E0A\u4E00\u9875"))
                     .concat(createElement("span", { staticClass: "next", on: { click: function () { return _this.pageNo += 1; } } }, "\u4E0B\u4E00\u9875")))));
             },
@@ -101,8 +116,8 @@ window['4k_init'] = /** @class */ (function () {
                         method: "get",
                         params: {
                             id: this.select,
-                            pageNo: this.pageNo * 15,
-                            pageSize: 15,
+                            pageNo: this.pageNo * this.pageSize,
+                            pageSize: this.pageSize,
                         }
                     }).then(function (res) {
                         _this.imgs = res.data.data;

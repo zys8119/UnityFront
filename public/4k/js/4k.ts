@@ -19,6 +19,7 @@ window['4k_init'] = class {
                         data:[],
                     },
                     pageNo:0,
+                    pageSize:20,
                 }
             },
             computed:{
@@ -78,7 +79,21 @@ window['4k_init'] = class {
                         },
                         []
                             .concat(createElement("span",{staticClass:"total"},`共${this.total}个`))
-                            .concat(createElement("span",{staticClass:"pageNo"},`第${this.pageNo+1}页`))
+                            .concat(createElement("span",{staticClass:"pageNo"},`第${this.pageNo+1}页, 跳转到 `))
+                            .concat(createElement("input",<VNodeData>{
+                                staticClass:"go",
+                                domProps:{
+                                    value:this.pageNo+1,
+                                },
+                                on:{
+                                    input:(e)=>{
+                                        const pageNo = parseInt(e.target.value);
+                                        if(!isNaN(pageNo)){
+                                            this.pageNo = pageNo;
+                                        }
+                                    }
+                                }
+                            }))
                             .concat(createElement("span",{staticClass:"prev",on:{click:()=>this.pageNo -=1}},`上一页`))
                             .concat(createElement("span",{staticClass:"next",on:{click:()=>this.pageNo +=1}},`下一页`))
                     ))
@@ -114,8 +129,8 @@ window['4k_init'] = class {
                         method:"get",
                         params:{
                             id:this.select,
-                            pageNo:this.pageNo*15,
-                            pageSize:15,
+                            pageNo:this.pageNo*this.pageSize,
+                            pageSize:this.pageSize,
                         }
                     }).then(res=>{
                         this.imgs = res.data.data;
