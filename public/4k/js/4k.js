@@ -89,10 +89,6 @@ window['4k_init'] = /** @class */ (function () {
                     .concat(createElement("span", { staticClass: "next", on: { click: function () { return _this.pageNo += 1; } } }, "\u4E0B\u4E00\u9875")))));
             },
             watch: {
-                select: function () {
-                    this.pageNo = 0;
-                    this.getData();
-                },
                 pageNo: function () {
                     this.getData();
                 }
@@ -107,6 +103,8 @@ window['4k_init'] = /** @class */ (function () {
                 // 选择分类
                 clickSwitch: function (item) {
                     this.select = item.id;
+                    this.pageNo = 0;
+                    this.getData();
                 },
                 // 获取分类数据
                 getData: function () {

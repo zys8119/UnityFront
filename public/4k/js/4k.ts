@@ -100,10 +100,6 @@ window['4k_init'] = class {
                 )
             },
             watch:{
-                select(){
-                    this.pageNo = 0;
-                    this.getData();
-                },
                 pageNo(){
                     this.getData();
                 }
@@ -121,6 +117,8 @@ window['4k_init'] = class {
                 // 选择分类
                 clickSwitch(item){
                     this.select = item.id;
+                    this.pageNo = 0;
+                    this.getData();
                 },
                 // 获取分类数据
                 getData(){
