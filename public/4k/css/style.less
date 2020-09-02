@@ -1,0 +1,56 @@
+@themeColor:#0078ff;
+@themeColor1:#e5e5e5;
+@color:#ffffff;
+body{
+  margin: 0;
+  .headerBox{
+    box-shadow: 0 0 5px@themeColor1;
+    overflow: hidden;
+    .headerBoxItem{
+      cursor: pointer;
+      width: 120px;
+      text-align: center;
+      float: left;
+      line-height: 40px;
+      &:hover{
+        background-color: @themeColor1;
+        color: @themeColor;
+      }
+      &.select{
+        background-color: @themeColor;
+        color:@color;
+      }
+    }
+  }
+  .pictureBox{
+    display: grid;
+    grid-template-columns: repeat(5,calc((100% - 15px * 4) / 5));
+    grid-gap: 15px;
+    margin: 15px;
+    .pictureItem{
+      img{
+        width: 100%;
+      }
+    }
+  }
+  .pictureFooter{
+    text-align: right;
+    padding: 15px;
+    user-select: none;
+    span{
+      margin-left: 15px;
+      &.prev{
+        cursor: pointer;
+        &:hover{
+          color: @themeColor;
+        }
+      }
+      &.next{
+        cursor: pointer;
+        &:hover{
+          color: @themeColor;
+        }
+      }
+    }
+  }
+}

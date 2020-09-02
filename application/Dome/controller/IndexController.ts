@@ -1,4 +1,4 @@
-import applicationController, {method_post} from "../../../UnityFrontUtils/controller/applicationController";
+import applicationController, {method_post, method_get} from "../../../UnityFrontUtils/controller/applicationController";
 import {ServerConfig, ServerPublicConfig} from "../../../UnityFrontUtils/config";
 const path = require("path")
 const fs = require("fs")

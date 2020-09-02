@@ -1,0 +1,52 @@
+body {
+  margin: 0;
+}
+body .headerBox {
+  box-shadow: 0 0 5px #e5e5e5;
+  overflow: hidden;
+}
+body .headerBox .headerBoxItem {
+  cursor: pointer;
+  width: 120px;
+  text-align: center;
+  float: left;
+  line-height: 40px;
+}
+body .headerBox .headerBoxItem:hover {
+  background-color: #e5e5e5;
+  color: #0078ff;
+}
+body .headerBox .headerBoxItem.select {
+  background-color: #0078ff;
+  color: #ffffff;
+}
+body .pictureBox {
+  display: grid;
+  grid-template-columns: repeat(5, calc((100% - 15px * 4) / 5));
+  grid-gap: 15px;
+  margin: 15px;
+}
+body .pictureBox .pictureItem img {
+  width: 100%;
+}
+body .pictureFooter {
+  text-align: right;
+  padding: 15px;
+  user-select: none;
+}
+body .pictureFooter span {
+  margin-left: 15px;
+}
+body .pictureFooter span.prev {
+  cursor: pointer;
+}
+body .pictureFooter span.prev:hover {
+  color: #0078ff;
+}
+body .pictureFooter span.next {
+  cursor: pointer;
+}
+body .pictureFooter span.next:hover {
+  color: #0078ff;
+}
+/*# sourceMappingURL=style.css.map */
