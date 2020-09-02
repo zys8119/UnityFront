@@ -36,7 +36,7 @@ export class Img4kController extends applicationController{
                 c:"WallPaper",
                 cid:this.$_query.id,
                 start:this.$_query.pageNo,
-                count:15,
+                count:this.$_query.pageSize,
             }
         }).catch(err=>this.$_error(err.message)).then((res:any)=>{
             this.$_success(res.data);

@@ -97,7 +97,8 @@ window['4k_init'] = /** @class */ (function () {
                         method: "get",
                         params: {
                             id: this.select,
-                            pageNo: this.pageNo
+                            pageNo: this.pageNo * 15,
+                            pageSize: 15,
                         }
                     }).then(function (res) {
                         _this.imgs = res.data.data;

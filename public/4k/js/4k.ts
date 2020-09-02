@@ -108,7 +108,8 @@ window['4k_init'] = class {
                         method:"get",
                         params:{
                             id:this.select,
-                            pageNo:this.pageNo
+                            pageNo:this.pageNo*15,
+                            pageSize:15,
                         }
                     }).then(res=>{
                         this.imgs = res.data.data;
