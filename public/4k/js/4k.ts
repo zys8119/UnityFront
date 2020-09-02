@@ -57,14 +57,20 @@ window['4k_init'] = class {
                             {
                                 staticClass:"pictureItem"
                             },
-                            [].concat(createElement("img",{
-                                attrs:{
-                                    src:item.url,
-                                },
-                                on:{
-                                    click:()=>this.downloadImg(item)
-                                }
-                            }))
+                            []
+                                .concat(createElement("img",{
+                                    attrs:{
+                                        src:item.url,
+                                    },
+                                    on:{
+                                        click:()=>this.downloadImg(item)
+                                    }
+                                }))
+                                .concat(createElement("div",{staticClass:"mask"},
+                                    []
+                                        .concat(createElement("span",{staticClass:"resolution"},item.resolution))
+                                        .concat(createElement("span",{staticClass:"utag"},item.utag))
+                                ))
                         ))))
                     .concat(createElement("div",
                         {

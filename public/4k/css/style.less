@@ -28,8 +28,39 @@ body{
     grid-gap: 15px;
     margin: 15px;
     .pictureItem{
+      position: relative;
       img{
         width: 100%;
+      }
+      .mask{
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        line-height: 20px;
+        background-color: rgba(0,0,0,0.5);
+        display: flex;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-wrap: break-word;
+        word-break: break-all;
+        white-space: normal !important;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        span{
+          margin:0 15px;
+          color: #ffffff;
+          font-size: 12px;
+        }
+        .utag{
+
+        }
+        .resolution{
+
+        }
       }
     }
   }

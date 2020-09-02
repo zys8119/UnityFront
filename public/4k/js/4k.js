@@ -53,14 +53,18 @@ window['4k_init'] = /** @class */ (function () {
                     staticClass: "pictureBox"
                 }, this.imgs.data.map(function (item) { return createElement('div', {
                     staticClass: "pictureItem"
-                }, [].concat(createElement("img", {
+                }, []
+                    .concat(createElement("img", {
                     attrs: {
                         src: item.url,
                     },
                     on: {
                         click: function () { return _this.downloadImg(item); }
                     }
-                }))); })))
+                }))
+                    .concat(createElement("div", { staticClass: "mask" }, []
+                    .concat(createElement("span", { staticClass: "resolution" }, item.resolution))
+                    .concat(createElement("span", { staticClass: "utag" }, item.utag))))); })))
                     .concat(createElement("div", {
                     staticClass: "pictureFooter"
                 }, []
