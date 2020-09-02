@@ -89,7 +89,7 @@ window['4k_init'] = class {
                                     input:(e)=>{
                                         const pageNo = parseInt(e.target.value);
                                         if(!isNaN(pageNo)){
-                                            this.pageNo = pageNo;
+                                            this.pageNo = pageNo - 1;
                                         }
                                     }
                                 }

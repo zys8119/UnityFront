@@ -80,7 +80,7 @@ window['4k_init'] = /** @class */ (function () {
                         input: function (e) {
                             var pageNo = parseInt(e.target.value);
                             if (!isNaN(pageNo)) {
-                                _this.pageNo = pageNo;
+                                _this.pageNo = pageNo - 1;
                             }
                         }
                     }
