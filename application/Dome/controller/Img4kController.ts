@@ -49,4 +49,13 @@ export class Img4kController extends applicationController{
     downloadImg(){
         this.$_fileStreamDownload(this.$_query.url);
     }
+
+    //todo ============================测试数据
+
+    /**
+     * YY音乐
+     */
+    yy(){
+       this.Render();
+    }
 }
