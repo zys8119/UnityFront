@@ -1,5 +1,6 @@
 import applicationController, {method_post, method_get} from "../../../UnityFrontUtils/controller/applicationController";
 import {ServerConfig, ServerPublicConfig} from "../../../UnityFrontUtils/config";
+import a from "../../../UnityFrontUtils/lib/formData";
 const path = require("path")
 const fs = require("fs")
 export class IndexController extends applicationController {
@@ -8,7 +9,12 @@ export class IndexController extends applicationController {
     }
 
     index(){
-        this.$_success();
+        this.$_success({
+            data:(<any>"_").repeat(100).split("").map((e,key)=>({
+                name:"数据"+key,
+                key
+            }))
+        });
     }
 
     axios(){
