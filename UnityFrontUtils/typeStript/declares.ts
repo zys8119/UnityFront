@@ -25,6 +25,8 @@ declare module "fs" {
             existsSync(path:string):string[];
             readFileSync(path:string,options?:object):any;
             readFileSync(option?:object):any;
+            writeFile(file?:string, data?:any, callback?:()=>void|any):any;
+            writeFileSync(file?:string, data?:any, options?:any):any;
         }
     }
     const fs:fs.PlatformFs;
