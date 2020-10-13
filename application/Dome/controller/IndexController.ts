@@ -1,6 +1,6 @@
 import applicationController, {method_post, method_get} from "../../../UnityFrontUtils/controller/applicationController";
 import {ServerConfig, ServerPublicConfig} from "../../../UnityFrontUtils/config";
-import a from "../../../UnityFrontUtils/lib/formData";
+import staticObj from "../../../UnityFrontUtils/static"
 const path = require("path")
 const fs = require("fs")
 export class IndexController extends applicationController {
@@ -119,5 +119,13 @@ export class IndexController extends applicationController {
         new this.$sqlModel.UserModel().getPage({
             pageNo:this.$_query.pageNo,
         }).then(res=>this.$_success(res)).catch(()=>this.$_error());
+    }
+
+    driveLetter(){
+        var d = require('diskinfo');
+
+        d.getDrives((err, aDrives) =>{
+            this.$_success(aDrives);
+        });
     }
 }
