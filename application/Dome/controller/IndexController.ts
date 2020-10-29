@@ -1,6 +1,5 @@
 import applicationController, {method_post, method_get} from "../../../UnityFrontUtils/controller/applicationController";
 import {ServerConfig, ServerPublicConfig} from "../../../UnityFrontUtils/config";
-import staticObj from "../../../UnityFrontUtils/static"
 const path = require("path")
 const fs = require("fs")
 export class IndexController extends applicationController {
@@ -127,5 +126,9 @@ export class IndexController extends applicationController {
         d.getDrives((err, aDrives) =>{
             this.$_success(aDrives);
         });
+    }
+
+    editor(){
+        this.Render();
     }
 }

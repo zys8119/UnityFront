@@ -44,6 +44,9 @@ export default class staticIndex {
                 case ".pdf":
                     this.getFileData(filePath,"application/pdf;");
                     break;
+                case ".ttf":
+                    this.getFileData(filePath,"application/ttf;");
+                    break;
                 default:
                     this.send404();
                     break;
