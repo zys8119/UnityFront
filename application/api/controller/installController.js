@@ -13,6 +13,7 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.installController = void 0;
 var applicationController_1 = require("../../../UnityFrontUtils/controller/applicationController");
 var index_1 = require("../../../UnityFrontUtils/config/index");
 var installController = /** @class */ (function (_super) {
