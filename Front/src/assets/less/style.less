@@ -1,0 +1,206 @@
+@import "fn";
+//todo 阿里图标库
+
+@font-face {
+  font-family: 'iconfont';  /* project id 1012237 */
+  src: url('//at.alicdn.com/t/@{fontNumber}.eot');
+  src: url('//at.alicdn.com/t/@{fontNumber}.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/@{fontNumber}.woff2') format('woff2'),
+  url('//at.alicdn.com/t/@{fontNumber}.woff') format('woff'),
+  url('//at.alicdn.com/t/@{fontNumber}.ttf') format('truetype'),
+  url('//at.alicdn.com/t/@{fontNumber}.svg#iconfont') format('svg');
+}
+.iconfont{
+  font-family: 'iconfont';
+}
+
+*{
+  font-size: 12px;
+  cursor: default;
+  outline: medium;
+  //禁止选中文字
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Chrome/Safari/Opera */
+  -khtml-user-select: none; /* Konqueror */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* Internet Explorer/Edge */
+  user-select: none;
+}
+
+ul,li,p,a{
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+  border-radius: 0;
+  border:none;
+}
+.weui-mask{
+  display: none;
+}
+p{
+  &.msg{
+    color: @textColor;
+  }
+  &.box{
+    background-color: @themeColor/0.7;
+    border-radius: 4px;
+    padding: 15px;
+  }
+}
+
+.borderLine{
+  width: 100%;
+  height: 0;
+  border-top:@borderLine;
+}
+
+.webkit-scrollbar{
+  &::-webkit-scrollbar {
+    width:5px;
+    height:5px;
+    display: none;
+  }
+  &::-webkit-scrollbar{
+    display: block;
+  }
+  &::-webkit-scrollbar-button    {
+    background:@themeColor/0.9;
+  }
+  &::-webkit-scrollbar-track     {
+    background:@themeColor/0.9;
+  }
+  &::-webkit-scrollbar-thumb{
+    background:@themeColor*3;
+    border-radius:4px;
+  }
+  &::-webkit-scrollbar-corner {
+    background:#fff;
+  }
+}
+
+.webkit-input-placeholder {
+  &::-webkit-input-placeholder { /* WebKit browsers */
+    color: @textColor;
+  }
+  &:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: @textColor;
+  }
+  &::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: @textColor;
+  }
+  &:-ms-input-placeholder { /* Internet Explorer 10+ */
+    color: @textColor;
+  }
+}
+
+.text-overflow{
+  overflow:hidden;
+  text-overflow:ellipsis;
+  -o-text-overflow:ellipsis;
+  -webkit-text-overflow:ellipsis;
+  -moz-text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.z_Input{
+  color: @textColor;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+  @index:30px;
+  line-height: @index;
+  .weui-icon-clear{
+    display: none;
+  }
+  .weui-cell__primary{
+    padding: 0 15px;
+    background-color: @themeColor;
+    box-shadow: inset 0 0 3px #000000;
+    height: @index;
+  }
+  input{
+    line-height: @index;
+    height: @index;
+    .webkit-input-placeholder;
+  }
+}
+
+.z_textarea{
+  color: @textColor;
+  .weui-cell__bd{
+    padding:0 15px;
+    textarea{
+      background-color:  @themeColor;
+      box-shadow: inset 0 0 3px #000000;
+      padding:0 15px;
+      .webkit-scrollbar;
+    }
+  }
+  &.palr{
+    padding-left: 0 !important;
+  }
+
+
+}
+
+.z_select{
+  @index:30px;
+  min-height: @index;
+  color: @textColor;
+  .multiselect__select{
+    height: @index;
+  }
+  .multiselect__tags{
+    background-color: @themeColor;
+    border-radius: 0;
+    border: none;
+    box-shadow: inset 0 0 3px #000000;
+    padding-top: 4px;
+    height: @index;
+    min-height: @index;
+    input{
+      background-color: transparent;
+      color: @textColor;
+      .webkit-input-placeholder;
+    }
+  }
+  .multiselect__single{
+    .text-overflow;
+    background-color: transparent;
+  }
+  .multiselect__content-wrapper{
+    .webkit-scrollbar;
+    background-color: @themeColor;
+    border: 0;
+    box-shadow: 0 0 3px #000000;
+    .multiselect__content{
+      .multiselect__element{
+        .multiselect__option--highlight{
+          background-color: @themeColor2;
+        }
+      }
+    }
+
+  }
+  &.z_select_more{
+    .multiselect__tags{
+      height: auto;
+      input{
+        position: relative;
+        z-index: 2;
+      }
+    }
+
+  }
+}
+
+.z_XButton{
+  background-color: @themeColor2 !important;
+  color:@textColor !important;
+  font-size: 12px !important;
+  .linear-gradient(@themeColor2,@themeColor*0.9);
+  //cursor: pointer;
+  &:hover{
+    .linear-gradient(@themeColor2*0.9,@themeColor);
+  }
+}

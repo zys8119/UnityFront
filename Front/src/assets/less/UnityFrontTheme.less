@@ -1,0 +1,11 @@
+.UnityFrontThemeInit(@themeName,@themColor){
+  body{
+    &.theme{
+      &.@{themeName}{
+        background-color: @themColor !important;
+      }
+    }
+  }
+}
+
+.UnityFrontThemeInit(black,@themColor:@themeColor);
