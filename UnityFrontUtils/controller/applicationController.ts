@@ -5,7 +5,6 @@ import {
     SuccessSendDataOptions,
     StatusCodeOptions,
     getSvgCodeOptions,
-    RequestFiles
 } from "../typeStript"
 import { headersType } from "../typeStript/Types";
 import { ServerConfig, ServerPublicConfig } from "../config";
@@ -13,12 +12,13 @@ import { AxiosStatic } from "axios";
 import Encrypt from "../utils/encrypt";
 import Utils from "../utils";
 import PublicController from "../../conf/PublicController";
+import { SqlModel } from "../../model/interfaces";
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const https = require('https');
 const pug = require('pug');
-const puppeteer = require('puppeteer');
+const ncol = require('ncol');
 
 /**
  * @请求方式修饰器类
@@ -55,9 +55,10 @@ class methodClass_init {
             if(callback.call(currentControllerObj,methodKeyName)){return;}
             currentControllerObj.prototype[methodKeyName] = function () {
                 try {
-                    if(!methodArr.some(e=>e.toLocaleLowerCase() === this.$_method.toLocaleLowerCase())){
-                        this.$_error("服务器错误");
-                        this.$_error(`【当前请求为${this.$_method.toLocaleLowerCase()},必须为(${methodArr.join()})】-----url----->  ${this.$_url}`);
+                    let $_method = this.$_method.toLocaleLowerCase();
+                    if($_method !== "options" && !methodArr.some(e=>e.toLocaleLowerCase() === $_method)){
+                        this.$_error(`不予许${this.$_method}请求`);
+                        this.$_error(`【当前请求为${$_method},必须为(${methodArr.join()})】-----url----->  ${this.$_url}`);
                         return;
                     }
                     oldPostMethod.call(this);
@@ -110,7 +111,9 @@ export default class applicationControllerClass extends PublicController impleme
     $_RequestStatus:number;
     $_RequestHeaders:headersType;
     $mysql?(optionsConfig?:object,isEnd?:boolean):SqlUtilsOptions;
+    $sqlModel?:SqlModel;
     __dir:string;
+    $_params:any;
     $methodName:string;
     $urlArrs:any[];
     $ControllerConfig:any;
@@ -206,29 +209,86 @@ export default class applicationControllerClass extends PublicController impleme
 
 
     }
+
+    UrlParams($$url,urlArrs,paramsKeyArr, isApp:boolean, $moduleRouteConfig:any,confPath){
+        try {
+            //应用路由配置
+            if($moduleRouteConfig && $moduleRouteConfig.default){
+                if($moduleRouteConfig.default[this.$_url]){
+                    $$url = $moduleRouteConfig.default[this.$_url];
+                    try {
+                        urlArrs = Utils.getUrlArrs($$url);
+                    }catch (e) {}
+                }else {
+                    let paramsMap = {};
+                    Object.keys($moduleRouteConfig.default).forEach(e=>{
+                        try {
+                            paramsMap[(<any>e).match(/^.*?:/).toString().replace(/(\/|\/:)$/,"")] = ":"+e.replace(/^.*?:/,"")
+                        }catch (e) {}
+                    });
+                    let paramsKey = "/"+urlArrs.slice(0,isApp?1:2).join("/");
+                    let paramsStr = paramsMap[paramsKey];
+                    let $_url_params = this.$_url.slice(paramsKey.length+1);
+                    if(paramsStr){
+                        if(this.$_url.indexOf(paramsKey) === 0){
+                            let paramsUrl = $moduleRouteConfig.default[paramsKey+'/'+paramsStr];
+                            if(paramsUrl && $_url_params){
+                                if(ServerConfig.debug){
+                                    ncol.color(()=>{
+                                        ncol.successBG("【route】")
+                                            .infoBG("【")
+                                            .infoBG(this.$_url)
+                                            .infoBG("--->")
+                                            .infoBG(paramsUrl)
+                                            .infoBG("】")
+                                            .info(confPath)
+                                    });
+                                }
+                                let paramsValueArr = $_url_params.split("/");
+                                paramsStr.split("/").forEach((e,i)=>{
+                                    let k = e.replace(/^:/,"");
+                                    paramsKeyArr[k] = paramsValueArr[i];
+                                });
+                                $$url = paramsUrl;
+                                try {
+                                    urlArrs = Utils.getUrlArrs($$url);
+                                }catch (e) {}
+                            }
+                        }
+                    }
+                }
+            }
+        }catch (e) {}
+        return {
+            $$url,
+            urlArrs,
+        }
+    }
+
     UrlParse(){
+        if(ServerConfig.debug){
+            ncol.warn(`【${this.$_method}】==================================================================【START】`);
+        }
         //todo 首页渲染
         let $$url = this.$_url;
-        //自定义路由配置===start
+        let urlArrs = Utils.getUrlArrs($$url);
+        let paramsKeyArr = {};
+        //todo 自定义路由配置===start
         //应用路由配置
         try {
-            let $appRouteConfig = require(path.resolve(ServerConfig.Template.applicationPath,"conf/route"));
-            if($appRouteConfig && $appRouteConfig.default && $appRouteConfig.default[this.$_url]){
-                $$url = $appRouteConfig.default[this.$_url];
-            }
+            let confPath = path.resolve(ServerConfig.Template.applicationPath,"conf/route");
+            let a_conf = this.UrlParams($$url,urlArrs,paramsKeyArr,true,require(confPath),confPath);
+            $$url = a_conf.$$url;
+            urlArrs = a_conf.urlArrs;
         }catch (e) {}
-        let urlArrs = Utils.getUrlArrs($$url);
         //控制器路由配置
         try {
-            let $moduleRouteConfig = require(path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"conf/route"));
-            if($moduleRouteConfig && $moduleRouteConfig.default && $moduleRouteConfig.default[this.$_url]){
-                $$url = $moduleRouteConfig.default[this.$_url];
-                try {
-                    urlArrs = Utils.getUrlArrs($$url);
-                }catch (e) {}
-            }
+            let confPath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"conf/route");
+            let c_conf = this.UrlParams($$url,urlArrs,paramsKeyArr,false,require(confPath),confPath);
+            $$url = c_conf.$$url;
+            urlArrs = c_conf.urlArrs;
         }catch (e) {}
-        //==================end
+        //todo ==================end
         if($$url == "/"){
             this.Render(null,null,true);
         }else {
@@ -282,6 +342,9 @@ export default class applicationControllerClass extends PublicController impleme
             Utils.ControllerInitData.call(this,this,ControllerClassObj,urlArrs[2],ServerConfig,ControllerPath,true);
             //扩展公共数据及方法
             ControllerClassObj.prototype.$urlArrs = urlArrs;
+            // $urlParams
+            ControllerClassObj.prototype.$_params = paramsKeyArr;
+
             //自定义配置文件===start
             let $ControllerConfig = {};
             //应用配置
@@ -330,7 +393,22 @@ export default class applicationControllerClass extends PublicController impleme
                typeof ControllerClassInit.Interceptor === 'function'){
                 try {
                     ControllerClassInit.Interceptor().then(()=>{
-                        ControllerClassInit[urlArrs[2]]();
+
+                        if(this.$_method.toLocaleLowerCase() === 'options' && ServerConfig.CORS){
+                            this.setHeaders({
+                                "Access-Control-Allow-Headers":"*",
+                            });
+                            this.$_send(null);
+                        }else {
+                            if(ServerConfig.debug){
+                                ncol.color(()=>{
+                                    ncol.successBG("【请求】")
+                                        .info(`【${this.$_method}】`)
+                                        .log(`【${this.$_url}】`)
+                                });
+                            }
+                            ControllerClassInit[urlArrs[2]]();
+                        }
                     }).catch(err=>{
                         Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
                             title:`拦截器错误`,
@@ -340,7 +418,8 @@ export default class applicationControllerClass extends PublicController impleme
                                 "控制器 -> ":ControllerClassName,
                                 "方法 -> ":urlArrs[2],
                                 "描述 -> ":err,
-                            }
+                            },
+                            interceptorErr:err,
                         });
                     });
                 }catch (e) {
@@ -353,6 +432,7 @@ export default class applicationControllerClass extends PublicController impleme
                             "方法 -> ":urlArrs[2],
                             "描述 -> ":"拦截器注入方式错误，Interceptor 必须return一个Promise对象",
                         },
+                        interceptorErr:e,
                     });
                 }
 
@@ -361,36 +441,47 @@ export default class applicationControllerClass extends PublicController impleme
             }
         }
     }
-    $_log(...args){
+
+    $_createLog(args,logFileName){
         let logDirPath = path.resolve(__dirname,"../log");
         let getTime = new Date().getTime();
-        // let logFileName = Utils.dateFormat(getTime,"YYYY-MM-DD")+".log";
-        let logFileName = Utils.dateFormat(getTime,"YYYY-MM-DD HH-mm-ss")+"__Time__"+getTime.toString()+".log";
+        logFileName = logFileName || Utils.dateFormat(getTime,"YYYY-MM-DD HH-mm-ss")+"__Time__"+getTime.toString()+".log";
         let logPath = path.resolve(logDirPath,logFileName);
         //判断日志文件是否存在，不存在则创建，并写入
         if(!fs.existsSync(logPath)){
+            fs.mkdirSync(path.resolve(logPath,"../"));
             this.writeLogFile(args,logPath,"");
-            return;
+            return logPath;
         }
         //存在直接写入
         fs.readFile(logPath,'utf8',(err,data)=> {
             if (err) throw err;
             this.writeLogFile(args,logPath,data);
         });
+        return logPath;
     }
+
+    $_log(...args){
+        this.$_createLog(args,"log");
+    }
+
     writeLogFile(args,logPath:string,oldData?:string){
         oldData = oldData || "";
+        let logData = {
+            "时间":Utils.dateFormat(),
+            "日志目录":logPath,
+            "来源":{
+                "控制器目录":this.__dir,
+                "控制器方法":this.$methodName,
+            },
+            "日志数据":args
+        };
+        ncol.color( ()=> {
+            ncol.infoBG("【LOG】").info(JSON.stringify(logData))
+        });
         fs.writeFile(logPath,JSON.stringify({
             "【log_start】":"===================================================",
-            "【log_message】":{
-                "时间":Utils.dateFormat(),
-                "日志目录":logPath,
-                "来源":{
-                    "控制器目录":this.__dir,
-                    "控制器方法":this.$methodName,
-                },
-                "日志数据":args
-            },
+            "【log_message】":logData,
             "【log_end】":"=====================================================",
         },null,4)+"\n\n\n"+oldData,"utf8",(err)=>{
             if (err) {
@@ -399,7 +490,7 @@ export default class applicationControllerClass extends PublicController impleme
             };
         });
     }
-    $_success(msg?:any,sendData?:any,code?:number){
+    $_success(msg?:any,sendData?:any,code?:number, error?:boolean){
         let newSendData = <SuccessSendDataOptions>{
             code:this.StatusCode.success.code,
             data:null,
@@ -414,14 +505,42 @@ export default class applicationControllerClass extends PublicController impleme
         if(sendData){
             newSendData.data = sendData;
         }
-        newSendData.code = code || newSendData.code;
+        if(Object.prototype.toString.call(code) === "[object Number]"){
+            newSendData.code = code
+        }else {
+            newSendData.code = code || newSendData.code;
+        }
+        if(!error && ServerConfig.debug){
+            ncol.color(()=>{
+                ncol.successBG("【响应】")
+                    .info(`【${this.$_method}】`)
+                    .log(`【${this.$_url}】`)
+                    .success(JSON.stringify(newSendData))
+            });
+        }
         this.$_send(newSendData);
     }
     $_error(msg:any = this.StatusCode.error.msg,sendData?:any,code:number = this.StatusCode.error.code){
-        console.error(new Error(msg));
-        this.$_success(msg,sendData,code)
+        if(ServerConfig.debug){
+            this.$_log({
+                type:"响应",
+                method:this.$_method,
+                url:this.$_url,
+                msg:msg,
+            });
+            ncol.color(()=>{
+                ncol.errorBG("【响应】")
+                    .info(`【${this.$_method}】`)
+                    .error(`【${this.$_url}】`)
+                    .errorBG(JSON.stringify(msg))
+            });
+            console.error(new Error(msg));
+        }
+        this.$_success(msg,sendData,code,true)
     }
     $_puppeteer(url:string,jsContent:any){
+        // "puppeteer": "^2.0.0"
+        const puppeteer = require('puppeteer');
         return new Promise((resolve, reject) => {
             try {
                 puppeteer.launch().then(async browser => {
@@ -555,7 +674,7 @@ export default class applicationControllerClass extends PublicController impleme
         keyDataArr.splice(randomNo,1);
         return this.$_createEncryptKey(keyDataArr, result);
     }
-    
+
     $_getSvgCode(options?:getSvgCodeOptions){
         return new Promise((resolve, reject) => {
             options = options || {};
@@ -639,7 +758,7 @@ export default class applicationControllerClass extends PublicController impleme
             this.response.end();
         });
     }
-    
+
     $_getUrlQueryData(options?:object, connectors?:string, type?:string){
         options = options || {};
         connectors = connectors || "=";
@@ -654,76 +773,76 @@ export default class applicationControllerClass extends PublicController impleme
         }
         return result.join(type);
     }
-    
+
     $_setCookie(data?:object){
         this.setHeaders({
             'Set-Cookie':this.$_getUrlQueryData(data).split(";"),
         });
     }
-    
-    $_getRequestFiles(){
-        Buffer.prototype.split= Buffer.prototype.split || function (spl) {
-            let arr = [];
-            let cur = 0;
-            let n = 0;
-            while ((n = this.indexOf(spl, cur)) != -1) {
-                arr.push(this.slice(cur, n));
-                cur = n + spl.length
-            }
-            arr.push(this.slice(cur))
-            return arr
-        };
-        let bodyString = this.$_bodySource.toString();
-        let end = bodyString.match(/\s------.*--\s*$/)[0];
-        let start = end.replace(/^\s|--\s*$/img,"");
-        let resultData:{[key:string]:Array<RequestFiles>|RequestFiles};
-        resultData = {};
-        this.$_bodySource.split(start).map(item=>{
+
+    bufferSplit(buff,splitter){
+        let buffTter = Buffer.from(splitter);
+        let index = buff.indexOf(buffTter);
+        let resUlt = [];
+        if(index > -1){
+            resUlt = resUlt.concat(buff.slice(0,index));
+            let buffChild = buff.slice(index+buffTter.length);
+            resUlt = resUlt.concat(this.bufferSplit(buffChild,splitter));
+        }else {
+            resUlt = resUlt.concat(buff)
+        }
+        return resUlt;
+    }
+
+    $_getRequestFormData(){
+        return new Promise((resolve,reject) => {
             try {
-                let key  = item.toString().match(/^\s{2}(.*|.*\s{2}.*)\s{4}/)[0];
-                let data = item.split(key)[1];
-                data = data.slice(0,data.length - 2);
-                let DispositionArr = [];
-                let ContentType = null;
-                try {
-                    let Disposition = key.match(/^\s*Content-Disposition.*/)[0];
-                    try {
-                        ContentType = key.replace(/^\s*Content-Disposition.*/,"")
-                            .match(/^\s*Content-Type.*/)[0];
-                        ContentType = ContentType.replace(/^\s*Content-Type:\s/,"")
-                    }catch (e) {}
-                    DispositionArr = Disposition.split(";");
-                    DispositionArr = DispositionArr.map(e=>{
-                        var m = /(?:(filename|name)="(.*)")/.exec(e);
-                        return (m)?m[2]:null;
+                if(this.$_bodySource.length > 0){
+                    let bodyFormData = this.bufferSplit(this.$_bodySource,"------").map(e=>{
+                        let buffArr = this.bufferSplit(e,"\r\n\r\n");
+                        if(buffArr.length === 2){
+                            let resUlt:any = {};
+                            let info:any = this.bufferSplit(buffArr[0],"\; ").map(e=>e.toString());
+                            if(buffArr[0].indexOf(Buffer.from("Content-Type")) > -1){
+                                // 文件
+                                resUlt.type = "file";
+                                // keyName
+                                let split = Buffer.from("name=\"");
+                                resUlt.keyName = info[1].slice(info[1].indexOf(split)+split.length,info[1].length-1);
+
+                                let fileInfo = this.bufferSplit(info[2],"\r\n");
+
+                                // fileType
+                                try {
+                                    resUlt.fileType = this.bufferSplit(fileInfo[1]," ")[1];
+                                }catch (e) {}
+                                // filename
+                                let splitFileName = Buffer.from("filename=\"");
+                                resUlt.fileName = fileInfo[0].slice(fileInfo[0].indexOf(splitFileName)+splitFileName.length,fileInfo[0].length - 1);
+                                // fileBuff
+                                resUlt.fileBuff = buffArr[1].slice(0,buffArr[1].length-Buffer.from("\r\n").length);
+                            }else {
+                                // 数据
+                                resUlt.type = "data";
+                                // keyName
+                                let split = Buffer.from("name=\"");
+                                resUlt.keyName = info[1].slice(info[1].indexOf(split)+split.length,info[1].length-1);
+                                // keyValue
+                                let splitVal = Buffer.from("\r\n");
+                                resUlt.keyValue = buffArr[1].slice(0,buffArr[1].indexOf(splitVal)).toString();
+                            }
+                            return resUlt;
+                        }
+                        return null;
                     }).filter(e=>e);
-                }catch (e) {}
-                return  {
-                    DispositionArr,
-                    ContentType,
-                    data
-                };
-            }catch (e) {
-                // return item.toString();
-            }
-        }).filter(e=>e).forEach(item=>{
-            if(item.DispositionArr.length === 1){
-                resultData[item.DispositionArr[0]] = {
-                    name:item.DispositionArr[0],
-                    type:item.ContentType,
-                    value:item.data
-                };
-            }
-            if(item.DispositionArr.length > 1){
-                resultData[item.DispositionArr[0]] = resultData[item.DispositionArr[0]] || [];
-                resultData[item.DispositionArr[0]].push({
-                    name:item.DispositionArr[1],
-                    type:item.ContentType,
-                    data:item.data
-                });
+                    resolve(bodyFormData);
+                }else {
+                    resolve([]);
+                }
+            }catch (err){
+                reject(err);
             }
         });
-        return resultData;
     }
 
 }

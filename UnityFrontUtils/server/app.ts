@@ -17,7 +17,7 @@ module.exports =  (request,response)=>{
             resolve(err);
         });
     }).then((res)=>{
-        //设置headers,asdad
+        //设置headers
         response.writeHead(res.RequestStatus, res.headers);
         //发送数据
         response.end(res.data);

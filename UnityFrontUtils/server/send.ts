@@ -4,6 +4,7 @@ import UnityFrontController from "../controller/controller"
 import { ServerConfig } from "../config"
 import StatusCode from "../../conf/StatusCode"
 import mysql from "../mysql"
+import SqlModel from "../../model/SqlModel"
 import Axios from "axios"
 import Utils from "../utils"
 module.exports = (request,response)=>{
@@ -31,7 +32,9 @@ module.exports = (request,response)=>{
                 $mysql:(optionsConfig?:object,isEnd?:boolean)=>{
                     return new mysql(optionsConfig,isEnd);
                 },
+                $sqlModel:SqlModel,
                 __dir:null,
+                $_params:{},
                 $methodName:null,
                 StatusCode:StatusCode,
                 $_axios:Axios,

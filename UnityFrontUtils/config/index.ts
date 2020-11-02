@@ -18,7 +18,8 @@ export const mysqlConfig = <mysqlOptions>{
         port: '3306',
         database: 'test',
         prefix:""
-    }
+    },
+    sqlModelAuto:false,
 };
 
 //服务公共设置，可写入
@@ -30,7 +31,10 @@ export const ServerPublicConfig = <ServerPublicConfigOptions>{
 //服务设置
 export const ServerConfig =  <ServerOptions>{
     port:81,
+    ws_port:82,
+    ws_user:{},
     debug:true,
+    CORS:true,
     fsWatch:[
         //listen conf directory
         {path:path.resolve(__dirname,"../../conf"),type:"directory"},
@@ -38,6 +42,8 @@ export const ServerConfig =  <ServerOptions>{
         {path:path.resolve(__dirname,"../"),type:"directory"},
         //listen application directory
         {path:path.resolve(__dirname,"../../application"),type:"directory"},
+        //listen model directory
+        {path:path.resolve(__dirname,"../../model"),type:"directory"},
     ],
     RequestStatus:200,
     headers:{
@@ -50,6 +56,7 @@ export const ServerConfig =  <ServerOptions>{
     Template:{
         viewsPath:path.resolve(__dirname,"../../views"),
         applicationPath:path.resolve(__dirname,"../../application"),
+        publicPath:path.resolve(__dirname,"../../public"),
         TemplatePath:path.resolve(__dirname,"../Template"),
         TemplateErrorPath:path.resolve(__dirname,"../Template/TemplateError.html"),
         ErrorPathSource:path.resolve(__dirname,"../controller/applicationController.js"),
@@ -78,12 +85,13 @@ export const TimingTaskQueue = <TimingTaskQueueOptions>{
     TaskQueueTime:500,
     //日志保留时间，当前默认30天
     LogsRetainTime:1000*60*60*24*30,
-    // LogsRetainTime:1000*6,
-    isClearLogTime:true,
+    // LogsRetainTime:1000*10,
+    isClearLogTime:false,
     //默认允许每天的凌晨的清除日志任务
     // ClearLogAppointTime:DateObj=>DateObj.getTime(),
     ClearLogAppointTime:DateObj=>DateObj.setHours(0,0,0,0),
+    // ClearLogAppointTime:false,
     //默认允许指定时间的上下范围20000毫秒
     // ClearLogTimeFrame:0,
-    ClearLogTimeFrame:10000,
+    ClearLogTimeFrame:20000,
 }

@@ -1,8 +1,7 @@
-import applicationController from "../../../UnityFrontUtils/controller/applicationController";
+import applicationController, {method_post} from "../../../UnityFrontUtils/controller/applicationController";
 import {ServerConfig, ServerPublicConfig} from "../../../UnityFrontUtils/config";
 const path = require("path")
 const fs = require("fs")
-const less = require("less")
 export class IndexController extends applicationController {
     constructor(){
         super();
@@ -49,38 +48,22 @@ export class IndexController extends applicationController {
             key:ServerPublicConfig.createEncryptKey,
         });
     }
-    
+
     getImageCode(){
         this.$_getSvgCode();
     }
-    
+
     codeTest(){
         this.$_success();
     }
-    
+
     uploadTest(){
         this.Render()
     }
 
-    upload(){
-        (async ()=>{
-            let a = ()=>{
-                let myFileName = this.$_getRequestFiles().myFileName;
-                if(myFileName){
-                    myFileName.forEach(file=>{
-                        fs.writeFile(path.resolve(__dirname,"../../../public",file.name),file.data, 'utf8', err=>{
-                            if (err) this.$_error();
-                        });
-                    });
-                }
-            };
-            await a();
-            this.$_success();
-        })()
-    }
-
     //todo less 转 css
     getcss(){
+        const less = require("less")
         if(!this.$_query.color){
             this.$_error("主题设置失败,颜色字段必填");
             return;
@@ -110,5 +93,25 @@ export class IndexController extends applicationController {
         }).catch(()=>{
             this.$_error("主题获取失败");
         });
+    }
+
+    @method_post(IndexController,"upload")
+    upload(){
+        this.$_getRequestFormData().then(res=>{
+            res.filter(e=>e.type === 'file').forEach(file=>{
+                fs.writeFileSync(path.resolve(ServerConfig.Template.publicPath,'./upload',file.fileName),file.fileBuff)
+            });
+            this.$_success("上传成功",null,0);
+        });
+    }
+
+    urlParams(){
+        this.$_success(this.$_params);
+    }
+
+    userModel(){
+        new this.$sqlModel.UserModel().getPage({
+            pageNo:this.$_query.pageNo,
+        }).then(res=>this.$_success(res)).catch(()=>this.$_error());
     }
 }
