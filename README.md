@@ -54,4 +54,5 @@
 
 ## 技术支持
 
-<img width="120" src="./README/jetbrains/jetbrains.png">
+<a href="https://www.jetbrains.com/?from=UnityFront"><img width="120" src="./README/jetbrains/jetbrains.png"></a>
+<a href="https://nodejs.org/?from=UnityFront"><img width="120" src="https://nodejs.org/static/images/logo.svg"></a>
