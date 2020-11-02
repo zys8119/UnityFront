@@ -1,4 +1,4 @@
-![logo](/lodo_text.png)
+![logo](./lodo_text.png)
 
 # UnityFrontUtils服务框架api文档
 
