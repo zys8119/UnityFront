@@ -12,5 +12,6 @@ package-lock.json
 /application/Dome/controller/nvidia-smi.
 /public/upload/*
 /public/*.vue.js
+/Front/**/*.vue.js
 /webSocket/*.js
 *.js.map
