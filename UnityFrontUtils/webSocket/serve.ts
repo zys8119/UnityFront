@@ -98,6 +98,18 @@ export default class webSocket {
                             requestData:data,
                             headers:headers,
                         });
+                    }else{
+                        for (let u in ServerConfig.ws_user ){
+                            toSocket = ServerConfig.ws_user[u];
+                            new webSocketApp({
+                                toSocket:toSocket,
+                                socket:toSocket.socket,
+                                write:toSocket.socket.write,
+                                data:dataObj,
+                                requestData:data,
+                                headers:headers,
+                            });
+                        }
                     }
                 }
             })

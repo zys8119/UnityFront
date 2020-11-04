@@ -394,6 +394,12 @@ export interface ControllerInitDataOptions {
      */
     //@ts-ignore
     bufferSplit?(buff:Buffer,splitter:string):Buffer[];
+
+    /**
+     * 读取目录
+     * @param path
+     */
+    readdirSync?(path:string):Promise<any>
 }
 
 export interface RequestFormData {
