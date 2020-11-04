@@ -13,6 +13,8 @@ import Encrypt from "../utils/encrypt";
 import Utils from "../utils";
 import PublicController from "../../conf/PublicController";
 import { SqlModel } from "../../model/interfaces";
+import { resolve } from "path";
+import {readdirSync, statSync} from "fs";
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
@@ -843,6 +845,27 @@ export default class applicationControllerClass extends PublicController impleme
                 reject(err);
             }
         });
+    }
+
+    readdirSync(path: string):any {
+        let resUlt = [];
+        resUlt = resUlt.concat(readdirSync(path).map(name=>{
+            const childrenPath = resolve(path,name);
+            const is_file = statSync(childrenPath).isFile();
+            const type = is_file ? "file" : "directory";
+            let children = [];
+            if(!is_file){
+                children = this.readdirSync(childrenPath);
+            }
+            return {
+                name:name,
+                path:childrenPath,
+                children,
+                type,
+                is_file,
+            }
+        }));
+        return resUlt;
     }
 
 }
