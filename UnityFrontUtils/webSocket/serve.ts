@@ -84,7 +84,13 @@ export default class webSocket {
                     ServerConfig.ws_user[key].data = dataObj;
                     let toSocket = null;
                     for (let u in ServerConfig.ws_user ){
-                        if(ServerConfig.ws_user[u] && ServerConfig.ws_user[u].uid === dataObj.to && ServerConfig.ws_user[u].socket){
+                        if(ServerConfig.ws_user[u] &&
+                            ServerConfig.ws_user[u].uid &&
+                            dataObj &&
+                            dataObj.to &&
+                            ServerConfig.ws_user[u].uid === dataObj.to &&
+                            ServerConfig.ws_user[u].socket
+                        ){
                             toSocket = ServerConfig.ws_user[u]
                             break;
                         }
