@@ -29,7 +29,6 @@ export default class webSocket {
         const str = buffer.toString()
         // console.log(str)
         // 4. 将请求头数据转为对象
-        console.log(this.encryptInit)
         const headers = this.encryptInit.parseHeader(str)
         // console.log(headers)
 
@@ -53,7 +52,8 @@ export default class webSocket {
             const key = headers['sec-websocket-key'];
             const hash = crypto.createHash('sha1')  // 创建一个签名算法为sha1的哈希对象
             ServerConfig.ws_user[key] = {
-                socket:socket
+                socket:socket,
+                key
             };
             hash.update(`${key}${GUID}`)  // 将key和GUID连接后，更新到hash
             const result = hash.digest('base64') // 生成base64字符串
@@ -66,9 +66,11 @@ export default class webSocket {
             // 处理聊天数据
             // 7. 建立连接后，通过data事件接收客户端的数据并处理
             socket.on('data', (buffer) => {
+                let currentSocket = ServerConfig.ws_user[key];
                 const data = this.encryptInit.decodeWsFrame(buffer)
                 // opcode为8，表示客户端发起了断开连接
                 if (data.opcode === 8) {
+                    ncol.error(`用户：${currentSocket.uid},客户端：${key}退出登录`);
                     delete ServerConfig.ws_user[key];
                     socket.end()  // 与客户端断开连接
                 } else {
@@ -80,22 +82,65 @@ export default class webSocket {
                         dataObj = payloadDataStr
                     }
                     // 接收到客户端数据时的处理，此处默认为返回接收到的数据。
-                    ServerConfig.ws_user[key].uid = dataObj.from;
                     ServerConfig.ws_user[key].data = dataObj;
                     let toSocket = null;
-                    for (let u in ServerConfig.ws_user ){
-                        if(ServerConfig.ws_user[u] &&
-                            ServerConfig.ws_user[u].uid &&
-                            dataObj &&
-                            dataObj.to &&
-                            ServerConfig.ws_user[u].uid === dataObj.to &&
-                            ServerConfig.ws_user[u].socket
-                        ){
-                            toSocket = ServerConfig.ws_user[u]
-                            break;
+                    if(dataObj.type === "login"){
+                        // 用户第一次登录
+                        toSocket = ServerConfig.ws_user[key];
+                        if (!dataObj.uid){
+                            ncol.error(`用户未登录,客户端：【${key}】`)
+                            dataObj = {
+                                type:"login",
+                                code:110,
+                                message:"用户未登录",
+                            }
+                            data.payloadData = Buffer.from(JSON.stringify(dataObj))
+                            new webSocketApp({
+                                toSocket:toSocket,
+                                socket:toSocket.socket,
+                                write:toSocket.socket.write,
+                                data:dataObj,
+                                requestData:data,
+                                headers:headers,
+                            });
+                            delete ServerConfig.ws_user[key];
+                            socket.end(); // 与客户端断开连接
+                            return;
+                        }
+                        ServerConfig.ws_user[key].uid = dataObj.uid;
+                        dataObj = {
+                            ...dataObj,
+                            type:"login",
+                            code:200,
+                            message:"登录成功",
+                            uid:dataObj.uid
+                        }
+                        ncol.success(`用户：【${dataObj.uid}】登录成功,客户端：【${key}】`)
+                        ServerConfig.ws_user[key].data = dataObj;
+                        data.payloadData = Buffer.from(JSON.stringify(dataObj))
+                        new webSocketApp({
+                            toSocket:toSocket,
+                            socket:toSocket.socket,
+                            write:toSocket.socket.write,
+                            data:dataObj,
+                            requestData:data,
+                            headers:headers,
+                        });
+                        return;
+                    }
+                    if(!currentSocket){
+                        ncol.error(`非法操作或用户不存在`);
+                        return;
+                    }
+                    for (let u in ServerConfig.ws_user){
+                        const keyValue = ServerConfig.ws_user[u];
+                        const condition = keyValue && keyValue.uid && keyValue.socket && dataObj && dataObj.to && keyValue.uid === dataObj.to;
+                        if(condition){
+                            toSocket = keyValue;
                         }
                     }
                     if(toSocket){
+                        ncol.success(`用户：【${currentSocket.uid}】=>【${toSocket.uid}】====客户端：【${key}】=>【${toSocket.key}】===发送数据：${JSON.stringify(dataObj)}`);
                         new webSocketApp({
                             toSocket:toSocket,
                             socket:toSocket.socket,
@@ -105,16 +150,19 @@ export default class webSocket {
                             headers:headers,
                         });
                     }else{
+                        ncol.success(`用户：【${currentSocket.uid}】====客户端：【${key}】===发送数据：${JSON.stringify(dataObj)}`);
                         for (let u in ServerConfig.ws_user ){
-                            toSocket = ServerConfig.ws_user[u];
-                            new webSocketApp({
-                                toSocket:toSocket,
-                                socket:toSocket.socket,
-                                write:toSocket.socket.write,
-                                data:dataObj,
-                                requestData:data,
-                                headers:headers,
-                            });
+                            if (u !== key){
+                                let toSocketItem = ServerConfig.ws_user[u];
+                                new webSocketApp({
+                                    toSocket:toSocketItem,
+                                    socket:toSocketItem.socket,
+                                    write:toSocketItem.socket.write,
+                                    data:dataObj,
+                                    requestData:data,
+                                    headers:headers,
+                                });
+                            }
                         }
                     }
                 }
