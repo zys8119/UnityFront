@@ -131,4 +131,15 @@ export class IndexController extends applicationController {
     editor(){
         this.Render();
     }
+
+    /**
+     * 查询当前socket在线人数
+     */
+    socketList(){
+        const userList = Object.keys(ServerConfig.ws_user).map(k=>{
+            const {socket, ...resUlt} = ServerConfig.ws_user[k];
+            return resUlt
+        });
+        this.$_success(userList);
+    }
 }
