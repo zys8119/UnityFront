@@ -142,4 +142,22 @@ export class IndexController extends applicationController {
         });
         this.$_success(userList);
     }
+
+    /**
+     * 保存同屏canvas base64 数据
+     * @constructor
+     */
+    SameScreen(){
+        this.$ControllerConfig.SameScreen = this.$_body.img;
+        this.$_success("保存成功",null,0);
+    }
+
+    /**
+     * 获取同屏canvas base64 数据
+     */
+    getSameScreen(){
+        this.$_success("成功",{
+            img:this.$ControllerConfig.SameScreen
+        },0);
+    }
 }

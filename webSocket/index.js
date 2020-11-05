@@ -14,9 +14,14 @@ var index = /** @class */ (function () {
     }
     class_1.prototype.init = function (_a) {
         var toSocket = _a.toSocket, data = _a.data, requestData = _a.requestData;
-        toSocket.socket.write(this.encryptInit.encodeWsFrame({
-            payloadData: typeof data === 'object' ? JSON.stringify(requestData.payloadData.toString()) : data
-        }));
+        try {
+            toSocket.socket.write(this.encryptInit.encodeWsFrame({
+                payloadData: typeof data === 'object' ? JSON.stringify(requestData.payloadData.toString()) : data
+            }));
+        }
+        catch (e) {
+            // 防止错误中断服务
+        }
     };
     return class_1;
 }());
