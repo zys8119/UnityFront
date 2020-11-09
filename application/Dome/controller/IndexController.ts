@@ -162,6 +162,7 @@ export class IndexController extends applicationController {
     }
 
     getFileData(){
+        this.request.setTimeout(0);
         this.$_getRequestFormData().then(res=>{
             console.log(res)
             this.$_success(null,{
