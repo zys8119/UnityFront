@@ -160,4 +160,14 @@ export class IndexController extends applicationController {
             img:this.$ControllerConfig.SameScreen
         },0);
     }
+
+    getFileData(){
+        this.$_getRequestFormData().then(res=>{
+            console.log(res)
+            this.$_success(null,{
+
+            },0);
+        })
+
+    }
 }
