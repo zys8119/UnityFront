@@ -13,7 +13,9 @@
     "import-vue": "^0.0.9",
     "less": "^3.12.2",
     "less-loader": "^7.0.2",
+    "login-vue": "^1.0.9",
     "sass-resources-loader": "^2.1.1",
+    "store-vue": "^1.5.0",
     "vue": "^2.6.11",
     "vue-router": "^3.4.9"
   },
