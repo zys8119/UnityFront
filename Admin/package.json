@@ -40,7 +40,15 @@
     "parserOptions": {
       "parser": "babel-eslint"
     },
-    "rules": {}
+    "rules": {
+    },
+    "globals": {
+      "view": true,
+      "paper": true,
+      "Group": true,
+      "Path": true,
+      "$": true
+    }
   },
   "browserslist": [
     "> 1%",
