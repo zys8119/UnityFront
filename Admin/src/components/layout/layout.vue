@@ -1,19 +1,16 @@
 <template>
-    <div class="Home">
-        asdasd
+    <div class="layout">
+        <router-view></router-view>
     </div>
 </template>
 
 <script>
 export default {
-    name: "Home",
-    mounted() {
-
-    }
+    name: "layout"
 }
 </script>
 
 <style scoped lang="less">
-.Home{
+.layout{
 }
 </style>

@@ -13,10 +13,17 @@ export default new vueRouter(<RouterOptions>{
         },
         {
             path:"/",
-            component:()=>import(<any>"@/components/view/Home/Home"),
+            component:()=>import(<any>"@/components/layout/layout"),
+            redirect:"home",
             meta:{
                 isLogin:true
-            }
+            },
+            children:[
+                {
+                    path:"home",
+                    component:()=>import(<any>"@/components/view/Home/Home"),
+                }
+            ]
         }
     ]
 })

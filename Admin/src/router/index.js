@@ -15,10 +15,17 @@ exports["default"] = new vue_router_1["default"]({
         },
         {
             path: "/",
-            component: function () { return Promise.resolve().then(function () { return require("@/components/view/Home/Home"); }); },
+            component: function () { return Promise.resolve().then(function () { return require("@/components/layout/layout"); }); },
+            redirect: "home",
             meta: {
                 isLogin: true
-            }
+            },
+            children: [
+                {
+                    path: "home",
+                    component: function () { return Promise.resolve().then(function () { return require("@/components/view/Home/Home"); }); },
+                }
+            ]
         }
     ]
 });
