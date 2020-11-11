@@ -118,16 +118,22 @@ export default {
                 ...this.formData,
                 password:this.$utils.MD5(this.formData.password),
                 password2:null,
-            }).then(res=>{
-                console.log(res);
+            }).then(()=>{
+                this.$message({type:"success",message:"注册成功,请登录"});
             });
         },
         // 登录
         login(){
             if(this.$utils.is_S(this.formData.username)){return this.$message.error("请输入账号")}
             if(this.$utils.is_S(this.formData.password)){return this.$message.error("请输入密码")}
-            this.apis.user.login()
-            console.log(this.formData,this.apis)
+            this.apis.user.auth.login({
+                ...this.formData,
+                password:this.$utils.MD5(this.formData.password),
+            }).then((res)=>{
+                this.$message({type:"success",message:"登录成功"});
+                console.log(res)
+            });
+
         },
         /**
          * 初始化
@@ -139,12 +145,7 @@ export default {
  * ====================== */
             $(document).ready(()=>{
                 $('#goRight').on('click', ()=>{
-                    this.formData = {
-                        email:"770959294@qq.com",
-                        username:"admin",
-                        password:"admin",
-                        password2:"admin",
-                    };
+                    this.formData = {clause:true};
                     $('#slideBox').animate({
                         'marginLeft' : '0'
                     });
@@ -153,7 +154,10 @@ export default {
                     });
                 });
                 $('#goLeft').on('click', ()=>{
-                    this.formData = {};
+                    this.formData = {
+                        username:"admin1",
+                        password:"admin",
+                    };
                     if (window.innerWidth > 769){
                         $('#slideBox').animate({
                             'marginLeft' : '50%'

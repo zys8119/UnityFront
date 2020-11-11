@@ -30,6 +30,12 @@ export default class extends PublicModel implements PublicModelInterface{
             COMMENT:`'账号类型；0 管理员、1 普通用户'`,
             NOT:'NULL',
             DEFAULT:`'1'`,
+        },
+        status:{
+            int:"(10)",
+            COMMENT:`'账号是否删除；1 未删除、2 已删除'`,
+            NOT:'NULL',
+            DEFAULT:`'1'`,
         }
     };
     // PRIMARY_KEY = `('id')`;

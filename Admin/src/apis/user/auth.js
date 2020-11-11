@@ -6,7 +6,11 @@ export default {
             data,
         })
     },
-    login(){
-
+    login(data){
+        return this.axios({
+            url:"/User/Auth/login",
+            method:"post",
+            data,
+        })
     },
 }
