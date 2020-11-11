@@ -50,6 +50,10 @@ export default class {
                 }else {
                     // 服务器内部异常请求
                     Message.error(res.data.msg);
+                    if(res.data && res.data.code === 110001){
+                        // 退出登录
+                        window._this.$utils.logout.call(window._this);
+                    }
                     return Promise.reject(res.data);
                 }
             }else {

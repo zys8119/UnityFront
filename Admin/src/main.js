@@ -18,7 +18,7 @@ router.beforeEach((to, from, next)=>{
   loginVue(to, from, next, store);
 })
 
-new Vue({
+window._this = new Vue({
   store,
   router,
   render: h => h(App),

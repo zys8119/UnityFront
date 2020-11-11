@@ -24,17 +24,18 @@ class Interceptor implements ControllerInitDataOptions{
      */
     Interceptor(){
         if(this.$_headers['token']){
+            const code = 110001;// 退出登录
             try {
                 const token = this.$_decode(this.$_headers['token']);
                 if(token){
                     const tokenInfo = token.split("-");
                     const time = parseInt(tokenInfo[3]);
                     if(isNaN(time)){
-                        this.$_error("无效token");
+                        this.$_error("无效token", null, code);
                         return Promise.reject()
                     }
                     if(Date.now() > time){
-                        this.$_error("用户token已过期，请重新登录");
+                        this.$_error("用户token已过期，请重新登录", null, code);
                         return Promise.reject();
                     }
                     // @ts-ignore
@@ -46,12 +47,12 @@ class Interceptor implements ControllerInitDataOptions{
                     }[k],e])));
                     return Promise.resolve();
                 }else {
-                    this.$_error("无效token");
+                    this.$_error("无效token", null, code);
                 }
             }catch (e){
                 console.error("token解析失败");
                 console.error(e);
-                this.$_error("拦截器错误");
+                this.$_error("拦截器错误", null, code);
             }
             return Promise.reject()
         }
