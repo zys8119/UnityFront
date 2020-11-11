@@ -7,51 +7,52 @@
             <div class="backLeft">
             </div>
         </div>
-
         <div id="slideBox">
             <div class="topLayer">
                 <div class="left">
                     <div class="content">
-                        <h2>Sign Up</h2>
+                        <img class="logo" src="/images/login/logo_text.png">
+                        <h2>注册</h2>
                         <form id="form-signup" method="post" onsubmit="return false;">
                             <div class="form-element form-stack">
-                                <label for="email" class="form-label">Email</label>
+                                <label for="email" class="form-label">邮箱</label>
                                 <input id="email" type="email" name="email">
                             </div>
                             <div class="form-element form-stack">
-                                <label for="username-signup" class="form-label">Username</label>
+                                <label for="username-signup" class="form-label">账号</label>
                                 <input id="username-signup" type="text" name="username">
                             </div>
                             <div class="form-element form-stack">
-                                <label for="password-signup" class="form-label">Password</label>
+                                <label for="password-signup" class="form-label">密码</label>
                                 <input id="password-signup" type="password" name="password">
                             </div>
                             <div class="form-element form-checkbox">
                                 <input id="confirm-terms" type="checkbox" name="confirm" value="yes" class="checkbox">
-                                <label for="confirm-terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
+                                <label for="confirm-terms">我同意 <a href="#">UnityFront后台管理系统服务条款</a> 及 <a href="#">隐私政策</a></label>
                             </div>
                             <div class="form-element form-submit">
-                                <button id="signUp" class="signup" type="submit" name="signup">Sign up</button>
-                                <button id="goLeft" class="signup off">Log In</button>
+                                <button id="signUp" class="signup" type="submit" name="signup">注册</button>
+                                <button id="goLeft" class="signup off">登录</button>
                             </div>
                         </form>
                     </div>
                 </div>
                 <div class="right">
                     <div class="content">
-                        <h2>Login</h2>
+                        <img class="logo" src="/images/login/logo_text.png">
+                        <h2>登录</h2>
                         <form id="form-login" method="post" onsubmit="return false;">
                             <div class="form-element form-stack">
-                                <label for="username-login" class="form-label">Username</label>
+                                <label for="username-login" class="form-label">账号</label>
                                 <input id="username-login" type="text" name="username">
                             </div>
                             <div class="form-element form-stack">
-                                <label for="password-login" class="form-label">Password</label>
+                                <label for="password-login" class="form-label">密码</label>
                                 <input id="password-login" type="password" name="password">
                             </div>
                             <div class="form-element form-submit">
-                                <button id="logIn" class="login" type="submit" name="login">Log In</button>
-                                <button id="goRight" class="login off" name="signup">Sign Up</button>
+                                <button id="logIn" class="login" type="submit" name="login">登录</button>
+                                <button id="goRight" class="login off" name="signup">注册</button>
                             </div>
                         </form>
                     </div>
@@ -270,11 +271,11 @@ export default {
 
 <style scoped lang="less">
 .Login{
-    @theme-signup: #03A9F4;
-    @theme-signup-darken: #0288D1;
+    @theme-signup: @themeColor3;
+    @theme-signup-darken: tint(@themeColor3,20%);
     @theme-signup-background: #2C3034;
-    @theme-login: #673AB7;
-    @theme-login-darken: #512DA8;
+    @theme-login: @themeColor;
+    @theme-login-darken: @themeColor2;
     @theme-login-background: #f9f9f9;
     @theme-dark: #212121;
     @theme-light: #e3e3e3;
@@ -282,15 +283,6 @@ export default {
 
     @success: #5cb85c;
     @error: #d9534f;
-
-    body {
-        margin: 0;
-        height: 100%;
-        overflow: hidden;
-        width: 100% !important;
-        box-sizing: border-box;
-        font-family: @font-default;
-    }
 
     .backRight {
         position: absolute;
@@ -413,6 +405,13 @@ export default {
         width: 80%;
         margin: 0 auto;
         position: relative;
+        .logo{
+            position: absolute;
+            left: 50%;
+            top: 100px;
+            width: 50%;
+            transform: translateX(-50%);
+        }
     }
 
     .content h2 {
