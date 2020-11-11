@@ -21,6 +21,7 @@ const http = require('http');
 const https = require('https');
 const pug = require('pug');
 const ncol = require('ncol');
+const crypto = require('crypto');
 
 /**
  * @请求方式修饰器类
@@ -866,6 +867,10 @@ export default class applicationControllerClass extends PublicController impleme
             }
         }));
         return resUlt;
+    }
+
+    $MD5(str: string): string {
+        return  crypto.createHash('md5').update(str).digest("hex");
     }
 
 }
