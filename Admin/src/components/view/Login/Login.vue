@@ -31,7 +31,7 @@
                                 <input id="password-signup1" type="password" name="password" v-model="formData.password2">
                             </div>
                             <div class="form-element form-checkbox">
-                                <input id="confirm-terms" type="checkbox" name="confirm" value="yes" class="checkbox">
+                                <input id="confirm-terms" v-model="formData.clause" type="checkbox" name="confirm" value="yes" class="checkbox">
                                 <label for="confirm-terms">我同意 <a href="#">UnityFront后台管理系统服务条款</a> 及 <a href="#">隐私政策</a></label>
                             </div>
                             <div class="form-element form-submit">
@@ -113,9 +113,14 @@ export default {
             if(this.$utils.is_S(this.formData.username)){return this.$message.error("请输入账号")}
             if(this.$utils.is_S(this.formData.password)){return this.$message.error("请输入密码")}
             if(this.formData.password !== this.formData.password2){return this.$message.error("请两次密码不一致")}
-            this.apis.user.auth.register().then(res=>{
+            if(!this.formData.clause){return this.$message.error("请勾选并同意协议")}
+            this.apis.user.auth.register({
+                ...this.formData,
+                password:this.$utils.MD5(this.formData.password),
+                password2:null,
+            }).then(res=>{
                 console.log(res);
-            })
+            });
         },
         // 登录
         login(){

@@ -1,4 +1,8 @@
+import MD5 from "md5.js"
 export default {
+    MD5(str){
+        return new MD5().update(str).digest('hex')
+    },
     // 添加外部js
     addJs(src){
         return new Promise(resolve => {
