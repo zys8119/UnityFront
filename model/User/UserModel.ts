@@ -4,7 +4,7 @@ export default class extends PublicModel implements PublicModelInterface{
     $TableName = "user";
     $sqlFieldConfig:$sqlFieldConfigType = {
         id:{
-            varchar:"(10)",
+            varchar:"(255)",
             'CHARACTER SET':'utf8',
             COLLATE:'utf8_unicode_ci',
             NOT:'NULL',
@@ -24,10 +24,16 @@ export default class extends PublicModel implements PublicModelInterface{
         email:{
             varchar:"(255)",
             COMMENT:`'邮箱'`,
+        },
+        type:{
+            int:"(10)",
+            COMMENT:`'账号类型；0 管理员、1 普通用户'`,
+            NOT:'NULL',
+            DEFAULT:`'1'`,
         }
     };
     // PRIMARY_KEY = `('id')`;
     'CHARACTER SET' = 'utf8';
     COLLATE = `utf8_unicode_ci`;
-    COMMENT =`'计划单BOM清单'`;
+    COMMENT =`'用户表'`;
 }
