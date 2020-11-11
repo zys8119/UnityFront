@@ -35,6 +35,7 @@
                                 <button id="goLeft" class="signup off">登录</button>
                             </div>
                         </form>
+                        <el-divider class="footer">{{footer}}</el-divider>
                     </div>
                 </div>
                 <div class="right">
@@ -55,6 +56,7 @@
                                 <button id="goRight" class="login off" name="signup">注册</button>
                             </div>
                         </form>
+                        <el-divider class="footer">{{footer}}</el-divider>
                     </div>
                 </div>
             </div>
@@ -86,6 +88,11 @@
 <script>
 export default {
     name: "Login",
+    data(){
+        return {
+            footer:"UnityFront后台管理系统"
+        }
+    },
     mounted() {
         Promise.all([
             this.$utils.addJs("https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"),
@@ -412,6 +419,17 @@ export default {
             width: 50%;
             transform: translateX(-50%);
         }
+        .footer{
+            position: absolute;
+            left: 0;
+            bottom: @unit15;
+            text-align: center;
+            width: 100%;
+            font-size: 12px;
+            &/deep/ .el-divider__text{
+                //background-color: transparent;
+            }
+        }
     }
 
     .content h2 {
@@ -419,7 +437,12 @@ export default {
         font-size: 2.6em;
         margin: 0.2em 0 0.1em;
     }
-
+    .left .content .footer{
+        &/deep/ .el-divider__text{
+            background-color: @theme-signup-background;
+            color: #ffffff;
+        }
+    }
     .left .content h2 {
         color: @theme-signup;
     }
