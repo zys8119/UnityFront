@@ -1,6 +1,6 @@
 <template>
     <div class="Home">
-        asdasd
+        <el-button @click="$utils.logout.call(_self)">退出登录</el-button>
     </div>
 </template>
 

@@ -1,7 +1,32 @@
 import MD5 from "md5.js"
 export default {
+    // md5 加密
     MD5(str){
         return new MD5().update(str).digest('hex')
+    },
+    // 登录
+    login(data){
+        this.action({
+            moduleName:"login",
+            goods:{
+                code:200,
+                data
+            }
+        });
+        localStorage.setItem("login",JSON.stringify({
+            code:200,
+            data
+        }));
+        this.$router.push("/");
+    },
+    // 退出登录
+    logout(){
+        this.action({
+            moduleName:"login",
+            goods:null
+        });
+        localStorage.clear();
+        this.$router.push("/login");
     },
     // 添加外部js
     addJs(src){

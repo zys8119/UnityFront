@@ -131,9 +131,8 @@ export default {
                 password:this.$utils.MD5(this.formData.password),
             }).then((res)=>{
                 this.$message({type:"success",message:"登录成功"});
-                console.log(res)
+                this.$utils.login.call(this,res);
             });
-
         },
         /**
          * 初始化
