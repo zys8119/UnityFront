@@ -8,11 +8,25 @@ export default class extends PublicModel implements PublicModelInterface{
             'CHARACTER SET':'utf8',
             COLLATE:'utf8_unicode_ci',
             NOT:'NULL',
-            DEFAULT:`'1'`,
-            COMMENT:`'物料id'`,
+            DEFAULT:`''`,
+            COMMENT:`'用户'`,
         },
+        username:{
+            varchar:"(255)",
+            NOT:'NULL',
+            COMMENT:`'账号'`,
+        },
+        password:{
+            varchar:"(255)",
+            NOT:'NULL',
+            COMMENT:`'密码'`,
+        },
+        email:{
+            varchar:"(255)",
+            COMMENT:`'邮箱'`,
+        }
     };
-    PRIMARY_KEY = `('id')`;
+    // PRIMARY_KEY = `('id')`;
     'CHARACTER SET' = 'utf8';
     COLLATE = `utf8_unicode_ci`;
     COMMENT =`'计划单BOM清单'`;

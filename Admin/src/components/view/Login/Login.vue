@@ -16,22 +16,26 @@
                         <form id="form-signup" method="post" onsubmit="return false;">
                             <div class="form-element form-stack">
                                 <label for="email" class="form-label">邮箱</label>
-                                <input id="email" type="email" name="email">
+                                <input id="email" type="email" name="email" v-model="formData.email">
                             </div>
                             <div class="form-element form-stack">
                                 <label for="username-signup" class="form-label">账号</label>
-                                <input id="username-signup" type="text" name="username">
+                                <input id="username-signup" type="text" name="username" v-model="formData.username">
                             </div>
                             <div class="form-element form-stack">
                                 <label for="password-signup" class="form-label">密码</label>
-                                <input id="password-signup" type="password" name="password">
+                                <input id="password-signup" type="password" name="password" v-model="formData.password">
+                            </div>
+                            <div class="form-element form-stack">
+                                <label for="password-signup" class="form-label">确认密码</label>
+                                <input id="password-signup1" type="password" name="password" v-model="formData.password2">
                             </div>
                             <div class="form-element form-checkbox">
                                 <input id="confirm-terms" type="checkbox" name="confirm" value="yes" class="checkbox">
                                 <label for="confirm-terms">我同意 <a href="#">UnityFront后台管理系统服务条款</a> 及 <a href="#">隐私政策</a></label>
                             </div>
                             <div class="form-element form-submit">
-                                <button id="signUp" class="signup" type="submit" name="signup">注册</button>
+                                <button id="signUp" class="signup" type="submit" name="signup" @click="register">注册</button>
                                 <button id="goLeft" class="signup off">登录</button>
                             </div>
                         </form>
@@ -45,14 +49,14 @@
                         <form id="form-login" method="post" onsubmit="return false;">
                             <div class="form-element form-stack">
                                 <label for="username-login" class="form-label">账号</label>
-                                <input id="username-login" type="text" name="username">
+                                <input id="username-login" type="text" name="username" v-model="formData.username">
                             </div>
                             <div class="form-element form-stack">
                                 <label for="password-login" class="form-label">密码</label>
-                                <input id="password-login" type="password" name="password">
+                                <input id="password-login" type="password" name="password" v-model="formData.password">
                             </div>
                             <div class="form-element form-submit">
-                                <button id="logIn" class="login" type="submit" name="login">登录</button>
+                                <button id="logIn" class="login" type="submit" name="login" @click="login">登录</button>
                                 <button id="goRight" class="login off" name="signup">注册</button>
                             </div>
                         </form>
@@ -90,7 +94,8 @@ export default {
     name: "Login",
     data(){
         return {
-            footer:"UnityFront后台管理系统"
+            footer:"UnityFront后台管理系统",
+            formData:{},
         }
     },
     mounted() {
@@ -102,6 +107,23 @@ export default {
         })
     },
     methods:{
+        // 注册
+        register(){
+            if(this.$utils.is_S(this.formData.email)){return this.$message.error("请输入邮箱")}
+            if(this.$utils.is_S(this.formData.username)){return this.$message.error("请输入账号")}
+            if(this.$utils.is_S(this.formData.password)){return this.$message.error("请输入密码")}
+            if(this.formData.password !== this.formData.password2){return this.$message.error("请两次密码不一致")}
+            this.apis.user.auth.register().then(res=>{
+                console.log(res);
+            })
+        },
+        // 登录
+        login(){
+            if(this.$utils.is_S(this.formData.username)){return this.$message.error("请输入账号")}
+            if(this.$utils.is_S(this.formData.password)){return this.$message.error("请输入密码")}
+            this.apis.user.login()
+            console.log(this.formData,this.apis)
+        },
         /**
          * 初始化
          */
@@ -110,8 +132,14 @@ export default {
  *  Toggle Between        *
  *  Sign Up / Login       *
  * ====================== */
-            $(document).ready(function(){
-                $('#goRight').on('click', function(){
+            $(document).ready(()=>{
+                $('#goRight').on('click', ()=>{
+                    this.formData = {
+                        email:"770959294@qq.com",
+                        username:"admin",
+                        password:"admin",
+                        password2:"admin",
+                    };
                     $('#slideBox').animate({
                         'marginLeft' : '0'
                     });
@@ -119,7 +147,8 @@ export default {
                         'marginLeft' : '100%'
                     });
                 });
-                $('#goLeft').on('click', function(){
+                $('#goLeft').on('click', ()=>{
+                    this.formData = {};
                     if (window.innerWidth > 769){
                         $('#slideBox').animate({
                             'marginLeft' : '50%'

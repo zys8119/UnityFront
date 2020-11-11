@@ -1,11 +1,11 @@
 import axios from "./axios"
 import alert from "./alert"
-// import api from "@/api"
+import apis from "@/apis"
 // import $utils from "./utils"
 const plugin = {
     install(vue){
         vue.prototype.axios = new axios();
-        // vue.prototype.api = new api();
+        vue.prototype.apis = new apis();
         // vue.prototype.$utils = $utils;
         vue.use(alert);
     }
