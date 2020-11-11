@@ -399,7 +399,13 @@ export interface ControllerInitDataOptions {
      * 读取目录
      * @param path
      */
-    readdirSync?(path:string):Promise<any>
+    readdirSync?(path:string):Promise<any>;
+
+    /**
+     * MD5加密
+     * @param str
+     */
+    $MD5?(str:string):string;
 }
 
 export interface RequestFormData {

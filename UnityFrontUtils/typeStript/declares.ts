@@ -3,10 +3,20 @@ declare const process:process;
 declare const Promise:GlobalPromise<any>;
 declare const __dirname:string;
 declare const module:any;
-declare const Buffer:any;
+declare const Buffer:Buffer | any;
 declare const exports:any;
 declare const T:any;
 declare const global:any;
+
+declare module "crypto" {
+    namespace crypto {
+        interface PlatformCrypto {
+            createHash(algorithm:string | object):crypto_createHash_Hash
+        }
+    }
+    const crypto: crypto.PlatformCrypto;
+    export = crypto;
+}
 
 declare module "path" {
     namespace path {
@@ -49,6 +59,18 @@ declare module "child_process" {
     }
     const fs:child_process.PlatformFs;
     export  = fs;
+}
+
+type Buffer = {
+    from?(data:Array<any>| ArrayBuffer | Buffer | object | string):Buffer;
+    concat?(data:Array<Buffer>):Buffer;
+    length?:number;
+}
+
+interface crypto_createHash_Hash{
+    update(data:string | Buffer);
+    copy(data:string | object);
+    digest(data:string);
 }
 
 interface fs_mkdir_options {
