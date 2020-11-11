@@ -28,7 +28,7 @@ class mysql implements SqlUtilsOptions{
      * @param data 需要处理的数据
      */
     private isString(data:any){
-        if(typeof data == 'string' &&  ['.'].some(e=>data.indexOf(e) == -1)){
+        if(typeof data == 'string'){
             return '\''+data+'\'';
         }
         return data;
