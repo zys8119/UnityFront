@@ -1,5 +1,6 @@
 import axios from "axios"
 import {Message} from "element-ui"
+import store from "store-vue"
 export default class {
     AxiosInstance
     constructor() {
@@ -22,6 +23,17 @@ export default class {
      * 请求拦截
      */
     request_interceptors(){
+        this.AxiosInstance.interceptors.request.use(config => {
+            try {
+                let login = store.state.airforce.login;
+                if(login && login.code === 200 && login.data && login.data.token){
+                    config.headers["token"] = login.data.token;
+                }
+            }catch (e){
+                //
+            }
+            return config;
+        })
     }
 
     /**

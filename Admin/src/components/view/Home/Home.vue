@@ -6,7 +6,10 @@
 
 <script>
 export default {
-    name: "Home"
+    name: "Home",
+    mounted() {
+        this.apis.user.auth.login()
+    }
 }
 </script>
 
