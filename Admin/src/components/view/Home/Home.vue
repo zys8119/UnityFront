@@ -1,6 +1,6 @@
 <template>
     <div class="Home">
-        asdasd
+        <div v-for="i in 200" :key="i">{{i}}</div>
     </div>
 </template>
 
@@ -15,5 +15,6 @@ export default {
 
 <style scoped lang="less">
 .Home{
+
 }
 </style>
