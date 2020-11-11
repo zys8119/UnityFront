@@ -55,7 +55,8 @@ export class AuthController extends applicationController{
             }
             this.$_success({
                 ...res[0],
-                token:this.$_encode(`${this.$_body.username}-${this.$_body.password}-${Date.now()}`)
+                // 1个月有效时间
+                token:this.$_encode(`${res[0].username}-${res[0].password}-${res[0].id}-${Date.now()+1000*3600*24*30}`)
             });
         }).catch(()=>this.$_error())
     }
