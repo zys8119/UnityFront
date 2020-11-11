@@ -28,9 +28,6 @@ class Interceptor implements ControllerInitDataOptions{
                 const token = this.$_decode(this.$_headers['token']);
                 if(token){
                     const tokenInfo = token.split("-");
-                    const username = tokenInfo[0];
-                    const password = tokenInfo[1];
-                    const id = tokenInfo[2];
                     const time = parseInt(tokenInfo[3]);
                     if(isNaN(time)){
                         this.$_error("无效token");
@@ -58,6 +55,8 @@ class Interceptor implements ControllerInitDataOptions{
             }
             return Promise.reject()
         }
+        // @ts-ignore
+        this.userInfo = new Map();
         return Promise.resolve();
     }
 
