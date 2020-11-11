@@ -27,7 +27,7 @@ export class AuthController extends applicationController{
                 password:this.$_body.password,
                 username:this.$_body.username,
                 email:this.$_body.email,
-                id:this.$MD5(`${this.$_body.password}-${this.$_body.password}-${Date.now()}`),
+                id:this.$MD5(`${this.$_body.username}-${this.$_body.password}-${Date.now()}`),
                 type:1,
             }).query().then(()=>{
                 this.$_success()
@@ -53,7 +53,10 @@ export class AuthController extends applicationController{
                 this.$_error("账号密码错误")
                 return;
             }
-            this.$_success(res[0]);
+            this.$_success({
+                ...res[0],
+                token:this.$_encode(`${this.$_body.username}-${this.$_body.password}-${Date.now()}`)
+            });
         }).catch(()=>this.$_error())
     }
 }
