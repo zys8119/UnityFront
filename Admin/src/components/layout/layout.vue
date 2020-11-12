@@ -2,9 +2,7 @@
     <div class="layout">
         <div class="layoutHeader">
             <div class="layoutHeaderContent">
-                <div>layoutHeader</div>
-                <div>layoutHeader</div>
-                <div>layoutHeader</div>
+                <layoutHeaderMain></layoutHeaderMain>
             </div>
         </div>
         <div class="layoutContainer">
@@ -28,8 +26,10 @@
 </template>
 
 <script>
+import layoutHeaderMain from "./layoutHeaderMain"
 export default {
-    name: "layout"
+    name: "layout",
+    components:{ layoutHeaderMain }
 }
 </script>
 
@@ -37,9 +37,6 @@ export default {
 .layout{
     display: flex;
     flex-direction: column;
-    @layoutHeader:50px;
-    @layoutAside:200px;
-    @layoutFooter:50px;
     .layoutHeader{
         height: @layoutHeader;
         overflow: hidden;
@@ -50,8 +47,9 @@ export default {
             width: 100%;
             height: @layoutHeader;
             overflow: hidden;
-            background-color: #0060cf;
+            background-color: @themeColorBg;
             z-index: 2;
+            box-shadow: 0 0 5px #d8d8d8;
         }
     }
     .layoutContainer{
@@ -63,7 +61,7 @@ export default {
             min-height: 1px;
             .layoutAsideContent{
                 position: fixed;
-                background-color: #3e863d;
+                background-color: @themeColorBg;
                 width: @layoutAside;
                 height: calc(100% - @layoutHeader);
                 left: 0;
@@ -89,7 +87,7 @@ export default {
                     width: calc(100% - @layoutAside);
                     height: @layoutFooter;
                     overflow: hidden;
-                    background-color: #0060cf;
+                    background-color: #ffffff;
                     z-index: 2;
                 }
             }
