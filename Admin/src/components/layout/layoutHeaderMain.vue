@@ -55,11 +55,11 @@ export default {
             height: @layoutHeader;
             user-select: none;
             &:hover{
-                background-color: tint(@themeColorBg,50%);
+                background: linear-gradient(to left,@layoutColor2, @themeColor, @layoutColor2);
             }
             &.is-active{
                 color: @white;
-                background-color: @themeColor;
+                background: linear-gradient(to left,@layoutColor2, @themeColor, @layoutColor2);
             }
         }
     }

@@ -48,7 +48,7 @@ export default {
             width: 100%;
             height: @layoutHeader;
             overflow: hidden;
-            background-color: @themeColorBg;
+            background: linear-gradient(to right,@layoutColor 70%,@layoutColor2);
             z-index: 2;
             box-shadow: 0 0 5px #d8d8d8;
         }
@@ -62,7 +62,7 @@ export default {
             min-height: 1px;
             .layoutAsideContent{
                 position: fixed;
-                background-color: @themeColorBg;
+                background: linear-gradient(to bottom,@layoutColor 70%,@layoutColor2);
                 width: @layoutAside;
                 height: calc(100% - @layoutHeader);
                 left: 0;
