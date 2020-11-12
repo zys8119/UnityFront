@@ -3,9 +3,13 @@
         <div class="logo">
             <img src="/images/login/logo_text.png">
         </div>
-        <ul class="conetntMenu">
-            <li v-for="(item,key) in 100" :key="key">asda</li>
-        </ul>
+        <el-tabs class="conetntMenu">
+            <el-tab-pane v-for="(item,key) in 100" :key="key">
+                <div slot="label" class="conetntMenuItem">
+                    {{item}}
+                </div>
+            </el-tab-pane>
+        </el-tabs>
     </div>
 </template>
 
@@ -30,19 +34,32 @@ export default {
             display: inline-block;
         }
     }
-    .conetntMenu{
+    &/deep/ .conetntMenu{
         flex: 1;
-        color: #ffffff;
+        color: @white;
         overflow: hidden;
-        li{
-            float: left;
-            line-height: @layoutHeader;
-            padding: 0 @unit15;
-            cursor: pointer;
-            min-width: 100px;
+        .conetntMenuItem{
+            //height: @layoutHeader;
+            min-width: 80px;
             text-align: center;
+        }
+        .el-tabs__nav-wrap{
+            &:after{
+                content: "";
+                background-color: transparent !important;
+            }
+        }
+        .el-tabs__item{
+            color: @white;
+            line-height: @layoutHeader;
+            height: @layoutHeader;
+            user-select: none;
             &:hover{
                 background-color: tint(@themeColorBg,50%);
+            }
+            &.is-active{
+                color: @white;
+                background-color: @themeColor;
             }
         }
     }

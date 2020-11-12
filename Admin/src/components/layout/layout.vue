@@ -8,7 +8,7 @@
         <div class="layoutContainer">
             <div class="layoutAside">
                 <div class="layoutAsideContent">
-                    <div v-for="i in 200" :key="i">{{i}}</div>
+                    <layoutAsideContentMain></layoutAsideContentMain>
                 </div>
             </div>
             <div class="layoutMain">
@@ -27,9 +27,10 @@
 
 <script>
 import layoutHeaderMain from "./layoutHeaderMain"
+import layoutAsideContentMain from "./layoutAsideContentMain"
 export default {
     name: "layout",
-    components:{ layoutHeaderMain }
+    components:{ layoutHeaderMain, layoutAsideContentMain }
 }
 </script>
 
