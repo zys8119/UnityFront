@@ -3,6 +3,9 @@
         <div class="logo">
             <img src="/images/login/logo_text.png">
         </div>
+        <ul class="conetntMenu">
+            <li v-for="(item,key) in 100" :key="key">asda</li>
+        </ul>
     </div>
 </template>
 
@@ -13,7 +16,7 @@ export default {
 </script>
 
 <style scoped lang="less">
-.layoutHeader{
+.layoutHeaderMain{
     display: flex;
     .logo{
         height: @layoutHeader;
@@ -25,6 +28,22 @@ export default {
         img{
             height: 90%;
             display: inline-block;
+        }
+    }
+    .conetntMenu{
+        flex: 1;
+        color: #ffffff;
+        overflow: hidden;
+        li{
+            float: left;
+            line-height: @layoutHeader;
+            padding: 0 @unit15;
+            cursor: pointer;
+            min-width: 100px;
+            text-align: center;
+            &:hover{
+                background-color: tint(@themeColorBg,50%);
+            }
         }
     }
 }
