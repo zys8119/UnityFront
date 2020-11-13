@@ -93,7 +93,7 @@
 </script>
 
 <style scoped lang="less">
-    @import "../../src/assets/style/less/publicFun";
+    @import "../../src/assets/less/publicFun";
     .TreeTable{
         @borderColor:#d8d8d8;
         &/deep/ .TreeTableTree{
