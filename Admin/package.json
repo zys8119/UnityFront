@@ -17,6 +17,7 @@
     "login-vue": "^1.0.9",
     "sass-resources-loader": "^2.1.1",
     "store-vue": "^1.5.0",
+    "swiper": "^5.4.5",
     "vue": "^2.6.11",
     "vue-router": "^3.4.9",
     "vuedraggable": "^2.24.3",
