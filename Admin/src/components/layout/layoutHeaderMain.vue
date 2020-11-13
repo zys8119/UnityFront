@@ -10,6 +10,14 @@
                 </div>
             </el-tab-pane>
         </el-tabs>
+        <el-dropdown>
+            <span class="el-dropdown-link">
+                 <el-image class="Avatar" fit="fill"></el-image>
+            </span>
+            <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>黄金糕</el-dropdown-item>
+            </el-dropdown-menu>
+        </el-dropdown>
     </div>
 </template>
 
@@ -33,6 +41,16 @@ export default {
             height: 90%;
             display: inline-block;
         }
+    }
+    .Avatar{
+        width: @layoutHeader - 6px;
+        height: @layoutHeader - 6px;
+        margin-top: 3px;
+        border-radius: 100%;
+        overflow: hidden;
+        margin-left: @unit15;
+        margin-right: @unit15;
+        cursor: pointer;
     }
     &/deep/ .conetntMenu{
         flex: 1;

@@ -1,10 +1,9 @@
 <template>
     <div class="layoutAsideContentMain">
-        <el-tree class="el-tree" :data="data" :props="defaultProps">
+        <el-tree class="el-tree" :data="data" :props="defaultProps" accordion>
             <div slot-scope="{node,data}" class="layoutAsideContentMainItem">
                 <span class="data_label ellipsis-1">{{ data.label }}</span>
-                {{a(node)}}
-                <i class="icons" :class="{
+                <i class="icons" v-if="!node.isLeaf" :class="{
                     'el-icon-arrow-down':node.expanded,
                     'el-icon-arrow-right':!node.expanded,
                 }"></i>
@@ -71,8 +70,52 @@ export default {
 .layoutAsideContentMain {
     /deep/.el-tree{
         background-color: transparent;
+        position: relative;
+        margin-top: @unit15;
+        &:before{
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 1px;
+            width: 100%;
+            background:linear-gradient(to left,@layoutColor2, @themeColor, @layoutColor2);
+        }
+        .el-tree-node{
+            &:focus{
+                .el-tree-node__content{
+                    background: transparent;
+                }
+            }
+            &:hover{
+                .el-tree-node__content{
+                    background: transparent;
+                }
+            }
+            .el-tree-node__content{
+                position: relative;
+                &:before{
+                    content: "";
+                    position: absolute;
+                    left: 0;
+                    bottom: 0;
+                    height: 1px;
+                    width: 100%;
+                    background:linear-gradient(to left,@layoutColor2, @themeColor, @layoutColor2);
+                }
+            }
+            &.is-expanded{
+                background: @layoutColor/1.5;
+            }
+            &.is-current{
+                &>.el-tree-node__content {
+                    background: linear-gradient(to left, @layoutColor2, @themeColor, @layoutColor2);
+                }
+            }
+        }
         .el-tree-node__content{
             height: @layoutHeader;
+            padding: 0 !important;
             .el-tree-node__expand-icon{
                 display: none;
             }
@@ -84,6 +127,7 @@ export default {
                 width: 100%;
                 padding: 0 @unit15;
                 user-select: none;
+                color: @white;
                 .data_label{
                     flex: 1;
                 }
@@ -94,9 +138,12 @@ export default {
                         transition: all ease-in-out 300ms;
                     }
                 }
+                &:hover{
+                    background-color: transparent;
+                    background: linear-gradient(to left,@layoutColor2, @themeColor, @layoutColor2);
+                }
             }
         }
-
     }
 }
 </style>
