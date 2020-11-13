@@ -15,7 +15,7 @@
                  <el-image class="Avatar" fit="fill"></el-image>
             </span>
             <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item>黄金糕</el-dropdown-item>
+                <el-dropdown-item @click.native="$utils.logout.call(_self)">退出</el-dropdown-item>
             </el-dropdown-menu>
         </el-dropdown>
     </div>
