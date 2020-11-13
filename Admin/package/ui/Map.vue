@@ -48,7 +48,7 @@
                       </el-input>
 
                       <ul class="menu-selection">
-                        <li v-for="(item,index) in menuList"
+                        <li v-for="(item,index) in menuList" :key="index"
                             :class="menuIndex==index?'menu-active':''" @click="menuIndex = index, regionTap = !regionTap">
                           {{item}}<span class="down-arrow"></span>
                         </li>
@@ -56,7 +56,7 @@
                       <div class="region-box" id="region" v-if="regionTap" >
                         <section class="left-nav-box">
                           <ul class="left-nav-list">
-                            <li v-if="region.length" v-for="(item,index) in  region"
+                            <li v-if="region.length" v-for="(item,index) in  region" :key="index"
                                 :class="regionIndex==index?'left-nav-hover':''" @mouseover="regionIndex = index,streetIndex = -1">
                               {{item.name}}
                             </li>
@@ -66,7 +66,7 @@
 
                           <p class="region-name" v-if="region.length">{{region[regionIndex].name}}</p>
                           <ul class="region-street" v-if="region.length">
-                            <li v-for="(item,index) in  region[regionIndex].boundaries"
+                            <li v-for="(item,index) in  region[regionIndex].boundaries" :key="index"
                                 :class="streetIndex==index?'street-active':''" @click="streetClick(item,index)">
                               {{item.name}}
                             </li>
@@ -83,7 +83,7 @@
                     </p>
                     <div class="nearby-list-box">
                       <ul class="nearby-list" id="my-list">
-                        <li v-for="(item,index) in WadiData" @click="showMarkerInfo(item.loc[0],item.loc[1],map,item)">
+                        <li v-for="(item,index) in WadiData" @click="showMarkerInfo(item.loc[0],item.loc[1],map,item)" :key="index">
                           <span>{{index+1}}. {{item.river_name}}</span>
                           <span>{{item.riverLength}}</span>
                         </li>

@@ -45,7 +45,8 @@
       "parser": "babel-eslint"
     },
     "rules": {
-      "vue/no-use-v-if-with-v-for": 0
+      "vue/no-use-v-if-with-v-for": 0,
+      "no-case-declarations": 0
     },
     "globals": {
       "AMap": true,

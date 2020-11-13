@@ -247,7 +247,7 @@ export default {
                 parent:this.$parent,
                 type:"right",
                 arrow:"left",
-            })){return};
+            })){return}
             let _vm = this.$refs[`transfer${i}`][0];
             this.resume(this, _vm);
             this.$set(this.mapVal,i,this.mapVal[i].filter(e=>_vm.currentValue.indexOf(e[this.nodeIdField]) === -1));
@@ -264,7 +264,7 @@ export default {
                 parent:null,
                 type:"left",
                 arrow:"right",
-            })){return};
+            })){return}
             let oldMap = this.mapVal[i] || [];
             oldMap = oldMap.concat(this.currentCheckedNodes.filter(this.node_type));
             oldMap = [...new Set(oldMap.map(e=>e[this.nodeIdField]))].map(nodeIdField=>{

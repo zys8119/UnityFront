@@ -454,7 +454,7 @@ export default {
 </script>
 
 <style lang="less">
-@import "../../src/assets/style/less/publicFun";
+@import "../../src/assets/less/publicFun";
 .ContentTable{
     .ContentTableObj{
         .operate{
