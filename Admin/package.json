@@ -41,6 +41,7 @@
       "parser": "babel-eslint"
     },
     "rules": {
+      "vue/no-use-v-if-with-v-for": 0
     },
     "globals": {
       "view": true,
