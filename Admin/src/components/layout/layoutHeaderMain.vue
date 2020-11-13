@@ -1,7 +1,7 @@
 <template>
     <div class="layoutHeaderMain">
         <div class="logo">
-            <img src="/images/login/logo_text.png">
+            <img src="/images/login/logo_text3.png">
         </div>
         <el-tabs class="conetntMenu">
             <el-tab-pane v-for="(item,key) in 100" :key="key">
