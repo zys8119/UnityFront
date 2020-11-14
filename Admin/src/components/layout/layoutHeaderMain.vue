@@ -12,7 +12,10 @@
         </el-tabs>
         <el-dropdown>
             <span class="el-dropdown-link">
-                 <el-image class="Avatar" fit="fill"></el-image>
+                 <span class="username" v-if="airforce.login.username">欢迎 {{airforce.login.username}}</span>
+                 <el-image class="Avatar" fit="fill">
+                     <img slot="error" class="errImg" width="100%" height="100%" src="/images/login/logo.png">
+                 </el-image>
             </span>
             <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item @click.native="$utils.logout.call(_self)">退出</el-dropdown-item>
@@ -23,7 +26,19 @@
 
 <script>
 export default {
-    name: "layoutHeaderMain"
+    name: "layoutHeaderMain",
+    mounted() {
+        // 获取用户信息
+        this.apis.user.auth.getUserInfo().then(res=>{
+            this.action({
+                moduleName:"login",
+                goods:{
+                    data:res,
+                    ...res,
+                },
+            })
+        })
+    }
 }
 </script>
 
@@ -42,15 +57,27 @@ export default {
             display: inline-block;
         }
     }
-    .Avatar{
-        width: @layoutHeader - 6px;
-        height: @layoutHeader - 6px;
-        margin-top: 3px;
-        border-radius: 100%;
-        overflow: hidden;
-        margin-left: @unit15;
-        margin-right: @unit15;
-        cursor: pointer;
+    .el-dropdown-link{
+        display: flex;
+        align-content: center;
+        outline: medium;
+        .username{
+            flex: 1;
+            margin-left: @unit15;
+            color: @white;
+            line-height: @layoutHeader;
+        }
+        .Avatar{
+            width: @layoutHeader - 6px;
+            height: @layoutHeader - 6px;
+            margin-top: 3px;
+            border-radius: 100%;
+            overflow: hidden;
+            margin-left: @unit15;
+            margin-right: @unit15;
+            cursor: pointer;
+            background-color: @white;
+        }
     }
     &/deep/ .conetntMenu{
         flex: 1;

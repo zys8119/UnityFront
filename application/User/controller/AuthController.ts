@@ -1,4 +1,7 @@
-import {applicationController} from "../../../UnityFrontUtils/controller/applicationController";
+import {
+    applicationController, method_get,
+    method_post
+} from "../../../UnityFrontUtils/controller/applicationController";
 import {SqlUtilsOptions} from "../../../UnityFrontUtils/typeStript";
 import {PublicModelInterface} from "../../../model/PublicModel";
 
@@ -12,6 +15,7 @@ export class AuthController extends applicationController{
     /**
      * 注册
      */
+    @method_post(AuthController,"login")
     register(){
         if(!this.$_body.username){return this.$_error("【username】 字段必填")}
         if(!this.$_body.password){return this.$_error("【password】 字段必填")}
@@ -38,6 +42,7 @@ export class AuthController extends applicationController{
     /**
      * 登录
      */
+    @method_post(AuthController,"login")
     login(){
         if(!this.$_body.username){return this.$_error("【username】 字段必填")}
         if(!this.$_body.password){return this.$_error("【password】 字段必填")}
@@ -59,5 +64,15 @@ export class AuthController extends applicationController{
                 token:this.$_encode(`${res[0].username}-${res[0].password}-${res[0].id}-${Date.now()+1000*3600*24*30}`)
             });
         }).catch(()=>this.$_error())
+    }
+
+    /**
+     * 获取用户信息
+     */
+    @method_get(AuthController,"getUserInfo")
+    getUserInfo(){
+        new this.$sqlModel.UserModel().select().from().where({
+            id:this.userInfo.get("id"),
+        }).query().then(res=>this.$_success(res[0] || {})).catch(()=>this.$_error())
     }
 }
