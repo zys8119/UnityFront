@@ -81,13 +81,32 @@ export class AuthController extends applicationController{
      */
     @method_post(AuthController,"updateUserInfo")
     updateUserInfo(){
-        new this.$sqlModel.UserModel().update({
-            email:this.$_body.email
-        }).where({
+        new this.$sqlModel.UserModel().select().from().where({
             id:this.userInfo.get("id"),
-        }).query().then(res=>this.$_success(res[0] || {})).catch(()=>this.$_error())
-        // new this.$sqlModel.UserModel().select().from().where({
-        //     id:this.userInfo.get("id"),
-        // }).query().then(res=>this.$_success(res[0] || {})).catch(()=>this.$_error())
+        }).query().then(res=>{
+            let info = (res[0] || {});
+            let data:any = {};
+            if(this.$_body.isPassword){
+                if(info.password !== this.$_body.passwordOrigin){
+                    return this.$_error("旧密码不正确，请重新输入");
+                }
+                if(info.password === this.$_body.password){
+                    return this.$_error("新密码不能与旧密码相同，请重新输入");
+                }
+                data.password = this.$_body.password;
+            }
+            new this.$sqlModel.UserModel().update({
+                email:this.$_body.email,
+                avatar:this.$_body.avatar,
+                ...data,
+            }).where({
+                id:this.userInfo.get("id"),
+            }).query().then(res=>this.$_success({
+                ...info,
+                ...this.$_body,
+            })).catch(()=>this.$_error())
+        }).catch(()=>this.$_error())
+
+
     }
 }

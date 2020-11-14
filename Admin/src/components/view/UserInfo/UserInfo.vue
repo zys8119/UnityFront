@@ -50,17 +50,26 @@ export default {
             formData:{},
         }
     },
-    mounted() {
-        this.formData = {
-            email:this.airforce.login.email,
-            avatar:this.airforce.login.avatar,
-            passwordOrigin:null,
-            password:null,
-            passwordNew:null,
-            isPassword:false,
+    watch:{
+        "airforce.login"(){
+            this.init();
         }
     },
+    mounted() {
+        this.init();
+    },
     methods:{
+        // 初始化
+        init(){
+            this.formData = {
+                email:this.airforce.login.email,
+                avatar:this.airforce.login.avatar,
+                passwordOrigin:null,
+                password:null,
+                passwordNew:null,
+                isPassword:false,
+            }
+        },
         // 保存
         save(){
             if(this.$utils.is_S(this.formData.email)){return this.$message.error("请输入邮箱")}
@@ -73,6 +82,7 @@ export default {
             this.apis.user.auth.updateUserInfo({
                 ...this.formData,
                 passwordOrigin:this.formData.passwordOrigin ? this.$utils.MD5(this.formData.passwordOrigin) : "",
+                passwordNew:this.formData.passwordNew ? this.$utils.MD5(this.formData.passwordNew) : "",
                 password:this.formData.password ? this.$utils.MD5(this.formData.password) : "",
             }).then((res)=>{
                 this.$message({type:"success",message:"保存成功"})
