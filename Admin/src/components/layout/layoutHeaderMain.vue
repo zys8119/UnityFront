@@ -18,6 +18,7 @@
                  </el-image>
             </span>
             <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item @click.native="$router.push('/userInfo')">用户中心</el-dropdown-item>
                 <el-dropdown-item @click.native="$utils.logout.call(_self)">退出</el-dropdown-item>
             </el-dropdown-menu>
         </el-dropdown>

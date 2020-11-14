@@ -10,7 +10,7 @@ export default new vueRouter(<RouterOptions>{
         },
         {
             path:"/login",
-            component:()=>import(<any>"@/components/view/Login/Login")
+            component:()=><any>import(<any>"@/components/view/Login/Login")
         },
         {
             path:"/",
@@ -23,6 +23,13 @@ export default new vueRouter(<RouterOptions>{
                 {
                     path:"home",
                     component:()=>import(<any>"@/components/view/Home/Home"),
+                    meta:{
+                        bodyBaColor,
+                    }
+                },
+                {
+                    path:"userInfo",
+                    component:()=>import(<any>"@/components/view/UserInfo/UserInfo"),
                     meta:{
                         bodyBaColor,
                     }

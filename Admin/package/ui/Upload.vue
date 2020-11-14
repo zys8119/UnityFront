@@ -235,7 +235,7 @@ export default {
             if(this.bool){
                 if(this.index === this.maxIndex){
                     this.$message({type:"success", message:res.message});
-                    this.$emit("on-success",res.data,file,fileList);
+                    this.$emit("on-success",file,fileList);
                 }
                 return;
             }

@@ -1,10 +1,10 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var vue_1 = require("vue");
 var vue_router_1 = require("vue-router");
-vue_1["default"].use(vue_router_1["default"]);
+vue_1.default.use(vue_router_1.default);
 var bodyBaColor = "#e5e5e5";
-exports["default"] = new vue_router_1["default"]({
+exports.default = new vue_router_1.default({
     routes: [
         {
             path: "*",
@@ -25,6 +25,13 @@ exports["default"] = new vue_router_1["default"]({
                 {
                     path: "home",
                     component: function () { return Promise.resolve().then(function () { return require("@/components/view/Home/Home"); }); },
+                    meta: {
+                        bodyBaColor: bodyBaColor,
+                    }
+                },
+                {
+                    path: "userInfo",
+                    component: function () { return Promise.resolve().then(function () { return require("@/components/view/UserInfo/UserInfo"); }); },
                     meta: {
                         bodyBaColor: bodyBaColor,
                     }
