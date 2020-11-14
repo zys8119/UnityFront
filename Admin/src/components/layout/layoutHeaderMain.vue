@@ -1,6 +1,6 @@
 <template>
     <div class="layoutHeaderMain">
-        <div class="logo">
+        <div class="logo" @click="$router.push('/')">
             <img src="/images/login/logo_text3.png">
         </div>
         <el-tabs class="conetntMenu">
@@ -13,7 +13,7 @@
         <el-dropdown>
             <span class="el-dropdown-link">
                  <span class="username" v-if="airforce.login.username">欢迎 {{airforce.login.username}}</span>
-                 <el-image class="Avatar" fit="fill">
+                 <el-image class="Avatar" fit="fill" :src="airforce.login.avatar">
                      <img slot="error" class="errImg" width="100%" height="100%" src="/images/login/logo.png">
                  </el-image>
             </span>
@@ -53,6 +53,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
         img{
             height: 90%;
             display: inline-block;

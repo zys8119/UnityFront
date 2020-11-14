@@ -3,7 +3,7 @@
         <el-upload
             class="el-upload"
             ref="upload"
-            :action="action"
+            :action="url"
             :auto-upload="autoUpload"
             :disabled="disabled"
             :limit="limit"
@@ -45,8 +45,7 @@
             </template>
         </el-upload>
         <el-dialog :visible.sync="dialogVisible" append-to-body>
-            <img v-if="dialogImageUrl.indexOf('png') > -1 || dialogImageUrl.indexOf('jpg') > -1" width="100%" :src="dialogImageUrl" alt="">
-            <iframe class="w-100 h-500" :src="dialogImageUrl" frameborder="0" v-else></iframe>
+            <img width="100%" :src="dialogImageUrl" alt="">
         </el-dialog>
     </div>
 
@@ -65,9 +64,9 @@ export default {
         };
     },
     props:{
-        action:{
+        url:{
             type:String,
-            default:"/v1/file/upload/"
+            default:"/Upload/Index/index"
         },
         autoUpload:{
             type:Boolean,
@@ -147,7 +146,7 @@ export default {
             if(url){
                 if(new RegExp(/\.(png|jgp|GIF|JPEG)$/img).test(url)){
                     this.$emit('on-preview',file);
-                    this.dialogImageUrl = file.url;
+                    this.dialogImageUrl = url;
                     this.dialogVisible = true;
                 }else {
                     this.$emit('on-preview',file);
@@ -196,20 +195,20 @@ export default {
             },setTime);
             // 上传
             let AxiosOtpions = {
-                url:opts.action,
+                url:this.url,
                 method:"post",
                 isFormData:true,
             };
             AxiosOtpions.data = opts.data;
             AxiosOtpions.data[opts.filename] = opts.file;
-            window.common.Axios(AxiosOtpions).then(res=>{
+            this.apis.upload.upload(AxiosOtpions).then(res=>{
                 clearInterval(time);
                 opts.onProgress({
                     percent:100
                 });
                 this.index += 1;
                 opts.onSuccess({
-                    data:res.data,
+                    data:res[0],
                     message:`【${opts.file.name}】上传成功`
                 });
             }).catch(err=>{
@@ -234,8 +233,8 @@ export default {
         onError(err, file, fileList){
             if(this.bool){
                 if(this.index === this.maxIndex){
-                    this.$message({type:"success", message:res.message});
-                    this.$emit("on-success",file,fileList);
+                    this.$message({type:"success", message:err.message});
+                    this.$emit("on-success",err.data,file,fileList);
                 }
                 return;
             }

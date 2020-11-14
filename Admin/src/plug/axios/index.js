@@ -16,7 +16,40 @@ export default class {
         });
         this.request_interceptors();
         this.response_interceptors();
-        return this.AxiosInstance;
+        return (options)=>{
+            let data = options.data || {};
+            let params = {};
+            // isFormData
+            if(options.isFormData){
+                let fd = new FormData();
+                for (let k in data){
+                    switch (Object.prototype.toString.call(data[k])){
+                        case "[object object]":
+                            fd.append(k,JSON.stringify(data[k]));
+                            break;
+                        case "[object Array]":
+                            data[k].forEach(item=>{
+                                fd.append(k,item);
+                            });
+                            break;
+                        default:
+                            fd.append(k,data[k]);
+                            break;
+                    }
+                }
+                data = fd;
+            }
+            // get 处理
+            if(options.method.toLocaleLowerCase() === "get"){
+                params = data;
+                data = {};
+            }
+            return this.AxiosInstance({
+                ...options,
+                data,
+                params,
+            })
+        };
     }
 
     /**

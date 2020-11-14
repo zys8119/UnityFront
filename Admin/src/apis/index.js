@@ -1,7 +1,9 @@
 import Vue from "vue"
 import user from "./user"
+import upload from "./upload"
 const api = {
-    user
+    user,
+    upload,
 }
 const apiClass = class {
     constructor() {
