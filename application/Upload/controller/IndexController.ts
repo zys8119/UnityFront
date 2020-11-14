@@ -18,6 +18,7 @@ export class IndexController extends applicationController{
             }
             let resUlt = [];
             let dirName = "public/upload";
+            // 文件上传路径
             let uplodPath = resolve(__dirname,"../../../",dirName);
             files.forEach(file=>{
                 let fileName = `${Date.now()}-${parseInt((Math.random()*10000).toString())}-${file.fileName}`;
@@ -25,6 +26,7 @@ export class IndexController extends applicationController{
                 resUlt.push({
                     ...file,
                     fileBuff:null,
+                    // 文件访问地址
                     url:`http://${ServerConfig.host || "localhost"}:${ServerConfig.port}/${dirName}/${fileName}`,
                 })
             })

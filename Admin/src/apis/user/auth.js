@@ -32,5 +32,18 @@ export default {
             url:"/User/Auth/getUserInfo",
             method:"get",
         })
+    },
+
+    /**
+     * 更新用户信息
+     * @param data
+     * @returns {*}
+     */
+    updateUserInfo(data){
+        return this.axios({
+            url:"/User/Auth/updateUserInfo",
+            method:"post",
+            data,
+        })
     }
 }

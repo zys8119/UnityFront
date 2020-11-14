@@ -17,6 +17,7 @@ export interface PublicModelInterface {
 export type $sqlFieldConfigType = {
     // 字段类型
     'varchar'?:string | '(255)';
+    'text'?:string | '';
     'int'?:string | '(10)';
 
     'CHARACTER SET'?:string | 'utf8';// 编码

@@ -75,4 +75,19 @@ export class AuthController extends applicationController{
             id:this.userInfo.get("id"),
         }).query().then(res=>this.$_success(res[0] || {})).catch(()=>this.$_error())
     }
+
+    /**
+     * 更新用户信息
+     */
+    @method_post(AuthController,"updateUserInfo")
+    updateUserInfo(){
+        new this.$sqlModel.UserModel().update({
+            email:this.$_body.email
+        }).where({
+            id:this.userInfo.get("id"),
+        }).query().then(res=>this.$_success(res[0] || {})).catch(()=>this.$_error())
+        // new this.$sqlModel.UserModel().select().from().where({
+        //     id:this.userInfo.get("id"),
+        // }).query().then(res=>this.$_success(res[0] || {})).catch(()=>this.$_error())
+    }
 }

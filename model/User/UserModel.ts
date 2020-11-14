@@ -25,6 +25,10 @@ export default class extends PublicModel implements PublicModelInterface{
             varchar:"(255)",
             COMMENT:`'邮箱'`,
         },
+        avatar:{
+            text:"",
+            COMMENT:`'头像'`,
+        },
         type:{
             int:"(10)",
             COMMENT:`'账号类型；0 管理员、1 普通用户、2 api用户'`,
