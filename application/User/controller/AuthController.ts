@@ -98,6 +98,7 @@ export class AuthController extends applicationController{
             new this.$sqlModel.UserModel().update({
                 email:this.$_body.email,
                 avatar:this.$_body.avatar,
+                phone:this.$_body.phone,
                 ...data,
             }).where({
                 id:this.userInfo.get("id"),

@@ -21,6 +21,10 @@ export default class extends PublicModel implements PublicModelInterface{
             NOT:'NULL',
             COMMENT:`'密码'`,
         },
+        phone:{
+            varchar:"(255)",
+            COMMENT:`'手机号码'`,
+        },
         email:{
             varchar:"(255)",
             COMMENT:`'邮箱'`,

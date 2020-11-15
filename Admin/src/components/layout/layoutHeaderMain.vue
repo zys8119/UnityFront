@@ -3,11 +3,9 @@
         <div class="logo" @click="$router.push('/')">
             <img src="/images/login/logo_text3.png">
         </div>
-        <el-tabs class="conetntMenu">
-            <el-tab-pane v-for="(item,key) in 100" :key="key">
-                <div slot="label" class="conetntMenuItem">
-                    {{item}}
-                </div>
+        <el-tabs class="conetntMenu" @tab-click="tabClick(false)" v-model="activeName">
+            <el-tab-pane v-for="(item,key) in airforce.menus" :key="key" :item="item">
+                <div slot="label" class="conetntMenuItem">{{item.title}}</div>
             </el-tab-pane>
         </el-tabs>
         <el-dropdown>
@@ -28,6 +26,11 @@
 <script>
 export default {
     name: "layoutHeaderMain",
+    data(){
+        return {
+            activeName:0
+        }
+    },
     mounted() {
         // 获取用户信息
         this.apis.user.auth.getUserInfo().then(res=>{
@@ -38,7 +41,46 @@ export default {
                     ...res,
                 },
             })
-        })
+        });
+        this.init();
+    },
+    watch:{
+        "airforce.menus"(){
+            this.init();
+        }
+    },
+    methods:{
+        init(){
+            this.tabClick(true);
+        },
+        // tab 被选中时触发
+        tabClick(bool){
+            if(bool){
+                let index = this.airforce.menus.findIndex(e=>e.path === this.$route.path);
+                if(index > -1){
+                    this.activeName = index;
+                }
+                this.go(this.airforce.menus[this.activeName])
+                return ;
+            }
+            this.go(this.airforce.menus[this.activeName]);
+        },
+        // 跳转页面
+        go(data){
+            if(!data){
+                return this.$message.error("暂无权限");
+            }
+            console.log(data)
+            this.action({
+                moduleName:"menusInfo",
+                goods:null,
+            });
+            this.action({
+                moduleName:"menusInfo",
+                goods:data,
+            });
+            this.$router.push(data.path);
+        }
     }
 }
 </script>

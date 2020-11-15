@@ -17,6 +17,9 @@
                             <el-form-item label="邮箱：" required>
                                 <el-input type="email：" v-model="formData.email"></el-input>
                             </el-form-item>
+                            <el-form-item label="手机号码：" required>
+                                <el-input v-model="formData.phone"></el-input>
+                            </el-form-item>
                             <el-form-item label="修改密码：">
                                <el-switch v-model="formData.isPassword"></el-switch>
                             </el-form-item>
@@ -64,6 +67,7 @@ export default {
             this.formData = {
                 email:this.airforce.login.email,
                 avatar:this.airforce.login.avatar,
+                phone:this.airforce.login.phone,
                 passwordOrigin:null,
                 password:null,
                 passwordNew:null,
@@ -73,6 +77,8 @@ export default {
         // 保存
         save(){
             if(this.$utils.is_S(this.formData.email)){return this.$message.error("请输入邮箱")}
+            if(this.$utils.is_S(this.formData.phone)){return this.$message.error("请输入手机号码")}
+            if(this.$utils.isPhone(this.formData.phone)){return this.$message.error("手机号码格式错误")}
             if(this.formData.isPassword){
                 if(this.$utils.is_S(this.formData.passwordOrigin)){return this.$message.error("请输入原密码")}
                 if(this.$utils.is_S(this.formData.password)){return this.$message.error("请输入新密码")}

@@ -1,10 +1,10 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
-var vue_1 = require("vue");
-var vue_router_1 = require("vue-router");
-vue_1.default.use(vue_router_1.default);
-var bodyBaColor = "#e5e5e5";
-exports.default = new vue_router_1.default({
+import vue from "vue"
+import vueRouter from "vue-router"
+vue.use(vueRouter)
+const bodyBaColor = "#e5e5e5";
+const layout = ()=>import("@/components/layout/layout");
+const layoutContentMain = ()=>import("@/components/layout/layoutContentMain");
+export default new vueRouter({
     routes: [
         {
             path: "*",
@@ -12,31 +12,63 @@ exports.default = new vue_router_1.default({
         },
         {
             path: "/login",
-            component: function () { return Promise.resolve().then(function () { return require("@/components/view/Login/Login"); }); }
+            component: () => import("@/components/view/Login/Login")
         },
         {
-            path: "/",
-            component: function () { return Promise.resolve().then(function () { return require("@/components/layout/layout"); }); },
-            redirect: "home",
-            meta: {
-                isLogin: true,
+            path:"/",
+            component:layout,
+            redirect:"home",
+            meta:{
+                isLogin:true,
             },
-            children: [
+            children:[
                 {
-                    path: "home",
-                    component: function () { return Promise.resolve().then(function () { return require("@/components/view/Home/Home"); }); },
-                    meta: {
-                        bodyBaColor: bodyBaColor,
+                    path:"home",
+                    title: "首页",
+                    component:()=>import("@/components/view/Home/Home"),
+                    meta:{
+                        bodyBaColor,
                     }
                 },
                 {
-                    path: "userInfo",
-                    component: function () { return Promise.resolve().then(function () { return require("@/components/view/UserInfo/UserInfo"); }); },
-                    meta: {
-                        bodyBaColor: bodyBaColor,
+                    path:"userInfo",
+                    title: "用户中心",
+                    component:()=>import("@/components/view/UserInfo/UserInfo"),
+                    meta:{
+                        bodyBaColor,
                     }
+                },
+                {
+                    path:"system-management",
+                    title:"系统管理",
+                    redirect:"authority-management",
+                    component:layoutContentMain,
+                    meta:{
+                        bodyBaColor,
+                    },
+                    children:[
+                        {
+                            path:"authority-management",
+                            title:"权限管理",
+                            redirect:"menu-management",
+                            component:layoutContentMain,
+                            meta:{
+                                bodyBaColor,
+                            },
+                            children:[
+                                {
+                                    path:"menu-management",
+                                    title:"菜单管理",
+                                    component:()=>import("@/components/view/SystemManagement/AuthorityManagement/MenuManagement"),
+                                    meta:{
+                                        bodyBaColor,
+                                    }
+                                },
+                            ]
+                        },
+                    ]
                 }
             ]
         }
     ]
-});
+})
