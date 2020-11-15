@@ -28,6 +28,42 @@ export default {
         localStorage.clear();
         this.$router.push("/login");
     },
+    // 设置缓存菜单
+    setMenu(data, bool){
+        this.action({
+            moduleName:"menusInfo",
+            goods:null,
+        });
+        this.action({
+            moduleName:"menusInfo",
+            goods:data,
+        });
+        if(!bool){
+            this.$router.push(data.path);
+            localStorage.setItem("menusInfo",JSON.stringify(data));
+        }
+    },
+    // 获取缓存菜单
+    getMenu(){
+        let menusInfo = localStorage.getItem("menusInfo");
+        try {
+            if(menusInfo){
+                menusInfo = JSON.parse(menusInfo)
+            }
+        }catch (e){
+            // err
+        }
+        let menusId = localStorage.getItem("menusId");
+        if(menusId){
+            this.action({
+                moduleName:"menusId",
+                goods:menusId,
+            });
+        }
+        if(menusInfo){
+            this.$utils.setMenu.call(this,menusInfo, true);
+        }
+    },
     // 添加外部js
     addJs(src){
         return new Promise(resolve => {

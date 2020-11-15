@@ -56,30 +56,27 @@ export default {
         // tab 被选中时触发
         tabClick(bool){
             if(bool){
+                // 初次加载
                 let index = this.airforce.menus.findIndex(e=>e.path === this.$route.path);
                 if(index > -1){
-                    this.activeName = index;
+                    this.activeName = index.toString();
+                    this.go(this.airforce.menus[this.activeName])
                 }
-                this.go(this.airforce.menus[this.activeName])
+                this.$utils.getMenu.call(this)
                 return ;
             }
             this.go(this.airforce.menus[this.activeName]);
         },
         // 跳转页面
         go(data){
+            this.action({
+                moduleName:"menusId",
+                goods:null,
+            })
             if(!data){
                 return this.$message.error("暂无权限");
             }
-            console.log(data)
-            this.action({
-                moduleName:"menusInfo",
-                goods:null,
-            });
-            this.action({
-                moduleName:"menusInfo",
-                goods:data,
-            });
-            this.$router.push(data.path);
+            this.$utils.setMenu.call(this,data);
         }
     }
 }

@@ -1,8 +1,16 @@
 <template>
     <div class="layoutAsideContentMain">
-        <el-tree class="el-tree" :data="data" :props="defaultProps" accordion>
+        <el-tree class="el-tree"
+             ref="tree"
+             :data="menus"
+             empty-text=""
+             @node-click="nodeClick"
+             node-key="id"
+             :current-node-key="airforce.menusId ? airforce.menusId: null"
+             :default-expanded-keys="airforce.menusId ? [airforce.menusId]: []"
+             accordion>
             <div slot-scope="{node,data}" class="layoutAsideContentMainItem">
-                <span class="data_label ellipsis-1">{{ data.label }}</span>
+                <span class="data_label ellipsis-1">{{ data.title }}</span>
                 <i class="icons" v-if="!node.isLeaf" :class="{
                     'el-icon-arrow-down':node.expanded,
                     'el-icon-arrow-right':!node.expanded,
@@ -17,50 +25,37 @@ export default {
     name: "layoutAsideContentMain",
     data(){
         return {
-            data: [{
-                label: '一级 1一级 1一级 1一级 1一级 1一级 1一级 1一级 6',
-                children: [{
-                    label: '二级 1-1',
-                    children: [{
-                        label: '三级 1-1-1'
-                    }]
-                }]
-            }, {
-                label: '一级 2',
-                children: [{
-                    label: '二级 2-1',
-                    children: [{
-                        label: '三级 2-1-1'
-                    }]
-                }, {
-                    label: '二级 2-2',
-                    children: [{
-                        label: '三级 2-2-1'
-                    }]
-                }]
-            }, {
-                label: '一级 3',
-                children: [{
-                    label: '二级 3-1',
-                    children: [{
-                        label: '三级 3-1-1'
-                    }]
-                }, {
-                    label: '二级 3-2',
-                    children: [{
-                        label: '三级 3-2-1'
-                    }]
-                }]
-            }],
             defaultProps: {
                 children: 'children',
-                label: 'label'
+            }
+        }
+    },
+    watch:{
+        "airforce.menusId"(){
+            this.$nextTick(()=>{
+                this.$refs.tree.setCurrentKey(this.airforce.menusId ? this.airforce.menusId: null);
+            })
+        }
+    },
+    computed:{
+        menus(){
+            try {
+                return this.airforce.menusInfo.children || [];
+            }catch (e){
+                return [];
             }
         }
     },
     methods:{
-        a(d){
-            console.log(d)
+        nodeClick(data, node){
+            if(node.isLeaf){
+                this.$router.push(data.path);
+                this.action({
+                    moduleName:"menusId",
+                    goods:data.id,
+                });
+                localStorage.setItem("menusId", data.id);
+            }
         }
     }
 }
