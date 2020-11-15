@@ -10,7 +10,6 @@ export default [
         children:[
             {title:"权限管理",id:"3", path:"/system-management/authority-management/menu-management",children:[
                 {title:"菜单管理",id:"4", path:"/system-management/authority-management/menu-management"},
-                {title:"用户中心",id:"5", path:"/userInfo"},
             ]},
         ]
     }

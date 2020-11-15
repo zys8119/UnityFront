@@ -65,6 +65,7 @@ export default {
                 this.$utils.getMenu.call(this)
                 return ;
             }
+            localStorage.setItem("menusId",null);
             this.go(this.airforce.menus[this.activeName]);
         },
         // 跳转页面

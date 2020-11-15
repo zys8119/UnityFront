@@ -41,7 +41,6 @@ export default {
         if(!bool){
             this.$router.push(data.path);
             localStorage.setItem("menusInfo",JSON.stringify(data));
-            localStorage.setItem("menusId",null);
         }
     },
     // 获取缓存菜单
