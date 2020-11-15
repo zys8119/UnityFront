@@ -6,7 +6,10 @@
             </div>
         </div>
         <div class="layoutContainer">
-            <div class="layoutAside">
+            <div class="layoutAside" :class="{
+                show:showAside,
+                hide:!showAside,
+            }">
                 <div class="layoutAsideContent">
                     <layoutAsideContentMain></layoutAsideContentMain>
                 </div>
@@ -16,7 +19,12 @@
                     <router-view></router-view>
                 </div>
                 <div class="layoutFooter">
-                    <div class="layoutFooterContent">
+                    <div class="layoutFooterContent"
+                         :class="{
+                            show:showAside,
+                            hide:!showAside,
+                        }"
+                    >
                         <el-divider>UnityFront后台管理系统</el-divider>
                     </div>
                 </div>
@@ -30,7 +38,12 @@ import layoutHeaderMain from "./layoutHeaderMain"
 import layoutAsideContentMain from "./layoutAsideContentMain"
 export default {
     name: "layout",
-    components:{ layoutHeaderMain, layoutAsideContentMain }
+    components:{ layoutHeaderMain, layoutAsideContentMain },
+    computed:{
+        showAside(){
+            return this.airforce.menusInfo && this.airforce.menusInfo.children && this.airforce.menusInfo.children.length > 0
+        }
+    }
 }
 </script>
 
@@ -38,6 +51,7 @@ export default {
 .layout{
     display: flex;
     flex-direction: column;
+    @transition:all ease-in-out 350ms;
     .layoutHeader{
         height: @layoutHeader;
         overflow: hidden;
@@ -58,9 +72,11 @@ export default {
         display: flex;
         position: relative;
         .layoutAside{
+            transition: @transition ;
             width: @layoutAside;
             min-height: 1px;
             .layoutAsideContent{
+                transition: @transition;
                 position: fixed;
                 background: linear-gradient(to bottom,@layoutColor 70%,@layoutColor2);
                 width: @layoutAside;
@@ -68,6 +84,18 @@ export default {
                 left: 0;
                 overflow-x: hidden;
                 z-index: 2;
+            }
+            &.show{
+                width: @layoutAside;
+                .layoutAsideContent{
+                    width: @layoutAside;
+                }
+            }
+            &.hide{
+                width: 0;
+                .layoutAsideContent{
+                    width: 0;
+                }
             }
         }
         .layoutMain{
@@ -82,6 +110,7 @@ export default {
                 overflow: hidden;
                 width: 100%;
                 .layoutFooterContent{
+                    transition: @transition;
                     position: fixed;
                     right: 0;
                     bottom: 0;
@@ -90,6 +119,12 @@ export default {
                     overflow: hidden;
                     background-color: #ffffff;
                     z-index: 2;
+                    &.show{
+                        width: calc(100% - @layoutAside);
+                    }
+                    &.hide{
+                        width: 100%;
+                    }
                 }
             }
         }
