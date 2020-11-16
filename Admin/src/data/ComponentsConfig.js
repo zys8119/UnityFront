@@ -1,9 +1,9 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.MeetingDocumentType = exports.pageConfig = void 0;
 //todo 过滤器组件
-exports["default"] = {
-    "default": {
+exports.default = {
+    default: {
         input: true,
         placeholder: "请输入关键字",
         search: "search",

@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 exports.install = void 0;
 /* eslint-disable */
 // @ts-ignore
@@ -7,11 +7,11 @@ var ZXDialogAlert_vue_1 = require("./ZXDialogAlert.vue");
 var ZAlertFooter_vue_1 = require("./ZAlertFooter.vue");
 var plugin = {
     install: function (vue) {
-        vue.component("ZAlertFooter", ZAlertFooter_vue_1["default"]);
+        vue.component("ZAlertFooter", ZAlertFooter_vue_1.default);
         var $ZXDialogAlert = {
             show: function (opts) {
                 var $vm;
-                var Toast = vue.extend(ZXDialogAlert_vue_1["default"]);
+                var Toast = vue.extend(ZXDialogAlert_vue_1.default);
                 if (!$vm) {
                     $vm = new Toast({
                         el: document.createElement('div')
@@ -97,5 +97,5 @@ var plugin = {
         }
     }
 };
-exports["default"] = plugin;
+exports.default = plugin;
 exports.install = plugin.install;

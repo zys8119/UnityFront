@@ -1,8 +1,8 @@
 "use strict";
-exports.__esModule = true;
-exports["default"] = {
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = {
     MenuMap: {
-        "switch": false,
+        switch: false,
         buid: {
             path: "route",
             children: "list",

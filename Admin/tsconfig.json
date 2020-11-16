@@ -5,9 +5,10 @@
     "sourceMap": false
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "*/**/*.vue"
   ],
   "include": [
-    "*.ts"
+    "*/**/*.ts"
   ]
 }
