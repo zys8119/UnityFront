@@ -37,7 +37,7 @@ export class MenuController extends applicationController{
         new this.$sqlModel.MenuModel().insert({
             name:this.$_body.name,
             url:this.$_body.url,
-            parent:this.$_body.parent || null,
+            parent:this.$_body.parent || "null",
             type:this.$_body.type,
             id:Date.now(),
         }).query()
