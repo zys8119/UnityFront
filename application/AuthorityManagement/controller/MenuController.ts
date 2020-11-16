@@ -1,4 +1,8 @@
-import {applicationController, method_get} from "../../../UnityFrontUtils/controller/applicationController";
+import {
+    applicationController,
+    method_get,
+    method_post
+} from "../../../UnityFrontUtils/controller/applicationController";
 
 export class MenuController extends applicationController{
     constructor() {
@@ -10,9 +14,34 @@ export class MenuController extends applicationController{
      */
     @method_get(MenuController,"list")
     list(){
+        if(!this.$_query.type){return this.$_error("【type】 字段必填")}
+        const query = this.$_query;
         new this.$sqlModel.MenuModel()
-            .getPage(this.$_query)
+            .getPage(this.$_query, function (){
+                this.where({
+                    type:query.type,
+                })
+            })
             .then(res=>this.$_success(res))
+            .catch(()=>this.$_error());
+    }
+
+    /**
+     * 新增
+     */
+    @method_post(MenuController,"add")
+    add(){
+        if(!this.$_body.name){return this.$_error("【name】 字段必填")}
+        if(!this.$_body.url){return this.$_error("【url】 字段必填")}
+        if(!this.$_body.type){return this.$_error("【type】 字段必填")}
+        new this.$sqlModel.MenuModel().insert({
+            name:this.$_body.name,
+            url:this.$_body.url,
+            parent:this.$_body.parent || null,
+            type:this.$_body.type,
+            id:Date.now(),
+        }).query()
+            .then(()=>this.$_success())
             .catch(()=>this.$_error());
     }
 }

@@ -5,5 +5,12 @@ export default {
             method:"get",
             data,
         })
+    },
+    add(data){
+        return this.axios({
+            url:"/AuthorityManagement/Menu/add",
+            method:"post",
+            data,
+        })
     }
 }

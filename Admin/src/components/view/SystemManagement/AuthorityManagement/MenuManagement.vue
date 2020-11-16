@@ -55,7 +55,7 @@ export default {
             this.apis.AuthorityManagement.Menu.list({
                 type:this.type
             }).then(res=>{
-                console.log(res)
+                this.menus = res;
             })
         },
         // 添加菜单
@@ -66,6 +66,12 @@ export default {
                     "child_directory":"添加子菜单"
                 }[type],
                 width:"500px",
+                props:{
+                    type,
+                },
+                _event:{
+                    save:this.init
+                },
                 components:require("./Alert/AddMenu")
             })
         }

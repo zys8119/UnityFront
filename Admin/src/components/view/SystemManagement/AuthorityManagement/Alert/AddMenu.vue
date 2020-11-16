@@ -17,6 +17,9 @@
 <script>
 export default {
     name: "AddMenu",
+    props:{
+        type:{type:String,default:null},
+    },
     data(){
         return {
             formData:{},
@@ -27,6 +30,14 @@ export default {
         save(){
             if(this.$utils.is_S(this.formData.name)){return this.$message.error("请输入菜单名称")}
             if(this.$utils.is_S(this.formData.url)){return this.$message.error("请输入菜单url地址")}
+            this.apis.AuthorityManagement.Menu.add({
+                ...this.formData,
+                type:this.type,
+            }).then(()=>{
+                this.$message({type:"success",message:"保存成"})
+                this.$emit("save")
+                this.$ZAlert.hide();
+            })
         }
     }
 }
