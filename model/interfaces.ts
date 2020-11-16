@@ -5,6 +5,7 @@ export interface SqlModel {
     [key:string]:SqlModelTable;
     UserModel:SqlModelTable;
     MenuTypeModel:SqlModelTable;
+    MenuModel:SqlModelTable;
 }
 
 export interface  SqlModelTable extends SqlUtilsOptions{

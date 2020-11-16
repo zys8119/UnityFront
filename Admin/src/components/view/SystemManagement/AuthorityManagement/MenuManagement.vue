@@ -2,9 +2,9 @@
     <div class="MenuManagement">
         <layout-box>
             <layout-filter-content>
-                <filter-content type="left" slot="filter">
-                    <el-form>
-                        <el-form-item>
+                <filter-content type="none" slot="filter">
+                    <el-form label-width="90px">
+                        <el-form-item label="菜单类型：">
                             <el-select v-model="type">
                                 <el-option v-for="(item,key) in list" :key="key" :label="item.name" :value="item.id"></el-option>
                             </el-select>
@@ -52,11 +52,22 @@ export default {
     methods:{
         // 初始化
         init(){
-
+            this.apis.AuthorityManagement.Menu.list({
+                type:this.type
+            }).then(res=>{
+                console.log(res)
+            })
         },
         // 添加菜单
-        add(){
-
+        add(type){
+            this.$ZAlert.show({
+                title:{
+                    "directory":"添加菜单",
+                    "child_directory":"添加子菜单"
+                }[type],
+                width:"500px",
+                components:require("./Alert/AddMenu")
+            })
         }
     }
 }
