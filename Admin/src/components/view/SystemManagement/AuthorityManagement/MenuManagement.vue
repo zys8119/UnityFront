@@ -1,12 +1,36 @@
 <template>
     <div class="MenuManagement">
-        啊实打实的
+        <layout-box>
+            <layout-filter-content>
+                <horizontal-tree
+                    type="add"
+                    :options="menus"
+                    :checks="checkedMenuKeys"
+                    @add="add"
+                    @more="add"
+                    class="MenuManagementPcTree"
+                >
+                </horizontal-tree>
+            </layout-filter-content>
+        </layout-box>
     </div>
 </template>
 
 <script>
 export default {
-    name: "MenuManagement"
+    name: "MenuManagement",
+    data(){
+        return {
+            menus: [],
+            checkedMenuKeys: [],
+        }
+    },
+    methods:{
+        // 添加菜单
+        add(){
+
+        }
+    }
 }
 </script>
 

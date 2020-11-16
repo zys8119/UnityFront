@@ -545,7 +545,7 @@ export default {
 
             &.check {
                 .HorizontalTreeItem-label {
-                    color: #09AF39;
+                    color: @themeColor;
                     font-weight: bold;
                 }
             }
@@ -554,7 +554,7 @@ export default {
         &.add {
             .HorizontalTreeItem {
                 &.header {
-                    color: #00B31A;
+                    color: @themeColor;
                 }
             }
         }

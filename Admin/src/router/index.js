@@ -1,5 +1,9 @@
 import vue from "vue"
 import vueRouter from "vue-router"
+const routerPush = vueRouter.prototype.push
+vueRouter.prototype.push = function push(location) {
+    return routerPush.call(this, location).catch(error => error)
+}
 vue.use(vueRouter)
 const bodyBaColor = "#e5e5e5";
 const layout = ()=>import("@/components/layout/layout");

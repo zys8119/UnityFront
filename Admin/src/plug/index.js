@@ -1,6 +1,7 @@
 import axios from "./axios"
 import alert from "./alert"
 import apis from "@/apis"
+import ContentTable from "./Mixins/ContentTable"
 // import $utils from "./utils"
 const plugin = {
     install(vue){
@@ -8,6 +9,7 @@ const plugin = {
         vue.prototype.apis = new apis();
         // vue.prototype.$utils = $utils;
         vue.use(alert);
+        vue.mixin(ContentTable);
     }
 }
 export default plugin
