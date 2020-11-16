@@ -12,5 +12,19 @@ export default {
             method:"post",
             data,
         })
+    },
+    update(data){
+        return this.axios({
+            url:"/AuthorityManagement/MenuType/update",
+            method:"put",
+            data,
+        })
+    },
+    delete(data){
+        return this.axios({
+            url:"/AuthorityManagement/MenuType/delete",
+            method:"post",
+            data,
+        })
     }
 }

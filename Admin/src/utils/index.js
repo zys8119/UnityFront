@@ -2,6 +2,13 @@ import MD5 from "md5.js"
 import lodash from 'lodash'
 export default {
     lodash:lodash,
+    $$confirm(msg, bool){
+        return window._this.$confirm(bool? msg : `确定删除${msg}吗？`, '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+        })
+    },
     // md5 加密
     MD5(str){
         return new MD5().update(str).digest('hex')

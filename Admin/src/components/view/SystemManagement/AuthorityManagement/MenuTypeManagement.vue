@@ -4,7 +4,7 @@
             <layout-filter-content>
                 <filter-content
                     :config="{rightBtns:[
-                        {name:'新增类型', emit:'addType'}
+                        {name:'新增分类', emit:'addType'}
                     ]}"
                     v-model="params.search"
                     @reset="reset"
@@ -13,6 +13,8 @@
                     slot="filter"></filter-content>
                 <content-table
                     ref="table"
+                    @editRow="addType"
+                    @deleteRow="deleteRow"
                     :apiPath="apis.AuthorityManagement.MenuType.list"
                     :params="params"
                     :columns="columns"></content-table>
@@ -36,8 +38,8 @@ export default {
                 {label:"类型名称", prop:"name"},
                 {label:"分类", prop:"type", type:"textType", filterLabel:row=>(this.typeOptions.find(e=>e.value == row.type) || {}).label},
                 {label:"操作", type:"operate", btns:[
-                    {name:"编辑", type:"text", className:"success"},
-                    {name:"删除", type:"text", className:"delete"},
+                    {name:"编辑", type:"text", className:"success", emit:"editRow"},
+                    {name:"删除", type:"text", className:"delete", emit:"deleteRow"},
                 ]},
             ],
             params:{}
@@ -48,15 +50,16 @@ export default {
     },
     methods:{
         // 添加类型
-        addType(){
+        addType(data,row){
             this.$ZAlert.show({
-                title:"新增类型",
+                title:row?"编辑分类":"新增分类",
                 width:"500px",
                 components:require("./Alert/AddType"),
                 _event:{
-                    save:this.reset
+                    save:this.reset,
                 },
                 props:{
+                    row:()=>row,
                     typeOptions:()=>this.typeOptions
                 }
             })
@@ -71,6 +74,15 @@ export default {
         // 搜素
         search(){
             this.$refs.table.init();
+        },
+        // 删除
+        deleteRow(data,row){
+            this.$utils.$$confirm("该分类").then(()=>{
+                this.apis.AuthorityManagement.MenuType.delete({id:row.id}).then(()=>{
+                    this.$message({type:"success",message:"删除成功"});
+                    this.reset();
+                })
+            })
         }
     }
 }

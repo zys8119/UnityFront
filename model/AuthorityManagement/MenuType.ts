@@ -17,13 +17,13 @@ export default class extends PublicModel implements PublicModelInterface{
             COMMENT:`'菜单类型名称'`,
         },
         type:{
-            varchar:"(255)",
+            int:"(255)",
             NOT:'NULL',
             DEFAULT:`'1'`,
             COMMENT:`'菜单分类：1 后台、2 前台、3 其他'`,
         },
         is_del:{
-            varchar:"(255)",
+            int:"(255)",
             NOT:'NULL',
             DEFAULT:`'1'`,
             COMMENT:`'是否删除：1 未删除、2 已删除'`,

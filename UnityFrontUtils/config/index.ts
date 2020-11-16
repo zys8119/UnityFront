@@ -49,7 +49,7 @@ export const ServerConfig =  <ServerOptions>{
     headers:{
         'Content-Type': 'text/json; charset=utf-8',
         'Access-Control-Allow-Origin': "*",
-        'Access-Control-Allow-Methods':'GET',
+        'Access-Control-Allow-Methods':'*',
         // 'Access-Control-Allow-Headers':'content-type',
         // 'Access-Control-Max-Age':0,//预请求缓存20天
     },

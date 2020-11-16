@@ -20,18 +20,30 @@
 export default {
     name: "AddType",
     props:{
-        typeOptions:{type:Array,default:Array}
+        typeOptions:{type:Array,default:Array},
+        row:{type:Object,default:null},
     },
     data(){
         return {
             formData:{},
         }
     },
+    mounted() {
+        this.formData = this.row? {...this.row} : {};
+    },
     methods:{
         // 保存
         save(){
             if(this.$utils.is_S(this.formData.name)){return  this.$message.error("请输入菜单类型名称")}
             if(this.$utils.is_S(this.formData.type)){return  this.$message.error("请选择分类")}
+            if(this.row){
+                this.apis.AuthorityManagement.MenuType.update(this.formData).then(()=>{
+                    this.$message({type:"success",message:"保存成功"})
+                    this.$emit("save")
+                    this.$ZAlert.hide()
+                })
+                return ;
+            }
             this.apis.AuthorityManagement.MenuType.add(this.formData).then(()=>{
                 this.$message({type:"success",message:"保存成功"})
                 this.$emit("save")
