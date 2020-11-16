@@ -51,13 +51,13 @@ exports.default = {
             this._ContentTable_pagination_getTableData_Axios(__assign({ pageSize: this._currentPagination.pageSize, pageNo: this.currentPagination_pageNo, no_page: !!this._currentPagination.noPage }, this.params)).then(function (res) {
                 var _a;
                 _this.$emit("pageChange", __assign({ pageNo: _this.currentPagination_pageNo }, _this._currentPagination));
-                _this.currentPaginationTotal = res.data.total;
+                _this.currentPaginationTotal = res.total;
                 _this.currentPagination_pageNo = pageNo;
                 if (_this._currentPagination.noPage || ((_a = _this.params) === null || _a === void 0 ? void 0 : _a.no_page)) {
                     _this.ContentTableData = res.data;
                     return;
                 }
-                _this.ContentTableData = res.data.list;
+                _this.ContentTableData = res.list;
             });
         },
         /**

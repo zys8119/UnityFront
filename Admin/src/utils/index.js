@@ -1,5 +1,7 @@
 import MD5 from "md5.js"
+import lodash from 'lodash'
 export default {
+    lodash:lodash,
     // md5 加密
     MD5(str){
         return new MD5().update(str).digest('hex')

@@ -69,18 +69,18 @@ export default <ComponentOptions<ContentTable>>{
                 pageNo:this.currentPagination_pageNo,
                 no_page:!!this._currentPagination.noPage,
                 ...this.params,
-            }).then((res)=>{
+            }).then((res:any)=>{
                 this.$emit("pageChange",{
                     pageNo:this.currentPagination_pageNo,
                     ...this._currentPagination,
                 });
-                this.currentPaginationTotal = res.data.total;
+                this.currentPaginationTotal = res.total;
                 this.currentPagination_pageNo = pageNo;
                 if(this._currentPagination.noPage || this.params?.no_page){
                     this.ContentTableData = res.data;
                     return;
                 }
-                this.ContentTableData = res.data.list;
+                this.ContentTableData = res.list;
             })
         },
         /**
