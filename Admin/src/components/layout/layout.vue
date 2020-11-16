@@ -14,7 +14,10 @@
                     <layoutAsideContentMain></layoutAsideContentMain>
                 </div>
             </div>
-            <div class="layoutMain">
+            <div class="layoutMain" :class="{
+                show:showAside,
+                hide:!showAside,
+            }">
                 <div class="layoutMainContent">
                     <router-view></router-view>
                 </div>
@@ -101,7 +104,8 @@ export default {
         .layoutMain{
             display: flex;
             flex-direction: column;
-            width: calc(100% - @layoutAside);
+            width: 100%;
+            transition: @transition;
             .layoutMainContent{
 
             }
@@ -126,6 +130,12 @@ export default {
                         width: 100%;
                     }
                 }
+            }
+            &.show{
+                width: calc(100% - @layoutAside);
+            }
+            &.hide{
+                width: 100%;
             }
         }
     }
