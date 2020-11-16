@@ -6,7 +6,7 @@
   },
   "exclude": [
     "node_modules",
-    "/src/*/**/*.vue"
+    "src/plug/alert/*.vue"
   ],
   "include": [
     "*/**/*.ts"
