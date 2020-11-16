@@ -68,6 +68,14 @@ export default new vueRouter({
                                         bodyBaColor,
                                     }
                                 },
+                                {
+                                    path:"menu-type-management",
+                                    title:"菜单管理",
+                                    component:()=>import("@/components/view/SystemManagement/AuthorityManagement/MenuTypeManagement"),
+                                    meta:{
+                                        bodyBaColor,
+                                    }
+                                },
                             ]
                         },
                     ]
