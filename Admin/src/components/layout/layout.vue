@@ -101,7 +101,7 @@ export default {
         .layoutMain{
             display: flex;
             flex-direction: column;
-            flex: 1;
+            width: calc(100% - @layoutAside);
             .layoutMainContent{
 
             }

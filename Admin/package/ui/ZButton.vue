@@ -1,7 +1,7 @@
 <template>
     <el-button class="ZButton"
                :disabled="config.disabled"
-               :type="config.type || 'success'"
+               :type="config.type || 'primary'"
                :size="config.size"
                :plain="config.plain"
                :round="config.round"

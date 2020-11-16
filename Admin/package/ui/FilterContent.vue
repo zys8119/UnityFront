@@ -26,7 +26,7 @@
                               :placeholder="configs.placeholder"
                               @change="(configs.search)? $emit(configs.search,currentValue):fn"
                     ></el-input>
-                    <el-button  class="filterRightZButton" v-if="configs.searchText" @click="(configs.search)? $emit(configs.search,currentValue):fn" :type="configs.type || 'success'">{{configs.searchText}}</el-button>
+                    <el-button  class="filterRightZButton" v-if="configs.searchText" @click="(configs.search)? $emit(configs.search,currentValue):fn" :type="configs.type || 'primary'">{{configs.searchText}}</el-button>
                     <el-button  class="filterRightZButton" v-if="configs.resetText" @click="(configs.reset)? $emit(configs.reset,currentValue):fn">{{configs.resetText}}</el-button>
                     <slot name="leftAfter"></slot>
                 </slot>
@@ -145,7 +145,7 @@ export default {
         .el-dropdown-link{
             &.iconfont{
                 text-align: center;
-                background-color:#67C23A;
+                background-color:@themeColor;
                 color: #ffffff;
                 font-size: 20px;
                 width: @s;
@@ -154,7 +154,7 @@ export default {
                 overflow: hidden;
                 display: inline-block;
                 &:hover{
-                    background-color: #67C23A*0.9;
+                    background-color: @themeColor*0.9;
                 }
             }
         }
