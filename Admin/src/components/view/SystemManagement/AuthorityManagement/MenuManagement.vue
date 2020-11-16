@@ -67,7 +67,7 @@ export default {
                 }[type],
                 width:"500px",
                 props:{
-                    type,
+                    type:this.type,
                 },
                 _event:{
                     save:this.init
