@@ -29,6 +29,7 @@ export class MenuTypeController extends applicationController{
             .catch(()=>this.$_error());
     }
 
+
     /**
      * 添加
      */
