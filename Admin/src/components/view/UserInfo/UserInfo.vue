@@ -4,7 +4,7 @@
             <layout-filter-content>
                 <div class="UserInfoFrom">
                     <div class="Avatar">
-                        <Upload :show-file-list="true" @on-success="onSuccess" :limit="1" ref="upload">
+                        <Upload :show-file-list="false" @on-success="onSuccess" :limit="1" ref="upload">
                             <el-image fit="fill" :src="formData.avatar" class="el-image">
                                 <img slot="error" class="errImg" width="100%" height="100%" src="/images/login/logo.png">
                             </el-image>
