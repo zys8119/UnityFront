@@ -10,7 +10,16 @@
                     @reset="reset"
                     @search="search"
                     @addType="addType"
-                    slot="filter"></filter-content>
+                    slot="filter">
+                    <el-form slot="leftBefore">
+                        <el-form-item required>
+                            分类:
+                            <el-select v-model="params.type" @change="search()" clearable>
+                                <el-option v-for="(item,key) in typeOptions" :key="key" :value="item.value" :label="item.label"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-form>
+                </filter-content>
                 <content-table
                     ref="table"
                     @editRow="addType"
@@ -68,6 +77,7 @@ export default {
         reset(){
             this.params = {
                 search:null,
+                type:null,
             };
             this.search();
         },

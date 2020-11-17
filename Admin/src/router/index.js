@@ -70,8 +70,16 @@ export default new vueRouter({
                                 },
                                 {
                                     path:"menu-type-management",
-                                    title:"菜单管理",
+                                    title:"菜单分类管理",
                                     component:()=>import("@/components/view/SystemManagement/AuthorityManagement/MenuTypeManagement"),
+                                    meta:{
+                                        bodyBaColor,
+                                    }
+                                },
+                                {
+                                    path:"roles-type-management",
+                                    title:"角色分类管理",
+                                    component:()=>import("@/components/view/SystemManagement/AuthorityManagement/RolesTypeManagement"),
                                     meta:{
                                         bodyBaColor,
                                     }

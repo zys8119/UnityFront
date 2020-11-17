@@ -14,6 +14,7 @@ export class MenuTypeController extends applicationController{
      */
     @method_get(MenuTypeController,"list")
     list(){
+        const _this = this;
         new this.$sqlModel.MenuTypeModel()
             .getPage({
                 ...this.$_query,
@@ -21,9 +22,13 @@ export class MenuTypeController extends applicationController{
                     name:true
                 }
             },function (){
-                this.AND().concat({
+                let data:any = {
                     is_del:1,
-                })
+                }
+                if(_this.$_query.type){
+                    data.type = _this.$_query.type
+                }
+                this.AND().concat(data)
             })
             .then((res)=>this.$_success(res))
             .catch(()=>this.$_error());
