@@ -34,13 +34,16 @@ export class MenuController extends applicationController{
         if(!this.$_body.name){return this.$_error("【name】 字段必填")}
         if(!this.$_body.url){return this.$_error("【url】 字段必填")}
         if(!this.$_body.type){return this.$_error("【type】 字段必填")}
-        new this.$sqlModel.MenuModel().insert({
+        let data:any = {
             name:this.$_body.name,
             url:this.$_body.url,
-            parent:this.$_body.parent || "null",
             type:this.$_body.type,
             id:Date.now(),
-        }).query()
+        };
+        if(this.$_body.parent){
+            data.parent = this.$_body.parent;
+        }
+        new this.$sqlModel.MenuModel().insert(data).query()
             .then(()=>this.$_success())
             .catch(()=>this.$_error());
     }
