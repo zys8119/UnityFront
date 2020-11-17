@@ -412,7 +412,7 @@ export interface ControllerInitDataOptions {
      * @param sourceData 数据
      * @param opstions 配置
      */
-    toTree?(sourceData:Array<any>, opstions:object):Array<any>;
+    toTree?(sourceData:Array<any>, opstions?:object):Array<any>;
 }
 
 export interface RequestFormData {

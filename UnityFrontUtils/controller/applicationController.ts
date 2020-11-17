@@ -873,7 +873,7 @@ export default class applicationControllerClass extends PublicController impleme
         return  crypto.createHash('md5').update(str).digest("hex");
     }
 
-    toTree(sourceData:Array<any>,opstions:object): Array<any>{
+    toTree(sourceData:Array<any>,opstions?:object): Array<any>{
         let opts:any = {
             children:"children",
             id:"id",
