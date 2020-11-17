@@ -59,15 +59,31 @@ export default {
             })
         },
         // 添加菜单
-        add(type){
+        add(type,item){
+            if(type === "delete"){
+                this.$utils.$$confirm("该菜单").then(()=>{
+                    this.apis.AuthorityManagement.Menu.delete({id:item.id}).then(()=>{
+                        this.$message({type:"success",message:"删除成功"})
+                        this.init();
+                    })
+                })
+                return ;
+            }
+            if(type === "btn"){
+                return this.$message.error("功能开发中...");
+            }
             this.$ZAlert.show({
                 title:{
                     "directory":"添加菜单",
-                    "child_directory":"添加子菜单"
+                    "child_directory":"添加子菜单",
+                    "modify":"修改菜单",
                 }[type],
                 width:"500px",
                 props:{
                     type:this.type,
+                    type2:type,
+                    parent:item && item.id ? item.id:null,
+                    row:()=>item,
                 },
                 _event:{
                     save:this.init
