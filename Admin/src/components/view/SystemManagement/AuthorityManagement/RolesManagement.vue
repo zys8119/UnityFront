@@ -4,27 +4,27 @@
             <layout-filter-content>
                 <filter-content
                     :config="{rightBtns:[
-                        {name:'新增角色', emit:'addType'}
+                        {name:'新增角色', emit:'addRoles'}
                     ]}"
                     v-model="params.search"
                     @reset="reset"
                     @search="search"
-                    @addType="addType"
+                    @addRoles="addRoles"
                     slot="filter">
                     <el-form slot="leftBefore">
                         <el-form-item required>
                             分类:
                             <el-select v-model="params.type" @change="search()" clearable>
-                                <el-option v-for="(item,key) in typeOptions" :key="key" :value="item.value" :label="item.label"></el-option>
+                                <el-option v-for="(item,key) in typeOptions" :key="key" :value="item.id" :label="item.name"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-form>
                 </filter-content>
                 <content-table
                     ref="table"
-                    @editRow="addType"
+                    @editRow="addRoles"
                     @deleteRow="deleteRow"
-                    :apiPath="apis.AuthorityManagement.RolesType.list"
+                    :apiPath="apis.AuthorityManagement.Roles.list"
                     :params="params"
                     :columns="columns"></content-table>
             </layout-filter-content>
@@ -51,15 +51,18 @@ export default {
         }
     },
     mounted() {
+        this.apis.AuthorityManagement.RolesType.list().then(res=>{
+            this.typeOptions = res;
+        })
         this.reset();
     },
     methods:{
-        // 添加类型
-        addType(data,row){
+        // 添加角色
+        addRoles(data,row){
             this.$ZAlert.show({
-                title:row?"编辑分类":"新增分类",
+                title:row?"编辑角色":"新增角色",
                 width:"500px",
-                components:require("./Alert/AddRolesType"),
+                components:require("./Alert/AddRoles"),
                 _event:{
                     save:this.reset,
                 },
@@ -83,7 +86,7 @@ export default {
         },
         // 删除
         deleteRow(data,row){
-            this.$utils.$$confirm("该角色分类").then(()=>{
+            this.$utils.$$confirm("该角色").then(()=>{
                 this.apis.AuthorityManagement.RolesType.delete({id:row.id}).then(()=>{
                     this.$message({type:"success",message:"删除成功"});
                     this.reset();
