@@ -9,7 +9,7 @@ export default class extends PublicModel implements PublicModelInterface{
             COLLATE:'utf8_unicode_ci',
             NOT:'NULL',
             DEFAULT:`''`,
-            COMMENT:`'id'`,
+            COMMENT:`'菜单类型id'`,
         },
         name:{
             varchar:"(255)",
