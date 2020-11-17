@@ -84,6 +84,14 @@ export default new vueRouter({
                                         bodyBaColor,
                                     }
                                 },
+                                {
+                                    path:"roles-management",
+                                    title:"角色管理",
+                                    component:()=>import("@/components/view/SystemManagement/AuthorityManagement/RolesManagement"),
+                                    meta:{
+                                        bodyBaColor,
+                                    }
+                                },
                             ]
                         },
                     ]

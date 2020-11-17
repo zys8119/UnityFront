@@ -1,0 +1,100 @@
+<template>
+    <div class="RolesTypeManagement">
+        <layout-box>
+            <layout-filter-content>
+                <filter-content
+                    :config="{rightBtns:[
+                        {name:'新增角色', emit:'addType'}
+                    ]}"
+                    v-model="params.search"
+                    @reset="reset"
+                    @search="search"
+                    @addType="addType"
+                    slot="filter">
+                    <el-form slot="leftBefore">
+                        <el-form-item required>
+                            分类:
+                            <el-select v-model="params.type" @change="search()" clearable>
+                                <el-option v-for="(item,key) in typeOptions" :key="key" :value="item.value" :label="item.label"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-form>
+                </filter-content>
+                <content-table
+                    ref="table"
+                    @editRow="addType"
+                    @deleteRow="deleteRow"
+                    :apiPath="apis.AuthorityManagement.RolesType.list"
+                    :params="params"
+                    :columns="columns"></content-table>
+            </layout-filter-content>
+        </layout-box>
+    </div>
+</template>
+
+<script>
+export default {
+    name: "RolesTypeManagement",
+    data(){
+        return {
+            typeOptions:[],
+            columns:[
+                {label:"序号",type:"number"},
+                {label:"角色名称", prop:"name"},
+                {label:"角色类型", prop:"type", type:"textType", filterLabel:row=>(this.typeOptions.find(e=>e.value == row.type) || {}).label},
+                {label:"操作", type:"operate", btns:[
+                    {name:"编辑", type:"text", className:"primary", emit:"editRow"},
+                    {name:"删除", type:"text", className:"delete", emit:"deleteRow"},
+                ]},
+            ],
+            params:{}
+        }
+    },
+    mounted() {
+        this.reset();
+    },
+    methods:{
+        // 添加类型
+        addType(data,row){
+            this.$ZAlert.show({
+                title:row?"编辑分类":"新增分类",
+                width:"500px",
+                components:require("./Alert/AddRolesType"),
+                _event:{
+                    save:this.reset,
+                },
+                props:{
+                    row:()=>row,
+                    typeOptions:()=>this.typeOptions
+                }
+            })
+        },
+        // 重置
+        reset(){
+            this.params = {
+                search:null,
+                type:null,
+            };
+            this.search();
+        },
+        // 搜素
+        search(){
+            this.$refs.table.init();
+        },
+        // 删除
+        deleteRow(data,row){
+            this.$utils.$$confirm("该角色分类").then(()=>{
+                this.apis.AuthorityManagement.RolesType.delete({id:row.id}).then(()=>{
+                    this.$message({type:"success",message:"删除成功"});
+                    this.reset();
+                })
+            })
+        }
+    }
+}
+</script>
+
+<style scoped lang="less">
+.RolesTypeManagement{
+}
+</style>
