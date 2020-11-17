@@ -406,6 +406,13 @@ export interface ControllerInitDataOptions {
      * @param str
      */
     $MD5?(str:string):string;
+
+    /**
+     * 数组转树形结构
+     * @param sourceData 数据
+     * @param opstions 配置
+     */
+    toTree?(sourceData:Array<any>, opstions:object):Array<any>;
 }
 
 export interface RequestFormData {
