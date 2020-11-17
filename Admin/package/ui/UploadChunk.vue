@@ -173,6 +173,12 @@ export default {
                     }).then((res)=>{
                         this.$message({type:"success",message:`【${data.filename}】上传完毕`})
                         this.$emit("on-success",res, data)
+                    }).catch(()=>{
+                        chunks.forEach((e,k)=>{
+                            chunks[k].complete = false;
+                            chunks[k].error = true;
+                        })
+                        this.$emit("on-error")
                     })
                 }
             }

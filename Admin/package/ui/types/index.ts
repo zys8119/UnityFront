@@ -1007,6 +1007,10 @@ export interface UploadChunk extends CI{
         submit?():void;
         // 选择文件
         change?(files:File,ev:Event,):void;
+        // 上传成功
+        "on-success"?(files:File,ev:Event,):void;
+        // 上传失败
+        "on-error"?(files:File,ev:Event,):void;
     }
 }
 
