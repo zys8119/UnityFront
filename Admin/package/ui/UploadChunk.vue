@@ -2,24 +2,39 @@
     <div class="Upload">
         <div class="UploadContent" @click="$refs.inputFile.click()">
             <slot></slot>
-            <input type="file" ref="inputFile" @change="change" multiple="multiple" accept="*/.zip" />
+            <input type="file" ref="inputFile" @change="change" :multiple="multiple" :accept="accept" />
+            <div class="operate">
+                <span class="goon" @click.stop="goOn">续传</span>
+                <span class="cancel" @click.stop="cancel">暂停</span>
+            </div>
         </div>
         <ul class="UploadFileList">
             <li class="UploadFileListItem" v-for="(item,key) in fileList" :key="key">
-                <div class="UploadFileListItemParent"  @click="item.show = !item.show">
+                <div class="UploadFileListItemParent" :class="{
+                    finish:parseInt(getProgress(item)) === 100,
+                    error:item.chunk.filter(e=>e.error).length > 0
+                }"  @click="item.show = !item.show">
                     <icon class="icon">icontupian</icon>
                     <span class="ellipsis-1 name">{{item.filename}}</span>
                     <span class="iconfont close" v-if="item.show">&#xe91c;</span>
                     <span class="iconfont close" v-else>&#xe91b;</span>
-                    <div class="progress" :style="{width:getProgress(item) + '%'}"><span>{{getProgress(item)}}%</span></div>
+                    <div class="progress" :style="{width:getProgress(item) + '%'}">
+                        <span v-if="parseInt(getProgress(item)) === 100" class="iconfont">&#xe763;</span>
+                        <span v-else>{{getProgress(item)}}%</span>
+                        <span class="msg" v-if="parseInt(getProgress(item)) === 0">请稍等，文件处理中...</span>
+                    </div>
                 </div>
                 <div class="UploadFileListItemParentList" v-if="item.show && item.chunk">
-                    <div class="UploadFileListItemParent" v-for="(it,k) in item.chunk" :key="k">
+                    <div class="UploadFileListItemParent" :class="{
+                        finish:it.progress === 100,
+                        error:it.error,
+                    }" v-for="(it,k) in item.chunk" :key="k">
                         <icon class="icon">icontupian</icon>
                         <span class="ellipsis-1 name">{{it.filename}}</span>
-                        <span class="iconfont close" v-if="!it.start && !it.end" @click="goOn(item,it)">&#xe646;</span>
-                        <span class="iconfont close" v-if="!it.end && it.start" @click="cancel(item,it)">&#xe607;</span>
-                        <div class="progress" :style="{width:it.progress + '%'}"><span>{{it.progress}}%</span></div>
+                        <div class="progress" :style="{width:it.progress + '%'}">
+                            <span v-if="it.progress === 100" class="iconfont">&#xe763;</span>
+                            <span v-else>{{it.progress}}%</span>
+                        </div>
                     </div>
                 </div>
             </li>
@@ -29,37 +44,71 @@
 
 <script>
 import axios from "axios"
+import SparkMD5 from "spark-md5"
 export default {
     name: "Upload",
+    props:{
+        // 切割大小，默认10M
+        size:{type:Number, default:1024*1024*2},
+        multiple:{type:Boolean, default:false},
+        accept:{type:String, default:"*"},
+        autoUpload:{type:Boolean, default:true},
+        baseURL:{type:String, default:"http://192.168.1.117:8000"},
+    },
     data(){
         return {
             fileList:[],
-            // 切割大小，默认1M
-            size:1024*1024*100,
+            isSubmit:false,
         }
     },
     methods:{
         // 继续上传
-        goOn(item, it){
-            it.end = false;
-            it.cancel = null;
-            this.upLoadFile(
-                item.chunk,
-                item.chunk.length,
-                it.index-1,
-                it.index-1,
-                {
-                    filename:item.filename,
-                    md5:item.hash,
-                    total_part:item.total,
-                },
-            )
+        goOn(){
+            const indexStartArr = this.fileList.map(e=>e.chunk.findIndex(j=>!j.complete && !j.start));
+            this.fileList.forEach((item,key)=>{
+                let bool = true;
+                let index = indexStartArr[key] - 1;
+                if(index === item.chunk.length-1){
+                    index += 1;
+                }
+                if(index === -1){
+                    index = 0;
+                }
+                item.chunk.forEach((it)=>{
+                    it.start = false;
+                    it.end = false;
+                    it.cancel = null;
+                    it.error = false;
+                    if(bool && !it.complete){
+                        bool = false;
+                        this.upLoadFile(
+                            item.chunk,
+                            item.chunk.length,
+                            index > 0 ? index : 0,
+                            key,
+                            {
+                                filename:item.filename,
+                                md5:item.hash,
+                                total_part:item.total,
+                            },
+                        )
+                    }
+                })
+            })
         },
         // 取消请求
-        cancel(item,it){
-            it.cancel();
-            it.end = true;
-            it.start = false;
+        cancel(){
+            this.fileList.forEach(item=>{
+                item.chunk.forEach(it=>{
+                    if(!it.complete){
+                        it.end = true;
+                        it.error = true;
+                    }
+                    if(it.cancel){
+                        it.cancel();
+                    }
+                })
+            })
         },
         // 计算父级进度
         getProgress(item){
@@ -78,18 +127,20 @@ export default {
                         return ;
                     }
                     this.fileList[index].chunk[chunkIndex].start = true;
+                    let dataInfo = {
+                        ...chunk,
+                        ...data,
+                        part_number:chunkIndex+1,
+                    }
                     window.common.Axios({
-                        url:"http://192.168.1.117:8000/upload/part_upload/",
+                        url:`${this.baseURL}/upload/part_upload/`,
                         method:"post",
                         isFormData:true,
                         timeout:0,
+                        loading:false,
                         isLoading:false,
                         isLoadingProgress:false,
-                        data:{
-                            ...chunk,
-                            ...data,
-                            part_number:chunkIndex+1,
-                        },
+                        data:dataInfo,
                         cancelToken:new axios.CancelToken(c=>{
                             this.fileList[index].chunk[chunkIndex].cancel = c;
                         }),
@@ -104,49 +155,161 @@ export default {
                         this.upLoadFile(chunks, chunkLng,chunkIndex+1,index,data);
                     }).catch(()=>{
                         this.fileList[index].chunk[chunkIndex].end = false;
+                        this.fileList[index].chunk[chunkIndex].error = true;
+                        this.$message.error(`【${data.filename}】上传失败`);
                     })
                 }
             }else {
-                window.common.Axios({
-                    url:"http://192.168.1.117:8000/upload/finish_upload/",
-                    method:"post",
-                    isFormData:true,
-                    timeout:0,
-                    isLoading:false,
-                    isLoadingProgress:false,
-                    data,
-                }).then(()=>{
-                    this.$message({type:"success",message:"上传完毕"})
-                })
+                if(chunks.filter(e=>e.complete).length === chunkLng){
+                    window.common.Axios({
+                        url:`${this.baseURL}/upload/finish_upload/`,
+                        method:"post",
+                        isFormData:true,
+                        timeout:0,
+                        loading:false,
+                        isLoading:false,
+                        isLoadingProgress:false,
+                        data,
+                    }).then((res)=>{
+                        this.$message({type:"success",message:`【${data.filename}】上传完毕`})
+                        this.$emit("on-success",res, data)
+                    })
+                }
             }
+        },
+        // 检测hash
+        isCheckHash(item,key){
+            if(item.hash){
+                this.submit(item,key);
+            }else {
+                setTimeout(()=>{
+                    this.isCheckHash(item,key);
+                },500);
+            }
+        },
+        // 无历史碎片
+        get_complete_list_process(res, index, data){
+            const chunkLng = res.chunk.length;
+            window.common.Axios({
+                url:`${this.baseURL}/upload/file_preprocessing/`,
+                method:"post",
+                isFormData:true,
+                timeout:0,
+                loading:false,
+                isLoading:false,
+                isLoadingProgress:false,
+                data:{
+                    filename:res.filename,
+                    md5:res.hash,
+                    total_part:res.total,
+                }
+            }).then(()=>{
+                this.upLoadFile(res.chunk,chunkLng,0,index,data)
+            })
+        },
+        // 文件手动上传
+        submit(res, index){
+            if(!res){
+                // 手动处理
+                if(!this.isSubmit){
+                    this.isSubmit = true;
+                    this.fileList.forEach((item,key)=>{
+                        this.isCheckHash(item,key);
+                    });
+                }
+                return;
+            }
+            // 获取历史碎片
+            window.common.Axios({
+                url:`${this.baseURL}/upload/get_complete_list/`,
+                method:"get",
+                timeout:0,
+                loading:false,
+                isLoading:false,
+                isLoadingProgress:false,
+                data:{
+                    filename:res.filename,
+                    md5:res.hash,
+                    total_part:res.total,
+                }
+            }).then((reshistory)=>{
+                let data = {
+                    filename:res.filename,
+                    md5:res.hash,
+                    total_part:res.total,
+                }
+                let complete_parts = reshistory.data.complete_parts;
+                if(complete_parts.length > 0){
+                    if(complete_parts.length === res.total){
+                        // 秒级上传
+                        res.chunk.forEach((c,k)=>{
+                            res.chunk[k].complete = true;
+                            res.chunk[k].progress = 100;
+                        });
+                        this.upLoadFile(res.chunk,res.chunk.length,res.chunk.length+1,index,data)
+                    }else {
+                        // 部分上传则续传
+                        let complete_parts_index = complete_parts.length - 1;
+                        complete_parts.forEach((c,k)=>{
+                            res.chunk[k].complete = true;
+                            res.chunk[k].progress = 100;
+                        });
+                        this.upLoadFile(res.chunk,res.chunk.length,complete_parts_index,index,data)
+                    }
+                }else {
+                    this.get_complete_list_process(res, index, data);
+                }
+            })
+
         },
         // 选择文件
         change(evt){
+            this.$emit("change", evt.target.files, evt);
             evt.target.files.forEach(file=>{
                 this.getChunk(file).then(res=>{
                     const index = this.fileList.length;
                     this.fileList.push(res);
                     evt.target.value = "";
-                    // 批量上传文件
-                    const chunkLng = res.chunk.length;
-                    window.common.Axios({
-                        url:"http://192.168.1.117:8000/upload/file_preprocessing/",
-                        method:"post",
-                        isFormData:true,
-                        data:{
-                            filename:res.filename,
-                            md5:res.hash,
-                            total_part:res.total,
-                        }
-                    }).then(()=>{
-                        this.upLoadFile(res.chunk,chunkLng,0,index,{
-                            filename:res.filename,
-                            md5:res.hash,
-                            total_part:res.total,
+                    // 获取文件 Hash
+                    this.getHash(file).then(hash=>{
+                        this.$set(this.fileList[index],"hash", hash);
+                        // 上传文件主体信息
+                        this.$nextTick(()=>{
+                            if(this.autoUpload){
+                                this.submit(this.fileList[index],index);
+                            }
                         })
                     })
                 })
             });
+        },
+        // 获取文件 Hash
+        getHash(file){
+            return new Promise(resolve => {
+                var blobSlice = File.prototype.slice || File.prototype.mozSlice || File.prototype.webkitSlice,
+                    chunkSize = this.size,                             // Read in chunks of 2MB
+                    chunks = Math.ceil(file.size / chunkSize),
+                    currentChunk = 0,
+                    spark = new SparkMD5.ArrayBuffer(),
+                    fileReader = new FileReader();
+                fileReader.onload = function (e) {
+                    spark.append(e.target.result);                   // Append array buffer
+                    currentChunk++;
+
+                    if (currentChunk < chunks) {
+                        loadNext();
+                    } else {
+                        resolve(spark.end())
+                    }
+                };
+                const loadNext = function () {
+                    var start = currentChunk * chunkSize,
+                        end = ((start + chunkSize) >= file.size) ? file.size : start + chunkSize;
+                    fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
+                }
+                loadNext();
+            })
+
         },
         // 获取切片
         getChunk(file){
@@ -173,6 +336,8 @@ export default {
                         end:false,
                         start:false,
                         cancel:null,
+                        complete:false,
+                        error:false,
                     })
                     start = end;
                 }
@@ -184,32 +349,7 @@ export default {
                     file,
                     total,
                 }
-                const loading = this.$loading({
-                    lock: true,
-                    text: '文件处理中,请耐心等待...',
-                    spinner: 'el-icon-loading',
-                    target:this.$el,
-                    background: 'rgba(255, 255, 255, 0.0)'
-                });
-                if("Worker" in window){
-                    const WorkerObj =  new Worker("/js/fileUploadHash.js");
-                    WorkerObj.onmessage = ev=>{
-                        resUlt.hash = ev.data.hash;
-                        loading.close();
-                        resolve(resUlt);
-                    }
-                    WorkerObj.postMessage({
-                        file,
-                    })
-                }else {
-                    var fileRead = new FileReader();
-                    fileRead.readAsDataURL(file);
-                    fileRead.onload = function (ev) {
-                        resUlt.hash = this.$utils.MD5(ev.target.result);
-                        loading.close();
-                        resolve(resUlt);
-                    }
-                }
+                resolve(resUlt);
             })
         }
     }
@@ -219,12 +359,34 @@ export default {
 <style lang="less">
 .Upload{
     width: 300px;
+    min-width: 300px;
     margin-left: 50px;
     margin-top: 50px;
+    padding-right: 30px;
     .UploadContent{
         display: block;
+        position: relative;
         input{
             display: none;
+        }
+        .operate{
+            position: absolute;
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%);
+            span{
+                background-color: #e5e5e5;
+                padding: 10px;
+                cursor: pointer;
+                color: #999999;
+                &:hover{
+                    background-color: #ffffff;
+                    color: #1b91ff;
+                }
+                &+span{
+                    margin-left: 15px;
+                }
+            }
         }
     }
     .UploadFileList{
@@ -275,17 +437,46 @@ export default {
                         position: absolute;
                         left: 100%;
                         top: 50%;
+                        &.iconfont{
+                            font-size: 26px;
+                        }
+                        &.msg{
+                            width: 200px;
+                            text-align: right;
+                            color: #999999;
+                        }
                     }
                 }
                 &:hover{
-                    //background-color: #e5e5e5;
                     cursor: pointer;
+                }
+                &.finish{
+                    .progress{
+                        background-color: #67c23a;
+                        span{
+                            &.iconfont{
+                                color: #67c23a;
+                            }
+                        }
+                    }
+                }
+                &.error{
+                    .progress{
+                        background-color: #FF0000;
+                        span{
+                            color: #FF0000;
+                        }
+                    }
                 }
             }
             .UploadFileListItemParentList{
-                //max-height: 300px;
-                //overflow-x: hidden;
+                background: #e5e5e5;
+                padding: 0 30px;
                 .UploadFileListItemParent{
+                    .icon{
+                        text-align: left;
+                        margin-left: 0;
+                    }
                     .name{
                         color: #999;
                     }

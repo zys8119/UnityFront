@@ -16,6 +16,7 @@
     "less-loader": "^7.0.2",
     "login-vue": "^1.0.9",
     "sass-resources-loader": "^2.1.1",
+    "spark-md5": "^3.0.1",
     "store-vue": "^1.5.0",
     "swiper": "^5.4.5",
     "vue": "^2.6.11",
