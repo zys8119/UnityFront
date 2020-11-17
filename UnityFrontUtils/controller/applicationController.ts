@@ -873,5 +873,36 @@ export default class applicationControllerClass extends PublicController impleme
         return  crypto.createHash('md5').update(str).digest("hex");
     }
 
+    toTree(sourceData:Array<any>,opstions:object): Array<any>{
+        let opts:any = {
+            children:"children",
+            id:"id",
+            parent:"parent",
+            cb:new Function(),
+            ...opstions,
+        }
+        let result = []
+        if(!Array.isArray(sourceData)) {
+            return result
+        }
+        let map = {};
+        sourceData.forEach(item => {
+            delete item[opts.children];
+            map[item[opts.id]] = item;
+            if(typeof opts.cb === "function"){
+                opts.cb.call(this,item,opts);
+            }
+        });
+        sourceData.forEach(item => {
+            let parent = map[item[opts.parent]];
+            if(parent) {
+                (parent[opts.children] || (parent[opts.children] = [])).push(item);
+            } else {
+                result.push(item);
+            }
+        });
+        return result;
+    }
+
 }
 export const applicationController = applicationControllerClass;
