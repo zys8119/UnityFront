@@ -48,7 +48,7 @@ import SparkMD5 from "spark-md5"
 export default {
     name: "Upload",
     props:{
-        // 切割大小，默认10M
+        // 切割大小，默认2M
         size:{type:Number, default:1024*1024*2},
         multiple:{type:Boolean, default:false},
         accept:{type:String, default:"*"},
@@ -472,6 +472,8 @@ export default {
             .UploadFileListItemParentList{
                 background: #e5e5e5;
                 padding: 0 30px;
+                max-height: 100px;
+                overflow-x: hidden;
                 .UploadFileListItemParent{
                     .icon{
                         text-align: left;
