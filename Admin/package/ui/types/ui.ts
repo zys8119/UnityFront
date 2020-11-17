@@ -30,4 +30,5 @@ export {
     ZButton,
     ZAlertFooter,
     Icon,
+    UploadChunk,
 } from "./index"

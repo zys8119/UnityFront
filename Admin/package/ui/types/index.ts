@@ -967,7 +967,7 @@ export interface Signature extends CI{
 }
 
 
-//todo 【Icon.vue】============文档标记
+//todo 【Icon.vue】============彩色图标
 
 export interface Icon extends CI{
     props:{
@@ -980,6 +980,34 @@ export interface Icon extends CI{
         // 默认卡槽-内容为字体名称
         default?():Element;
     },
+}
+
+
+//todo 【UploadChunk.vue】============切片上传
+
+export interface UploadChunk extends CI{
+    props:{
+        // 切割大小，默认2M
+        size?:number | 2;
+        // 是否多选
+        multiple?:boolean | false;
+        // 文件格式限制
+        accept?:string;
+        // 是否自动上传
+        autoUpload?:boolean | true;
+        // 接口地址
+        baseURL?:string;
+    }
+    $slots:{
+        // 默认卡槽-内容为字体名称
+        default?():Element;
+    },
+    $emit:{
+        // 手动提交
+        submit?():void;
+        // 选择文件
+        change?(files:File,ev:Event,):void;
+    }
 }
 
 
