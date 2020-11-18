@@ -29,7 +29,10 @@ export default {
         }
     },
     mounted() {
-        this.formData = this.row ? {...this.row} : {};
+        this.formData = this.row ? {
+            ...this.row,
+            is_effective:this.row.is_effective === 1,
+        } : {};
         this.apis.AuthorityManagement.RolesType.list().then(res=>{
             this.typeList = res;
         });
@@ -39,6 +42,17 @@ export default {
         save(){
             if(this.$utils.is_S(this.formData.name)){return this.$message.error("请输入角色名称")}
             if(this.$utils.is_S(this.formData.type)){return this.$message.error("请选择角色类型")}
+            if(this.row){
+                this.apis.AuthorityManagement.Roles.update({
+                    ...this.formData,
+                    is_effective:this.formData.is_effective ? 1 : 2
+                }).then(()=>{
+                    this.$message({type:"success",message:"保存成功"});
+                    this.$emit("save");
+                    this.$ZAlert.hide();
+                })
+                return ;
+            }
             this.apis.AuthorityManagement.Roles.add({
                 ...this.formData,
                 is_effective:this.formData.is_effective ? 1 : 2

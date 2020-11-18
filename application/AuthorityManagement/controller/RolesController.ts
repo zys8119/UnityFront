@@ -75,10 +75,14 @@ export class RolesController extends applicationController{
         if(!this.$_body.name){return this.$_error("【name】 字段必填")}
         if(!this.$_body.type){return this.$_error("【type】 字段必填")}
         if(!this.$_body.id){return this.$_error("【id】 字段必填")}
-        new this.$sqlModel.RolesModel().update({
+        if(!this.$_body.is_effective){return this.$_error("【is_effective】 字段必填")}
+        let data:any = {
             name:this.$_body.name,
             type:this.$_body.type,
-        }).where({id:this.$_body.id}).query()
+            is_effective:this.$_body.is_effective,
+            description:this.$_body.description,
+        };
+        new this.$sqlModel.RolesModel().update(data).where({id:this.$_body.id}).query()
             .then(()=>this.$_success())
             .catch(()=>this.$_error());
     }
