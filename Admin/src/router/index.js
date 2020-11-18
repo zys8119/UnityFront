@@ -92,6 +92,14 @@ export default new vueRouter({
                                         bodyBaColor,
                                     }
                                 },
+                                {
+                                    path:"roles-permission-settings",
+                                    title:"角色权限设置",
+                                    component:()=>import("@/components/view/SystemManagement/AuthorityManagement/RolesPermissionSettings"),
+                                    meta:{
+                                        bodyBaColor,
+                                    }
+                                },
                             ]
                         },
                     ]

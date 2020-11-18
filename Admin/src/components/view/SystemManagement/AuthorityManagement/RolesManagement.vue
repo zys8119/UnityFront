@@ -97,8 +97,13 @@ export default {
             })
         },
         // 权限设置
-        permissionSettings(){
-
+        permissionSettings(data,row){
+            this.$router.push({
+                path:"roles-permission-settings",
+                query:{
+                    id:row.id
+                }
+            })
         }
     }
 }

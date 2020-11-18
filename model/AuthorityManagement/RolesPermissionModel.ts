@@ -1,7 +1,7 @@
 import PublicModel, {$sqlFieldConfigType, PublicModelInterface} from "../PublicModel";
 
 export default class extends PublicModel implements PublicModelInterface{
-    $TableName = "roles";
+    $TableName = "roles_permission";
     $sqlFieldConfig:$sqlFieldConfigType = {
         id:{
             varchar:"(255)",
@@ -9,28 +9,23 @@ export default class extends PublicModel implements PublicModelInterface{
             COLLATE:'utf8_unicode_ci',
             NOT:'NULL',
             DEFAULT:`''`,
+            COMMENT:`'权限id'`,
+        },
+        menu_id:{
+            varchar:"(255)",
+            NOT:'NULL',
+            DEFAULT:`''`,
+            COMMENT:`'菜单id'`,
+        },
+        roles_id:{
+            varchar:"(255)",
+            NOT:'NULL',
+            DEFAULT:`''`,
             COMMENT:`'角色id'`,
         },
-        name:{
-            varchar:"(255)",
-            NOT:'NULL',
-            COMMENT:`'角色名称'`,
-        },
-        type:{
-            varchar:"(255)",
-            NOT:'NULL',
-            DEFAULT:`'1'`,
-            COMMENT:`'角色分类：1 后台、2 前台、3 其他'`,
-        },
-        description:{
+        permission:{
             text:"",
-            COMMENT:`'角色描述'`,
-        },
-        is_effective:{
-            int:"(255)",
-            NOT:'NULL',
-            DEFAULT:`'1'`,
-            COMMENT:`'角色是否有效：1 有效、2 无效'`,
+            COMMENT:`'权限组，js字符串'`,
         },
         is_del:{
             int:"(255)",
@@ -41,5 +36,5 @@ export default class extends PublicModel implements PublicModelInterface{
     }
     'CHARACTER SET' = 'utf8';
     COLLATE = `utf8_unicode_ci`;
-    COMMENT =`'角色表'`;
+    COMMENT =`'角色权限表'`;
 }

@@ -31,5 +31,5 @@ export default class extends PublicModel implements PublicModelInterface{
     }
     'CHARACTER SET' = 'utf8';
     COLLATE = `utf8_unicode_ci`;
-    COMMENT =`'权限角色类型表'`;
+    COMMENT =`'角色类型表'`;
 }

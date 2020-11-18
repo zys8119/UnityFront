@@ -7,6 +7,7 @@ export interface SqlModel {
     MenuTypeModel:SqlModelTable;
     RolesTypeModel:SqlModelTable;
     RolesModel:SqlModelTable;
+    RolesPermissionModel:SqlModelTable;
     MenuModel:SqlModelTable;
 }
 
