@@ -6,7 +6,7 @@
                     <div class="Avatar">
                         <Upload :show-file-list="false" @on-success="onSuccess" :limit="1" ref="upload">
                             <el-image fit="fill" :src="formData.avatar" class="el-image">
-                                <img slot="error" class="errImg" width="100%" height="100%" src="/images/login/logo.png">
+                                <img slot="error" class="errImg" width="100%" height="100%" :src="formData.avatar ? formData.avatar : '/images/login/logo.png'">
                             </el-image>
                         </Upload>
                         <p class="msg">点击上传头像</p>
