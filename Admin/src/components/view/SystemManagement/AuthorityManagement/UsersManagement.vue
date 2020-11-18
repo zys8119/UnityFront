@@ -53,6 +53,7 @@ export default {
                 }},
                 {label:"操作", type:"operate", btns:[
                     {name:"编辑", type:"text", className:"primary", emit:"editRow"},
+                    {name:"绑定角色", type:"text", className:"success", emit:"editRow"},
                     {name:"删除", type:"text", className:"delete", emit:"deleteRow", show:(data,row)=>row.type !== 0},
                 ]},
             ],
