@@ -2,8 +2,11 @@
     <div class="RolesPermissionSettings">
         <layout-box>
             <layout-filter-content>
-                <filter-content type="right" slot="filter" :config="{rightBtns:[
-                    {name:'保存'}
+                <filter-content type="right"
+                    slot="filter"
+                    @save="save"
+                    :config="{rightBtns:[
+                    {name:'保存', emit:'save'}
                 ]}">
                     <el-form label-width="90px" slot="leftBefore">
                         <el-form-item label="菜单类型：">
@@ -54,13 +57,28 @@ export default {
         init(){
             this.apis.AuthorityManagement.Menu.list({type:this.type}).then(res=>{
                 this.menus = res;
+                this.apis.AuthorityManagement.RolesPermission.get({
+                    menu_id:this.type,
+                    roles_id:this.$route.query.id,
+                }).then(res=>{
+                    this.checkedMenuKeys = res.permission;
+                });
             })
         },
         // check选择
         check(val) {
             this.checkedMenuKeys = val;
-            console.log(val)
         },
+        // 保存
+        save(){
+            this.apis.AuthorityManagement.RolesPermission.update({
+                menu_id:this.type,
+                roles_id:this.$route.query.id,
+                permission:this.checkedMenuKeys,
+            }).then(()=>{
+                this.$message({type:"success",message:"保存成功"});
+            });
+        }
     }
 }
 </script>
