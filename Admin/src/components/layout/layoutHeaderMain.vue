@@ -71,7 +71,7 @@ export default {
                 return ;
             }
             localStorage.setItem("menusId",null);
-            this.go(this.airforce.menus[this.activeName]);
+            this.go(this.airforce.menus.find(e=>e.id === this.activeName));
         },
         // 跳转页面
         go(data){
