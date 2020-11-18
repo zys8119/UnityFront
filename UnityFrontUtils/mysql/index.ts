@@ -1,5 +1,5 @@
 import "../typeStript"
-import { mysqlConfig} from "../config"
+import {mysqlConfig, ServerConfig} from "../config"
 import {SqlUtilsOptions, getPagePageConfigType} from "../typeStript";
 let mysqlTool = require('mysql');
 let ncol = require('ncol');
@@ -90,10 +90,12 @@ class mysql implements SqlUtilsOptions{
             })
         };
         return new Promise((resolve, reject) => {
-            ncol.color(()=>{
-                ncol.successBG("【MySql语句】")
-                    .success(sqlStrs)
-            });
+            if(ServerConfig.debug){
+                ncol.color(()=>{
+                    ncol.successBG("【MySql语句】")
+                        .success(sqlStrs)
+                });
+            }
             this.connection.query(sqlStrs, (error, results, fields)=> {
                 if(error){
                     ncol.error(`【QUERY ERROR】::  ${error.message} in (\`${sqlStr}\`)`);
