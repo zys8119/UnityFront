@@ -92,8 +92,8 @@ class mysql implements SqlUtilsOptions{
         return new Promise((resolve, reject) => {
             if(ServerConfig.debug){
                 ncol.color(()=>{
-                    ncol.successBG("【MySql语句】")
-                        .success(sqlStrs)
+                    ncol.infoBG("【MySql语句】")
+                        .info(sqlStrs)
                 });
             }
             this.connection.query(sqlStrs, (error, results, fields)=> {
