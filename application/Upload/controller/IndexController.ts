@@ -21,7 +21,13 @@ export class IndexController extends applicationController{
             // 文件上传路径
             let uplodPath = resolve(__dirname,"../../../",dirName);
             files.forEach(file=>{
-                let fileName = `${Date.now()}-${parseInt((Math.random()*10000).toString())}-${file.fileName}`;
+                let suffix = file.fileName.match(/\.\w*$/);
+                if(suffix && suffix[0]){
+                    suffix = suffix[0];
+                }else {
+                    suffix = ".png";
+                }
+                let fileName = `${Date.now()}-${parseInt((Math.random()*10000).toString())}-${Date.now()}${suffix}`;
                 writeFileSync(resolve(uplodPath,fileName),file.fileBuff)
                 resUlt.push({
                     ...file,

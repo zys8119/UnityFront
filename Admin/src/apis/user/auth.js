@@ -59,5 +59,18 @@ export default {
             method:"get",
             data,
         })
+    },
+
+    /**
+     * 删除用户列表
+     * @param data
+     * @returns {*}
+     */
+    delete(data){
+        return this.axios({
+            url:"/User/Auth/delete",
+            method:"post",
+            data,
+        })
     }
 }

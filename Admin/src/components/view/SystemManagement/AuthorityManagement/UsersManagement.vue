@@ -87,8 +87,8 @@ export default {
         },
         // 删除
         deleteRow(data,row){
-            this.$utils.$$confirm("该角色分类").then(()=>{
-                this.apis.AuthorityManagement.RolesType.delete({id:row.id}).then(()=>{
+            this.$utils.$$confirm("该用户").then(()=>{
+                this.apis.user.auth.delete({id:row.id}).then(()=>{
                     this.$message({type:"success",message:"删除成功"});
                     this.reset();
                 })

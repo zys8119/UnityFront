@@ -147,4 +147,17 @@ export class AuthController extends applicationController{
             }
         }).then(res=>this.$_success(res)).catch(()=>this.$_error());
     }
+
+    /**
+     * 删除
+     */
+    @method_post(AuthController,"delete")
+    delete(){
+        if(!this.$_body.id){return this.$_error("【id】 字段必填")}
+        new this.$sqlModel.UserModel().update({
+            status:2,
+        }).where({id:this.$_body.id}).query()
+            .then(()=>this.$_success())
+            .catch(()=>this.$_error());
+    }
 }
