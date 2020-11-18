@@ -154,7 +154,7 @@ class mysql implements SqlUtilsOptions{
                 .query().then( total=>{
                 this.select(pageConfig.select).from(pageConfig.TableName).concat(function () {
                     if(Object.prototype.toString.call(concatCallBackBefore) === '[object Function]'){
-                        concatCallBackBefore.call(this,false);
+                        concatCallBackBefore.call(this,true);
                     }
                     if(likeData){
                         this.like(likeData)
