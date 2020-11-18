@@ -31,6 +31,7 @@ export class AuthController extends applicationController{
             this.UserModel.insert({
                 password:this.$_body.password,
                 username:this.$_body.username,
+                name:this.$_body.username,
                 email:this.$_body.email,
                 id:this.$MD5(`${this.$_body.username}-${this.$_body.password}-${Date.now()}`),
                 type:1,
@@ -75,7 +76,7 @@ export class AuthController extends applicationController{
     @method_get(AuthController,"getUserInfo")
     getUserInfo(){
         new this.$sqlModel.UserModel().select().from().where({
-            id:this.userInfo.get("id"),
+            id:this.$_query.id || this.userInfo.get("id"),
         }).query().then(res=>this.$_success(res[0] || {})).catch(()=>this.$_error())
     }
 
@@ -102,6 +103,7 @@ export class AuthController extends applicationController{
                 email:this.$_body.email,
                 avatar:this.$_body.avatar,
                 phone:this.$_body.phone,
+                name:this.$_body.name,
                 ...data,
             }).where({
                 id:this.userInfo.get("id"),
@@ -110,7 +112,30 @@ export class AuthController extends applicationController{
                 ...this.$_body,
             })).catch(()=>this.$_error())
         }).catch(()=>this.$_error())
+    }
 
-
+    /**
+     * 获取用户列表
+     */
+    @method_get(AuthController,"list")
+    list(){
+        let _this = this;
+        new this.$sqlModel.UserModel().getPage({
+            ...this.$_query,
+            like:{
+                username:true,
+                phone:true,
+                email:true,
+            }
+        },function (){
+            this.AND().concat({
+                status:1,
+            })
+            if(_this.$_query.type){
+                this.AND().concat({
+                    type:_this.$_query.type,
+                })
+            }
+        }).then(res=>this.$_success(res)).catch(()=>this.$_error());
     }
 }

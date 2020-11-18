@@ -27,10 +27,11 @@ export default {
      * 获取用户信息
      * @returns {*}
      */
-    getUserInfo(){
+    getUserInfo(data){
         return this.axios({
             url:"/User/Auth/getUserInfo",
             method:"get",
+            data,
         })
     },
 
@@ -43,6 +44,19 @@ export default {
         return this.axios({
             url:"/User/Auth/updateUserInfo",
             method:"post",
+            data,
+        })
+    },
+
+    /**
+     * 用户列表
+     * @param data
+     * @returns {*}
+     */
+    list(data){
+        return this.axios({
+            url:"/User/Auth/list",
+            method:"get",
             data,
         })
     }

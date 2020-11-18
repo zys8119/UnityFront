@@ -10,7 +10,7 @@
         </el-tabs>
         <el-dropdown>
             <span class="el-dropdown-link">
-                 <span class="username" v-if="airforce.login.username">欢迎 {{airforce.login.username}}</span>
+                 <span class="username" v-if="airforce.login.name">欢迎 {{airforce.login.name}}</span>
                  <el-image class="Avatar" fit="fill" :src="airforce.login.avatar">
                      <img slot="error" class="errImg" width="100%" height="100%" src="/images/login/logo.png">
                  </el-image>

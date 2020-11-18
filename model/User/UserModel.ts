@@ -16,6 +16,10 @@ export default class extends PublicModel implements PublicModelInterface{
             NOT:'NULL',
             COMMENT:`'账号'`,
         },
+        name:{
+            varchar:"(255)",
+            COMMENT:`'用户名称'`,
+        },
         password:{
             varchar:"(255)",
             NOT:'NULL',

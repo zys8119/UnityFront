@@ -18,6 +18,7 @@ export default [
                 {title:"菜单类型管理",id:getId(), path:"/system-management/authority-management/menu-type-management"},
                 {title:"角色管理",id:getId(), path:"/system-management/authority-management/roles-management"},
                 {title:"角色分类管理",id:getId(), path:"/system-management/authority-management/roles-type-management"},
+                {title:"用户管理",id:getId(), path:"/system-management/authority-management/users-management"},
             ]},
         ]
     }

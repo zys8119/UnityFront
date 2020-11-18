@@ -13,7 +13,10 @@
                     </div>
                     <div class="conetnt">
                         <el-form label-width="120px">
-                            <el-form-item label="用户名称：" required>{{airforce.login.username}}</el-form-item>
+                            <el-form-item label="账号名称：" required>{{formData.username}}</el-form-item>
+                            <el-form-item label="用户名称：" required>
+                                <el-input v-model="formData.name"></el-input>
+                            </el-form-item>
                             <el-form-item label="邮箱：" required>
                                 <el-input type="email：" v-model="formData.email"></el-input>
                             </el-form-item>
@@ -39,6 +42,7 @@
                 </div>
                 <z-alert-footer page>
                     <el-button type="primary" @click="save">保存</el-button>
+                    <el-button v-if="$route.query.id" @click="$router.back()">返回</el-button>
                 </z-alert-footer>
             </layout-filter-content>
         </layout-box>
@@ -64,10 +68,26 @@ export default {
     methods:{
         // 初始化
         init(){
+            if(this.$route.query.id){
+                this.apis.user.auth.getUserInfo({
+                    id:this.$route.query.id
+                }).then(res=>{
+                    this.formData = {
+                        ...res,
+                        passwordOrigin:null,
+                        password:null,
+                        passwordNew:null,
+                        isPassword:false,
+                    }
+                })
+                return ;
+            }
             this.formData = {
+                username:this.airforce.login.username,
                 email:this.airforce.login.email,
                 avatar:this.airforce.login.avatar,
                 phone:this.airforce.login.phone,
+                name:this.airforce.login.name,
                 passwordOrigin:null,
                 password:null,
                 passwordNew:null,
@@ -76,6 +96,7 @@ export default {
         },
         // 保存
         save(){
+            if(this.$utils.is_S(this.formData.name)){return this.$message.error("请输入账号名称")}
             if(this.$utils.is_S(this.formData.email)){return this.$message.error("请输入邮箱")}
             if(this.$utils.is_S(this.formData.phone)){return this.$message.error("请输入手机号码")}
             if(this.$utils.isPhone(this.formData.phone)){return this.$message.error("手机号码格式错误")}
@@ -99,6 +120,9 @@ export default {
                         ...res,
                     },
                 })
+                if(this.$route.query.id){
+                    this.$router.back();
+                }
             })
         },
         // 头像上传回调

@@ -100,6 +100,14 @@ export default new vueRouter({
                                         bodyBaColor,
                                     }
                                 },
+                                {
+                                    path:"users-management",
+                                    title:"用户管理",
+                                    component:()=>import("@/components/view/SystemManagement/AuthorityManagement/UsersManagement"),
+                                    meta:{
+                                        bodyBaColor,
+                                    }
+                                },
                             ]
                         },
                     ]
