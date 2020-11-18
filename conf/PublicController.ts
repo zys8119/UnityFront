@@ -8,6 +8,7 @@ import RouteWhitelist,{DomainWhitelist} from "./Whitelist";
  */
 import {ControllerInitDataOptions} from "../UnityFrontUtils/typeStript";
 import {ServerConfig, ServerPublicConfig} from "../UnityFrontUtils/config";
+import {SqlModel} from "../model/interfaces";
 class Interceptor implements ControllerInitDataOptions{
     $_success(msg?: any, sendData?: any, code?: number): void {
     }
@@ -19,6 +20,7 @@ class Interceptor implements ControllerInitDataOptions{
     userInfo:any;
     $_method:any;
     $_url:string;
+    $sqlModel?:SqlModel;
 
     /**
      * Interceptor 全局拦截器注入
@@ -26,7 +28,7 @@ class Interceptor implements ControllerInitDataOptions{
      * @return { Promise } then 执行 、 catch 终止
      */
     Interceptor(){
-        const code = 110001;// 退出登录
+        const code = 110001;// 退出登录，或拒绝访问
         if(this.$_headers['token']){
             try {
                 const token = this.$_decode(this.$_headers['token']);
@@ -61,7 +63,23 @@ class Interceptor implements ControllerInitDataOptions{
                             return Promise.reject();
                         }
                     }
-                    return Promise.resolve();
+                    return new Promise((resolve, reject) => {
+                        new this.$sqlModel.UserModel().select().from().where({
+                            id:this.userInfo.get("id"),
+                            status:1,
+                        }).query().then(res=>{
+                            if(res.length === 0){
+                                this.$_error("无效token或用户不存在", null, code);
+                                return reject();
+                            }
+                            // @ts-ignore
+                            this.userInfo = new Map(Object.keys(res[0]).map(e=>([e,res[0][e]])));
+                            resolve();
+                        }).catch(()=>{
+                            this.$_error("权限不足或系统错误", null, code);
+                            reject();
+                        })
+                    });
                 }else {
                     this.$_error("无效token", null, code);
                 }
