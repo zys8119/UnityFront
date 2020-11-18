@@ -95,7 +95,7 @@ export class AuthController extends applicationController{
     @method_post(AuthController,"updateUserInfo")
     updateUserInfo(){
         new this.$sqlModel.UserModel().select().from().where({
-            id:this.userInfo.get("id"),
+            id:this.$_body.id || this.userInfo.get("id"),
         }).query().then(res=>{
             let info = (res[0] || {});
             let data:any = {};
@@ -115,7 +115,7 @@ export class AuthController extends applicationController{
                 name:this.$_body.name,
                 ...data,
             }).where({
-                id:this.userInfo.get("id"),
+                id:this.$_body.id || this.userInfo.get("id"),
             }).query().then(res=>this.$_success({
                 ...info,
                 ...this.$_body,
