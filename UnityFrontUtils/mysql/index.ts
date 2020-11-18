@@ -126,7 +126,7 @@ class mysql implements SqlUtilsOptions{
         return this.join(`limit ${offset}, ${sum} `);
     }
 
-    getPage(pageConfig: getPagePageConfigType = {}, concatCallBack?: (this: SqlUtilsOptions, bool?:boolean) => void) {
+    getPage(pageConfig: getPagePageConfigType = {}, concatCallBack?: (this: SqlUtilsOptions, bool?:boolean) => void, concatCallBackBefore?:(this:SqlUtilsOptions,bool?:boolean)=>void) {
         return new Promise((resolve,reject)=>{
             let name = pageConfig.search || "";
             let pageNo = pageConfig.pageNo || 0;
@@ -139,6 +139,9 @@ class mysql implements SqlUtilsOptions{
                 likeData[`CONCAT(${likeFilter.join(",")})`] = `%${name}%`;
             }
             this.count().concat(function () {
+                if(Object.prototype.toString.call(concatCallBackBefore) === '[object Function]'){
+                    concatCallBackBefore.call(this,false);
+                }
                 if(likeData){
                     this.like(likeData)
                 }
@@ -149,6 +152,9 @@ class mysql implements SqlUtilsOptions{
             })
                 .query().then( total=>{
                 this.select(pageConfig.select).from(pageConfig.TableName).concat(function () {
+                    if(Object.prototype.toString.call(concatCallBackBefore) === '[object Function]'){
+                        concatCallBackBefore.call(this,false);
+                    }
                     if(likeData){
                         this.like(likeData)
                     }
