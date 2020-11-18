@@ -30,7 +30,7 @@ export class RolesController extends applicationController{
                     data["roles_type.is_del"] = 1;
                 }
                 if(_this.$_query.type){
-                    data.type = _this.$_query.type
+                    data["roles.type"] = _this.$_query.type
                 }
                 this.AND().concat(data)
             },function (bool){
