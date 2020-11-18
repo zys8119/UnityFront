@@ -17,7 +17,7 @@ export default class extends PublicModel implements PublicModelInterface{
             COMMENT:`'角色名称'`,
         },
         type:{
-            int:"(255)",
+            varchar:"(255)",
             NOT:'NULL',
             DEFAULT:`'1'`,
             COMMENT:`'角色分类：1 后台、2 前台、3 其他'`,

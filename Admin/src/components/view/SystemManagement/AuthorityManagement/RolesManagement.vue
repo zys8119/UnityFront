@@ -41,7 +41,7 @@ export default {
             columns:[
                 {label:"序号",type:"number"},
                 {label:"角色名称", prop:"name"},
-                {label:"角色类型", prop:"type", type:"textType", filterLabel:row=>(this.typeOptions.find(e=>e.value == row.type) || {}).label},
+                {label:"角色类型", prop:"type_str"},
                 {label:"操作", type:"operate", btns:[
                     {name:"编辑", type:"text", className:"primary", emit:"editRow"},
                     {name:"删除", type:"text", className:"delete", emit:"deleteRow"},

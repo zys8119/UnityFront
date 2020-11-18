@@ -19,16 +19,26 @@ export class RolesController extends applicationController{
             .getPage({
                 ...this.$_query,
                 like:{
-                    name:true
-                }
-            },function (){
+                    "roles.name":true
+                },
+                select:"roles.*, roles_type.name as type_str"
+            },function (bool){
                 let data:any = {
-                    is_del:1,
+                    "roles.is_del":1,
+                }
+                if(bool){
+                    data["roles_type.is_del"] = 1;
                 }
                 if(_this.$_query.type){
                     data.type = _this.$_query.type
                 }
                 this.AND().concat(data)
+            },function (bool){
+                if(bool){
+                    this.join({
+                        "roles_type":"roles.type = roles_type.id"
+                    })
+                }
             })
             .then((res)=>this.$_success(res))
             .catch(()=>this.$_error());
@@ -42,11 +52,17 @@ export class RolesController extends applicationController{
     add(){
         if(!this.$_body.name){return this.$_error("【name】 字段必填")}
         if(!this.$_body.type){return this.$_error("【type】 字段必填")}
-        new this.$sqlModel.RolesModel().insert({
+        if(!this.$_body.is_effective){return this.$_error("【is_effective】 字段必填")}
+        let data:any = {
             name:this.$_body.name,
             type:this.$_body.type,
+            is_effective:this.$_body.is_effective,
             id:Date.now()
-        }).query()
+        };
+        if(this.$_body.description){
+            data.description = this.$_body.description;
+        }
+        new this.$sqlModel.RolesModel().insert(data).query()
             .then(()=>this.$_success())
             .catch(()=>this.$_error());
     }
