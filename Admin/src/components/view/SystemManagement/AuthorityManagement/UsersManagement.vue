@@ -67,7 +67,8 @@ export default {
         addUser(data,row){
             this.$router.push({
                 query:{
-                    id:row.id,
+                    id:row? row.id : null,
+                    type:row ? "edit":"add",
                 },
                 path:"/userInfo"
             })

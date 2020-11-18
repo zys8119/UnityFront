@@ -20,6 +20,7 @@ export class AuthController extends applicationController{
     register(){
         if(!this.$_body.username){return this.$_error("【username】 字段必填")}
         if(!this.$_body.password){return this.$_error("【password】 字段必填")}
+        if(!this.$_body.email){return this.$_error("【email】 字段必填")}
         this.UserModel.select().from().where({
             username:this.$_body.username,
             status:1,
@@ -28,14 +29,22 @@ export class AuthController extends applicationController{
                 this.$_error("用户已存在")
                 return;
             }
-            this.UserModel.insert({
+            let userData:any = {
                 password:this.$_body.password,
                 username:this.$_body.username,
                 name:this.$_body.username,
                 email:this.$_body.email,
                 id:this.$MD5(`${this.$_body.username}-${this.$_body.password}-${Date.now()}`),
                 type:1,
-            }).query().then(()=>{
+            };
+            if(this.$_body.type === "add"){
+                userData.name = this.$_body.username;
+                userData.phone = this.$_body.phone;
+                if(this.$_body.avatar){
+                    userData.avatar = this.$_body.avatar;
+                }
+            }
+            this.UserModel.insert(userData).query().then(()=>{
                 this.$_success()
             }).catch(()=>this.$_error())
         }).catch(()=>this.$_error())

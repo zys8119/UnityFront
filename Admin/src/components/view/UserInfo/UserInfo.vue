@@ -13,21 +13,29 @@
                     </div>
                     <div class="conetnt">
                         <el-form label-width="120px">
-                            <el-form-item label="账号名称：" required>{{formData.username}}</el-form-item>
-                            <el-form-item label="用户名称：" required>
+                            <el-form-item label="账号名称：" required v-if="$route.query.type !== 'add'">{{formData.username}}</el-form-item>
+                            <el-form-item label="用户名称：" required v-if="$route.query.type !== 'add'">
                                 <el-input v-model="formData.name"></el-input>
                             </el-form-item>
+                            <template v-else>
+                                <el-form-item label="账号名称：" required>
+                                    <el-input v-model="formData.username"></el-input>
+                                </el-form-item>
+                                <el-form-item label="用户名称：" required>
+                                    <el-input v-model="formData.name"></el-input>
+                                </el-form-item>
+                            </template>
                             <el-form-item label="邮箱：" required>
                                 <el-input type="email：" v-model="formData.email"></el-input>
                             </el-form-item>
                             <el-form-item label="手机号码：" required>
                                 <el-input v-model="formData.phone"></el-input>
                             </el-form-item>
-                            <el-form-item label="修改密码：">
+                            <el-form-item label="修改密码：" v-if="$route.query.type !== 'add'">
                                <el-switch v-model="formData.isPassword"></el-switch>
                             </el-form-item>
                             <template v-if="formData.isPassword">
-                                <el-form-item label="原密码：" required>
+                                <el-form-item label="原密码：" required v-if="$route.query.type !== 'add'">
                                     <el-input type="password" v-model="formData.passwordOrigin" show-password></el-input>
                                 </el-form-item>
                                 <el-form-item label="新密码：" required>
@@ -68,49 +76,82 @@ export default {
     methods:{
         // 初始化
         init(){
-            if(this.$route.query.id){
-                this.apis.user.auth.getUserInfo({
-                    id:this.$route.query.id
-                }).then(res=>{
-                    this.formData = {
-                        ...res,
-                        passwordOrigin:null,
-                        password:null,
-                        passwordNew:null,
-                        isPassword:false,
-                    }
-                })
-                return ;
-            }
-            this.formData = {
-                username:this.airforce.login.username,
-                email:this.airforce.login.email,
-                avatar:this.airforce.login.avatar,
-                phone:this.airforce.login.phone,
-                name:this.airforce.login.name,
-                passwordOrigin:null,
-                password:null,
-                passwordNew:null,
-                isPassword:false,
+            switch (this.$route.query.type){
+            case "edit":
+                // 修改用户信息
+                if(this.$route.query.id){
+                    this.apis.user.auth.getUserInfo({
+                        id:this.$route.query.id
+                    }).then(res=>{
+                        this.formData = {
+                            ...res,
+                            passwordOrigin:null,
+                            password:null,
+                            passwordNew:null,
+                            isPassword:false,
+                        }
+                    })
+                    return ;
+                }
+                break;
+            case "add":
+                // 添加用户信息
+                this.formData = {
+                    username:null,
+                    email:null,
+                    avatar:null,
+                    phone:null,
+                    name:null,
+                    passwordOrigin:null,
+                    password:null,
+                    passwordNew:null,
+                    isPassword:true,
+                }
+                break;
+            default:
+                // 修改当前账号信息
+                this.formData = {
+                    username:this.airforce.login.username,
+                    email:this.airforce.login.email,
+                    avatar:this.airforce.login.avatar,
+                    phone:this.airforce.login.phone,
+                    name:this.airforce.login.name,
+                    passwordOrigin:null,
+                    password:null,
+                    passwordNew:null,
+                    isPassword:false,
+                }
+                break;
             }
         },
         // 保存
         save(){
-            if(this.$utils.is_S(this.formData.name)){return this.$message.error("请输入账号名称")}
+            if(this.$route.query.type === "add"){
+                if(this.$utils.is_S(this.formData.username)){return this.$message.error("请输入账号名称")}
+            }
+            if(this.$utils.is_S(this.formData.name)){return this.$message.error("请输入用户名称")}
             if(this.$utils.is_S(this.formData.email)){return this.$message.error("请输入邮箱")}
             if(this.$utils.is_S(this.formData.phone)){return this.$message.error("请输入手机号码")}
             if(this.$utils.isPhone(this.formData.phone)){return this.$message.error("手机号码格式错误")}
-            if(this.formData.isPassword){
+            if(this.formData.isPassword && this.$route.query.type !== "add"){
                 if(this.$utils.is_S(this.formData.passwordOrigin)){return this.$message.error("请输入原密码")}
                 if(this.$utils.is_S(this.formData.password)){return this.$message.error("请输入新密码")}
                 if(this.$utils.is_S(this.formData.passwordNew)){return this.$message.error("请再次输入密码")}
                 if(this.formData.password !== this.formData.passwordNew){return this.$message.error("两次密码不一致")}
             }
-            this.apis.user.auth.updateUserInfo({
+            let Api = this.apis.user.auth.updateUserInfo;
+            if(this.$route.query.type === "add"){
+                if(this.$utils.is_S(this.formData.password)){return this.$message.error("请输入新密码")}
+                if(this.$utils.is_S(this.formData.passwordNew)){return this.$message.error("请再次输入密码")}
+                if(this.formData.password !== this.formData.passwordNew){return this.$message.error("两次密码不一致")}
+                Api = this.apis.user.auth.register;
+            }
+            Api({
                 ...this.formData,
                 passwordOrigin:this.formData.passwordOrigin ? this.$utils.MD5(this.formData.passwordOrigin) : "",
                 passwordNew:this.formData.passwordNew ? this.$utils.MD5(this.formData.passwordNew) : "",
                 password:this.formData.password ? this.$utils.MD5(this.formData.password) : "",
+                type:this.$route.query.type,
             }).then((res)=>{
                 this.$message({type:"success",message:"保存成功"})
                 this.action({
@@ -120,7 +161,7 @@ export default {
                         ...res,
                     },
                 })
-                if(this.$route.query.id){
+                if(this.$route.query.id || this.$route.query.type === "add"){
                     this.$router.back();
                 }
             })
