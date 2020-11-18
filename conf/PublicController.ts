@@ -1,3 +1,4 @@
+import RouteWhitelist from "./RouteWhitelist";
 /**
  * 全局控制器方法扩展注入
  * 这里声明的方法或属性，将会被所有应用调用，开放开发者自由封装
@@ -15,6 +16,7 @@ class Interceptor implements ControllerInitDataOptions{
     $_decode(str: string, newKey?: string): any {
     }
     userInfo:any;
+    $_url:string;
 
     /**
      * Interceptor 全局拦截器注入
@@ -22,8 +24,8 @@ class Interceptor implements ControllerInitDataOptions{
      * @return { Promise } then 执行 、 catch 终止
      */
     Interceptor(){
+        const code = 110001;// 退出登录
         if(this.$_headers['token']){
-            const code = 110001;// 退出登录
             try {
                 const token = this.$_decode(this.$_headers['token']);
                 if(token){
@@ -54,6 +56,16 @@ class Interceptor implements ControllerInitDataOptions{
                 this.$_error("拦截器错误", null, code);
             }
             return Promise.reject()
+        }else {
+            const rw = (<any>RouteWhitelist).find(e=>this.$_url.toLocaleLowerCase().indexOf(e) === 0);
+            if(rw){
+                // @ts-ignore
+                this.userInfo = new Map();
+                return Promise.resolve();
+            }else {
+                this.$_error("权限不足", null, code);
+                return Promise.reject();
+            }
         }
         // @ts-ignore
         this.userInfo = new Map();
