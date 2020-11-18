@@ -90,6 +90,7 @@ class mysql implements SqlUtilsOptions{
             })
         };
         return new Promise((resolve, reject) => {
+            ncol.success(sqlStrs);
             this.connection.query(sqlStrs, (error, results, fields)=> {
                 if(error){
                     ncol.error(`【QUERY ERROR】::  ${error.message} in (\`${sqlStr}\`)`);
