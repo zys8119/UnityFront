@@ -24,6 +24,7 @@
                     ref="table"
                     @editRow="addRoles"
                     @deleteRow="deleteRow"
+                    @permissionSettings="permissionSettings"
                     :apiPath="apis.AuthorityManagement.Roles.list"
                     :params="params"
                     :columns="columns"></content-table>
@@ -42,8 +43,10 @@ export default {
                 {label:"序号",type:"number"},
                 {label:"角色名称", prop:"name"},
                 {label:"角色类型", prop:"type_str"},
+                {label:"角色描述", prop:"description"},
                 {label:"操作", type:"operate", btns:[
                     {name:"编辑", type:"text", className:"primary", emit:"editRow"},
+                    {name:"权限设置", type:"text", className:"success", emit:"permissionSettings"},
                     {name:"删除", type:"text", className:"delete", emit:"deleteRow"},
                 ]},
             ],
@@ -92,6 +95,10 @@ export default {
                     this.reset();
                 })
             })
+        },
+        // 权限设置
+        permissionSettings(){
+
         }
     }
 }
