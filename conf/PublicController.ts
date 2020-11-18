@@ -16,6 +16,7 @@ class Interceptor implements ControllerInitDataOptions{
     $_decode(str: string, newKey?: string): any {
     }
     userInfo:any;
+    $_method:any;
     $_url:string;
 
     /**
@@ -57,14 +58,16 @@ class Interceptor implements ControllerInitDataOptions{
             }
             return Promise.reject()
         }else {
-            const rw = (<any>RouteWhitelist).find(e=>this.$_url.toLocaleLowerCase().indexOf(e) === 0);
-            if(rw){
-                // @ts-ignore
-                this.userInfo = new Map();
-                return Promise.resolve();
-            }else {
-                this.$_error("权限不足", null, code);
-                return Promise.reject();
+            if(this.$_method.toLocaleLowerCase() !== 'options'){
+                const rw = (<any>RouteWhitelist).find(e=>this.$_url.toLocaleLowerCase().indexOf(e) === 0);
+                if(rw){
+                    // @ts-ignore
+                    this.userInfo = new Map();
+                    return Promise.resolve();
+                }else {
+                    this.$_error("权限不足", null, code);
+                    return Promise.reject();
+                }
             }
         }
         // @ts-ignore
