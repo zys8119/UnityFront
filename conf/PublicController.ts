@@ -7,6 +7,7 @@ import RouteWhitelist from "./RouteWhitelist";
  * 该字段存在，且类型为方法时，将被默认为拦截器调用
  */
 import {ControllerInitDataOptions} from "../UnityFrontUtils/typeStript";
+import {ServerPublicConfig} from "../UnityFrontUtils/config";
 class Interceptor implements ControllerInitDataOptions{
     $_success(msg?: any, sendData?: any, code?: number): void {
     }
@@ -46,7 +47,12 @@ class Interceptor implements ControllerInitDataOptions{
                         1:"password",
                         2:"id",
                         3:"time",
+                        4:"salt",
                     }[k],e])));
+                    if(this.userInfo.get("salt") !== ServerPublicConfig.token_salt){
+                        this.$_error("无效token，请重新登录", null, code);
+                        return  Promise.reject();
+                    }
                     return Promise.resolve();
                 }else {
                     this.$_error("无效token", null, code);

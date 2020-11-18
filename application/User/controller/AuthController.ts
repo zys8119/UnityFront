@@ -4,6 +4,7 @@ import {
 } from "../../../UnityFrontUtils/controller/applicationController";
 import {SqlUtilsOptions} from "../../../UnityFrontUtils/typeStript";
 import {PublicModelInterface} from "../../../model/PublicModel";
+import { ServerPublicConfig} from "../../../UnityFrontUtils/config";
 
 export class AuthController extends applicationController{
     private UserModel:SqlUtilsOptions & PublicModelInterface
@@ -58,10 +59,12 @@ export class AuthController extends applicationController{
                 this.$_error("账号密码错误")
                 return;
             }
+            const token_laws = `${res[0].username}-${res[0].password}-${res[0].id}-${Date.now()+ServerPublicConfig.token_time}-${ServerPublicConfig.token_salt}`;
+            const token = this.$_encode(token_laws);
             this.$_success({
                 ...res[0],
                 // 1个月有效时间
-                token:this.$_encode(`${res[0].username}-${res[0].password}-${res[0].id}-${Date.now()+1000*3600*24*30}`)
+                token,
             });
         }).catch(()=>this.$_error())
     }

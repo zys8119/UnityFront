@@ -26,6 +26,10 @@ export const mysqlConfig = <mysqlOptions>{
 export const ServerPublicConfig = <ServerPublicConfigOptions>{
     // 公共密钥,更换密钥可以使用控制器方法$_createEncryptKey获取随机密钥
     createEncryptKey:"0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM",
+    // token盐，用于拦截器特殊判断
+    token_salt:"UnityFrontAdmin",
+    // token有效期，默认一个月
+    token_time:1000*3600*24*30,
 };
 
 //服务设置

@@ -557,6 +557,10 @@ export interface encryptOptions {
 export interface ServerPublicConfigOptions {
     // 公共密钥,更换密钥可以使用控制器方法$_createEncryptKey获取随机密钥
     createEncryptKey:string|null;
+    // token盐，用于拦截器特殊判断
+    token_salt:string;
+    // token有效期，默认一个月
+    token_time:number;
 }
 
 export interface getSvgCodeOptions {
