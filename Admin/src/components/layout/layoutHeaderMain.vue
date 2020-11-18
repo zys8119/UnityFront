@@ -4,7 +4,7 @@
             <img src="/images/login/logo_text3.png">
         </div>
         <el-tabs class="conetntMenu" @tab-click="tabClick(false)" v-model="activeName">
-            <el-tab-pane v-for="(item,key) in airforce.menus" :key="key" :item="item">
+            <el-tab-pane v-for="(item,key) in airforce.menus" :key="key" :item="item" :name="item.id">
                 <div slot="label" class="conetntMenuItem">{{item.title}}</div>
             </el-tab-pane>
         </el-tabs>
@@ -63,6 +63,11 @@ export default {
                     this.go(this.airforce.menus[this.activeName])
                 }
                 this.$utils.getMenu.call(this)
+                this.$nextTick(()=>{
+                    if(this.airforce.menusInfo && this.airforce.menusInfo.id){
+                        this.activeName = this.airforce.menusInfo.id;
+                    }
+                })
                 return ;
             }
             localStorage.setItem("menusId",null);

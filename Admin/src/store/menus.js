@@ -11,7 +11,7 @@ export default [
     },
     {
         title:"系统管理",
-        path:"/system-management/authority-management/menu-management",id:"2",
+        path:"/system-management/authority-management/menu-management",id:getId(),
         children:[
             {title:"权限管理",id:getId(), path:"/system-management/authority-management/menu-management",children:[
                 {title:"菜单管理",id:getId(), path:"/system-management/authority-management/menu-management"},
