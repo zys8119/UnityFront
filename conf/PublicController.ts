@@ -1,4 +1,4 @@
-import RouteWhitelist from "./RouteWhitelist";
+import RouteWhitelist,{DomainWhitelist} from "./Whitelist";
 /**
  * 全局控制器方法扩展注入
  * 这里声明的方法或属性，将会被所有应用调用，开放开发者自由封装
@@ -7,7 +7,7 @@ import RouteWhitelist from "./RouteWhitelist";
  * 该字段存在，且类型为方法时，将被默认为拦截器调用
  */
 import {ControllerInitDataOptions} from "../UnityFrontUtils/typeStript";
-import {ServerPublicConfig} from "../UnityFrontUtils/config";
+import {ServerConfig, ServerPublicConfig} from "../UnityFrontUtils/config";
 class Interceptor implements ControllerInitDataOptions{
     $_success(msg?: any, sendData?: any, code?: number): void {
     }
@@ -53,6 +53,14 @@ class Interceptor implements ControllerInitDataOptions{
                         this.$_error("无效token，请重新登录", null, code);
                         return  Promise.reject();
                     }
+                    // 域名白名单判断
+                    if(ServerConfig.DomainWhite && this.$_headers['origin']){
+                        const dw = (<any>DomainWhitelist).findIndex(d=>d === this.$_headers['origin'].toLocaleLowerCase());
+                        if(dw === -1){
+                            this.$_error("权限不足", null, code);
+                            return Promise.reject();
+                        }
+                    }
                     return Promise.resolve();
                 }else {
                     this.$_error("无效token", null, code);
@@ -64,9 +72,18 @@ class Interceptor implements ControllerInitDataOptions{
             }
             return Promise.reject()
         }else {
+            // 接口白名单判断
             if(this.$_method.toLocaleLowerCase() !== 'options'){
                 const rw = (<any>RouteWhitelist).find(e=>this.$_url.toLocaleLowerCase().indexOf(e) === 0);
                 if(rw){
+                    // 域名白名单判断
+                    if(ServerConfig.DomainWhite && this.$_headers['origin']){
+                        const dw = (<any>DomainWhitelist).findIndex(d=>d === this.$_headers['origin'].toLocaleLowerCase());
+                        if(dw === -1){
+                            this.$_error("权限不足", null, code);
+                            return Promise.reject();
+                        }
+                    }
                     // @ts-ignore
                     this.userInfo = new Map();
                     return Promise.resolve();

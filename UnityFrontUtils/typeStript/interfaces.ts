@@ -30,6 +30,7 @@ export interface ServerOptions {
     ws_user?:{[key:string]:any};//webSocket 用户链接池
     debug?:boolean;//是否开启调试
     CORS?:boolean;//是否允许跨域，全局CORS
+    DomainWhite?:boolean;//是否开启域名白名单
     fsWatch?:Array<ServerOptions_fsWatch>;//监听文件变化，如果该字段不存在就不监听
     RequestStatus:number;//默认请求状态
     headers?:headersType;//header参数

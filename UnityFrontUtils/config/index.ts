@@ -39,6 +39,7 @@ export const ServerConfig =  <ServerOptions>{
     ws_user:{},
     debug:true,
     CORS:true,
+    DomainWhite:true,
     fsWatch:[
         //listen conf directory
         {path:path.resolve(__dirname,"../../conf"),type:"directory"},
