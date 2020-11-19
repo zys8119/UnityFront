@@ -172,7 +172,7 @@ class Interceptor implements ControllerInitDataOptions{
                                     permission.forEach((e,k)=>{
                                         where_permission += `id = ${e} ${(permission.length - 1) === k ? "" : "or "}`
                                     });
-                                    where_permission = `(${where_permission}) AND is_del = 1`
+                                    where_permission = `(${where_permission}) AND is_del = 1 AND is_child_page = 1`
                                     // 根据角色权限组获取对应菜单权限
                                     new this.$sqlModel.MenuModel().select("*,name as title, url as path").from().where(where_permission).query().then(res=>{
                                         resolve(res)

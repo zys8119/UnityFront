@@ -30,6 +30,12 @@ export default class extends PublicModel implements PublicModelInterface{
             NOT:'NULL',
             COMMENT:`'菜单分类'`,
         },
+        is_child_page:{
+            int:"(255)",
+            NOT:'NULL',
+            DEFAULT:`'1'`,
+            COMMENT:`'是否为子页面：1 不是、2 是；如果是子页面则权限菜单将不可见'`,
+        },
         is_del:{
             int:"(255)",
             NOT:'NULL',
