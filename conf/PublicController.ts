@@ -75,17 +75,18 @@ class Interceptor implements ControllerInitDataOptions{
                             //todo 是否开启token_url页面级别权限控制，建议开启，第一次开发时可以关闭，不然无法设置权限页面
                             if(ServerConfig.token_url){
                                 // 账号页面权限控制
-                                this.getUserRoles.call(this,res[0].id).then(Roles=>{
-                                    if(this.$_headers["token_url"] && Roles.find(e=>this.$_headers["token_url"].toLocaleLowerCase().indexOf(e.url.toLocaleLowerCase())) === 0){
+                                this.getUserRoles.call(this,res[0].id, true).then(Roles=>{
+                                    let token_url = this.$_headers["token_url"];
+                                    if(token_url && Roles.find(e=>token_url.toLocaleLowerCase().indexOf(e.url.toLocaleLowerCase()) === 0)){
                                         // @ts-ignore
                                         this.userInfo = new Map(Object.keys(res[0]).map(e=>([e,res[0][e]])));
                                         resolve();
                                     }else {
-                                        this.$_error("权限不足", null, code);
+                                        this.$_error("权限不足, 请联系管理员!", null, code);
                                         reject();
                                     }
                                 }).catch(()=>{
-                                    this.$_error("权限不足或系统错误", null, code);
+                                    this.$_error("权限不足或系统错误, 请联系管理员!", null, code);
                                     reject();
                                 })
                             }else {
@@ -139,7 +140,7 @@ class Interceptor implements ControllerInitDataOptions{
     /**
      * 获取用户角色权限
      */
-    getUserRoles(id:string):Promise<any> | any{
+    getUserRoles(id:string, child_page?:boolean):Promise<any> | any{
         if(!id){return this.$_error("【id】 字段必填")}
         return new Promise((resolve, reject) => {
             // 根据用户id获取用户角色组
@@ -180,14 +181,16 @@ class Interceptor implements ControllerInitDataOptions{
                                     permission.forEach((e,k)=>{
                                         where_permission += `id = ${e} ${(permission.length - 1) === k ? "" : "or "}`
                                     });
-
                                     if(where_permission){
-                                        where_permission = `(${where_permission}) AND is_del = 1 AND is_child_page = 1`
+                                        where_permission = `(${where_permission}) AND is_del = 1 `
                                     }else {
-                                        where_permission = `is_del = 1 AND is_child_page = 1`
+                                        where_permission = `is_del = 1 `
+                                    }
+                                    if(!child_page){
+                                        where_permission += ` AND is_child_page = 1`
                                     }
                                     // 根据角色权限组获取对应菜单权限
-                                    new this.$sqlModel.MenuModel().select("*,name as title, url as path").from().where(where_permission).query().then(res=>{
+                                    new this.$sqlModel.MenuModel().select("*,name as title, url as path").from().where(where_permission).asc("id").query().then(res=>{
                                         resolve(res)
                                     }).catch(()=>reject())
                                 }else {

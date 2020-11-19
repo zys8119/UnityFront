@@ -15,6 +15,7 @@ export default {
     },
     // 登录
     login(data){
+        localStorage.clear();
         this.action({
             moduleName:"login",
             goods:{

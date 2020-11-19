@@ -21,7 +21,7 @@
                 <div class="layoutMainContent">
                     <router-view></router-view>
                 </div>
-                <div class="layoutFooter">
+                <div class="layoutFooter" v-if="airforce.layout.footerShow">
                     <div class="layoutFooterContent"
                          :class="{
                             show:showAside,

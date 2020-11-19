@@ -40,7 +40,7 @@ export const ServerConfig =  <ServerOptions>{
     debug:true,
     CORS:true,
     DomainWhite:false,
-    token_url:false,
+    token_url:true,
     fsWatch:[
         //listen conf directory
         {path:path.resolve(__dirname,"../../conf"),type:"directory"},

@@ -7,7 +7,7 @@ export default {
     // 主菜单id
     menusId:null,
     // 是否显示服务端菜单
-    isShowServerMenus:false,
+    isShowServerMenus:true,
     // 是否开放注册页面
     isOpenRegisterPage:false,
 }
