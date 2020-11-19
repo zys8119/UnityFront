@@ -57,5 +57,7 @@ export default class extends PublicModel implements PublicModelInterface{
         INSERT INTO \`menu\` VALUES ('1605769095259843', '首页', '/home', null, '1605505190793', '1', '1');
         INSERT INTO \`menu\` VALUES ('1605769320496678', '用户管理', '/system-management/authority-management/users-management', '1605769190027186', '1605505190793', '1', '1');
         INSERT INTO \`menu\` VALUES ('1605770967404849', '用户中心', '/userInfo', null, '1605505190793', '1', '2');
+        INSERT INTO \`menu\` VALUES ('1605778715087343', '用户注册页面', '/User/Auth/register', null, '1605505190793', '2', '1');
+        INSERT INTO \`menu\` VALUES ('160577893512851', '角色权限设置', '/system-management/authority-management/roles-permission-settings', '1605769190027186', '1605505190793', '2', '1');
     `
 }
