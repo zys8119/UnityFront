@@ -8,8 +8,8 @@
                             <el-image fit="fill" :src="formData.avatar" class="el-image">
                                 <img slot="error" class="errImg" width="100%" height="100%" :src="formData.avatar ? formData.avatar : '/images/login/logo.png'">
                             </el-image>
+                            <p class="msg">点击上传头像</p>
                         </Upload>
-                        <p class="msg">点击上传头像</p>
                     </div>
                     <div class="conetnt">
                         <el-form label-width="120px">
@@ -190,6 +190,7 @@ export default {
             overflow: hidden;
             .el-image{
                 width: 100%;
+                min-height: 200px;
             }
             .msg{
                 text-align: center;
