@@ -46,22 +46,19 @@ export class RolesPermissionController extends applicationController{
         if(!this.$_body.roles_id){return this.$_error("【roles_id】 字段必填")}
         if(!this.$_body.permission){return this.$_error("【permission】 字段必填")}
         if(Object.prototype.toString.call(this.$_body.permission) !== "[object Array]"){return this.$_error("【permission】 字段格式错误")}
-        console.log({
+        let where = {
             menu_id:this.$_body.menu_id,
             roles_id:this.$_body.roles_id,
-            is_del:1,
-        })
+        }
         new this.$sqlModel.RolesPermissionModel().select().from().where({
-            menu_id:this.$_body.menu_id,
-            roles_id:this.$_body.roles_id,
+            ...where,
             is_del:1,
         }).query().then(res=>{
             let query = null;
             if(res.length === 0){
                 // 新增
                 query = new this.$sqlModel.RolesPermissionModel().insert({
-                    menu_id:this.$_body.menu_id,
-                    roles_id:this.$_body.roles_id,
+                    ...where,
                     permission:this.$_body.permission.toString(),
                     id:Date.now()
                 })
@@ -69,7 +66,7 @@ export class RolesPermissionController extends applicationController{
                 // 更新
                 query = new this.$sqlModel.RolesPermissionModel().update({
                     permission:this.$_body.permission.toString(),
-                })
+                }).where(where)
             }
             query.query().then(()=>this.$_success()).catch(()=>this.$_error())
         }).catch(()=>this.$_error())

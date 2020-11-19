@@ -83,6 +83,7 @@ export default {
                     this.apis.user.auth.getUserInfo({
                         id:this.$route.query.id
                     }).then(res=>{
+                        res.menus = [];
                         this.formData = {
                             ...res,
                             passwordOrigin:null,
