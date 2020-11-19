@@ -76,7 +76,7 @@ class Interceptor implements ControllerInitDataOptions{
                             if(ServerConfig.token_url){
                                 // 账号页面权限控制
                                 this.getUserRoles.call(this,res[0].id).then(Roles=>{
-                                    if(Roles.find(e=>this.$_headers["token_url"].toLocaleLowerCase().indexOf(e.url.toLocaleLowerCase())) === 0){
+                                    if(this.$_headers["token_url"] && Roles.find(e=>this.$_headers["token_url"].toLocaleLowerCase().indexOf(e.url.toLocaleLowerCase())) === 0){
                                         // @ts-ignore
                                         this.userInfo = new Map(Object.keys(res[0]).map(e=>([e,res[0][e]])));
                                         resolve();
