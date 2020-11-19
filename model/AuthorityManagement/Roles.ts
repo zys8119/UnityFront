@@ -42,4 +42,7 @@ export default class extends PublicModel implements PublicModelInterface{
     'CHARACTER SET' = 'utf8';
     COLLATE = `utf8_unicode_ci`;
     COMMENT =`'角色表'`;
+    $VALUES = `
+        INSERT INTO \`roles\` VALUES ('1605671372549', '管理员', '1605577243072', '管理员角色', '1', '1');
+    `
 }

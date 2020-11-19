@@ -54,4 +54,9 @@ export default class extends PublicModel implements PublicModelInterface{
     'CHARACTER SET' = 'utf8';
     COLLATE = `utf8_unicode_ci`;
     COMMENT =`'用户表'`;
+    // 账号：admin
+    // 密码：admin
+    $VALUES = `
+        INSERT INTO \`user\` VALUES ('671b1f4f7fbe7927ebe7740b6acf75ad', 'admin', '管理员', '21232f297a57a5a743894a0e4a801fc3', '18700000000', 'UnityFront@qq.com', ' ', '0', '1');
+    `
 }

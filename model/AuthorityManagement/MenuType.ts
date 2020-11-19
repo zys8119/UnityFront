@@ -32,4 +32,7 @@ export default class extends PublicModel implements PublicModelInterface{
     'CHARACTER SET' = 'utf8';
     COLLATE = `utf8_unicode_ci`;
     COMMENT =`'权限菜单类型表'`;
+    $VALUES = `
+        INSERT INTO \`menu_type\` VALUES ('1605505190793', '后台菜单', '1', '1');
+    `
 }
