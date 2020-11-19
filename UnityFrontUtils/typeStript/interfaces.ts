@@ -31,6 +31,7 @@ export interface ServerOptions {
     debug?:boolean;//是否开启调试
     CORS?:boolean;//是否允许跨域，全局CORS
     DomainWhite?:boolean;//是否开启域名白名单
+    token_url?:boolean;//是否开启token页面级别权限控制，建议开启，第一次开发时可以关闭，不然无法设置权限页面
     fsWatch?:Array<ServerOptions_fsWatch>;//监听文件变化，如果该字段不存在就不监听
     RequestStatus:number;//默认请求状态
     headers?:headersType;//header参数

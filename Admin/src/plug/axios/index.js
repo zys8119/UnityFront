@@ -61,6 +61,7 @@ export default class {
                 let login = store.state.airforce.login;
                 if(login && login.code === 200 && login.data && login.data.token){
                     config.headers["token"] = login.data.token;
+                    config.headers["token_url"] = window._this.$route.path;
                 }
             }catch (e){
                 //

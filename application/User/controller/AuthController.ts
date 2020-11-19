@@ -163,66 +163,9 @@ export class AuthController extends applicationController{
             this.getUserRoles(userInfo.id).then((res)=>{
                 this.$_success({
                     ...userInfo,
-                    menus:res,
+                    menus:this.toTree(res),
                 })
             }).catch(()=>this.$_error())
         }).catch(()=>this.$_error())
-    }
-
-    /**
-     * 获取用户角色权限
-     */
-    getUserRoles(id:string):Promise<any> | any{
-        let user_id = this.$_query.user_id || id;
-        if(!user_id){return this.$_error("【user_id】 字段必填")}
-        return new Promise((resolve, reject) => {
-            // 根据用户id获取用户角色组
-            new this.$sqlModel.UserRolesModel().select().from().where({
-                user_id:user_id,
-                is_del:1
-            }).query().then(res=>{
-                if(res[0]){
-                    // 根据角色组获取具体角色信息
-                    let user_roles_id = res[0].user_roles_id.split(",").filter(e=>e);
-                    let where:any = "";
-                    user_roles_id.forEach((e,k)=>{
-                        where += `id = ${e} ${(user_roles_id.length - 1) === k ? "" : "or "}`
-                    });
-                    where = `(${where}) AND is_del = 1`
-                    new this.$sqlModel.RolesModel().select().from().where(where).query().then(res=>{
-                        if(res.length > 0){
-                            let roles_arr = res;
-                            let where_roles:any = "";
-                            roles_arr.forEach((e,k)=>{
-                                where_roles += `roles_id = ${e.id} ${(roles_arr.length - 1) === k ? "" : "or "}`
-                            });
-                            where_roles = `(${where_roles}) AND is_del = 1`
-                            // 根据角色信息获取角色权限组
-                            new this.$sqlModel.RolesPermissionModel().select().from().where(where_roles).query().then(res=>{
-                                if(res.length > 0){
-                                    // @ts-ignore
-                                    let permission = (<any>Array).from(new Set(res.map(e=>e.permission.split(",").filter(e=>e)).reduce((a,b)=>a.concat(b))));
-                                    let where_permission:any = "";
-                                    permission.forEach((e,k)=>{
-                                        where_permission += `id = ${e} ${(permission.length - 1) === k ? "" : "or "}`
-                                    });
-                                    where_permission = `(${where_permission}) AND is_del = 1`
-                                    // 根据角色权限组获取对应菜单权限
-                                    new this.$sqlModel.MenuModel().select("*,name as title, url as path").from().where(where_permission).query().then(res=>{
-                                        resolve(this.toTree(res))
-                                    }).catch(()=>reject())
-                                }else {
-                                    resolve([])
-                                }
-                            }).catch(()=>reject())
-                        }else {
-                            resolve([])
-                        }
-                    }).catch(()=>reject())
-                }else {
-                    resolve([])
-                }
-            }).catch(()=>reject())
-        })
     }
 }
