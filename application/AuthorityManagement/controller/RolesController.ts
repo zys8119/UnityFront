@@ -40,8 +40,20 @@ export class RolesController extends applicationController{
                     })
                 }
             })
-            .then((res)=>this.$_success(res))
+            .then((res)=>{
+                if(Object.prototype.toString.call(res) === "[object Array]"){
+                    this.$_success(res.map(e=>({
+                        ...e,
+                        node_name:e.name,
+                        node_type:0,
+                        node_id:e.id,
+                    })))
+                    return;
+                }
+                this.$_success(res)
+            })
             .catch(()=>this.$_error());
+
     }
 
 

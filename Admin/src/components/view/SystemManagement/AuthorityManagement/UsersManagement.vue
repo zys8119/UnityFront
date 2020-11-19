@@ -40,8 +40,9 @@ export default {
         return {
             typeOptions:[
                 {label:"管理员", value:0},
-                {label:"普通用户", value:1},
+                {label:"普通管理用户", value:1},
                 {label:"api用户", value:2},
+                {label:"其他用户", value:3},
             ],
             columns:[
                 {label:"序号",type:"number"},
