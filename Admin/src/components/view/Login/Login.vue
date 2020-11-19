@@ -9,7 +9,7 @@
         </div>
         <div id="slideBox">
             <div class="topLayer">
-                <div class="left">
+                <div class="left" v-if="airforce.isOpenRegisterPage">
                     <div class="content">
                         <img class="logo" src="/images/login/logo_text.png">
                         <h2>注册</h2>
@@ -57,7 +57,7 @@
                             </div>
                             <div class="form-element form-submit">
                                 <button id="logIn" class="login" type="submit" name="login" @click="login">登录</button>
-                                <button id="goRight" class="login off" name="signup">注册</button>
+                                <button id="goRight" class="login off" name="signup" v-if="airforce.isOpenRegisterPage">注册</button>
                             </div>
                         </form>
                         <el-divider class="footer">{{footer}}</el-divider>
@@ -144,6 +144,9 @@ export default {
  * ====================== */
             $(document).ready(()=>{
                 $('#goRight').on('click', ()=>{
+                    if(!this.airforce.isOpenRegisterPage){
+                        return
+                    }
                     this.formData = {clause:true};
                     $('#slideBox').animate({
                         'marginLeft' : '0'
@@ -153,6 +156,9 @@ export default {
                     });
                 });
                 $('#goLeft').on('click', ()=>{
+                    if(!this.airforce.isOpenRegisterPage){
+                        return
+                    }
                     this.formData = {
                         username:"admin1",
                         password:"admin",

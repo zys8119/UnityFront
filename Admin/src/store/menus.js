@@ -8,11 +8,6 @@ let menus = [];
 if(process.env.NODE_ENV !== 'production'){
     menus = [
         {
-            title:"首页",
-            path:"/home",id:getId(),
-            children:[]
-        },
-        {
             title:"系统管理",
             path:"/system-management/authority-management/menu-management",id:getId(),
             children:[

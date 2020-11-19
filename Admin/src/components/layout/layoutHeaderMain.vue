@@ -34,8 +34,10 @@ export default {
     mounted() {
         // 获取用户信息
         this.apis.user.auth.getUserInfo().then(res=>{
-            this.action({moduleName:"menus", goods:null});
-            this.action({moduleName:"menus", goods:res.menus});
+            if(this.airforce.isShowServerMenus){
+                this.action({moduleName:"menus", goods:null});
+                this.action({moduleName:"menus", goods:res.menus});
+            }
             res.menus = [];
             this.action({
                 moduleName:"login",
