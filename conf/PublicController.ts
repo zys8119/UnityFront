@@ -154,7 +154,11 @@ class Interceptor implements ControllerInitDataOptions{
                     user_roles_id.forEach((e,k)=>{
                         where += `id = ${e} ${(user_roles_id.length - 1) === k ? "" : "or "}`
                     });
-                    where = `(${where}) AND is_del = 1`
+                    if(where){
+                        where = `(${where}) AND is_del = 1`
+                    }else {
+                        where = `is_del = 1`
+                    }
                     new this.$sqlModel.RolesModel().select().from().where(where).query().then(res=>{
                         if(res.length > 0){
                             let roles_arr = res;
@@ -162,7 +166,11 @@ class Interceptor implements ControllerInitDataOptions{
                             roles_arr.forEach((e,k)=>{
                                 where_roles += `roles_id = ${e.id} ${(roles_arr.length - 1) === k ? "" : "or "}`
                             });
-                            where_roles = `(${where_roles}) AND is_del = 1`
+                            if(where_roles){
+                                where_roles = `(${where_roles}) AND is_del = 1`
+                            }else {
+                                where_roles = `is_del = 1`
+                            }
                             // 根据角色信息获取角色权限组
                             new this.$sqlModel.RolesPermissionModel().select().from().where(where_roles).query().then(res=>{
                                 if(res.length > 0){
@@ -172,7 +180,12 @@ class Interceptor implements ControllerInitDataOptions{
                                     permission.forEach((e,k)=>{
                                         where_permission += `id = ${e} ${(permission.length - 1) === k ? "" : "or "}`
                                     });
-                                    where_permission = `(${where_permission}) AND is_del = 1 AND is_child_page = 1`
+
+                                    if(where_permission){
+                                        where_permission = `(${where_permission}) AND is_del = 1 AND is_child_page = 1`
+                                    }else {
+                                        where_permission = `is_del = 1 AND is_child_page = 1`
+                                    }
                                     // 根据角色权限组获取对应菜单权限
                                     new this.$sqlModel.MenuModel().select("*,name as title, url as path").from().where(where_permission).query().then(res=>{
                                         resolve(res)

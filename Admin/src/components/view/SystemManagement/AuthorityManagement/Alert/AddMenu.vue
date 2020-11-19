@@ -1,11 +1,14 @@
 <template>
     <div class="AddMenu">
-        <el-form label-width="120px">
-            <el-form-item label="菜单名称" required>
+        <el-form label-width="140px">
+            <el-form-item label="菜单名称：" required>
                 <el-input v-model="formData.name"></el-input>
             </el-form-item>
-            <el-form-item label="菜单url地址" required>
+            <el-form-item label="菜单url地址：" required>
                 <el-input v-model="formData.url"></el-input>
+            </el-form-item>
+            <el-form-item label="是否为子菜单：" required>
+                <el-switch v-model="formData.is_child_page" active-text="如果为子菜单将不可见"></el-switch>
             </el-form-item>
         </el-form>
         <z-alert-footer>
@@ -31,7 +34,10 @@ export default {
         }
     },
     mounted() {
-        this.formData = this.row && this.type2 === "modify"? {...this.row} : {};
+        this.formData = this.row && this.type2 === "modify"? {
+            ...this.row,
+            is_child_page:this.row.is_child_page === 2
+        } : {};
     },
     methods:{
         // 保存
@@ -41,6 +47,7 @@ export default {
             if(this.row && this.type2 === "modify"){
                 this.apis.AuthorityManagement.Menu.update({
                     ...this.formData,
+                    is_child_page:this.formData.is_child_page ? 2 :1,
                 }).then(()=>{
                     this.$message({type:"success",message:"保存成"})
                     this.$emit("save")
@@ -52,6 +59,7 @@ export default {
                 ...this.formData,
                 type:this.type,
                 parent:this.parent,
+                is_child_page:this.formData.is_child_page ? 2 :1,
             }).then(()=>{
                 this.$message({type:"success",message:"保存成"})
                 this.$emit("save")

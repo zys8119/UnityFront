@@ -35,10 +35,12 @@ export class MenuController extends applicationController{
         if(!this.$_body.name){return this.$_error("【name】 字段必填")}
         if(!this.$_body.url){return this.$_error("【url】 字段必填")}
         if(!this.$_body.type){return this.$_error("【type】 字段必填")}
+        if(!this.$_body.is_child_page){return this.$_error("【is_child_page】 字段必填")}
         let data:any = {
             name:this.$_body.name,
             url:this.$_body.url,
             type:this.$_body.type,
+            is_child_page:this.$_body.is_child_page,
             id:`${Date.now()}${parseInt((Math.random()*1000).toString())}`,
         };
         if(this.$_body.parent){
@@ -70,9 +72,11 @@ export class MenuController extends applicationController{
         if(!this.$_body.id){return this.$_error("【id】 字段必填")}
         if(!this.$_body.name){return this.$_error("【name】 字段必填")}
         if(!this.$_body.url){return this.$_error("【url】 字段必填")}
+        if(!this.$_body.is_child_page){return this.$_error("【is_child_page】 字段必填")}
         new this.$sqlModel.MenuModel().update({
             name:this.$_body.name,
             url:this.$_body.url,
+            is_child_page:this.$_body.is_child_page,
         }).where({id:this.$_body.id}).query()
             .then(()=>this.$_success())
             .catch(()=>this.$_error());
