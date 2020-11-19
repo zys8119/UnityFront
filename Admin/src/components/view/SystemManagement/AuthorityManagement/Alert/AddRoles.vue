@@ -32,7 +32,9 @@ export default {
         this.formData = this.row ? {
             ...this.row,
             is_effective:this.row.is_effective === 1,
-        } : {};
+        } : {
+            is_effective:true,
+        };
         this.apis.AuthorityManagement.RolesType.list().then(res=>{
             this.typeList = res;
         });

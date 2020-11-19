@@ -156,9 +156,9 @@ class Interceptor implements ControllerInitDataOptions{
                         where += `id = ${e} ${(user_roles_id.length - 1) === k ? "" : "or "}`
                     });
                     if(where){
-                        where = `(${where}) AND is_del = 1`
+                        where = `(${where}) AND is_del = 1 AND is_effective = 1 `
                     }else {
-                        where = `is_del = 1`
+                        where = `is_del = 1 AND is_effective = 1 `
                     }
                     new this.$sqlModel.RolesModel().select().from().where(where).query().then(res=>{
                         if(res.length > 0){
@@ -168,9 +168,9 @@ class Interceptor implements ControllerInitDataOptions{
                                 where_roles += `roles_id = ${e.id} ${(roles_arr.length - 1) === k ? "" : "or "}`
                             });
                             if(where_roles){
-                                where_roles = `(${where_roles}) AND is_del = 1`
+                                where_roles = `(${where_roles}) AND is_del = 1 `
                             }else {
-                                where_roles = `is_del = 1`
+                                where_roles = `is_del = 1 `
                             }
                             // 根据角色信息获取角色权限组
                             new this.$sqlModel.RolesPermissionModel().select().from().where(where_roles).query().then(res=>{
