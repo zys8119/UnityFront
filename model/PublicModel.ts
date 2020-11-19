@@ -6,6 +6,8 @@ export interface PublicModelInterface {
     $TableName:string;
     // 表字段sql配置
     $sqlFieldConfig?:$sqlFieldConfigType;
+    // 表初始数据
+    $VALUES?:string;
 
     PRIMARY_KEY?:string;// 主键
     'CHARACTER SET'?:string | 'utf8';// 编码
