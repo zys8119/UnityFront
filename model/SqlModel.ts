@@ -5,6 +5,7 @@ import MenuModel from "./AuthorityManagement/MenuModel"
 import RolesTypeModel from "./AuthorityManagement/RolesType"
 import RolesModel from "./AuthorityManagement/Roles"
 import RolesPermissionModel from "./AuthorityManagement/RolesPermissionModel"
+import UserRolesModel from "./AuthorityManagement/UserRolesModel";
 const SqlModelDefault:SqlModel = {
     UserModel:UserModel,
     MenuTypeModel:MenuTypeModel,
@@ -12,5 +13,6 @@ const SqlModelDefault:SqlModel = {
     RolesTypeModel:RolesTypeModel,
     RolesModel:RolesModel,
     RolesPermissionModel:RolesPermissionModel,
+    UserRolesModel:UserRolesModel,
 };
 export default SqlModelDefault;

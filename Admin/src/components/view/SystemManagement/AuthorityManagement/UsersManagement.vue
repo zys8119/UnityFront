@@ -13,7 +13,7 @@
                     slot="filter">
                     <el-form slot="leftBefore">
                         <el-form-item required>
-                            分类:
+                            用户类别:
                             <el-select v-model="params.type" @change="search()" clearable>
                                 <el-option v-for="(item,key) in typeOptions" :key="key" :value="item.value" :label="item.label"></el-option>
                             </el-select>
@@ -24,6 +24,7 @@
                     ref="table"
                     @editRow="addUser"
                     @deleteRow="deleteRow"
+                    @boundRole="boundRole"
                     :apiPath="apis.user.auth.list"
                     :params="params"
                     :columns="columns"></content-table>
@@ -53,7 +54,7 @@ export default {
                 }},
                 {label:"操作", type:"operate", btns:[
                     {name:"编辑", type:"text", className:"primary", emit:"editRow"},
-                    {name:"绑定角色", type:"text", className:"success", emit:"editRow"},
+                    {name:"绑定角色", type:"text", className:"success", emit:"boundRole"},
                     {name:"删除", type:"text", className:"delete", emit:"deleteRow", show:(data,row)=>row.type !== 0},
                 ]},
             ],
@@ -93,6 +94,17 @@ export default {
                     this.$message({type:"success",message:"删除成功"});
                     this.reset();
                 })
+            })
+        },
+        // 绑定角色
+        boundRole(data,row){
+            this.$ZAlert.show({
+                title:"绑定角色",
+                width:"700px",
+                props:{
+                    row:()=>row,
+                },
+                components:require("./Alert/BoundRole")
             })
         }
     }
