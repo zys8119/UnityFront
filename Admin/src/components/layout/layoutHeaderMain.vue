@@ -73,18 +73,6 @@ export default {
         // tab 被选中时触发
         tabClick(bool, removeMenusId){
             if(bool){
-                // 初次加载
-                let index = this.airforce.menus.findIndex(e=>e.path === this.$route.path);
-                if(index > -1){
-                    this.activeName = index.toString();
-                    this.go(this.airforce.menus[this.activeName])
-                }
-                this.$utils.getMenu.call(this)
-                this.$nextTick(()=>{
-                    if(this.airforce.menusInfo && this.airforce.menusInfo.id){
-                        this.activeName = this.airforce.menusInfo.id;
-                    }
-                })
                 this.parsePath()
                 return ;
             }
