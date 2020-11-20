@@ -10,4 +10,6 @@ export default {
     isShowServerMenus:true,
     // 是否开放注册页面
     isOpenRegisterPage:false,
+    // tabs标签导航
+    tabs:[],
 }

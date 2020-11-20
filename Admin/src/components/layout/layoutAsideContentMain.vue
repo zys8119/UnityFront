@@ -65,6 +65,7 @@ export default {
                     goods:data.id,
                 });
                 localStorage.setItem("menusId", data.id);
+                this.$root.$emit("addTabs",data);
             }
         },
         getTree(){

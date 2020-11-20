@@ -51,6 +51,9 @@ export default {
         if(!bool){
             this.$router.push(data.path);
             localStorage.setItem("menusInfo",JSON.stringify(data));
+            if(!data.children || (data.children && data.children.length === 0)){
+                this.$root.$emit("addTabs",data);
+            }
         }
     },
     // 获取缓存菜单

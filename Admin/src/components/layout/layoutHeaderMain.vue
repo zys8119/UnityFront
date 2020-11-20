@@ -73,14 +73,14 @@ export default {
         // tab 被选中时触发
         tabClick(bool, removeMenusId){
             if(bool){
-                this.parsePath()
+                this.parsePath();
                 return ;
             }
             if(!removeMenusId){
                 localStorage.setItem("menusId",null);
             }
             this.go(this.airforce.menus[this.activeName] || this.airforce.menus.find(e=>e.id === this.activeName));
-            this.$root.$emit("menusIdChange")
+            this.$root.$emit("menusIdChange");
         },
         // 跳转页面
         go(data){

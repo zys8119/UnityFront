@@ -18,6 +18,7 @@
                 show:showAside,
                 hide:!showAside,
             }">
+                <layoutTabsMain></layoutTabsMain>
                 <div class="layoutMainContent">
                     <router-view></router-view>
                 </div>
@@ -39,9 +40,10 @@
 <script>
 import layoutHeaderMain from "./layoutHeaderMain"
 import layoutAsideContentMain from "./layoutAsideContentMain"
+import layoutTabsMain from "./layoutTabsMain"
 export default {
     name: "layout",
-    components:{ layoutHeaderMain, layoutAsideContentMain },
+    components:{ layoutHeaderMain, layoutAsideContentMain, layoutTabsMain },
     computed:{
         showAside(){
             return this.airforce.menusInfo && this.airforce.menusInfo.children && this.airforce.menusInfo.children.length > 0
