@@ -179,13 +179,13 @@ export default {
             try {
                 _vm[temp] = null;
                 let currentView = null;
-                if(Object.prototype.toString.call(_this.components) === '[object Module]'){
-                    currentView = (this.components.default)?_this.components.default:_this.components;
-                }else {
+                if(Object.prototype.toString.call(_this.components) === '[object String]'){
                     currentView = importVue({
                         fileUrl:"",
                         name:_this.components
                     }).component;
+                }else {
+                    currentView = (this.components.default)?_this.components.default:_this.components;
                 }
                 if (currentView.props && !currentView.CopyPropsBool) {
                     currentView.CopyPropsBool = true;
@@ -219,6 +219,7 @@ export default {
                 });
                 _vm[temp] = currentView;
             } catch (e) {
+                console.error(e)
                 // err
             }
         },
