@@ -63,9 +63,13 @@ export default {
             }
         },
         change(){
+            let menusId = this.airforce.menusId || localStorage.getItem("menusId");
+            if(menusId === "null"){
+                menusId = null;
+            }
             setTimeout(()=>{
-                if(this.airforce.menusId){
-                    this.$refs.tree.setCurrentKey(this.airforce.menusId);
+                if(menusId){
+                    this.$refs.tree.setCurrentKey(menusId);
                     return ;
                 }else {
                     if(this.airforce.menusInfo && this.airforce.menusInfo.children && this.airforce.menusInfo.children.length > 0){

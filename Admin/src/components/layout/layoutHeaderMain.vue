@@ -35,6 +35,8 @@ export default {
         this.initUserInfo();
         this.init();
         this.$root.$on("initUserInfo",()=>{
+            // delete localStorage.removeItem("menusId");
+            // delete localStorage.removeItem("menusInfo");
             this.initUserInfo()
         })
     },
@@ -46,8 +48,6 @@ export default {
     methods:{
         //初始化用户信息
         initUserInfo(){
-            // delete localStorage.removeItem("menusId");
-            delete localStorage.removeItem("menusInfo");
             // 获取用户信息
             this.apis.user.auth.getUserInfo().then(res=>{
                 if(this.airforce.isShowServerMenus){

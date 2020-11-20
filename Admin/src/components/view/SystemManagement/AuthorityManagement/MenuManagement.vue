@@ -65,6 +65,7 @@ export default {
                     this.apis.AuthorityManagement.Menu.delete({id:item.id}).then(()=>{
                         this.$message({type:"success",message:"删除成功"})
                         this.init();
+                        this.$root.$emit("initUserInfo");
                     })
                 })
                 return ;
@@ -88,7 +89,8 @@ export default {
                 _event:{
                     save:()=>{
                         this.init();
-                        this.$root.$emit("initUserInfo")
+                        this.$root.$emit("initUserInfo");
+                        this.$root.$emit("initUserInfo");
                     }
                 },
                 components:require("./Alert/AddMenu")
