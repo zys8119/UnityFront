@@ -21,6 +21,16 @@
                     :item="item"
                 ></el-tab-pane>
             </el-tabs>
+            <el-dropdown v-if="airforce.layout.tabsShowBtn">
+                <span class="el-dropdown-link">
+                    <i class="el-icon-menu"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item class="t-a-c" @click.native="RefreshCurrentPage">刷新当前页面</el-dropdown-item>
+                    <el-dropdown-item class="t-a-c">关闭除此之外的页面</el-dropdown-item>
+                    <el-dropdown-item class="t-a-c" :divided="key === 0" v-if="airforce.layout.tabsShowBtnArr" v-for="(item,key) in airforce.layout.tabsShowBtnArr" @click.native="item.click ? item.click() : ()=>{}" :key="key" v-html="item.label"></el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
         </div>
     </div>
 </template>
@@ -70,6 +80,13 @@ export default {
         // 跳转
         tabClick(vm){
             this.$root.$emit("nodeClick", vm.$attrs.item);
+        },
+        // 刷新当前页面
+        RefreshCurrentPage(){
+            this.action({moduleName:"RefreshCurrentPage", goods:false});
+            this.$nextTick(()=>{
+                this.action({moduleName:"RefreshCurrentPage", goods:true});
+            })
         }
     }
 }
@@ -86,6 +103,7 @@ export default {
         right: 0;
         top: @layoutHeader;
         width: 100%;
+        display: flex;
         &.show{
             width: calc(100% - @layoutAside);
         }
@@ -93,6 +111,7 @@ export default {
             width: 100%;
         }
         /deep/.el-tabs{
+            flex: 1;
             .el-tabs__content{
                 display: none;
             }
@@ -105,6 +124,21 @@ export default {
                         background-color: @themeColor;
                         color: #ffffff;
                     }
+                }
+            }
+        }
+        .el-dropdown-link{
+            .el-icon-menu{
+                @s:@layoutTabs - 10px;
+                height: @s;
+                line-height: @s;
+                width:  @s;
+                text-align: center;
+                cursor: pointer;
+                transition: all ease-in-out 200ms;
+                &:hover{
+                    background-color: #e5e5e5;
+                    color: @themeColor;
                 }
             }
         }

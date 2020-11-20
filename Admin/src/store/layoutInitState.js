@@ -8,5 +8,9 @@ export default ()=>{
         footerShow:true,
         // 是否tabs
         tabsShow:true,
+        // 是否tabs右侧操作按钮
+        tabsShowBtn:true,
+        // tabs右侧附加操作按钮
+        tabsShowBtnArr:null,
     }
 }

@@ -20,7 +20,7 @@
             }">
                 <layoutTabsMain v-if="airforce.layout.tabsShow"></layoutTabsMain>
                 <div class="layoutMainContent">
-                    <router-view></router-view>
+                    <router-view v-if="airforce.RefreshCurrentPage"></router-view>
                 </div>
                 <div class="layoutFooter" v-if="airforce.layout.footerShow">
                     <div class="layoutFooterContent"

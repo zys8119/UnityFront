@@ -12,4 +12,6 @@ export default {
     isOpenRegisterPage:false,
     // tabs标签导航
     tabs:[],
+    // 刷新当前页面
+    RefreshCurrentPage:true,
 }

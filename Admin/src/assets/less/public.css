@@ -299,6 +299,9 @@
 .ZColor.black_link:hover {
   text-decoration: underline;
 }
+.t-a-c {
+  text-align: center !important;
+}
 body {
   margin: 0;
 }
