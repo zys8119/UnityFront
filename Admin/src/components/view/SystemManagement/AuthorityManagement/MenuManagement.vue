@@ -86,7 +86,10 @@ export default {
                     row:()=>item,
                 },
                 _event:{
-                    save:this.init
+                    save:()=>{
+                        this.init();
+                        this.$root.$emit("initUserInfo")
+                    }
                 },
                 components:require("./Alert/AddMenu")
             })

@@ -33,7 +33,7 @@ export default {
     watch:{
         "airforce.menusId"(){
             this.$nextTick(()=>{
-                this.$refs.tree.setCurrentKey(this.airforce.menusId ? this.airforce.menusId: null);
+                this.change();
             })
         }
     },
@@ -46,6 +46,11 @@ export default {
             }
         }
     },
+    mounted() {
+        this.$root.$on("menusIdChange",()=>{
+            this.change();
+        })
+    },
     methods:{
         nodeClick(data, node){
             if(node.isLeaf){
@@ -56,6 +61,20 @@ export default {
                 });
                 localStorage.setItem("menusId", data.id);
             }
+        },
+        change(){
+            setTimeout(()=>{
+                if(this.airforce.menusId){
+                    this.$refs.tree.setCurrentKey(this.airforce.menusId);
+                    return ;
+                }else {
+                    if(this.airforce.menusInfo && this.airforce.menusInfo.children && this.airforce.menusInfo.children.length > 0){
+                        this.nodeClick(this.airforce.menusInfo.children[0],{isLeaf:true});
+                        return ;
+                    }
+                }
+                this.$refs.tree.setCurrentKey(null);
+            },300)
         }
     }
 }

@@ -77,6 +77,7 @@ export default {
                 permission:this.checkedMenuKeys,
             }).then(()=>{
                 this.$message({type:"success",message:"保存成功"});
+                this.$root.$emit("initUserInfo");
             });
         }
     }

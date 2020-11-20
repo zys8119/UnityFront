@@ -32,22 +32,11 @@ export default {
         }
     },
     mounted() {
-        // 获取用户信息
-        this.apis.user.auth.getUserInfo().then(res=>{
-            if(this.airforce.isShowServerMenus){
-                this.action({moduleName:"menus", goods:null});
-                this.action({moduleName:"menus", goods:res.menus});
-            }
-            res.menus = [];
-            this.action({
-                moduleName:"login",
-                goods:{
-                    data:res,
-                    ...res,
-                },
-            })
-        });
+        this.initUserInfo();
         this.init();
+        this.$root.$on("initUserInfo",()=>{
+            this.initUserInfo()
+        })
     },
     watch:{
         "airforce.menus"(){
@@ -55,6 +44,29 @@ export default {
         }
     },
     methods:{
+        //初始化用户信息
+        initUserInfo(){
+            // delete localStorage.removeItem("menusId");
+            delete localStorage.removeItem("menusInfo");
+            // 获取用户信息
+            this.apis.user.auth.getUserInfo().then(res=>{
+                if(this.airforce.isShowServerMenus){
+                    this.action({moduleName:"menus", goods:null});
+                    this.action({moduleName:"menus", goods:res.menus});
+                }
+                res.menus = [];
+                this.action({
+                    moduleName:"login",
+                    goods:{
+                        data:res,
+                        ...res,
+                    },
+                })
+                this.$nextTick(()=>{
+                    this.tabClick();
+                })
+            });
+        },
         init(){
             this.tabClick(true);
         },
@@ -76,7 +88,8 @@ export default {
                 return ;
             }
             localStorage.setItem("menusId",null);
-            this.go(this.airforce.menus.find(e=>e.id === this.activeName));
+            this.go(this.airforce.menus[this.activeName] || this.airforce.menus.find(e=>e.id === this.activeName));
+            this.$root.$emit("menusIdChange")
         },
         // 跳转页面
         go(data){
