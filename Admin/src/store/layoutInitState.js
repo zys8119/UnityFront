@@ -6,5 +6,7 @@ export default ()=>{
     return {
         // 是否显示页脚
         footerShow:true,
+        // 是否tabs
+        tabsShow:true,
     }
 }

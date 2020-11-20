@@ -35,8 +35,6 @@ export default {
         this.initUserInfo();
         this.init();
         this.$root.$on("initUserInfo",()=>{
-            // delete localStorage.removeItem("menusId");
-            // delete localStorage.removeItem("menusInfo");
             this.initUserInfo()
         })
     },

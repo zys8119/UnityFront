@@ -1,6 +1,11 @@
 <template>
     <div class="layoutTabsMain">
-        <div class="layoutTabsMainContent">
+        <div
+            :class="{
+                show:showAside,
+                hide:!showAside,
+            }"
+            class="layoutTabsMainContent">
             <el-tabs class="el-tabs" type="card" closable
                      v-if="airforce.tabs"
                      v-model="activeName"
@@ -13,6 +18,7 @@
                     :label="item.title"
                     :name="item.id"
                     :path="item.path"
+                    :item="item"
                 ></el-tab-pane>
             </el-tabs>
         </div>
@@ -25,6 +31,11 @@ export default {
     data(){
         return {
             activeName:null,
+        }
+    },
+    computed:{
+        showAside(){
+            return this.airforce.menusInfo && this.airforce.menusInfo.children && this.airforce.menusInfo.children.length > 0
         }
     },
     created() {
@@ -51,12 +62,14 @@ export default {
             this.action({moduleName:"tabs", goods:[]})
             this.action({moduleName:"tabs", goods:Tabs});
             if(name === this.activeName && Tabs.length > 0){
-                this.activeName = Tabs[Tabs.length - 1].id;
+                let item = Tabs[Tabs.length - 1];
+                this.activeName = item.id;
+                this.$root.$emit("nodeClick", item);
             }
         },
         // 跳转
         tabClick(vm){
-            console.log(vm.$attrs.path)
+            this.$root.$emit("nodeClick", vm.$attrs.item);
         }
     }
 }
@@ -64,14 +77,35 @@ export default {
 
 <style scoped lang="less">
 .layoutTabsMain{
+    width: 100%;
+    height: @layoutTabs;
     .layoutTabsMainContent{
+        transform: @transition;
         background-color: #ffffff;
+        position: fixed;
+        right: 0;
+        top: @layoutHeader;
+        width: 100%;
+        &.show{
+            width: calc(100% - @layoutAside);
+        }
+        &.hide{
+            width: 100%;
+        }
         /deep/.el-tabs{
             .el-tabs__content{
                 display: none;
             }
             .el-tabs__header{
                 margin-bottom: 0;
+                .el-tabs__item{
+                    height: @layoutTabs - 10px;
+                    &.is-active{
+                        border-bottom: none;
+                        background-color: @themeColor;
+                        color: #ffffff;
+                    }
+                }
             }
         }
     }

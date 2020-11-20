@@ -18,7 +18,7 @@
                 show:showAside,
                 hide:!showAside,
             }">
-                <layoutTabsMain></layoutTabsMain>
+                <layoutTabsMain v-if="airforce.layout.tabsShow"></layoutTabsMain>
                 <div class="layoutMainContent">
                     <router-view></router-view>
                 </div>
@@ -56,7 +56,6 @@ export default {
 .layout{
     display: flex;
     flex-direction: column;
-    @transition:all ease-in-out 350ms;
     .layoutHeader{
         height: @layoutHeader;
         overflow: hidden;
