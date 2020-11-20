@@ -63,7 +63,7 @@ export default {
                     },
                 })
                 this.$nextTick(()=>{
-                    this.tabClick();
+                    this.tabClick(false, true);
                 })
             });
         },
@@ -71,7 +71,7 @@ export default {
             this.tabClick(true);
         },
         // tab 被选中时触发
-        tabClick(bool){
+        tabClick(bool, removeMenusId){
             if(bool){
                 // 初次加载
                 let index = this.airforce.menus.findIndex(e=>e.path === this.$route.path);
@@ -87,7 +87,9 @@ export default {
                 })
                 return ;
             }
-            localStorage.setItem("menusId",null);
+            if(!removeMenusId){
+                localStorage.setItem("menusId",null);
+            }
             this.go(this.airforce.menus[this.activeName] || this.airforce.menus.find(e=>e.id === this.activeName));
             this.$root.$emit("menusIdChange")
         },
