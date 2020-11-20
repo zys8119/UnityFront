@@ -193,4 +193,49 @@ export default {
         }
         return TransformToChinese(strObj);
     },
+    findPath(options,criteria,optionsOld,parent,resDataAll,childName='children'){
+        if(typeof optionsOld == 'string'){
+            childName = optionsOld;
+            optionsOld = null;
+        }
+        optionsOld = optionsOld || options;
+        let resData = null;
+        resDataAll = resDataAll || [];
+        options.forEach(item=>{
+            if(!resData){
+                let bool = true;
+                for(let key in criteria){
+                    if(Object.prototype.toString.call(criteria[key]) === "[object Function]"){
+                        bool = criteria[key](item, options);
+                    }else {
+                        bool = criteria[key] === item[key];
+                    }
+                }
+                if(bool){
+                    resData = item;
+                    resDataAll.unshift(item);
+                    if(optionsOld && parent){
+                        this.findPath(optionsOld,parent,optionsOld,null,resDataAll,childName);
+                    }
+                }
+                if(item[childName] && item[childName].length > 0){
+                    this.findPath(item[childName],criteria,optionsOld,item,resDataAll,childName);
+                }
+            }
+        });
+        if(resDataAll.length > 0){
+            return resDataAll;
+        }
+        return null;
+    },
+    getOptions(options,calllback, parent,bool){
+        let currentOptions = (bool)?options:this.lodash.cloneDeep(options);
+        return currentOptions.map(e=>{
+            let keyName = calllback(e, parent);
+            if(Object.prototype.toString.call(e[keyName]) === "[object Array]"){
+                e[keyName] = this.getOptions(e[keyName],calllback, e, bool)
+            }
+            return e;
+        });
+    },
 }

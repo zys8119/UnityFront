@@ -50,6 +50,11 @@ export default {
         this.$root.$on("menusIdChange",()=>{
             this.change();
         })
+        this.$root.$on("nodeClick",(data)=>{
+            this.getTree().then(()=>{
+                this.nodeClick(data,{isLeaf:true});
+            })
+        })
     },
     methods:{
         nodeClick(data, node){
@@ -62,23 +67,38 @@ export default {
                 localStorage.setItem("menusId", data.id);
             }
         },
-        change(){
-            let menusId = this.airforce.menusId || localStorage.getItem("menusId");
-            if(menusId === "null"){
-                menusId = null;
-            }
-            setTimeout(()=>{
-                if(menusId){
-                    this.$refs.tree.setCurrentKey(menusId);
-                    return ;
+        getTree(){
+            return new Promise((resolve) => {
+                if(this.$refs.tree){
+                    resolve();
                 }else {
-                    if(this.airforce.menusInfo && this.airforce.menusInfo.children && this.airforce.menusInfo.children.length > 0){
-                        this.nodeClick(this.airforce.menusInfo.children[0],{isLeaf:true});
-                        return ;
-                    }
+                    setTimeout(()=>{
+                        this.getTree().then(()=>{
+                            resolve();
+                        })
+                    },100)
                 }
-                this.$refs.tree.setCurrentKey(null);
-            },300)
+            })
+        },
+        change(){
+            this.getTree().then(()=>{
+                let menusId = this.airforce.menusId || localStorage.getItem("menusId");
+                if(menusId === "null"){
+                    menusId = null;
+                }
+                this.$nextTick(()=>{
+                    if(menusId){
+                        this.$refs.tree.setCurrentKey(menusId);
+                        return ;
+                    }else {
+                        if(this.airforce.menusInfo && this.airforce.menusInfo.children && this.airforce.menusInfo.children.length > 0){
+                            this.nodeClick(this.airforce.menusInfo.children[0],{isLeaf:true});
+                            return ;
+                        }
+                    }
+                    this.$refs.tree.setCurrentKey(null);
+                })
+            })
         }
     }
 }

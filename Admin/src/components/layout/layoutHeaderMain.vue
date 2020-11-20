@@ -85,6 +85,7 @@ export default {
                         this.activeName = this.airforce.menusInfo.id;
                     }
                 })
+                this.parsePath()
                 return ;
             }
             if(!removeMenusId){
@@ -103,6 +104,29 @@ export default {
                 return this.$message.error("暂无权限");
             }
             this.$utils.setMenu.call(this,data);
+        },
+        // 解析Path
+        parsePath(){
+            let findPath = this.$utils.findPath(this.airforce.menus,{
+                path:item=>{
+                    return this.$route.path.indexOf(item.path) === 0;
+                },
+            });
+            if(findPath){
+                // 去重
+                let path = [];
+                findPath.forEach(e=>{
+                    if(path.indexOf(e) === -1){
+                        path.push(e);
+                    }
+                });
+                let menusInfo = path[0];
+                this.activeName = menusInfo.id;
+                this.tabClick(false);
+                setTimeout(()=>{
+                    this.$root.$emit("nodeClick", path.pop());
+                },200)
+            }
         }
     }
 }
