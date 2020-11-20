@@ -73,7 +73,8 @@ class Interceptor implements ControllerInitDataOptions{
                                 return reject();
                             }
                             //todo 是否开启token_url页面级别权限控制，建议开启，第一次开发时可以关闭，不然无法设置权限页面
-                            if(ServerConfig.token_url){
+                            //todo 账号类型不是0（即：0=管理员）的且开启token_url才进行页面级权限判断
+                            if(res[0].type !== 0 && ServerConfig.token_url){
                                 // 账号页面权限控制
                                 this.getUserRoles.call(this,res[0].id, true).then(Roles=>{
                                     let token_url = this.$_headers["token_url"];
