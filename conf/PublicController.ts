@@ -17,6 +17,9 @@ class Interceptor implements ControllerInitDataOptions{
     $_headers:any;
     $_decode(str: string, newKey?: string): any {
     }
+    $_log(...argArray) {
+    }
+
     userInfo:any;
     $_method:any;
     $_url:string;
