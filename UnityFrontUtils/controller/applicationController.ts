@@ -66,7 +66,7 @@ class methodClass_init {
                     }
                     oldPostMethod.call(this);
                 }catch (e) {
-                    console.log(e)
+                    this.$_error(e.message);
                 }
             };
             return (t,k,d)=>{}
