@@ -115,8 +115,9 @@ export interface SqlUtilsOptions {
     /**
      * @param pageConfig 分页配置
      * @param concatCallBack 连接回调，上下文为SqlUtilsOptions
+     * @param concatCallBackBefore 连接回调，上下文为SqlUtilsOptions
      */
-    getPage?(pageConfig?:getPagePageConfigType,concatCallBack?:(this:SqlUtilsOptions,bool?:boolean)=>void):Promise<any>;
+    getPage?(pageConfig?:getPagePageConfigType,concatCallBack?:(this:SqlUtilsOptions,bool?:boolean)=>void,concatCallBackBefore?:(this:SqlUtilsOptions,bool?:boolean)=>void):Promise<any>;
 
     /**
      *
@@ -394,6 +395,25 @@ export interface ControllerInitDataOptions {
      */
     //@ts-ignore
     bufferSplit?(buff:Buffer,splitter:string):Buffer[];
+
+    /**
+     * 读取目录
+     * @param path
+     */
+    readdirSync?(path:string):Promise<any>;
+
+    /**
+     * MD5加密
+     * @param str
+     */
+    $MD5?(str:string):string;
+
+    /**
+     * 数组转树形结构
+     * @param sourceData 数据
+     * @param opstions 配置
+     */
+    toTree?(sourceData:Array<any>, opstions?:object):Array<any>;
 }
 
 export interface RequestFormData {

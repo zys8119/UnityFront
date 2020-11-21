@@ -13,12 +13,15 @@ import Encrypt from "../utils/encrypt";
 import Utils from "../utils";
 import PublicController from "../../conf/PublicController";
 import { SqlModel } from "../../model/interfaces";
+import { resolve } from "path";
+import {readdirSync, statSync} from "fs";
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
 const https = require('https');
 const pug = require('pug');
 const ncol = require('ncol');
+const crypto = require('crypto');
 
 /**
  * @请求方式修饰器类
@@ -843,6 +846,62 @@ export default class applicationControllerClass extends PublicController impleme
                 reject(err);
             }
         });
+    }
+
+    readdirSync(path: string):any {
+        let resUlt = [];
+        resUlt = resUlt.concat(readdirSync(path).map(name=>{
+            const childrenPath = resolve(path,name);
+            const is_file = statSync(childrenPath).isFile();
+            const type = is_file ? "file" : "directory";
+            let children = [];
+            if(!is_file){
+                children = this.readdirSync(childrenPath);
+            }
+            return {
+                name:name,
+                path:childrenPath,
+                children,
+                type,
+                is_file,
+            }
+        }));
+        return resUlt;
+    }
+
+    $MD5(str: string): string {
+        return  crypto.createHash('md5').update(str).digest("hex");
+    }
+
+    toTree(sourceData:Array<any>,opstions?:object): Array<any>{
+        let opts:any = {
+            children:"children",
+            id:"id",
+            parent:"parent",
+            cb:new Function(),
+            ...opstions,
+        }
+        let result = []
+        if(!Array.isArray(sourceData)) {
+            return result
+        }
+        let map = {};
+        sourceData.forEach(item => {
+            delete item[opts.children];
+            map[item[opts.id]] = item;
+            if(typeof opts.cb === "function"){
+                opts.cb.call(this,item,opts);
+            }
+        });
+        sourceData.forEach(item => {
+            let parent = map[item[opts.parent]];
+            if(parent) {
+                (parent[opts.children] || (parent[opts.children] = [])).push(item);
+            } else {
+                result.push(item);
+            }
+        });
+        return result;
     }
 
 }

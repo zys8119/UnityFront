@@ -1,5 +1,5 @@
 import "../typeStript"
-import { mysqlConfig} from "../config"
+import {mysqlConfig, ServerConfig} from "../config"
 import {SqlUtilsOptions, getPagePageConfigType} from "../typeStript";
 let mysqlTool = require('mysql');
 let ncol = require('ncol');
@@ -28,7 +28,7 @@ class mysql implements SqlUtilsOptions{
      * @param data 需要处理的数据
      */
     private isString(data:any){
-        if(typeof data == 'string' &&  ['.'].some(e=>data.indexOf(e) == -1)){
+        if(typeof data == 'string'){
             return '\''+data+'\'';
         }
         return data;
@@ -90,6 +90,12 @@ class mysql implements SqlUtilsOptions{
             })
         };
         return new Promise((resolve, reject) => {
+            if(ServerConfig.debug){
+                ncol.color(()=>{
+                    ncol.infoBG("【MySql语句】")
+                        .info(sqlStrs)
+                });
+            }
             this.connection.query(sqlStrs, (error, results, fields)=> {
                 if(error){
                     ncol.error(`【QUERY ERROR】::  ${error.message} in (\`${sqlStr}\`)`);
@@ -126,7 +132,7 @@ class mysql implements SqlUtilsOptions{
         return this.join(`limit ${offset}, ${sum} `);
     }
 
-    getPage(pageConfig: getPagePageConfigType = {}, concatCallBack?: (this: SqlUtilsOptions, bool?:boolean) => void) {
+    getPage(pageConfig: getPagePageConfigType = {}, concatCallBack?: (this: SqlUtilsOptions, bool?:boolean) => void, concatCallBackBefore?:(this:SqlUtilsOptions,bool?:boolean)=>void) {
         return new Promise((resolve,reject)=>{
             let name = pageConfig.search || "";
             let pageNo = pageConfig.pageNo || 0;
@@ -139,6 +145,9 @@ class mysql implements SqlUtilsOptions{
                 likeData[`CONCAT(${likeFilter.join(",")})`] = `%${name}%`;
             }
             this.count().concat(function () {
+                if(Object.prototype.toString.call(concatCallBackBefore) === '[object Function]'){
+                    concatCallBackBefore.call(this,false);
+                }
                 if(likeData){
                     this.like(likeData)
                 }
@@ -149,6 +158,9 @@ class mysql implements SqlUtilsOptions{
             })
                 .query().then( total=>{
                 this.select(pageConfig.select).from(pageConfig.TableName).concat(function () {
+                    if(Object.prototype.toString.call(concatCallBackBefore) === '[object Function]'){
+                        concatCallBackBefore.call(this,true);
+                    }
                     if(likeData){
                         this.like(likeData)
                     }

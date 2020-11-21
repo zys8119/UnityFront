@@ -12,9 +12,13 @@ const index:webSocketApp = class {
 
     }
     init({toSocket,data,requestData}:webSocketAppData){
-        toSocket.socket.write(this.encryptInit.encodeWsFrame({
-            payloadData: typeof data === 'object' ? JSON.stringify(requestData.payloadData.toString()):data
-        }))
+        try {
+            toSocket.socket.write(this.encryptInit.encodeWsFrame({
+                payloadData: typeof data === 'object' ? JSON.stringify(requestData.payloadData.toString()):data
+            }))
+        }catch (e){
+            // 防止错误中断服务
+        }
     }
 };
 export default index;
