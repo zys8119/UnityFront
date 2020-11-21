@@ -585,6 +585,7 @@ export interface $_public_success_log_callback_Data {
     controller:string;// 当前所属控制器
     $methodName:string;// 当前控制器方法
     data:$_public_success_log_callback_Data_data;// 当前请求携带的数据数据
+    newSendData:any; // 响应数据
 }
 
 export interface $_public_success_log_callback_Data_data {
