@@ -296,6 +296,15 @@ export interface ControllerInitDataOptions {
     writeLogFile?(args,logPath:string,oldData?:string):void;// 写入日志
 
     /**
+     * 公共函数日志回调
+     * @param msg 提示信息
+     * @param sendData 发送数据
+     * @param code 状态码
+     * @param error 是否为错误消息
+     */
+    $_public_success_log_callback?(data:object):void;// 成功返回工具
+
+    /**
      * 成功返回工具
      * @param msg 提示信息
      * @param sendData 发送数据
@@ -303,6 +312,7 @@ export interface ControllerInitDataOptions {
      * @param error 是否为错误消息
      */
     $_success?(msg?:any,sendData?:any,code?:number, error?:boolean):void;// 成功返回工具
+
     /**
      * 错误返回工具
      * @param msg 提示信息
