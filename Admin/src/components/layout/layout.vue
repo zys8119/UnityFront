@@ -18,7 +18,7 @@
                 show:showAside,
                 hide:!showAside,
             }">
-                <layoutTabsMain v-if="airforce.layout.tabsShow"></layoutTabsMain>
+                <layoutTabsMain v-if="airforce.layout.tabsShow && airforce.tabs"></layoutTabsMain>
                 <div class="layoutMainContent">
                     <router-view v-if="airforce.RefreshCurrentPage"></router-view>
                 </div>
