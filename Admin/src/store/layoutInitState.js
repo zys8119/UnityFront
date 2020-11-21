@@ -5,7 +5,7 @@
 export default ()=>{
     return {
         // 是否显示页脚
-        footerShow:true,
+        footerShow:false,
         // 是否tabs
         tabsShow:true,
         // 是否tabs右侧操作按钮

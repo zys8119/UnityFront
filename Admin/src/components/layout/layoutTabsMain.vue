@@ -51,7 +51,7 @@ export default {
     },
     created() {
         this.$root.$on("addTabs",(route)=>{
-            let Tabs = this.$utils.lodash.cloneDeep(this.airforce.tabs);
+            let Tabs = this.getTabs();
             let is_not_exist = !Tabs.find(e=>e.id === route.id);
             if(is_not_exist){
                 // 不存在则添加
@@ -63,12 +63,15 @@ export default {
         })
     },
     methods:{
+        getTabs(){
+            return this.$utils.lodash.cloneDeep(this.airforce.tabs) || [];
+        },
         // 删除
         tabRemove(name){
             if(this.airforce.tabs.length === 1){
                 return ;
             }
-            let Tabs = this.$utils.lodash.cloneDeep(this.airforce.tabs);
+            let Tabs = this.getTabs();
             let index = Tabs.findIndex(e=>e.id === this.activeName);
             if(index > -1){
                 Tabs.splice(index,1);
@@ -94,7 +97,7 @@ export default {
         },
         // 关闭除此之外的页面
         closeAllPage(type){
-            let Tabs = this.$utils.lodash.cloneDeep(this.airforce.tabs);
+            let Tabs = this.getTabs();
             let index = Tabs.findIndex(e=>e.id === this.activeName);
             if(type === "Before"){
                 // 之前

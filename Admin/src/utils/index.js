@@ -35,6 +35,10 @@ export default {
             moduleName:"login",
             goods:null
         });
+        this.action({
+            moduleName:"tabs",
+            goods:null
+        });
         localStorage.clear();
         this.$router.push("/login");
     },

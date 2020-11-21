@@ -37,11 +37,14 @@ export default {
         this.$root.$on("initUserInfo",()=>{
             this.initUserInfo()
         })
+        this.$root.$on("initLayoutHeaderMain",()=>{
+            this.init();
+        })
     },
     watch:{
         "airforce.menus"(){
             this.init();
-        }
+        },
     },
     methods:{
         //初始化用户信息

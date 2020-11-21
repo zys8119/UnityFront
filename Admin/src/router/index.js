@@ -32,6 +32,7 @@ export default new vueRouter({
                     component:()=>import("@/components/view/Home/Home"),
                     meta:{
                         bodyBaColor,
+                        footerShow:true,
                     }
                 },
                 {
