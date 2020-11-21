@@ -521,6 +521,21 @@ export default class applicationControllerClass extends PublicController impleme
                     .success(JSON.stringify(newSendData))
             });
         }
+        this.$_public_success_log_callback({
+            log_time:Utils.dateFormat(),
+            user_id:this.userInfo && this.userInfo.get? this.userInfo.get("id") : null,
+            user_token:this.$_headers["token"],
+            url:this.$_headers["token_url"],
+            api_url:this.$_url,
+            $_method:this.$_method,
+            controller:this.__dir,
+            $methodName:this.$methodName,
+            data:{
+                $_body:this.$_body,
+                $_query:this.$_query,
+                $_params:this.$_params,
+            },
+        })
         this.$_send(newSendData);
     }
     $_error(msg:any = this.StatusCode.error.msg,sendData?:any,code:number = this.StatusCode.error.code){

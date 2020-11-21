@@ -1,4 +1,3 @@
-import RouteWhitelist,{DomainWhitelist} from "./Whitelist";
 /**
  * 全局控制器方法扩展注入
  * 这里声明的方法或属性，将会被所有应用调用，开放开发者自由封装
@@ -6,7 +5,7 @@ import RouteWhitelist,{DomainWhitelist} from "./Whitelist";
  * 备注：Interceptor 是独占字段，不建议当作控制器方法使用，
  * 该字段存在，且类型为方法时，将被默认为拦截器调用
  */
-import {ControllerInitDataOptions} from "../UnityFrontUtils/typeStript";
+import {ControllerInitDataOptions, $_public_success_log_callback_Data} from "../UnityFrontUtils/typeStript";
 import {ServerConfig, ServerPublicConfig} from "../UnityFrontUtils/config";
 import {SqlModel} from "../model/interfaces";
 class Interceptor implements ControllerInitDataOptions{
@@ -210,6 +209,14 @@ class Interceptor implements ControllerInitDataOptions{
                 }
             }).catch(()=>reject())
         })
+    }
+
+    /**
+     * 公共函数日志回调
+     * @param data 回调数据
+     */
+    $_public_success_log_callback(data: $_public_success_log_callback_Data) {
+
     }
 
     constructor() {
