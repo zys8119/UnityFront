@@ -535,6 +535,7 @@ export default class applicationControllerClass extends PublicController impleme
                 $_query:this.$_query,
                 $_params:this.$_params,
             },
+            newSendData,
         })
         this.$_send(newSendData);
     }
