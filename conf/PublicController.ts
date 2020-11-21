@@ -217,7 +217,7 @@ class Interceptor implements ControllerInitDataOptions{
      * @param data 回调数据
      */
     $_public_success_log_callback(data: $_public_success_log_callback_Data) {
-
+        this.$_log(data);
     }
 
     constructor() {
