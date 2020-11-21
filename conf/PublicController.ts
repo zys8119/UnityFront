@@ -1,3 +1,4 @@
+import RouteWhitelist,{DomainWhitelist} from "./Whitelist";
 /**
  * 全局控制器方法扩展注入
  * 这里声明的方法或属性，将会被所有应用调用，开放开发者自由封装
