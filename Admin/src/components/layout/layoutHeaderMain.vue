@@ -1,6 +1,6 @@
 <template>
     <div class="layoutHeaderMain">
-        <div class="logo" @click="$router.push('/')">
+        <div class="logo" @click="goHome">
             <img src="/images/login/logo_text3.png">
         </div>
         <el-tabs class="conetntMenu" @tab-click="tabClick(false)" v-model="activeName">
@@ -47,6 +47,10 @@ export default {
         },
     },
     methods:{
+        goHome(){
+            this.$router.push('/');
+            this.init();
+        },
         //初始化用户信息
         initUserInfo(){
             // 获取用户信息
