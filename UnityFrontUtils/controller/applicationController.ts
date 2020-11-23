@@ -885,21 +885,18 @@ export default class applicationControllerClass extends PublicController impleme
         });
     }
 
-    readdirSync(path: string,ignore?:Array<ControllerInitDataOptions_readdirSyncIgnore>, index= 0):any {
+    readdirSync(path: string,ignore?:Array<ControllerInitDataOptions_readdirSyncIgnore>, index= 0, relative_url?:string):any {
         let resUlt = [];
         resUlt = resUlt.concat(readdirSync(path).map(name=>{
+            if(index === 0){
+                relative_url = relative_url || "./"
+            }
             const childrenPath = resolve(path,name);
             const is_file = statSync(childrenPath).isFile();
             const type = is_file ? "file" : "directory";
             let children = [];
-            if(ignore){
-                if(ignore && index === 0 && (<any>ignore).find(e=>e.name === name && e.type === type)){
-                    children = this.readdirSync(childrenPath, ignore, index);
-                }
-            }else {
-                if(!is_file){
-                    children = this.readdirSync(childrenPath, ignore, index);
-                }
+            if(!is_file && !(ignore && index === 0 && (<any>ignore).find(e=>e.name === name && e.type === type))){
+                children = this.readdirSync(childrenPath, ignore, index+1,relative_url+name+"/");
             }
             return {
                 name:name,
@@ -907,6 +904,7 @@ export default class applicationControllerClass extends PublicController impleme
                 children,
                 type,
                 is_file,
+                relative_url
             }
         }));
         return resUlt;

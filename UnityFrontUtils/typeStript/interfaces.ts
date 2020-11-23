@@ -409,8 +409,9 @@ export interface ControllerInitDataOptions {
      * @param path
      * @param ignore
      * @param index
+     * @param relative_url
      */
-    readdirSync?(path:string,ignore?:Array<ControllerInitDataOptions_readdirSyncIgnore>, index?:number):Promise<any>;
+    readdirSync?(path:string,ignore?:Array<ControllerInitDataOptions_readdirSyncIgnore>, index?:number, relative_url?:string):Promise<any>;
 
     /**
      * MD5加密

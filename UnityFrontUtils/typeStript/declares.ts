@@ -1,3 +1,4 @@
+
 declare const require:any;
 declare const process:process;
 declare const Promise:GlobalPromise<any>;
@@ -120,5 +121,7 @@ interface process{
         LOGNAME: string;
         _: string;
         [key:string]:string
-    }
+    },
+    stderr:any;
+    platform:string;
 }

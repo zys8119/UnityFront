@@ -9,6 +9,7 @@ export default <Config>{
         {name:"docs", type:"directory"},
         {name:"node_modules", type:"directory"},
         {name:"README", type:"directory"},
+        {name:"dist", type:"directory"},
     ],
     allFiles:[
         {name:"public", type:"directory"},
