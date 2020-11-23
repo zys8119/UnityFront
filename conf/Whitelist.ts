@@ -8,6 +8,7 @@
 export default [
     "/User/Auth/login",
     "/User/Auth/register",
+    "/User/Auth/VerificationCode",
 ].map(e=>e.toLocaleLowerCase())
 
 /**

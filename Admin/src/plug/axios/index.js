@@ -1,6 +1,7 @@
 import axios from "axios"
 import {Message} from "element-ui"
 import store from "store-vue"
+import storeConfigData from "@/store/index"
 export default class {
     AxiosInstance
     constructor() {
@@ -12,7 +13,7 @@ export default class {
      */
     create(){
         this.AxiosInstance = axios.create({
-            baseURL:"http://localhost:81"
+            baseURL:storeConfigData.baseUrl
         });
         this.request_interceptors();
         this.response_interceptors();

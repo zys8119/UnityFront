@@ -55,6 +55,11 @@
                                 <label for="password-login" class="form-label">密码</label>
                                 <input id="password-login" type="password" name="password" v-model="formData.password">
                             </div>
+                            <div class="form-element form-stack">
+                                <label for="code-login" class="form-label">验证码</label>
+                                <input id="code-login" name="code" v-model="formData.code">
+                                <img @click="codeRandom = Math.random()" :src="`${airforce.baseURL}/User/Auth/VerificationCode?r=${codeRandom}`">
+                            </div>
                             <div class="form-element form-submit">
                                 <button id="logIn" class="login" type="submit" name="login" @click="login">登录</button>
                                 <button id="goRight" class="login off" name="signup" v-if="airforce.isOpenRegisterPage">注册</button>
@@ -96,6 +101,7 @@ export default {
         return {
             footer:"UnityFront后台管理系统",
             formData:{},
+            codeRandom:Math.random()
         }
     },
     mounted() {
@@ -126,6 +132,7 @@ export default {
         login(){
             if(this.$utils.is_S(this.formData.username)){return this.$message.error("请输入账号")}
             if(this.$utils.is_S(this.formData.password)){return this.$message.error("请输入密码")}
+            if(this.$utils.is_S(this.formData.code)){return this.$message.error("请输入验证码")}
             this.apis.user.auth.login({
                 ...this.formData,
                 password:this.$utils.MD5(this.formData.password),
@@ -139,9 +146,9 @@ export default {
          */
         init(){
             /* ====================== *
- *  Toggle Between        *
- *  Sign Up / Login       *
- * ====================== */
+             *  Toggle Between        *
+             *  Sign Up / Login       *
+             * ====================== */
             $(document).ready(()=>{
                 $('#goRight').on('click', ()=>{
                     if(!this.airforce.isOpenRegisterPage){
@@ -185,7 +192,7 @@ export default {
             paper.install(window);
             paper.setup(document.getElementById("canvas"));
 
-// Paper JS Variables
+            // Paper JS Variables
             var canvasWidth,
                 canvasHeight,
                 canvasMiddleX,

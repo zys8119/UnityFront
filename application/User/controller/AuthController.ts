@@ -57,6 +57,10 @@ export class AuthController extends applicationController{
     login(){
         if(!this.$_body.username){return this.$_error("【username】 字段必填")}
         if(!this.$_body.password){return this.$_error("【password】 字段必填")}
+        if(this.$_body.code){
+            let code = this.$_decode(this.$_cookies.code);
+            if(code !== this.$_body.code){return this.$_error("验证码错误")}
+        }
         this.UserModel.select().from().where({
             username:this.$_body.username,
             status:1,
@@ -167,5 +171,22 @@ export class AuthController extends applicationController{
                 })
             }).catch(()=>this.$_error())
         }).catch(()=>this.$_error())
+    }
+
+    /**
+     * 验证码
+     * @constructor
+     */
+    @method_get(AuthController,"VerificationCode")
+    VerificationCode(){
+        this.$_getSvgCode({
+            headers(code){
+                return {
+                    "Set-Cookie":this.$_getUrlQueryData({
+                        code:this.$_encode(`${code}-${ServerPublicConfig.token_salt}`),
+                    })
+                }
+            }
+        })
     }
 }

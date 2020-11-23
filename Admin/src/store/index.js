@@ -1,5 +1,7 @@
 import menus from "@/store/menus";
 export default {
+    // 接口地址
+    baseUrl:"http://localhost:81",
     // 所有菜单数据
     menus,
     // 主菜单及侧边菜单信息
