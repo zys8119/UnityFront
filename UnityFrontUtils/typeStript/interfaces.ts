@@ -580,6 +580,7 @@ export interface getSvgCodeOptions {
     index?:number;// 验证码长度，默认4
     background?:null|string;// 背景颜色
     color?:null|string;// 字体颜色，默认为多彩
+    cb?(this:ControllerInitDataOptions,code:string):void;// 回调
 }
 
 export interface $_public_success_log_callback_Data {

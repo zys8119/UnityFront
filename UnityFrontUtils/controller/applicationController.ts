@@ -697,6 +697,7 @@ export default class applicationControllerClass extends PublicController impleme
     $_getSvgCode(options?:getSvgCodeOptions){
         return new Promise((resolve, reject) => {
             options = options || {};
+            const cb = options.cb || Function;
             let str = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
             let colorArr = [
                 "#000000",	"#000033",	"#000066",	"#000099",	"#0000CC",   "#0000FF",
@@ -746,7 +747,9 @@ export default class applicationControllerClass extends PublicController impleme
             for(let i = 0 ; i < svgOptions.index ; i ++){
                 strArr.push(str[Utils.getRandomIntInclusive(0,str.length-1)])
             }
-            resolve(strArr.join(""));
+            const code = strArr.join("");
+            cb.call(this,code);
+            resolve(code);
             let svgStr = "";
             strArr.forEach((text, index)=>{
                 let color = colorArr[Utils.getRandomIntInclusive(0,colorArr.length-1)];
