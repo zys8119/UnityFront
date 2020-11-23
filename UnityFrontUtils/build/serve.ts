@@ -18,14 +18,21 @@ const getFile = function (dirs){
 };
 getFile(dirs);
 const bar = new progress(':bar:current/:total', { total: files.length });
+if(!existsSync(dist)){
+    mkdirSync(dist);
+}
 files.forEach(e=>{
     let relative_url = resolve(dist,e.relative_url)
-    if(!existsSync(relative_url)){
-        mkdirSync(relative_url)
+    if(!e.is_file && !existsSync(relative_url)){
+        mkdirSync(relative_url);
     }
-    let file = createReadStream(resolve(relative_url,e.name));
-    let out = createWriteStream(resolve(relative_url,e.name));
-    file.pipe(out);
+    setTimeout(()=>{
+        if(e.is_file){
+            let file = createReadStream(resolve(relative_url,e.name));
+            let out = createWriteStream(resolve(relative_url,e.name));
+            file.pipe(out);
+        }
+    })
     bar.tick();
 });
 
