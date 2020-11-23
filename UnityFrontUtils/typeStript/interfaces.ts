@@ -30,6 +30,7 @@ export interface ServerOptions {
     ws_user?:{[key:string]:any};//webSocket 用户链接池
     debug?:boolean;//是否开启调试
     CORS?:boolean;//是否允许跨域，全局CORS
+    Credentials?:boolean;//是否携带凭证,如cookie、携带seesion等信息;备注：如果客户端跨域，则对应跨域客户端需要开启 withCredentials 字段为true
     fsWatch?:Array<ServerOptions_fsWatch>;//监听文件变化，如果该字段不存在就不监听
     RequestStatus:number;//默认请求状态
     headers?:headersType;//header参数
