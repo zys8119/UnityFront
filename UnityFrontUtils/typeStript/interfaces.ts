@@ -1,7 +1,6 @@
 import { headersType } from "./Types"
 import { AxiosStatic } from "axios"
 import {SqlModel} from "../../model/interfaces";
-import Utils from "../utils";
 
 export interface mysqlOptions {
     //连接池
@@ -284,7 +283,7 @@ export interface ControllerInitDataOptions {
 
     /**
      * 日志输出
-     * @param args 输出的参数数据
+     * @param argArray
      */
     $_log?(...argArray: any[]):void;// 日志输出
 
@@ -407,8 +406,10 @@ export interface ControllerInitDataOptions {
     /**
      * 读取目录
      * @param path
+     * @param ignore
+     * @param index
      */
-    readdirSync?(path:string):Promise<any>;
+    readdirSync?(path:string,ignore?:Array<ControllerInitDataOptions_readdirSyncIgnore>, index?:number):Promise<any>;
 
     /**
      * MD5加密
@@ -422,6 +423,11 @@ export interface ControllerInitDataOptions {
      * @param opstions 配置
      */
     toTree?(sourceData:Array<any>, opstions?:object):Array<any>;
+}
+
+export interface ControllerInitDataOptions_readdirSyncIgnore{
+    name:string;// 文件名称
+    type:string | "directory" | "file";// 文件类型
 }
 
 export interface RequestFormData {

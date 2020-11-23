@@ -4,7 +4,7 @@ import {
     SqlUtilsOptions,
     SuccessSendDataOptions,
     StatusCodeOptions,
-    getSvgCodeOptions,
+    getSvgCodeOptions, ControllerInitDataOptions_readdirSyncIgnore,
 } from "../typeStript"
 import { headersType } from "../typeStript/Types";
 import { ServerConfig, ServerPublicConfig } from "../config";
@@ -15,7 +15,6 @@ import PublicController from "../../conf/PublicController";
 import { SqlModel } from "../../model/interfaces";
 import { resolve } from "path";
 import {readdirSync, statSync} from "fs";
-import a from "../lib/formData";
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
@@ -871,15 +870,21 @@ export default class applicationControllerClass extends PublicController impleme
         });
     }
 
-    readdirSync(path: string):any {
+    readdirSync(path: string,ignore?:Array<ControllerInitDataOptions_readdirSyncIgnore>, index= 0):any {
         let resUlt = [];
         resUlt = resUlt.concat(readdirSync(path).map(name=>{
             const childrenPath = resolve(path,name);
             const is_file = statSync(childrenPath).isFile();
             const type = is_file ? "file" : "directory";
             let children = [];
-            if(!is_file){
-                children = this.readdirSync(childrenPath);
+            if(ignore){
+                if(ignore && index === 0 && (<any>ignore).find(e=>e.name === name && e.type === type)){
+                    children = this.readdirSync(childrenPath, ignore, index);
+                }
+            }else {
+                if(!is_file){
+                    children = this.readdirSync(childrenPath, ignore, index);
+                }
             }
             return {
                 name:name,
