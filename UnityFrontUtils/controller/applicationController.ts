@@ -774,9 +774,10 @@ export default class applicationControllerClass extends PublicController impleme
             ${svgStr}
             </svg>
             `;
+            const header = headers.call(this, code) || {};
             this.response.writeHead(200,{
                 "Content-Type":"image/svg+xml",
-                ...headers.call(this, code)
+                ...header,
             });
             this.response.write(svg);
             this.response.end();
