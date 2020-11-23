@@ -238,7 +238,7 @@ export interface ControllerInitDataOptions {
     $ControllerConfig?:any;//控制器配置
     StatusCode?:StatusCodeOptions;//公共状态码定义
     $_axios?:AxiosStatic;//axios请求工具
-    $_cookies?:object|null;//cookies
+    $_cookies?:any;//cookies
     setHeaders?(Headers:headersType):void;//设置返回头
     setRequestStatus?(Status:number):void;// 设置http 状态码
     Interceptor?():Promise<any>;// 全局拦截器
