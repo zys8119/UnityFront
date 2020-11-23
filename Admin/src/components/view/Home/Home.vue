@@ -5,9 +5,9 @@
                 <layout-filter-content>
                     <el-form>
                         <el-form-item label="用户名称：">{{airforce.login.name}}</el-form-item>
-                        <el-form-item label="邮箱：">{{airforce.login.email}}</el-form-item>
+                        <el-form-item label="邮箱：">{{airforce.login.email || '暂无'}}</el-form-item>
                         <el-form-item label="手机：">{{airforce.login.phone | phone}}</el-form-item>
-                        <el-form-item label="登陆时间：">{{airforce.login.time}}</el-form-item>
+                        <el-form-item label="登陆时间：">{{airforce.login.login_time_str}}</el-form-item>
                     </el-form>
                 </layout-filter-content>
             </layout-box>

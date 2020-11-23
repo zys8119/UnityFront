@@ -167,6 +167,7 @@ export class AuthController extends applicationController{
                 this.$_success({
                     ...userInfo,
                     menus:this.toTree(res),
+                    login_time_str:this.userInfo.get("login_time_str"),
                 })
             }).catch(()=>this.$_error())
         }).catch(()=>this.$_error())

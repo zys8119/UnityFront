@@ -9,6 +9,7 @@ import RouteWhitelist,{DomainWhitelist} from "./Whitelist";
 import {ControllerInitDataOptions, $_public_success_log_callback_Data} from "../UnityFrontUtils/typeStript";
 import {ServerConfig, ServerPublicConfig} from "../UnityFrontUtils/config";
 import {SqlModel} from "../model/interfaces";
+import Units from "../UnityFrontUtils/utils";
 class Interceptor implements ControllerInitDataOptions{
     $_success(msg?: any, sendData?: any, code?: number): void {
     }
@@ -75,6 +76,8 @@ class Interceptor implements ControllerInitDataOptions{
                                 this.$_error("无效token或用户不存在", null, code);
                                 return reject();
                             }
+                            const login_time = parseInt(this.userInfo.get("time")) - ServerPublicConfig.token_time;
+                            const login_time_str = Units.dateFormat(login_time)
                             //todo 是否开启token_url页面级别权限控制，建议开启，第一次开发时可以关闭，不然无法设置权限页面
                             //todo 账号类型不是0（即：0=管理员）的且开启token_url才进行页面级权限判断
                             if(res[0].type !== 0 && ServerConfig.token_url){
@@ -84,6 +87,7 @@ class Interceptor implements ControllerInitDataOptions{
                                     if(token_url && Roles.find(e=>token_url.toLocaleLowerCase().indexOf(e.url.toLocaleLowerCase()) === 0)){
                                         // @ts-ignore
                                         this.userInfo = new Map(Object.keys(res[0]).map(e=>([e,res[0][e]])));
+                                        this.userInfo.set("login_time_str", login_time_str)
                                         resolve();
                                     }else {
                                         this.$_error("权限不足, 请联系管理员!", null, code);
@@ -96,6 +100,7 @@ class Interceptor implements ControllerInitDataOptions{
                             }else {
                                 // @ts-ignore
                                 this.userInfo = new Map(Object.keys(res[0]).map(e=>([e,res[0][e]])));
+                                this.userInfo.set("login_time_str", login_time_str)
                                 resolve();
                             }
                         }).catch(()=>{
