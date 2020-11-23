@@ -698,7 +698,7 @@ export default class applicationControllerClass extends PublicController impleme
         return new Promise((resolve, reject) => {
             options = options || {};
             const cb = options.cb || Function;
-            const headers = options.headers || {};
+            const headers = options.headers || Function;
             let str = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
             let colorArr = [
                 "#000000",	"#000033",	"#000066",	"#000099",	"#0000CC",   "#0000FF",
@@ -774,9 +774,10 @@ export default class applicationControllerClass extends PublicController impleme
             ${svgStr}
             </svg>
             `;
+            const header = headers.call(this, code) || {};
             this.response.writeHead(200,{
                 "Content-Type":"image/svg+xml",
-                ...headers
+                ...header,
             });
             this.response.write(svg);
             this.response.end();
