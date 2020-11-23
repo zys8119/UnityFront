@@ -41,6 +41,7 @@ export const ServerConfig =  <ServerOptions>{
     CORS:true,
     DomainWhite:false,
     token_url:true,
+    public_success_log:true,
     fsWatch:[
         //listen conf directory
         {path:path.resolve(__dirname,"../../conf"),type:"directory"},
@@ -86,7 +87,7 @@ export const TimingTaskQueue = <TimingTaskQueueOptions>{
                     };
                 }catch (e) {}
             });
-        };
+        }
     },
     TaskQueueTime:500,
     //日志保留时间，当前默认30天
