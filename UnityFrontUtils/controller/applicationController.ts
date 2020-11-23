@@ -15,6 +15,7 @@ import PublicController from "../../conf/PublicController";
 import { SqlModel } from "../../model/interfaces";
 import { resolve } from "path";
 import {readdirSync, statSync} from "fs";
+import a from "../lib/formData";
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
@@ -122,7 +123,7 @@ export default class applicationControllerClass extends PublicController impleme
     $ControllerConfig:any;
     StatusCode:StatusCodeOptions;
     $_axios:AxiosStatic;
-    $_cookies:object|null;
+    $_cookies:any;
     setHeaders(Headers:headersType = {}){
         this.$_RequestHeaders = (<any>Object).assign(JSON.parse(JSON.stringify(this.$_RequestHeaders)),Headers);
     }
