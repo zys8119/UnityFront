@@ -1,6 +1,7 @@
 import { headersType } from "./Types"
 import { AxiosStatic } from "axios"
 import {SqlModel} from "../../model/interfaces";
+import Utils from "../utils";
 
 export interface mysqlOptions {
     //连接池
@@ -296,6 +297,12 @@ export interface ControllerInitDataOptions {
     writeLogFile?(args,logPath:string,oldData?:string):void;// 写入日志
 
     /**
+     * 公共函数日志回调
+     * @param data 回调数据
+     */
+    $_public_success_log_callback?(data:$_public_success_log_callback_Data):void;// 成功返回工具
+
+    /**
      * 成功返回工具
      * @param msg 提示信息
      * @param sendData 发送数据
@@ -303,6 +310,7 @@ export interface ControllerInitDataOptions {
      * @param error 是否为错误消息
      */
     $_success?(msg?:any,sendData?:any,code?:number, error?:boolean):void;// 成功返回工具
+
     /**
      * 错误返回工具
      * @param msg 提示信息
@@ -566,4 +574,23 @@ export interface getSvgCodeOptions {
     background?:null|string;// 背景颜色
     color?:null|string;// 字体颜色，默认为多彩
     cb?(this:ControllerInitDataOptions,code:string):void;// 回调
+}
+
+export interface $_public_success_log_callback_Data {
+    log_time:string;// 日志时间
+    user_id:string;// 用户id
+    user_token:string;// 用户token
+    url:string;// 客户端页面地址
+    api_url:string;// api接口地址
+    $_method:string;// 接口请求方式
+    controller:string;// 当前所属控制器
+    $methodName:string;// 当前控制器方法
+    data:$_public_success_log_callback_Data_data;// 当前请求携带的数据数据
+    newSendData:any; // 响应数据
+}
+
+export interface $_public_success_log_callback_Data_data {
+    $_body:any;// body 数据
+    $_query:any;// query 数据
+    $_params:any;// url变量params数据
 }
