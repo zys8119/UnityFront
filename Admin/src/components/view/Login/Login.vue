@@ -57,8 +57,10 @@
                             </div>
                             <div class="form-element form-stack">
                                 <label for="code-login" class="form-label">验证码</label>
-                                <input id="code-login" name="code" v-model="formData.code">
-                                <img @click="codeRandom = Math.random()" :src="`${airforce.baseURL}/User/Auth/VerificationCode?r=${codeRandom}`">
+                                <div class="code-login-row">
+                                    <input id="code-login" name="code" v-model="formData.code">
+                                    <img @click="codeRandom = Math.random()" :src="`${airforce.baseUrl}/User/Auth/VerificationCode?r=${codeRandom}`">
+                                </div>
                             </div>
                             <div class="form-element form-submit">
                                 <button id="logIn" class="login" type="submit" name="login" @click="login">登录</button>
@@ -139,6 +141,9 @@ export default {
             }).then((res)=>{
                 this.$message({type:"success",message:"登录成功"});
                 this.$utils.login.call(this,res);
+            }).catch(()=>{
+                this.formData.code = null;
+                this.codeRandom = Math.random()
             });
         },
         /**
@@ -619,6 +624,12 @@ export default {
         }
         .signup-info, .login-info {
             display: none;
+        }
+    }
+    .code-login-row{
+        display: flex;
+        input{
+            flex: 1;
         }
     }
 }

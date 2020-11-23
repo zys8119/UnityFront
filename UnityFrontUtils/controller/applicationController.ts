@@ -407,7 +407,7 @@ export default class applicationControllerClass extends PublicController impleme
                                     //若要返回cookie、携带seesion等信息则将此项设为true。此时Access-Control-Allow-Origin不能设置为*
                                     "Access-Control-Allow-Credentials":true,
                                     // 对应Headers字段需要额外处理
-                                    'Access-Control-Allow-Headers':'content-type',
+                                    'Access-Control-Allow-Headers':'content-type, token_url, token',
                                 });
                             }
                             this.$_send(null);

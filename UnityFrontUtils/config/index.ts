@@ -39,6 +39,7 @@ export const ServerConfig =  <ServerOptions>{
     ws_user:{},
     debug:true,
     CORS:true,
+    Credentials:true,
     DomainWhite:false,
     token_url:true,
     public_success_log:true,

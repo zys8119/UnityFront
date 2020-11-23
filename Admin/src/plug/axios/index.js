@@ -13,7 +13,8 @@ export default class {
      */
     create(){
         this.AxiosInstance = axios.create({
-            baseURL:storeConfigData.baseUrl
+            baseURL:storeConfigData.baseUrl,
+            withCredentials:true
         });
         this.request_interceptors();
         this.response_interceptors();

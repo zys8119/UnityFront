@@ -30,6 +30,7 @@ export interface ServerOptions {
     ws_user?:{[key:string]:any};//webSocket 用户链接池
     debug?:boolean;//是否开启调试
     CORS?:boolean;//是否允许跨域，全局CORS
+    Credentials?:boolean;//是否携带凭证,如cookie、携带seesion等信息;备注：如果客户端跨域，则对应跨域客户端需要开启 withCredentials 字段为true
     DomainWhite?:boolean;//是否开启域名白名单
     token_url?:boolean;//是否开启token页面级别权限控制，建议开启，第一次开发时可以关闭，不然无法设置权限页面
     public_success_log?:boolean;// 是否开启公共函数日志写入功能

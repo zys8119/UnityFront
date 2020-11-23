@@ -58,8 +58,7 @@ export class AuthController extends applicationController{
         if(!this.$_body.username){return this.$_error("【username】 字段必填")}
         if(!this.$_body.password){return this.$_error("【password】 字段必填")}
         if(this.$_body.code){
-            let code = this.$_decode(this.$_cookies.code);
-            if(code !== this.$_body.code){return this.$_error("验证码错误")}
+            if(this.$_cookies.code !== this.$_encode(`${this.$_body.code}-${ServerPublicConfig.token_salt}`)){return this.$_error("验证码错误")}
         }
         this.UserModel.select().from().where({
             username:this.$_body.username,
