@@ -11,7 +11,7 @@ import {
 export const mysqlConfig = <mysqlOptions>{
     createPool:{},
     options:{
-        connectionLimit : 10,
+        connectionLimit : 12*6,
         host: 'localhost',
         user: 'root',
         password: 'root',
