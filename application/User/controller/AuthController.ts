@@ -212,7 +212,6 @@ export class AuthController extends applicationController{
                 status:1
             }).asc("id", true)
         }).then(res=>{
-            console.log(res)
             this.$_success({
                 ...res,
                 list:res.list.map(e=>({
