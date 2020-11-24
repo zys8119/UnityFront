@@ -897,16 +897,27 @@ export default class applicationControllerClass extends PublicController impleme
             let children = [];
             if(!is_file && !(ignore && index === 0 && (<any>ignore).find(e=>e.name === name && e.type === type))){
                 children = this.readdirSync(childrenPath, ignore, index+1,relative_url+name+"/");
+                return {
+                    name:name,
+                    path:childrenPath,
+                    children,
+                    type,
+                    is_file,
+                    relative_url
+                }
             }
-            return {
-                name:name,
-                path:childrenPath,
-                children,
-                type,
-                is_file,
-                relative_url
+            if(is_file){
+                return {
+                    name:name,
+                    path:childrenPath,
+                    children,
+                    type,
+                    is_file,
+                    relative_url
+                }
             }
-        }));
+            return false;
+        }).filter(e=>e));
         return resUlt;
     }
 
