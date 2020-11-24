@@ -27,6 +27,14 @@ export default new vueRouter({
             },
             children:[
                 {
+                    path:"iframe",
+                    title:"iframe",
+                    component:()=>import("@/components/view/Iframe/Index"),
+                    meta:{
+                        bodyBaColor,
+                    }
+                },
+                {
                     path:"home",
                     title: "首页",
                     component:()=>import("@/components/view/Home/Home"),
