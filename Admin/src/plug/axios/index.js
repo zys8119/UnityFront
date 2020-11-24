@@ -1,9 +1,10 @@
 import axios from "axios"
-import {Message} from "element-ui"
+import {Message, Loading} from "element-ui"
 import store from "store-vue"
 import storeConfigData from "@/store/index"
 export default class {
-    AxiosInstance
+    AxiosInstance;
+    LoadingService = [];
     constructor() {
         return this.create();
     }
@@ -59,6 +60,11 @@ export default class {
      */
     request_interceptors(){
         this.AxiosInstance.interceptors.request.use(config => {
+            this.LoadingService.push(Loading.service({
+                target:".layoutContentMain",
+                lock:true,
+                background:"rgba(255,255,255,0.3)"
+            })) ;
             try {
                 let login = store.state.airforce.login;
                 if(login && login.code === 200 && login.data && login.data.token){
@@ -77,6 +83,10 @@ export default class {
      */
     response_interceptors(){
         this.AxiosInstance.interceptors.response.use(res => {
+            let ls = this.LoadingService.splice(0,1);
+            if(ls[0]){
+                ls[0].close();
+            }
             if (res.status >= 200 && res.status <  300 ){
                 // 正常响应
                 // resolve(res.target);
@@ -98,6 +108,10 @@ export default class {
                 return Promise.reject(res.data);
             }
         }, error => {
+            let ls = this.LoadingService.splice(0,1);
+            if(ls[0]){
+                ls[0].close();
+            }
             Message.error("请求失败");
             return Promise.reject(error);
         })

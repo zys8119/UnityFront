@@ -108,7 +108,7 @@ export default {
             width: 100%;
             transition: @transition;
             .layoutMainContent{
-
+                position: relative;
             }
             .layoutFooter{
                 height: @layoutFooter;

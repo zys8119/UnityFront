@@ -74,7 +74,7 @@ export const ServerConfig =  <ServerOptions>{
             "__PUBLIC__":"/public",
         }
     },
-    TimingTaskQueue:true,
+    TimingTaskQueue:false,
 };
 
 //定时任务设置
