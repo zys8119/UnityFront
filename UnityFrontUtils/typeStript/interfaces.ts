@@ -28,6 +28,7 @@ export interface ServerOptions {
     port?:string|number;//端口
     ws_port?:string|number;//webSocket 端口,如果不存在就不创建
     ws_user?:{[key:string]:any};//webSocket 用户链接池
+    timeout?:number | 0;//请求超时时间,默认0，即不超时
     debug?:boolean;//是否开启调试
     CORS?:boolean;//是否允许跨域，全局CORS
     Credentials?:boolean;//是否携带凭证,如cookie、携带seesion等信息;备注：如果客户端跨域，则对应跨域客户端需要开启 withCredentials 字段为true

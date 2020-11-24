@@ -1,7 +1,16 @@
 import "../typeStript"
 import fsWatch from "./fsWatch"
 import { ServerConfig } from "../config"
+const ncol = require("ncol")
 module.exports =  (request,response)=>{
+    // 超时处理
+    (request.setTimeout)(ServerConfig.timeout,()=>{
+        ncol.color(function (){
+            this
+                .errorBG("请求超时")
+                .error(request.url)
+        })
+    })
     //文件监听，可以自动刷新
     if(ServerConfig.fsWatch){
         try {
