@@ -396,13 +396,14 @@ export default class applicationControllerClass extends PublicController impleme
                typeof ControllerClassInit.Interceptor === 'function'){
                 try {
                     ControllerClassInit.Interceptor().then(()=>{
-
+                        const Methods = `get',GET,delete',DELETE,head',HEAD,options',OPTIONS,post',POST,put',PUT,patch',PATCH,link',LINK,unlink',UNLINK`
                         if(this.$_method.toLocaleLowerCase() === 'options' && ServerConfig.CORS){
                             this.setHeaders({
                                 "Access-Control-Allow-Headers":"*",
                             });
                             if(ServerConfig.Credentials){
                                 this.setHeaders({
+                                    "Access-Control-Allow-Methods":Methods,
                                     "Access-Control-Allow-Origin":this.$_headers["origin"],
                                     //若要返回cookie、携带seesion等信息则将此项设为true。此时Access-Control-Allow-Origin不能设置为*
                                     "Access-Control-Allow-Credentials":true,
@@ -421,6 +422,7 @@ export default class applicationControllerClass extends PublicController impleme
                             }
                             if(ServerConfig.Credentials){
                                 ControllerClassInit.setHeaders({
+                                    "Access-Control-Allow-Methods":Methods,
                                     "Access-Control-Allow-Origin": this.$_headers["origin"],
                                     "Access-Control-Allow-Credentials": true,
                                 })
