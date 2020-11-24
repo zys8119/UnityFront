@@ -5,7 +5,6 @@ const ncol = require("ncol")
 module.exports =  (request,response)=>{
     // 超时处理
     (request.setTimeout)(ServerConfig.timeout,()=>{
-        console.error()
         ncol.color(function (){
             this
                 .errorBG("请求超时")
