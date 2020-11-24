@@ -13,7 +13,7 @@
             </layout-box>
             <layout-box>
                 <layout-filter-content>
-                    <h6>平台日志</h6>
+                    <h6>平台登录日志</h6>
                 </layout-filter-content>
             </layout-box>
         </div>

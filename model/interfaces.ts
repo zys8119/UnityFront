@@ -10,6 +10,7 @@ export interface SqlModel {
     RolesPermissionModel:SqlModelTable;
     MenuModel:SqlModelTable;
     UserRolesModel:SqlModelTable;
+    LogModel:SqlModelTable;
 }
 
 export interface  SqlModelTable extends SqlUtilsOptions{
