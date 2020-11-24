@@ -3,6 +3,7 @@ import {
     method_post
 } from "../../../UnityFrontUtils/controller/applicationController";
 import {SqlUtilsOptions} from "../../../UnityFrontUtils/typeStript";
+import Utils from "../../../UnityFrontUtils/utils";
 import {PublicModelInterface} from "../../../model/PublicModel";
 import { ServerPublicConfig} from "../../../UnityFrontUtils/config";
 
@@ -74,6 +75,16 @@ export class AuthController extends applicationController{
             }
             const token_laws = `${res[0].username}-${res[0].password}-${res[0].id}-${Date.now()+ServerPublicConfig.token_time}-${ServerPublicConfig.token_salt}`;
             const token = this.$_encode(token_laws);
+            new this.$sqlModel.LogModel().insert({
+                id:Date.now(),
+                log_user_id:res[0].id,
+                log_info:JSON.stringify({
+                    name:res[0].name,
+                    phone:res[0].phone,
+                    time:Utils.dateFormat()
+                }),
+                type:1,
+            }).query()
             this.$_success({
                 ...res[0],
                 // 1个月有效时间
@@ -188,5 +199,27 @@ export class AuthController extends applicationController{
                 }
             }
         })
+    }
+
+    /**
+     * 获取登录日志
+     */
+    @method_get(AuthController, "getLoginLog")
+    getLoginLog(){
+        new this.$sqlModel.LogModel().getPage(this.$_query,function (){
+            this.where({
+                type:1,
+                status:1
+            }).asc("id", true)
+        }).then(res=>{
+            console.log(res)
+            this.$_success({
+                ...res,
+                list:res.list.map(e=>({
+                    ...e,
+                    log_info:JSON.parse(e.log_info)
+                }))
+            })
+        }).catch(()=>this.$_error())
     }
 }

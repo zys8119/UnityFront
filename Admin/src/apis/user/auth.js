@@ -72,5 +72,18 @@ export default {
             method:"post",
             data,
         })
+    },
+
+    /**
+     * 获取登录日志
+     * @param data
+     * @returns {*}
+     */
+    getLoginLog(data){
+        return this.axios({
+            url:"/User/Auth/getLoginLog",
+            method:"get",
+            data,
+        })
     }
 }
