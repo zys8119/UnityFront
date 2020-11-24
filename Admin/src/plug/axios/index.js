@@ -112,7 +112,7 @@ export default class {
             if(ls[0]){
                 ls[0].close();
             }
-            Message.error("请求失败");
+            Message.error("请求失败或网络超时");
             return Promise.reject(error);
         })
 
