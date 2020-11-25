@@ -197,7 +197,30 @@
         "relative_url": "./AuthorityManagement/controller/",
         "controller": "./AuthorityManagement/controller/RolesController.ts",
         "url": "/AuthorityManagement/Roles",
-        "data": []
+        "data": [
+            {
+                "name": "list",
+                "method": "unknown",
+                "description": "获取角色列表",
+                "body": {},
+                "params": {},
+                "query": {
+                    "pageNo": {
+                        "type": "{number}",
+                        "description": "页数"
+                    },
+                    "pageSize": {
+                        "type": "{number}",
+                        "description": "每页数量"
+                    },
+                    "search": {
+                        "type": "{string}",
+                        "description": "搜素"
+                    }
+                },
+                "route": {}
+            }
+        ]
     },
     {
         "name": "RolesPermissionController.ts",
