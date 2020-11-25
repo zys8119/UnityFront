@@ -2,12 +2,12 @@
     <div class="Doc">
         <div class="DocLeft">
             <div v-for="(item, key) in apiData" :key="key">
-                <div class="row ellipsis-1" v-for="(it, k2) in item.data" :key="`${key-k2}`" v-if="it.description && it.description !== 'unknown'">{{it.description}}</div>
+                <div :class="{activity:$route.query.id === `${key}-${k2}`}" @click="goApi(`${key}-${k2}`)" class="row ellipsis-1" v-for="(it, k2) in item.data" :key="`${key}-${k2}`" v-if="it.description && it.description !== 'unknown'">{{it.description}}</div>
             </div>
         </div>
         <div class="DocRight">
             <div v-for="(item, key) in apiData" :key="key">
-                <div class="row ellipsis-1" v-for="(it, k2) in item.data" :key="`${key-k2}`" v-if="it.description && it.description !== 'unknown'">
+                <div :id="`api-${key}-${k2}`" class="row ellipsis-1" v-for="(it, k2) in item.data" :key="`${key}-${k2}`" v-if="it.description && it.description !== 'unknown'">
                     <h2>{{it.name}}</h2>
                     <p class="description">{{ it.description }}</p>
                     <el-divider>基础信息</el-divider>
@@ -36,17 +36,41 @@ export default {
             ]
         }
     },
+    watch:{
+        $route(){
+            this.init();
+        }
+    },
     mounted() {
         this.apis.Doc.constructor.index().then(res=>{
             this.apiData = res.filter(e=>e.data.length > 0);
             this.$nextTick(()=>{
-                this.$refs.table.forEach(vm=>{
+                this.$refs.table.forEach((vm, key)=>{
                     vm.init();
-                })
+                    if(key === (this.$refs.table.length - 1)){
+                        setTimeout(()=>{
+                            this.init();
+                        },500)
+                    }
+                });
             })
         });
     },
     methods:{
+        // 初始化位置
+        init(){
+            this.$nextTick(()=>{
+                if(this.$route.query.id){
+                    const dom = document.getElementById(`api-${this.$route.query.id}`);
+                    if(dom){
+                        dom.scrollIntoView({
+                            block: 'start',
+                            behavior: 'smooth'
+                        });
+                    }
+                }
+            })
+        },
         // 获取数据
         getData(item, it){
             let resUlt = [];
@@ -69,6 +93,14 @@ export default {
                     description:data[k].description,
                 })
             }
+        },
+        // 跳转指定api
+        goApi(key){
+            this.$router.push({
+                query:{
+                    id:key,
+                }
+            });
         }
     }
 }
@@ -91,6 +123,10 @@ export default {
             border-bottom: 1px solid #d8d8d8;
             cursor: pointer;
             &:hover{
+                background-color: @themeColor;
+                color: @white;
+            }
+            &.activity{
                 background-color: @themeColor;
                 color: @white;
             }
