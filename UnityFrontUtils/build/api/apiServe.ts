@@ -76,6 +76,7 @@ class getFileApi {
                 {name:"name", type:1},
                 {name:"method", type:1},
                 {name:"description", type:1},
+                {name:"groupName", type:1},
                 {name:"body", type:2},
                 {name:"params", type:2},
                 {name:"query", type:2},
