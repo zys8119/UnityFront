@@ -15,7 +15,13 @@ export class AuthController extends applicationController{
     }
 
     /**
-     * 注册
+     * @description 注册
+     * @name register
+     * @method post
+     * @body username {string} 账号
+     * @body password {string} 密码
+     * @body email {string} 邮箱
+     * @body type {string} 操作类型，可选
      */
     @method_post(AuthController,"login")
     register(){
@@ -52,7 +58,12 @@ export class AuthController extends applicationController{
     }
 
     /**
-     * 登录
+     * @description 登录
+     * @name login
+     * @method post
+     * @body username {string} 账号
+     * @body password {string} 密码
+     * @body code {string} 验证码，可选
      */
     @method_post(AuthController,"login")
     login(){

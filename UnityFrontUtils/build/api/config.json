@@ -146,6 +146,54 @@
         "url": "/User/Auth",
         "data": [
             {
+                "name": "register",
+                "method": "post",
+                "description": "注册",
+                "body": {
+                    "username": {
+                        "type": "{string}",
+                        "description": "账号"
+                    },
+                    "password": {
+                        "type": "{string}",
+                        "description": "密码"
+                    },
+                    "email": {
+                        "type": "{string}",
+                        "description": "邮箱"
+                    },
+                    "type": {
+                        "type": "{string}",
+                        "description": "操作类型，可选"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "login",
+                "method": "post",
+                "description": "登录",
+                "body": {
+                    "username": {
+                        "type": "{string}",
+                        "description": "账号"
+                    },
+                    "password": {
+                        "type": "{string}",
+                        "description": "密码"
+                    },
+                    "code": {
+                        "type": "{string}",
+                        "description": "验证码，可选"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
                 "name": "unknown",
                 "method": "unknown",
                 "description": "unknown",
