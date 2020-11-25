@@ -65,13 +65,13 @@ class getFileApi {
             name:_unknown,
             method:_unknown,
             description:_unknown,
+            groupName:_unknown,
             body: {},
             params: {},
             query: {},
             route: {},
         };
         infoArr.forEach(item=>{
-            if(/^@name/.test(item)){info.name = item.replace(/^@name\s*/,"")}
             [
                 {name:"name", type:1},
                 {name:"method", type:1},
