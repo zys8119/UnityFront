@@ -18,6 +18,7 @@ export class IndexController extends applicationController {
      * @query dd 参数b
      * @route /Dome/urlParams/:id/:b
      * @method post
+     * @description asdasdasda
      */
     index(){
         this.$_success();
