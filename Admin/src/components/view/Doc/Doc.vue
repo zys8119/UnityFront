@@ -2,6 +2,7 @@
     <div class="Doc">
         <div class="DocLeft">
             <div v-for="(item, key) in apiData" :key="key">
+                <el-divider v-if="getGroupName(item.data).length > 0">{{getGroupName(item.data)[0].groupName }}</el-divider>
                 <div :class="{activity:$route.query.id === `${key}-${k2}`}" @click="goApi(`${key}-${k2}`)" class="row ellipsis-1" v-for="(it, k2) in item.data" :key="`${key}-${k2}`" v-if="it.description && it.description !== 'unknown'">{{it.description}}</div>
             </div>
         </div>
@@ -57,6 +58,10 @@ export default {
         });
     },
     methods:{
+        // 获取组
+        getGroupName(data){
+            return data.filter(it=>it.description && it.description !== 'unknown' && it.groupName);
+        },
         // 初始化位置
         init(){
             this.$nextTick(()=>{

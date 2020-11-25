@@ -10,7 +10,11 @@ export class RolesController extends applicationController{
     }
 
     /**
-     * 列表
+     * @description 获取角色列表
+     * @name list
+     * @query pageNo {number} 页数
+     * @query pageSize {number} 每页数量
+     * @query search {string} 搜素
      */
     @method_get(RolesController,"list")
     list(){
