@@ -105,7 +105,13 @@ export class AuthController extends applicationController{
     }
 
     /**
-     * 更新用户信息
+     * @description 更新用户信息
+     * @name updateUserInfo
+     * @method post
+     * @body id {string} 用户id
+     * @body isPassword {bool} 是否修改密码，可选
+     * @body password {string} 新密码，可选
+     * @body (email,avatar,phone,name) {string} 其他修改字段
      */
     @method_post(AuthController,"updateUserInfo")
     updateUserInfo(){
@@ -139,7 +145,13 @@ export class AuthController extends applicationController{
     }
 
     /**
-     * 获取用户列表
+     * @description 获取用户列表
+     * @name list
+     * @method get
+     * @query pageNo {number} 页数
+     * @query pageSize {number} 每页数量
+     * @query search {string} 搜素
+     * @query type {number} 账号类型
      */
     @method_get(AuthController,"list")
     list(){
@@ -164,7 +176,10 @@ export class AuthController extends applicationController{
     }
 
     /**
-     * 删除
+     * @description 删除用户
+     * @name delete
+     * @method post
+     * @bode id {string} 用户id
      */
     @method_post(AuthController,"delete")
     delete(){
@@ -177,7 +192,10 @@ export class AuthController extends applicationController{
     }
 
     /**
-     * 获取用户信息
+     * @description 获取用户信息
+     * @name getUserInfo
+     * @method get
+     * @query id {string} 用户id
      */
     @method_get(AuthController,"getUserInfo")
     getUserInfo(){
@@ -196,8 +214,9 @@ export class AuthController extends applicationController{
     }
 
     /**
-     * 验证码
-     * @constructor
+     * @description 获取图形验证码
+     * @name VerificationCode
+     * @method get
      */
     @method_get(AuthController,"VerificationCode")
     VerificationCode(){
@@ -213,7 +232,9 @@ export class AuthController extends applicationController{
     }
 
     /**
-     * 获取登录日志
+     * @description 获取登录日志
+     * @name getLoginLog
+     * @method get
      */
     @method_get(AuthController, "getLoginLog")
     getLoginLog(){

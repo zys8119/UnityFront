@@ -8,18 +8,6 @@ export class IndexController extends applicationController {
     }
 
 
-
-    /**
-     * @name index
-     * @body aa {object|any} 参数a
-     * @params b {object} 参数b
-     * @query b {object} 参数b
-     * @query bb {object}
-     * @query dd 参数b
-     * @route /Dome/urlParams/:id/:b
-     * @method post
-     * @description asdasdasda
-     */
     index(){
         this.$_success();
     }

@@ -79,43 +79,6 @@
         "url": "/Dome/Index",
         "data": [
             {
-                "name": "index",
-                "method": "post",
-                "description": "asdasdasda",
-                "body": {
-                    "aa": {
-                        "type": "{object|any}",
-                        "description": "参数a"
-                    }
-                },
-                "params": {
-                    "b": {
-                        "type": "{object}",
-                        "description": "参数b"
-                    }
-                },
-                "query": {
-                    "b": {
-                        "type": "{object}",
-                        "description": "参数b"
-                    },
-                    "bb": {
-                        "type": "{object}",
-                        "description": "unknown"
-                    },
-                    "dd": {
-                        "type": "unknown",
-                        "description": "参数b"
-                    }
-                },
-                "route": {
-                    "/Dome/urlParams/:id/:b": {
-                        "type": "unknown",
-                        "description": "unknown"
-                    }
-                }
-            },
-            {
                 "name": "dom",
                 "method": "unknown",
                 "description": "unknown",
@@ -194,9 +157,84 @@
                 "route": {}
             },
             {
-                "name": "unknown",
+                "name": "updateUserInfo",
+                "method": "post",
+                "description": "更新用户信息",
+                "body": {
+                    "id": {
+                        "type": "{string}",
+                        "description": "用户id"
+                    },
+                    "isPassword": {
+                        "type": "{bool}",
+                        "description": "是否修改密码，可选"
+                    },
+                    "password": {
+                        "type": "{string}",
+                        "description": "新密码，可选"
+                    },
+                    "(email,avatar,phone,name)": {
+                        "type": "{string}",
+                        "description": "其他修改字段"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "list",
+                "method": "get",
+                "description": "获取用户列表",
+                "body": {},
+                "params": {},
+                "query": {
+                    "pageNo": {
+                        "type": "{number}",
+                        "description": "页数"
+                    },
+                    "pageSize": {
+                        "type": "{number}",
+                        "description": "每页数量"
+                    },
+                    "search": {
+                        "type": "{string}",
+                        "description": "搜素"
+                    },
+                    "type": {
+                        "type": "{number}",
+                        "description": "账号类型"
+                    }
+                },
+                "route": {}
+            },
+            {
+                "name": "delete",
+                "method": "post",
+                "description": "删除",
+                "body": {},
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "getUserInfo",
+                "method": "get",
+                "description": "获取用户信息",
+                "body": {},
+                "params": {},
+                "query": {
+                    "id": {
+                        "type": "{string}",
+                        "description": "用户id"
+                    }
+                },
+                "route": {}
+            },
+            {
+                "name": "VerificationCode",
                 "method": "unknown",
-                "description": "unknown",
+                "description": "获取图形验证码",
                 "body": {},
                 "params": {},
                 "query": {},
