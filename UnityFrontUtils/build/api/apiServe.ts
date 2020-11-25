@@ -64,6 +64,7 @@ class getFileApi {
         let info:any = {
             name:_unknown,
             method:_unknown,
+            description:_unknown,
             body: {},
             params: {},
             query: {},
@@ -71,19 +72,22 @@ class getFileApi {
         };
         infoArr.forEach(item=>{
             if(/^@name/.test(item)){info.name = item.replace(/^@name\s*/,"")}
-            if(/^@method/.test(item)){info.method = item.replace(/^@method\s*/,"")}
             [
-                "body",
-                "params",
-                "query",
-                "route",
-            ].forEach(name=>{
-                this.initApiInfoData(name, item, info, _unknown);
+                {name:"name", type:1},
+                {name:"method", type:1},
+                {name:"description", type:1},
+                {name:"body", type:2},
+                {name:"params", type:2},
+                {name:"query", type:2},
+                {name:"route", type:2},
+            ].forEach(it=>{
+                this.initApiInfoData(it.name, item, info, _unknown, it.type);
             })
 
         })
         return info;
     }
+
 
     /**
      * 初始化api数据
@@ -92,8 +96,9 @@ class getFileApi {
      * @param info
      * @param _unknown
      */
-    initApiInfoData(name:string,item:string,info:any, _unknown:string){
+    initApiInfoData(name:string,item:string,info:any, _unknown:string, type:number){
         try {
+            if(type === 1 && new RegExp(`^@`+name).test(item)){info[name] = item.replace(new RegExp(`^@`+name+"\\s*"),""); return;}
             if(new RegExp(`^@`+name).test(item)){
                 let body = item.replace(new RegExp(`^@`+name+"\\s*"),"");
                 let bodyArrInfo = body.split(/\s{1,}/);
