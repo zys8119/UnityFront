@@ -10,7 +10,13 @@ export class MenuTypeController extends applicationController{
     }
 
     /**
-     * 列表
+     * @description 获取菜单分类列表
+     * @name list
+     * @method get
+     * @query type {number} 菜单类型
+     * @query pageNo {number} 页数
+     * @query pageSize {number} 每页数量
+     * @query search {string} 搜素
      */
     @method_get(MenuTypeController,"list")
     list(){
@@ -36,7 +42,11 @@ export class MenuTypeController extends applicationController{
 
 
     /**
-     * 添加
+     * @description 添加菜单分类
+     * @name add
+     * @method post
+     * @body name {string} 分类名称
+     * @body name {number} 分类类型
      */
     @method_post(MenuTypeController,"add")
     add(){
@@ -52,7 +62,12 @@ export class MenuTypeController extends applicationController{
     }
 
     /**
-     * 更新
+     * @description 更新菜单分类
+     * @name update
+     * @method put
+     * @body name {string} 分类名称
+     * @body type {string} 分类类型
+     * @body id {string} 分类id
      */
     @method_put(MenuTypeController,"update")
     update(){
@@ -68,7 +83,10 @@ export class MenuTypeController extends applicationController{
     }
 
     /**
-     * 删除
+     * @description 删除菜单分类
+     * @name delete
+     * @method post
+     * @body id {string} 分类id
      */
     @method_post(MenuTypeController,"delete")
     delete(){

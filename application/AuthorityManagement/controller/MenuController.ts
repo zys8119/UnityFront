@@ -10,7 +10,13 @@ export class MenuController extends applicationController{
     }
 
     /**
-     * 列表
+     * @description 获取菜单列表
+     * @name list
+     * @method get
+     * @query type {number} 菜单类型
+     * @query pageNo {number} 页数
+     * @query pageSize {number} 每页数量
+     * @query search {string} 搜素
      */
     @method_get(MenuController,"list")
     list(){
@@ -28,7 +34,13 @@ export class MenuController extends applicationController{
     }
 
     /**
-     * 新增
+     * @description 新增菜单
+     * @name add
+     * @method post
+     * @body name {string} 菜单名称
+     * @body url {string} 菜单访问地址
+     * @body type {number} 菜单类型
+     * @body is_child_page {number} 是否子页面
      */
     @method_post(MenuController,"add")
     add(){
@@ -52,7 +64,10 @@ export class MenuController extends applicationController{
     }
 
     /**
-     * 删除
+     * @description 删除菜单
+     * @name delete
+     * @method post
+     * @body id {string} 菜单id
      */
     @method_post(MenuController,"delete")
     delete(){
@@ -65,7 +80,13 @@ export class MenuController extends applicationController{
     }
 
     /**
-     * 更新
+     * @description 更新菜单
+     * @name update
+     * @method put
+     * @body id {string} 菜单id
+     * @body name {string} 菜单名称
+     * @body url {string} 菜单访问地址
+     * @body is_child_page {number} 是否为子页面
      */
     @method_put(MenuController,"update")
     update(){

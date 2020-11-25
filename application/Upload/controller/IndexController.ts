@@ -1,4 +1,4 @@
-import {applicationController} from "../../../UnityFrontUtils/controller/applicationController";
+import {applicationController, method_post} from "../../../UnityFrontUtils/controller/applicationController";
 import { ServerConfig } from "../../../UnityFrontUtils/config";
 const {resolve} = require("path");
 const {writeFileSync} = require("fs");
@@ -8,8 +8,12 @@ export class IndexController extends applicationController{
     }
 
     /**
-     * 文件上传
+     * @description 文件上传
+     * @name index
+     * @method post
+     * @body file {file} 文件流
      */
+    @method_post(IndexController,"index")
     index(){
         this.$_getRequestFormData().then(res=>{
             let files =res.filter(e=>e.type === 'file');

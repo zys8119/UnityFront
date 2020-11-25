@@ -7,7 +7,100 @@
         "relative_url": "./AuthorityManagement/controller/",
         "controller": "./AuthorityManagement/controller/MenuController.ts",
         "url": "/AuthorityManagement/Menu",
-        "data": []
+        "data": [
+            {
+                "name": "list",
+                "method": "get",
+                "description": "获取菜单列表",
+                "body": {},
+                "params": {},
+                "query": {
+                    "type": {
+                        "type": "{number}",
+                        "description": "菜单类型"
+                    },
+                    "pageNo": {
+                        "type": "{number}",
+                        "description": "页数"
+                    },
+                    "pageSize": {
+                        "type": "{number}",
+                        "description": "每页数量"
+                    },
+                    "search": {
+                        "type": "{string}",
+                        "description": "搜素"
+                    }
+                },
+                "route": {}
+            },
+            {
+                "name": "add",
+                "method": "post",
+                "description": "新增菜单",
+                "body": {
+                    "name": {
+                        "type": "{string}",
+                        "description": "菜单名称"
+                    },
+                    "url": {
+                        "type": "{string}",
+                        "description": "菜单访问地址"
+                    },
+                    "type": {
+                        "type": "{number}",
+                        "description": "菜单类型"
+                    },
+                    "is_child_page": {
+                        "type": "{number}",
+                        "description": "是否子页面"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "delete",
+                "method": "post",
+                "description": "删除菜单",
+                "body": {
+                    "id": {
+                        "type": "{string}",
+                        "description": "菜单id"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "update",
+                "method": "put",
+                "description": "更新菜单",
+                "body": {
+                    "id": {
+                        "type": "{string}",
+                        "description": "菜单id"
+                    },
+                    "name": {
+                        "type": "{string}",
+                        "description": "菜单名称"
+                    },
+                    "url": {
+                        "type": "{string}",
+                        "description": "菜单访问地址"
+                    },
+                    "is_child_page": {
+                        "type": "{number}",
+                        "description": "是否为子页面"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            }
+        ]
     },
     {
         "name": "MenuTypeController.ts",
@@ -17,7 +110,84 @@
         "relative_url": "./AuthorityManagement/controller/",
         "controller": "./AuthorityManagement/controller/MenuTypeController.ts",
         "url": "/AuthorityManagement/MenuType",
-        "data": []
+        "data": [
+            {
+                "name": "list",
+                "method": "get",
+                "description": "获取菜单分类列表",
+                "body": {},
+                "params": {},
+                "query": {
+                    "type": {
+                        "type": "{number}",
+                        "description": "菜单类型"
+                    },
+                    "pageNo": {
+                        "type": "{number}",
+                        "description": "页数"
+                    },
+                    "pageSize": {
+                        "type": "{number}",
+                        "description": "每页数量"
+                    },
+                    "search": {
+                        "type": "{string}",
+                        "description": "搜素"
+                    }
+                },
+                "route": {}
+            },
+            {
+                "name": "add",
+                "method": "post",
+                "description": "添加菜单分类",
+                "body": {
+                    "name": {
+                        "type": "{number}",
+                        "description": "分类类型"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "update",
+                "method": "put",
+                "description": "更新菜单分类",
+                "body": {
+                    "name": {
+                        "type": "{string}",
+                        "description": "分类名称"
+                    },
+                    "type": {
+                        "type": "{string}",
+                        "description": "分类类型"
+                    },
+                    "id": {
+                        "type": "{string}",
+                        "description": "分类id"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "delete",
+                "method": "post",
+                "description": "删除菜单分类",
+                "body": {
+                    "id": {
+                        "type": "{string}",
+                        "description": "分类id"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            }
+        ]
     },
     {
         "name": "RolesController.ts",
@@ -97,7 +267,22 @@
         "relative_url": "./Upload/controller/",
         "controller": "./Upload/controller/IndexController.ts",
         "url": "/Upload/Index",
-        "data": []
+        "data": [
+            {
+                "name": "index",
+                "method": "post",
+                "description": "文件上传",
+                "body": {
+                    "file": {
+                        "type": "{file}",
+                        "description": "文件流"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            }
+        ]
     },
     {
         "name": "AuthController.ts",
