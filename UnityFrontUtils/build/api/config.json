@@ -12,6 +12,7 @@
                 "name": "list",
                 "method": "get",
                 "description": "获取菜单列表",
+                "groupName": "unknown",
                 "body": {},
                 "params": {},
                 "query": {
@@ -38,6 +39,7 @@
                 "name": "add",
                 "method": "post",
                 "description": "新增菜单",
+                "groupName": "unknown",
                 "body": {
                     "name": {
                         "type": "{string}",
@@ -64,6 +66,7 @@
                 "name": "delete",
                 "method": "post",
                 "description": "删除菜单",
+                "groupName": "unknown",
                 "body": {
                     "id": {
                         "type": "{string}",
@@ -78,6 +81,7 @@
                 "name": "update",
                 "method": "put",
                 "description": "更新菜单",
+                "groupName": "unknown",
                 "body": {
                     "id": {
                         "type": "{string}",
@@ -115,6 +119,7 @@
                 "name": "list",
                 "method": "get",
                 "description": "获取菜单分类列表",
+                "groupName": "unknown",
                 "body": {},
                 "params": {},
                 "query": {
@@ -141,6 +146,7 @@
                 "name": "add",
                 "method": "post",
                 "description": "添加菜单分类",
+                "groupName": "unknown",
                 "body": {
                     "name": {
                         "type": "{number}",
@@ -155,6 +161,7 @@
                 "name": "update",
                 "method": "put",
                 "description": "更新菜单分类",
+                "groupName": "unknown",
                 "body": {
                     "name": {
                         "type": "{string}",
@@ -177,6 +184,7 @@
                 "name": "delete",
                 "method": "post",
                 "description": "删除菜单分类",
+                "groupName": "unknown",
                 "body": {
                     "id": {
                         "type": "{string}",
@@ -202,6 +210,7 @@
                 "name": "list",
                 "method": "unknown",
                 "description": "获取角色列表",
+                "groupName": "unknown",
                 "body": {},
                 "params": {},
                 "query": {
@@ -275,6 +284,7 @@
                 "name": "dom",
                 "method": "unknown",
                 "description": "unknown",
+                "groupName": "unknown",
                 "body": {},
                 "params": {},
                 "query": {},
@@ -295,6 +305,7 @@
                 "name": "index",
                 "method": "post",
                 "description": "文件上传",
+                "groupName": "unknown",
                 "body": {
                     "file": {
                         "type": "{file}",
@@ -320,6 +331,7 @@
                 "name": "register",
                 "method": "post",
                 "description": "注册",
+                "groupName": "unknown",
                 "body": {
                     "username": {
                         "type": "{string}",
@@ -346,6 +358,7 @@
                 "name": "login",
                 "method": "post",
                 "description": "登录",
+                "groupName": "unknown",
                 "body": {
                     "username": {
                         "type": "{string}",
@@ -368,6 +381,7 @@
                 "name": "updateUserInfo",
                 "method": "post",
                 "description": "更新用户信息",
+                "groupName": "unknown",
                 "body": {
                     "id": {
                         "type": "{string}",
@@ -394,6 +408,7 @@
                 "name": "list",
                 "method": "get",
                 "description": "获取用户列表",
+                "groupName": "unknown",
                 "body": {},
                 "params": {},
                 "query": {
@@ -420,6 +435,7 @@
                 "name": "delete",
                 "method": "post",
                 "description": "删除用户",
+                "groupName": "unknown",
                 "body": {},
                 "params": {},
                 "query": {},
@@ -429,6 +445,7 @@
                 "name": "getUserInfo",
                 "method": "get",
                 "description": "获取用户信息",
+                "groupName": "unknown",
                 "body": {},
                 "params": {},
                 "query": {
@@ -443,6 +460,7 @@
                 "name": "VerificationCode",
                 "method": "get",
                 "description": "获取图形验证码",
+                "groupName": "unknown",
                 "body": {},
                 "params": {},
                 "query": {},
@@ -452,6 +470,7 @@
                 "name": "getLoginLog",
                 "method": "get",
                 "description": "获取登录日志",
+                "groupName": "unknown",
                 "body": {},
                 "params": {},
                 "query": {},
