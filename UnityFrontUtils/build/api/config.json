@@ -1,1 +1,159 @@
-[]
+[
+    {
+        "name": "MenuController.ts",
+        "path": "H:\\work\\UnityFront\\application\\AuthorityManagement\\controller\\MenuController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./AuthorityManagement/controller/",
+        "controller": "./AuthorityManagement/controller/MenuController.ts",
+        "url": "/AuthorityManagement/Menu",
+        "data": []
+    },
+    {
+        "name": "MenuTypeController.ts",
+        "path": "H:\\work\\UnityFront\\application\\AuthorityManagement\\controller\\MenuTypeController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./AuthorityManagement/controller/",
+        "controller": "./AuthorityManagement/controller/MenuTypeController.ts",
+        "url": "/AuthorityManagement/MenuType",
+        "data": []
+    },
+    {
+        "name": "RolesController.ts",
+        "path": "H:\\work\\UnityFront\\application\\AuthorityManagement\\controller\\RolesController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./AuthorityManagement/controller/",
+        "controller": "./AuthorityManagement/controller/RolesController.ts",
+        "url": "/AuthorityManagement/Roles",
+        "data": []
+    },
+    {
+        "name": "RolesPermissionController.ts",
+        "path": "H:\\work\\UnityFront\\application\\AuthorityManagement\\controller\\RolesPermissionController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./AuthorityManagement/controller/",
+        "controller": "./AuthorityManagement/controller/RolesPermissionController.ts",
+        "url": "/AuthorityManagement/RolesPermission",
+        "data": []
+    },
+    {
+        "name": "RolesTypeController.ts",
+        "path": "H:\\work\\UnityFront\\application\\AuthorityManagement\\controller\\RolesTypeController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./AuthorityManagement/controller/",
+        "controller": "./AuthorityManagement/controller/RolesTypeController.ts",
+        "url": "/AuthorityManagement/RolesType",
+        "data": []
+    },
+    {
+        "name": "UserRolesController.ts",
+        "path": "H:\\work\\UnityFront\\application\\AuthorityManagement\\controller\\UserRolesController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./AuthorityManagement/controller/",
+        "controller": "./AuthorityManagement/controller/UserRolesController.ts",
+        "url": "/AuthorityManagement/UserRoles",
+        "data": []
+    },
+    {
+        "name": "IndexController.ts",
+        "path": "H:\\work\\UnityFront\\application\\Doc\\controller\\IndexController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./Doc/controller/",
+        "controller": "./Doc/controller/IndexController.ts",
+        "url": "/Doc/Index",
+        "data": []
+    },
+    {
+        "name": "IndexController.ts",
+        "path": "H:\\work\\UnityFront\\application\\Dome\\controller\\IndexController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./Dome/controller/",
+        "controller": "./Dome/controller/IndexController.ts",
+        "url": "/Dome/Index",
+        "data": [
+            {
+                "name": "index",
+                "method": "post",
+                "description": "asdasdasda",
+                "body": {
+                    "aa": {
+                        "type": "{object|any}",
+                        "description": "参数a"
+                    }
+                },
+                "params": {
+                    "b": {
+                        "type": "{object}",
+                        "description": "参数b"
+                    }
+                },
+                "query": {
+                    "b": {
+                        "type": "{object}",
+                        "description": "参数b"
+                    },
+                    "bb": {
+                        "type": "{object}",
+                        "description": "unknown"
+                    },
+                    "dd": {
+                        "type": "unknown",
+                        "description": "参数b"
+                    }
+                },
+                "route": {
+                    "/Dome/urlParams/:id/:b": {
+                        "type": "unknown",
+                        "description": "unknown"
+                    }
+                }
+            },
+            {
+                "name": "dom",
+                "method": "unknown",
+                "description": "unknown",
+                "body": {},
+                "params": {},
+                "query": {},
+                "route": {}
+            }
+        ]
+    },
+    {
+        "name": "IndexController.ts",
+        "path": "H:\\work\\UnityFront\\application\\Upload\\controller\\IndexController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./Upload/controller/",
+        "controller": "./Upload/controller/IndexController.ts",
+        "url": "/Upload/Index",
+        "data": []
+    },
+    {
+        "name": "AuthController.ts",
+        "path": "H:\\work\\UnityFront\\application\\User\\controller\\AuthController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./User/controller/",
+        "controller": "./User/controller/AuthController.ts",
+        "url": "/User/Auth",
+        "data": [
+            {
+                "name": "unknown",
+                "method": "unknown",
+                "description": "unknown",
+                "body": {},
+                "params": {},
+                "query": {},
+                "route": {}
+            }
+        ]
+    }
+]

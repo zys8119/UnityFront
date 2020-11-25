@@ -2,10 +2,12 @@ import Vue from "vue"
 import user from "./user"
 import upload from "./upload"
 import AuthorityManagement from "./AuthorityManagement"
+import Doc from "./Doc"
 const api = {
     user,
     upload,
     AuthorityManagement,
+    Doc,
 }
 const apiClass = class {
     constructor() {

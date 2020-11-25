@@ -19,6 +19,13 @@ export default new vueRouter({
             component: () => import("@/components/view/Login/Login")
         },
         {
+            path: "/doc",
+            component: () => import("@/components/view/Doc/Doc"),
+            meta:{
+                isLogin:true,
+            },
+        },
+        {
             path:"/",
             component:layout,
             redirect:"home",
