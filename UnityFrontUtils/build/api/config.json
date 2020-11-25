@@ -331,7 +331,7 @@
                 "name": "register",
                 "method": "post",
                 "description": "注册",
-                "groupName": "unknown",
+                "groupName": "用户模块",
                 "body": {
                     "username": {
                         "type": "{string}",

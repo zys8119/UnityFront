@@ -15,6 +15,7 @@ export class AuthController extends applicationController{
     }
 
     /**
+     * @groupName 用户模块
      * @description 注册
      * @name register
      * @method post
