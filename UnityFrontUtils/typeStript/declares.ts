@@ -32,14 +32,14 @@ declare module "path" {
 declare module "fs" {
     namespace fs {
         interface PlatformFs{
-            rmdirSync(path:string | Buffer | URL, options:object):void;
+            rmdirSync(path:string | Buffer | URL, options:object|any):void;
             unlinkSync(path:string | Buffer | URL):void;
             readdirSync(path:string):string[];
             existsSync(path:string):boolean;
-            createReadStream(path:string,options?:object):any;
-            createWriteStream(path:string,options?:object):any;
-            readFileSync(path:string,options?:object):any;
-            readFileSync(option?:object):any;
+            createReadStream(path:string,options?:object|any):any;
+            createWriteStream(path:string,options?:object|any):any;
+            readFileSync(path:string,options?:object|any):any;
+            readFileSync(option?:object|any):any;
             writeFile(file?:string, data?:any, callback?:()=>void|any):any;
             writeFileSync(file?:string, data?:any, options?:any):any;
             mkdir(path?:string, options?:fs_mkdir_options, callback ?:()=>void):any;

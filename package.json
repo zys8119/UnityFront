@@ -3,7 +3,8 @@
     "start": "npm run serve",
     "serve": "node UnityFrontUtils/server/index.js",
     "ws": "node UnityFrontUtils/webSocket/serve.js",
-    "build": "node UnityFrontUtils/build/serve.js"
+    "build": "node UnityFrontUtils/build/serve.js",
+    "api": "node UnityFrontUtils/build/api/apiServe.js"
   },
   "devDependencies": {
     "axios": "^0.19.0",
