@@ -60,7 +60,7 @@ export default {
     methods:{
         // 获取组
         getGroupName(data){
-            return data.filter(it=>it.description && it.description !== 'unknown' && it.groupName);
+            return data.filter(it=>it.description && it.description !== 'unknown' && it.groupName && it.groupName !== 'unknown');
         },
         // 初始化位置
         init(){
