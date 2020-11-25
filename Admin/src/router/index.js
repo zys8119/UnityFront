@@ -23,6 +23,7 @@ export default new vueRouter({
             component: () => import("@/components/view/Doc/Doc"),
             meta:{
                 isLogin:true,
+                bodyBaColor:"#ffffff",
             },
         },
         {
