@@ -7,7 +7,7 @@
         <div class="DocLeft">
             <div v-for="(item, key) in apiData" :key="key" class="menusRowBox" :class="{show:item.show}">
                 <div  @click="item.show = !item.show" v-if="getGroupName(item.data).length > 0" class="groupName ellipsis-1">
-                    {{getGroupName(item.data)[0].groupName }}
+                    <span>{{getGroupName(item.data)[0].groupName }}</span>
                     <i class="el-icon-caret-bottom" v-if="item.show"></i>
                     <i class="el-icon-caret-top" v-else></i>
                 </div>
@@ -216,13 +216,18 @@ export default {
         }
         .groupName{
             user-select: none;
-            padding: 1px 0;
             line-height: 50px;
             text-align: center;
             cursor: pointer;
             background-color: #e5e5e5;
             border-top: 3px solid @themeColor;
             color: @themeColor;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 @unit15;
+            background-color: #ff932b;
+            color: @white;
         }
         .menusRowBox{
             &:first-child{
