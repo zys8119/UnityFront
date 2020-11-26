@@ -18,7 +18,7 @@
             <div v-for="(item, key) in apiData" :key="key">
                 <div :id="`api-${key}-${k2}`" class="row" v-for="(it, k2) in item.data" :key="`${key}-${k2}`" v-if="it.description && it.description !== 'unknown'">
                     <div class="api-content" :class="{activity:$route.query.id === `${key}-${k2}`}">
-                        <h2>{{it.name}}<i class="el-icon-copy-document" @click="copyAll(item,it)"></i></h2>
+                        <h2>{{it.name}}<i class="el-icon-copy-document" @click="$utils.copyToClipboard.call(_self,copyAll(item,it))"></i></h2>
                         <p class="description">{{ it.description }}</p>
                         <el-divider>基础信息</el-divider>
                         <div class="info-row url">接口地址：<code>{{ item.url}}/{{it.name}}</code><i class="el-icon-copy-document" @click="$utils.copyToClipboard.call(_self,`${item.url}/${it.name}`)"></i></div>
@@ -33,6 +33,14 @@
                                 </template>
                             </template>
                         </content-table>
+                        <el-collapse accordion>
+                            <el-collapse-item>
+                                <template slot="title">
+                                    <el-divider>JSON<i class="el-icon-caret-bottom"></i></el-divider>
+                                </template>
+                                <pre class="pre" v-highlightjs><code class="json">{{copyAll(item,it)}}</code></pre>
+                            </el-collapse-item>
+                        </el-collapse>
                     </div>
                 </div>
             </div>
@@ -99,8 +107,8 @@ export default {
                     data.urlQuery[e.field_name] = e.description;
                     break;
                 }
-            })
-            this.$utils.copyToClipboard.call(this,JSON.stringify(data,null,4));
+            });
+            return JSON.stringify(data,null,4);
         },
         // 获取组
         getGroupName(data){
@@ -192,7 +200,6 @@ export default {
         top: @header;
         border-right: 1px solid #d8d8d8;
         background-color: #ffffff;
-        user-select: none;
         .row{
             line-height: 50px;
             padding: 0 @unit15;
@@ -208,6 +215,7 @@ export default {
             }
         }
         .groupName{
+            user-select: none;
             padding: 1px 0;
             line-height: 50px;
             text-align: center;
@@ -318,6 +326,12 @@ export default {
             color: #999999;
             &:hover{
                 color: @themeColor;
+            }
+        }
+        &/deep/ .pre{
+            cursor: text;
+            *{
+                cursor: text;
             }
         }
     }

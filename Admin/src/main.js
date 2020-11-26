@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import ElementUI from 'element-ui';
 import router from './router';
+import 'highlight.js/styles/a11y-dark.css'
+import VueHighlightJS from 'vue-highlightjs'
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/assets/less/public.less';
 import '../package/ui';
@@ -17,6 +19,7 @@ import layoutInitState from "@/store/layoutInitState"
 Vue.config.productionTip = false
 Vue.use(ElementUI);
 Vue.use(plug);
+Vue.use(VueHighlightJS)
 
 router.beforeEach((to, from, next)=>{
   loginVue(to, from, next, store,{
