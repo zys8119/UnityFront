@@ -402,14 +402,17 @@ export default class applicationControllerClass extends PublicController impleme
                                 "Access-Control-Allow-Headers":"*",
                             });
                             if(ServerConfig.Credentials){
-                                this.setHeaders({
+                                let headers  = {
                                     "Access-Control-Allow-Methods":Methods,
-                                    "Access-Control-Allow-Origin":this.$_headers["origin"],
                                     //若要返回cookie、携带seesion等信息则将此项设为true。此时Access-Control-Allow-Origin不能设置为*
                                     "Access-Control-Allow-Credentials":true,
                                     // 对应Headers字段需要额外处理
                                     'Access-Control-Allow-Headers':'content-type',
-                                });
+                                }
+                                if(this.$_headers["origin"]){
+                                    headers["Access-Control-Allow-Origin"] = this.$_headers["origin"];
+                                }
+                                this.setHeaders(headers);
                             }
                             this.$_send(null);
                         }else {
@@ -421,11 +424,14 @@ export default class applicationControllerClass extends PublicController impleme
                                 });
                             }
                             if(ServerConfig.Credentials){
-                                ControllerClassInit.setHeaders({
+                                let headers  = {
                                     "Access-Control-Allow-Methods":Methods,
-                                    "Access-Control-Allow-Origin": this.$_headers["origin"],
                                     "Access-Control-Allow-Credentials": true,
-                                })
+                                }
+                                if(this.$_headers["origin"]){
+                                    headers["Access-Control-Allow-Origin"] = this.$_headers["origin"];
+                                }
+                                ControllerClassInit.setHeaders(headers)
                             }
                             ControllerClassInit[urlArrs[2]]();
                         }
