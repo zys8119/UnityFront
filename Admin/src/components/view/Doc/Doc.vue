@@ -219,9 +219,7 @@ export default {
             line-height: 50px;
             text-align: center;
             cursor: pointer;
-            background-color: #e5e5e5;
             border-top: 3px solid @themeColor;
-            color: @themeColor;
             display: flex;
             justify-content: space-between;
             align-items: center;
