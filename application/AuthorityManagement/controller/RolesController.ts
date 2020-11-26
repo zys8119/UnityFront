@@ -10,6 +10,7 @@ export class RolesController extends applicationController{
     }
 
     /**
+     * @groupName 角色模块
      * @description 获取角色列表
      * @name list
      * @query pageNo {number} 页数

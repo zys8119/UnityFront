@@ -1,22 +1,32 @@
 <template>
     <div class="Doc">
+        <div class="DocHeader">
+            <img class="logo" src="/images/login/logo_text2.png">
+            <div class="title">UnityFront后台管理系统-api平台</div>
+        </div>
         <div class="DocLeft">
-            <div v-for="(item, key) in apiData" :key="key">
-                <el-divider v-if="getGroupName(item.data).length > 0">{{getGroupName(item.data)[0].groupName }}</el-divider>
-                <div :class="{activity:$route.query.id === `${key}-${k2}`}" @click="goApi(`${key}-${k2}`)" class="row ellipsis-1" v-for="(it, k2) in item.data" :key="`${key}-${k2}`" v-if="it.description && it.description !== 'unknown'">{{it.description}}</div>
+            <div v-for="(item, key) in apiData" :key="key" class="menusRowBox" :class="{show:item.show}">
+                <div  @click="item.show = !item.show" v-if="getGroupName(item.data).length > 0" class="groupName ellipsis-1">
+                    {{getGroupName(item.data)[0].groupName }}
+                    <i class="el-icon-caret-bottom" v-if="item.show"></i>
+                    <i class="el-icon-caret-top" v-else></i>
+                </div>
+                <div v-if="it.description && it.description !== 'unknown' && item.show" :class="{activity:$route.query.id === `${key}-${k2}`}" @click="goApi(`${key}-${k2}`)" class="row ellipsis-1" v-for="(it, k2) in item.data" :key="`${key}-${k2}`">{{it.description}}</div>
             </div>
         </div>
         <div class="DocRight">
             <div v-for="(item, key) in apiData" :key="key">
-                <div :id="`api-${key}-${k2}`" class="row ellipsis-1" v-for="(it, k2) in item.data" :key="`${key}-${k2}`" v-if="it.description && it.description !== 'unknown'">
-                    <h2>{{it.name}}</h2>
-                    <p class="description">{{ it.description }}</p>
-                    <el-divider>基础信息</el-divider>
-                    <div class="info-row url">接口地址：<code>{{ item.url}}/{{it.name}}</code></div>
-                    <div class="info-row method">请求方式：<code>{{ it.method}}</code></div>
-                    <div class="info-row controller">controller：<code>{{ item.controller}}</code></div>
-                    <el-divider>请求参数</el-divider>
-                    <content-table ref="table" :pageConfig="{noPage:true}" :data="getData(item, it)" :columns="columns"></content-table>
+                <div :id="`api-${key}-${k2}`" class="row" v-for="(it, k2) in item.data" :key="`${key}-${k2}`" v-if="it.description && it.description !== 'unknown'">
+                    <div class="api-content" :class="{activity:$route.query.id === `${key}-${k2}`}">
+                        <h2>{{it.name}}</h2>
+                        <p class="description">{{ it.description }}</p>
+                        <el-divider>基础信息</el-divider>
+                        <div class="info-row url">接口地址：<code>{{ item.url}}/{{it.name}}</code></div>
+                        <div class="info-row method">请求方式：<code :class="it.method?it.method.toLocaleLowerCase() : null">{{ it.method}}</code></div>
+                        <div class="info-row controller">controller：<code>{{ item.controller}}</code></div>
+                        <el-divider>请求参数</el-divider>
+                        <content-table ref="table" :pageConfig="{noPage:true}" :data="getData(item, it)" :columns="columns"></content-table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -44,7 +54,10 @@ export default {
     },
     mounted() {
         this.apis.Doc.constructor.index().then(res=>{
-            this.apiData = res.filter(e=>e.data.length > 0);
+            this.apiData = res.filter(e=>e.data.length > 0).map(e=>({
+                ...e,
+                show:true
+            }));
             this.$nextTick(()=>{
                 this.$refs.table.forEach((vm, key)=>{
                     vm.init();
@@ -106,7 +119,7 @@ export default {
                     id:key,
                 }
             });
-        }
+        },
     }
 }
 </script>
@@ -114,18 +127,45 @@ export default {
 <style scoped lang="less">
 .Doc{
     @s:300px;
-    .DocLeft{
-        overflow-x: hidden;
-        height: 100%;
-        width: @s;
+    @header:50px;
+    .DocHeader{
         position: fixed;
         left: 0;
         top: 0;
+        width: 100%;
+        height: @header;
+        line-height: @header;
+        background-color: @themeColor;
+        color: #ffffff;
+        z-index: 2;
+        display: flex;
+        align-items: center;
+        padding: 0 @unit15;
+        font-weight: bold;
+        .title{
+            flex: 1;
+        }
+        .logo{
+            width: auto;
+            display: inline-block;
+            height: @header - 20px;
+            margin-right: @unit15;
+        }
+    }
+    .DocLeft{
+        overflow-x: hidden;
+        height: calc(100% - @header);
+        width: @s;
+        position: fixed;
+        left: 0;
+        top: @header;
         border-right: 1px solid #d8d8d8;
+        background-color: #ffffff;
+        user-select: none;
         .row{
             line-height: 50px;
             padding: 0 @unit15;
-            border-bottom: 1px solid #d8d8d8;
+            border-bottom: 1px solid #dcdcec;
             cursor: pointer;
             &:hover{
                 background-color: @themeColor;
@@ -136,16 +176,37 @@ export default {
                 color: @white;
             }
         }
+        .groupName{
+            padding: 1px 0;
+            line-height: 50px;
+            text-align: center;
+            cursor: pointer;
+            background-color: #e5e5e5;
+            border-top: 3px solid @themeColor;
+            color: @themeColor;
+        }
+        .menusRowBox{
+            &:first-child{
+                .groupName{
+                    border: none;
+                }
+            }
+        }
     }
     .DocRight{
         .DocLeft;
         width:calc(100% - @s);
         left: @s;
+        background-color: transparent;
+        color: initial;
         .row{
             padding: @unit15;
             &:hover{
                 background-color: transparent;
                 color: initial;
+            }
+            h2{
+                color: @themeColor;
             }
             .description{
                 position: relative;
@@ -187,6 +248,19 @@ export default {
                     code{
                         color: #ffffff;
                         background-color:  #0AAF38;
+                        &.put{
+                            background-color: #d79b03;
+                        }
+                        &.unknown{
+                            background-color: #e5e5e5;
+                            color: #999999;
+                        }
+                        &.patch{
+                            background-color: goldenrod;
+                        }
+                        &.delete{
+                            background-color: #FF0000;
+                        }
                     }
                 }
                 &.controller{
@@ -194,6 +268,17 @@ export default {
                         color: #999999;
                         font-weight: initial;
                     }
+                }
+            }
+            .api-content{
+                background-color: #ffffff;
+                padding: @unit15;
+                border-radius: 10px;
+                border:1px solid #bfbfbf;
+                transition: @transition;
+                &.activity{
+                    border:1px solid @themeColor;;
+                    box-shadow: 0 0 4px @themeColor;
                 }
             }
         }

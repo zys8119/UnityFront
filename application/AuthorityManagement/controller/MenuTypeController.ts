@@ -10,6 +10,7 @@ export class MenuTypeController extends applicationController{
     }
 
     /**
+     * @groupName 菜单类型模块
      * @description 获取菜单分类列表
      * @name list
      * @method get

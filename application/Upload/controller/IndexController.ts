@@ -8,6 +8,7 @@ export class IndexController extends applicationController{
     }
 
     /**
+     * @groupName 文件上传
      * @description 文件上传
      * @name index
      * @method post

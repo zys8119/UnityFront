@@ -12,7 +12,7 @@
                 "name": "list",
                 "method": "get",
                 "description": "获取菜单列表",
-                "groupName": "unknown",
+                "groupName": "菜单模块",
                 "body": {},
                 "params": {},
                 "query": {
@@ -119,7 +119,7 @@
                 "name": "list",
                 "method": "get",
                 "description": "获取菜单分类列表",
-                "groupName": "unknown",
+                "groupName": "菜单类型模块",
                 "body": {},
                 "params": {},
                 "query": {
@@ -210,7 +210,7 @@
                 "name": "list",
                 "method": "unknown",
                 "description": "获取角色列表",
-                "groupName": "unknown",
+                "groupName": "角色模块",
                 "body": {},
                 "params": {},
                 "query": {
@@ -305,7 +305,7 @@
                 "name": "index",
                 "method": "post",
                 "description": "文件上传",
-                "groupName": "unknown",
+                "groupName": "文件上传",
                 "body": {
                     "file": {
                         "type": "{file}",
