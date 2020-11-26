@@ -448,7 +448,42 @@
         "relative_url": "./AuthorityManagement/controller/",
         "controller": "./AuthorityManagement/controller/UserRolesController.ts",
         "url": "/AuthorityManagement/UserRoles",
-        "data": []
+        "data": [
+            {
+                "name": "update",
+                "method": "put",
+                "description": "更新用户角色",
+                "groupName": "用户角色模块",
+                "body": {
+                    "id": {
+                        "type": "{string}",
+                        "description": "用户id"
+                    },
+                    "user_roles_id": {
+                        "type": "{string}",
+                        "description": "用户角色id"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "get",
+                "method": "get",
+                "description": "获取用户已绑定角色",
+                "groupName": "unknown",
+                "body": {},
+                "params": {},
+                "query": {
+                    "user_id": {
+                        "type": "{string}",
+                        "description": "用户id"
+                    }
+                },
+                "route": {}
+            }
+        ]
     },
     {
         "name": "IndexController.ts",

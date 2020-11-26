@@ -6,7 +6,12 @@ export class UserRolesController extends applicationController{
     }
 
     /**
-     * 更新用户角色
+     * @groupName 用户角色模块
+     * @description 更新用户角色
+     * @name update
+     * @method put
+     * @body id {string} 用户id
+     * @body user_roles_id {string} 用户角色id
      */
     @method_put(UserRolesController, "update")
     update(){
@@ -35,7 +40,10 @@ export class UserRolesController extends applicationController{
     }
 
     /**
-     * 获取用户已绑定角色
+     * @description 获取用户已绑定角色
+     * @name get
+     * @method get
+     * @query user_id {string} 用户id
      */
     @method_get(UserRolesController, "get")
     get(){
