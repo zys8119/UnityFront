@@ -189,6 +189,7 @@ export default {
             display: inline-block;
             height: @header - 20px;
             margin-right: @unit15;
+            cursor: pointer;
         }
     }
     .DocLeft{
