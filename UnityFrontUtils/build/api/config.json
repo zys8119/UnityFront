@@ -384,6 +384,59 @@
                     }
                 },
                 "route": {}
+            },
+            {
+                "name": "add",
+                "method": "post",
+                "description": "添加角色类型",
+                "groupName": "unknown",
+                "body": {
+                    "name": {
+                        "type": "{string}",
+                        "description": "角色类型名称"
+                    },
+                    "type": {
+                        "type": "{number}",
+                        "description": "角色类型"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "update",
+                "method": "put",
+                "description": "更新角色类型",
+                "groupName": "unknown",
+                "body": {
+                    "name": {
+                        "type": "{string}",
+                        "description": "角色类型名称"
+                    },
+                    "type": {
+                        "type": "{number}",
+                        "description": "角色类型"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "delete",
+                "method": "post",
+                "description": "删除角色类型",
+                "groupName": "unknown",
+                "body": {
+                    "id": {
+                        "type": "{string}",
+                        "description": "角色类型id"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
             }
         ]
     },

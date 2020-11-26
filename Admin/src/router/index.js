@@ -8,16 +8,10 @@ vue.use(vueRouter)
 const bodyBaColor = "#e5e5e5";
 const layout = ()=>import("@/components/layout/layout");
 const layoutContentMain = ()=>import("@/components/layout/layoutContentMain");
-export default new vueRouter({
-    routes: [
-        {
-            path: "*",
-            redirect: "/",
-        },
-        {
-            path: "/login",
-            component: () => import("@/components/view/Login/Login")
-        },
+let docRouter = [];
+if(process.env.NODE_ENV !== 'production'){
+    // 只在开发环境才显示开发接口文档
+    docRouter = [
         {
             path: "/doc",
             component: () => import("@/components/view/Doc/Doc"),
@@ -25,6 +19,19 @@ export default new vueRouter({
                 isLogin:true,
                 bodyBaColor:"#e5e5e5",
             },
+        },
+    ]
+}
+export default new vueRouter({
+    routes: [
+        ...docRouter,
+        {
+            path: "*",
+            redirect: "/",
+        },
+        {
+            path: "/login",
+            component: () => import("@/components/view/Login/Login")
         },
         {
             path:"/",
