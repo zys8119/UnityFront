@@ -18,14 +18,21 @@
             <div v-for="(item, key) in apiData" :key="key">
                 <div :id="`api-${key}-${k2}`" class="row" v-for="(it, k2) in item.data" :key="`${key}-${k2}`" v-if="it.description && it.description !== 'unknown'">
                     <div class="api-content" :class="{activity:$route.query.id === `${key}-${k2}`}">
-                        <h2>{{it.name}}</h2>
+                        <h2>{{it.name}}<i class="el-icon-copy-document" @click="copyAll(item,it)"></i></h2>
                         <p class="description">{{ it.description }}</p>
                         <el-divider>基础信息</el-divider>
-                        <div class="info-row url">接口地址：<code>{{ item.url}}/{{it.name}}</code></div>
-                        <div class="info-row method">请求方式：<code :class="it.method?it.method.toLocaleLowerCase() : null">{{ it.method}}</code></div>
-                        <div class="info-row controller">controller：<code>{{ item.controller}}</code></div>
+                        <div class="info-row url">接口地址：<code>{{ item.url}}/{{it.name}}</code><i class="el-icon-copy-document" @click="$utils.copyToClipboard.call(_self,`${item.url}/${it.name}`)"></i></div>
+                        <div class="info-row method">请求方式：<code :class="it.method?it.method.toLocaleLowerCase() : null">{{ it.method}}</code><i class="el-icon-copy-document" @click="$utils.copyToClipboard.call(_self,it.method)"></i></div>
+                        <div class="info-row controller">controller：<code>{{ item.controller}}</code><i class="el-icon-copy-document" @click="$utils.copyToClipboard.call(_self,item.controller)"></i></div>
                         <el-divider>请求参数</el-divider>
-                        <content-table ref="table" :pageConfig="{noPage:true}" :data="getData(item, it)" :columns="columns"></content-table>
+                        <content-table ref="table" :pageConfig="{noPage:true}" :data="getData(item, it)" :columns="columns">
+                            <template slot-scope="{column, row}">
+                                <template v-if="column.prop === 'field_name'">
+                                    {{row.field_name}}
+                                    <i class="el-icon-copy-document" @click="$utils.copyToClipboard.call(_self,row.field_name)"></i>
+                                </template>
+                            </template>
+                        </content-table>
                     </div>
                 </div>
             </div>
@@ -71,6 +78,30 @@ export default {
         });
     },
     methods:{
+        // 复制全部
+        copyAll(item, it){
+            let data = {
+                url:`${item.url}/${it.name}`,
+                method:it.method?it.method.toLocaleLowerCase() : null,
+                data:{},
+                params:{},
+                urlQuery:{},
+            }
+            this.getData(item, it).forEach(e=>{
+                switch (e.data_type.toLocaleLowerCase()){
+                case "body":
+                    data.data[e.field_name] = e.description;
+                    break;
+                case "query":
+                    data.params[e.field_name] = e.description;
+                    break;
+                case "params":
+                    data.urlQuery[e.field_name] = e.description;
+                    break;
+                }
+            })
+            this.$utils.copyToClipboard.call(this,JSON.stringify(data,null,4));
+        },
         // 获取组
         getGroupName(data){
             return data.filter(it=>it.description && it.description !== 'unknown' && it.groupName && it.groupName !== 'unknown');
@@ -280,6 +311,13 @@ export default {
                     border:1px solid @themeColor;;
                     box-shadow: 0 0 4px @themeColor;
                 }
+            }
+        }
+        .el-icon-copy-document{
+            margin-left: @unit15;
+            color: #999999;
+            &:hover{
+                color: @themeColor;
             }
         }
     }

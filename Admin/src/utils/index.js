@@ -245,4 +245,18 @@ export default {
             return e;
         });
     },
+    // 复制处理
+    copyToClipboard(txt) {
+        let transfer = document.createElement('input');
+        document.body.appendChild(transfer);
+        transfer.value = txt;  // 这里表示想要复制的内容
+        transfer.focus();
+        transfer.select();
+        if (document.execCommand) {
+            document.execCommand('copy');
+        }
+        transfer.blur();
+        this.$message({type:"success",message:"已复制"})
+        document.body.removeChild(transfer);
+    },
 }
