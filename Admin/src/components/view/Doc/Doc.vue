@@ -1,8 +1,8 @@
 <template>
     <div class="Doc">
         <div class="DocHeader">
-            <img class="logo" src="/images/login/logo_text2.png">
-            <div class="title">UnityFront后台管理系统-api平台</div>
+            <img class="logo" @click="$router.push('/')" src="/images/login/logo_text2.png">
+            <div class="title" @click="$router.push('/')">UnityFront后台管理系统-api平台</div>
         </div>
         <div class="DocLeft">
             <div v-for="(item, key) in apiData" :key="key" class="menusRowBox" :class="{show:item.show}">
