@@ -6,7 +6,12 @@ export class RolesPermissionController extends applicationController{
     }
 
     /**
-     * 列表
+     * @groupName 角色权限模块
+     * @description 获取角色已绑定权限
+     * @name get
+     * @method get
+     * @query menu_id {number} 菜单id
+     * @query roles_id {number} 角色id
      */
     @method_get(RolesPermissionController,"get")
     get(){
@@ -38,7 +43,12 @@ export class RolesPermissionController extends applicationController{
     }
 
     /**
-     * 更新权限
+     * @description 更新角色权限
+     * @name update
+     * @method put
+     * @body menu_id {number} 菜单id
+     * @body roles_id {number} 角色id
+     * @body permission {Arrary<string>} 角色权限
      */
     @method_put(RolesPermissionController, "update")
     update(){

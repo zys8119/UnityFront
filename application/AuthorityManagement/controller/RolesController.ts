@@ -13,6 +13,7 @@ export class RolesController extends applicationController{
      * @groupName 角色模块
      * @description 获取角色列表
      * @name list
+     * @method get
      * @query pageNo {number} 页数
      * @query pageSize {number} 每页数量
      * @query search {string} 搜素
@@ -63,7 +64,12 @@ export class RolesController extends applicationController{
 
 
     /**
-     * 添加
+     * @description 添加角色
+     * @name add
+     * @method post
+     * @body name {string} 角色名称
+     * @body type {number} 角色类型
+     * @body is_effective {number} 是否有效
      */
     @method_post(RolesController,"add")
     add(){
@@ -85,7 +91,13 @@ export class RolesController extends applicationController{
     }
 
     /**
-     * 更新
+     * @description 更新角色
+     * @name update
+     * @method put
+     * @body name {string} 角色名称
+     * @body type {number} 角色类型
+     * @body is_effective {number} 是否有效
+     * @body description {string} 角色描述
      */
     @method_put(RolesController,"update")
     update(){
@@ -105,7 +117,10 @@ export class RolesController extends applicationController{
     }
 
     /**
-     * 删除
+     * @description 删除角色
+     * @name delete
+     * @method post
+     * @body id {string} 角色id
      */
     @method_post(RolesController,"delete")
     delete(){

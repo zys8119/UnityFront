@@ -208,7 +208,7 @@
         "data": [
             {
                 "name": "list",
-                "method": "unknown",
+                "method": "get",
                 "description": "获取角色列表",
                 "groupName": "角色模块",
                 "body": {},
@@ -228,6 +228,71 @@
                     }
                 },
                 "route": {}
+            },
+            {
+                "name": "add",
+                "method": "post",
+                "description": "添加角色",
+                "groupName": "unknown",
+                "body": {
+                    "name": {
+                        "type": "{string}",
+                        "description": "角色名称"
+                    },
+                    "type": {
+                        "type": "{number}",
+                        "description": "角色类型"
+                    },
+                    "is_effective": {
+                        "type": "{number}",
+                        "description": "是否有效"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "update",
+                "method": "put",
+                "description": "更新角色",
+                "groupName": "unknown",
+                "body": {
+                    "name": {
+                        "type": "{string}",
+                        "description": "角色名称"
+                    },
+                    "type": {
+                        "type": "{number}",
+                        "description": "角色类型"
+                    },
+                    "is_effective": {
+                        "type": "{number}",
+                        "description": "是否有效"
+                    },
+                    "description": {
+                        "type": "{string}",
+                        "description": "角色描述"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "delete",
+                "method": "post",
+                "description": "删除角色",
+                "groupName": "unknown",
+                "body": {
+                    "id": {
+                        "type": "{string}",
+                        "description": "角色id"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
             }
         ]
     },
@@ -239,7 +304,50 @@
         "relative_url": "./AuthorityManagement/controller/",
         "controller": "./AuthorityManagement/controller/RolesPermissionController.ts",
         "url": "/AuthorityManagement/RolesPermission",
-        "data": []
+        "data": [
+            {
+                "name": "get",
+                "method": "get",
+                "description": "获取角色已绑定权限",
+                "groupName": "角色权限模块",
+                "body": {},
+                "params": {},
+                "query": {
+                    "menu_id": {
+                        "type": "{number}",
+                        "description": "菜单id"
+                    },
+                    "roles_id": {
+                        "type": "{number}",
+                        "description": "角色id"
+                    }
+                },
+                "route": {}
+            },
+            {
+                "name": "update",
+                "method": "put",
+                "description": "更新角色权限",
+                "groupName": "unknown",
+                "body": {
+                    "menu_id": {
+                        "type": "{number}",
+                        "description": "菜单id"
+                    },
+                    "roles_id": {
+                        "type": "{number}",
+                        "description": "角色id"
+                    },
+                    "permission": {
+                        "type": "{Arrary<string>}",
+                        "description": "角色权限"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            }
+        ]
     },
     {
         "name": "RolesTypeController.ts",
@@ -249,7 +357,35 @@
         "relative_url": "./AuthorityManagement/controller/",
         "controller": "./AuthorityManagement/controller/RolesTypeController.ts",
         "url": "/AuthorityManagement/RolesType",
-        "data": []
+        "data": [
+            {
+                "name": "list",
+                "method": "get",
+                "description": "获取角色类型列表",
+                "groupName": "角色类型模块",
+                "body": {},
+                "params": {},
+                "query": {
+                    "type": {
+                        "type": "{number}",
+                        "description": "角色类型"
+                    },
+                    "pageNo": {
+                        "type": "{number}",
+                        "description": "页数"
+                    },
+                    "pageSize": {
+                        "type": "{number}",
+                        "description": "每页数量"
+                    },
+                    "search": {
+                        "type": "{string}",
+                        "description": "搜素"
+                    }
+                },
+                "route": {}
+            }
+        ]
     },
     {
         "name": "UserRolesController.ts",
