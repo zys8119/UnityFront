@@ -14,6 +14,12 @@ export default {
         showAside(){
             return this.airforce.menusInfo && this.airforce.menusInfo.children && this.airforce.menusInfo.children.length > 0
         }
+    },
+    mounted() {
+        if(this.$route.query.open === "true"){
+            window.open(this.$route.query.url);
+            this.$router.back();
+        }
     }
 }
 </script>
