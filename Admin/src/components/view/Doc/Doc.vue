@@ -2,10 +2,13 @@
     <div class="Doc">
         <div class="DocHeader">
             <img class="logo" @click="$router.push('/')" src="/images/login/logo_text2.png">
-            <div class="title" @click="$router.push('/')">UnityFront后台管理系统-api平台</div>
+            <div class="title ellipsis-1" @click="$router.push('/')">UnityFront后台管理系统-api平台</div>
+            <div class="el-input-box">
+                <el-input prefix-icon="el-icon-search" placeholder="请输入关键字" clearable v-model="search"></el-input>
+            </div>
         </div>
         <div class="DocLeft">
-            <div v-for="(item, key) in apiData" :key="key" class="menusRowBox" :class="{show:item.show}">
+            <div v-for="(item, key) in apiData.filter(searchFilter)" :key="key" class="menusRowBox" :class="{show:item.show}">
                 <div  @click="item.show = !item.show" v-if="getGroupName(item.data).length > 0" class="groupName ellipsis-1">
                     <span>{{getGroupName(item.data)[0].groupName }}</span>
                     <i class="el-icon-caret-bottom" v-if="item.show"></i>
@@ -15,7 +18,7 @@
             </div>
         </div>
         <div class="DocRight">
-            <div v-for="(item, key) in apiData" :key="key">
+            <div v-for="(item, key) in apiData.filter(searchFilter)" :key="key">
                 <div :id="`api-${key}-${k2}`" class="row" v-for="(it, k2) in item.data" :key="`${key}-${k2}`" v-if="it.description && it.description !== 'unknown'">
                     <div class="api-content" :class="{activity:$route.query.id === `${key}-${k2}`}">
                         <h2>{{it.name}}<i class="el-icon-copy-document" @click="$utils.copyToClipboard.call(_self,copyAll(item,it))"></i></h2>
@@ -59,7 +62,8 @@ export default {
                 {label:"字段名称", prop:"field_name"},
                 {label:"字段类型", prop:"type"},
                 {label:"字段描述", prop:"description"},
-            ]
+            ],
+            search:null,
         }
     },
     watch:{
@@ -86,6 +90,14 @@ export default {
         });
     },
     methods:{
+        // 搜索
+        searchFilter(item){
+            return !this.search || item.data.some(e=>[
+                e.groupName,
+                e.description,
+                e.name,
+            ].some(it=>it.indexOf(this.search) > -1));
+        },
         // 复制全部
         copyAll(item, it){
             let data = {
@@ -181,8 +193,9 @@ export default {
         align-items: center;
         padding: 0 @unit15;
         font-weight: bold;
+        justify-content: space-between;
         .title{
-            flex: 1;
+            margin-right: @unit15;
         }
         .logo{
             width: auto;
@@ -190,6 +203,10 @@ export default {
             height: @header - 20px;
             margin-right: @unit15;
             cursor: pointer;
+        }
+        .el-input-box{
+            flex: 1;
+            margin-right: @unit15*2;
         }
     }
     .DocLeft{
