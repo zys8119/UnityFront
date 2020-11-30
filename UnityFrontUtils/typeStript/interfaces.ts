@@ -28,8 +28,10 @@ export interface ServerOptions {
     port?:string|number;//端口
     ws_port?:string|number;//webSocket 端口,如果不存在就不创建
     ws_user?:{[key:string]:any};//webSocket 用户链接池
+    timeout?:number | 0;//请求超时时间,默认0，即不超时
     debug?:boolean;//是否开启调试
     CORS?:boolean;//是否允许跨域，全局CORS
+    Credentials?:boolean;//是否携带凭证,如cookie、携带seesion等信息;备注：如果客户端跨域，则对应跨域客户端需要开启 withCredentials 字段为true
     fsWatch?:Array<ServerOptions_fsWatch>;//监听文件变化，如果该字段不存在就不监听
     RequestStatus:number;//默认请求状态
     headers?:headersType;//header参数
@@ -115,8 +117,9 @@ export interface SqlUtilsOptions {
     /**
      * @param pageConfig 分页配置
      * @param concatCallBack 连接回调，上下文为SqlUtilsOptions
+     * @param concatCallBackBefore 连接回调，上下文为SqlUtilsOptions
      */
-    getPage?(pageConfig?:getPagePageConfigType,concatCallBack?:(this:SqlUtilsOptions,bool?:boolean)=>void):Promise<any>;
+    getPage?(pageConfig?:getPagePageConfigType,concatCallBack?:(this:SqlUtilsOptions,bool?:boolean)=>void,concatCallBackBefore?:(this:SqlUtilsOptions,bool?:boolean)=>void):Promise<any>;
 
     /**
      *
@@ -233,7 +236,7 @@ export interface ControllerInitDataOptions {
     $ControllerConfig?:any;//控制器配置
     StatusCode?:StatusCodeOptions;//公共状态码定义
     $_axios?:AxiosStatic;//axios请求工具
-    $_cookies?:object|null;//cookies
+    $_cookies?:any;//cookies
     setHeaders?(Headers:headersType):void;//设置返回头
     setRequestStatus?(Status:number):void;// 设置http 状态码
     Interceptor?():Promise<any>;// 全局拦截器
@@ -282,7 +285,7 @@ export interface ControllerInitDataOptions {
 
     /**
      * 日志输出
-     * @param args 输出的参数数据
+     * @param argArray
      */
     $_log?(...argArray: any[]):void;// 日志输出
 
@@ -295,6 +298,12 @@ export interface ControllerInitDataOptions {
     writeLogFile?(args,logPath:string,oldData?:string):void;// 写入日志
 
     /**
+     * 公共函数日志回调
+     * @param data 回调数据
+     */
+    $_public_success_log_callback?(data:$_public_success_log_callback_Data):void;// 成功返回工具
+
+    /**
      * 成功返回工具
      * @param msg 提示信息
      * @param sendData 发送数据
@@ -302,6 +311,7 @@ export interface ControllerInitDataOptions {
      * @param error 是否为错误消息
      */
     $_success?(msg?:any,sendData?:any,code?:number, error?:boolean):void;// 成功返回工具
+
     /**
      * 错误返回工具
      * @param msg 提示信息
@@ -398,8 +408,29 @@ export interface ControllerInitDataOptions {
     /**
      * 读取目录
      * @param path
+     * @param ignore
+     * @param index
+     * @param relative_url
      */
-    readdirSync?(path:string):Promise<any>
+    readdirSync?(path:string,ignore?:Array<ControllerInitDataOptions_readdirSyncIgnore>, index?:number, relative_url?:string):Promise<any>;
+
+    /**
+     * MD5加密
+     * @param str
+     */
+    $MD5?(str:string):string;
+
+    /**
+     * 数组转树形结构
+     * @param sourceData 数据
+     * @param opstions 配置
+     */
+    toTree?(sourceData:Array<any>, opstions?:object):Array<any>;
+}
+
+export interface ControllerInitDataOptions_readdirSyncIgnore{
+    name:string;// 文件名称
+    type:string | "directory" | "file";// 文件类型
 }
 
 export interface RequestFormData {
@@ -551,4 +582,25 @@ export interface getSvgCodeOptions {
     index?:number;// 验证码长度，默认4
     background?:null|string;// 背景颜色
     color?:null|string;// 字体颜色，默认为多彩
+    cb?(this:ControllerInitDataOptions,code:string):void;// 回调
+    headers?(this:ControllerInitDataOptions,code:string):void;// headers返回头
+}
+
+export interface $_public_success_log_callback_Data {
+    log_time:string;// 日志时间
+    user_id:string;// 用户id
+    user_token:string;// 用户token
+    url:string;// 客户端页面地址
+    api_url:string;// api接口地址
+    $_method:string;// 接口请求方式
+    controller:string;// 当前所属控制器
+    $methodName:string;// 当前控制器方法
+    data:$_public_success_log_callback_Data_data;// 当前请求携带的数据数据
+    newSendData:any; // 响应数据
+}
+
+export interface $_public_success_log_callback_Data_data {
+    $_body:any;// body 数据
+    $_query:any;// query 数据
+    $_params:any;// url变量params数据
 }

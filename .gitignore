@@ -14,4 +14,5 @@ package-lock.json
 /public/*.vue.js
 /Front/**/*.vue.js
 /webSocket/*.js
+dist/
 *.js.map

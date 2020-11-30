@@ -7,6 +7,19 @@ export class IndexController extends applicationController {
         super();
     }
 
+
+
+    /**
+     * @name index
+     * @body aa {object|any} 参数a
+     * @params b {object} 参数b
+     * @query b {object} 参数b
+     * @query bb {object}
+     * @query dd 参数b
+     * @route /Dome/urlParams/:id/:b
+     * @method post
+     * @description asdasdasda
+     */
     index(){
         this.$_success({
             data:(<any>"_").repeat(100).split("").map((e,key)=>({
@@ -16,14 +29,20 @@ export class IndexController extends applicationController {
         });
     }
 
+    /**
+     */
+
     axios(){
+
         this.$_axios({
             url:"http://www.baidu.com"
         }).then(res=>{
             this.$_success(res.data);
         });
     }
-
+    /**
+     * @name dom
+     */
     dom(){
         this.$_puppeteer("https://www.baidu.com/s?ie=UTF-8&wd="+this.$_query.q,()=>new Promise(resolve=>{
             let resData = [];

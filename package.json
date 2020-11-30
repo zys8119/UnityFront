@@ -2,7 +2,9 @@
   "scripts": {
     "start": "npm run serve",
     "serve": "node UnityFrontUtils/server/index.js",
-    "doc": "docsify serve docs"
+    "ws": "node UnityFrontUtils/webSocket/serve.js",
+    "build": "node UnityFrontUtils/build/serve.js",
+    "build_api": "node UnityFrontUtils/build/api/apiServe.js"
   },
   "devDependencies": {
     "axios": "^0.19.0",
@@ -11,15 +13,5 @@
     "pug": "^2.0.4"
   },
   "dependencies": {
-    "baidu-aip-sdk": "^2.4.6",
-    "font-carrier": "^0.2.0",
-    "html-pdf": "^2.2.0",
-    "html2pdf": "0.0.11",
-    "htmltopdf": "0.0.8",
-    "http-proxy": "^1.18.1",
-    "pdf2json": "^1.2.0",
-    "pdf2png-mp2": "^1.0.3",
-    "three": "^0.118.3",
-    "vue": "^2.6.12"
   }
 }

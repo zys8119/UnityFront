@@ -6,6 +6,7 @@ import {mysqlConfig} from "../config";
 interface createTableConfig {
     SqlModelObj?:SqlUtilsOptions & PublicModelInterface;
     $sqlFieldConfig?:$sqlFieldConfigType;
+    $VALUES?:string;
     keyName?:string;
     type?:string;
 }
@@ -131,7 +132,12 @@ export default class sqlModelAuto{
                     this.DB({multipleStatements:true,})
                         .query([
                             `create table ${config.SqlModelObj.$TableName} (${FieldSql})  ENGINE = MyISAM ${appendSql} ROW_FORMAT = Dynamic`
-                        ].join("\n"))
+                        ].join("\n")).then(()=>{
+                        // 插入表初始数据
+                        if(config.$VALUES){
+                            this.DB({multipleStatements:true,}).query(config.$VALUES)
+                        }
+                    })
                 }
 
             }
@@ -149,6 +155,7 @@ export default class sqlModelAuto{
             const config = {
                 SqlModelObj,
                 $sqlFieldConfig,
+                $VALUES:SqlModelObj.$VALUES
             }
             this.createTable(config);
         })

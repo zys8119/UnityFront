@@ -4,7 +4,7 @@ import {
     SqlUtilsOptions,
     SuccessSendDataOptions,
     StatusCodeOptions,
-    getSvgCodeOptions,
+    getSvgCodeOptions, ControllerInitDataOptions_readdirSyncIgnore,
 } from "../typeStript"
 import { headersType } from "../typeStript/Types";
 import { ServerConfig, ServerPublicConfig } from "../config";
@@ -21,6 +21,7 @@ const http = require('http');
 const https = require('https');
 const pug = require('pug');
 const ncol = require('ncol');
+const crypto = require('crypto');
 
 /**
  * @请求方式修饰器类
@@ -65,7 +66,7 @@ class methodClass_init {
                     }
                     oldPostMethod.call(this);
                 }catch (e) {
-                    console.log(e)
+                    this.$_error(e.message);
                 }
             };
             return (t,k,d)=>{}
@@ -121,7 +122,7 @@ export default class applicationControllerClass extends PublicController impleme
     $ControllerConfig:any;
     StatusCode:StatusCodeOptions;
     $_axios:AxiosStatic;
-    $_cookies:object|null;
+    $_cookies:any;
     setHeaders(Headers:headersType = {}){
         this.$_RequestHeaders = (<any>Object).assign(JSON.parse(JSON.stringify(this.$_RequestHeaders)),Headers);
     }
@@ -395,11 +396,24 @@ export default class applicationControllerClass extends PublicController impleme
                typeof ControllerClassInit.Interceptor === 'function'){
                 try {
                     ControllerClassInit.Interceptor().then(()=>{
-
+                        const Methods = `get',GET,delete',DELETE,head',HEAD,options',OPTIONS,post',POST,put',PUT,patch',PATCH,link',LINK,unlink',UNLINK`
                         if(this.$_method.toLocaleLowerCase() === 'options' && ServerConfig.CORS){
                             this.setHeaders({
                                 "Access-Control-Allow-Headers":"*",
                             });
+                            if(ServerConfig.Credentials){
+                                let headers  = {
+                                    "Access-Control-Allow-Methods":Methods,
+                                    //若要返回cookie、携带seesion等信息则将此项设为true。此时Access-Control-Allow-Origin不能设置为*
+                                    "Access-Control-Allow-Credentials":true,
+                                    // 对应Headers字段需要额外处理
+                                    'Access-Control-Allow-Headers':'content-type',
+                                }
+                                if(this.$_headers["origin"]){
+                                    headers["Access-Control-Allow-Origin"] = this.$_headers["origin"];
+                                }
+                                this.setHeaders(headers);
+                            }
                             this.$_send(null);
                         }else {
                             if(ServerConfig.debug){
@@ -408,6 +422,16 @@ export default class applicationControllerClass extends PublicController impleme
                                         .info(`【${this.$_method}】`)
                                         .log(`【${this.$_url}】`)
                                 });
+                            }
+                            if(ServerConfig.Credentials){
+                                let headers  = {
+                                    "Access-Control-Allow-Methods":Methods,
+                                    "Access-Control-Allow-Credentials": true,
+                                }
+                                if(this.$_headers["origin"]){
+                                    headers["Access-Control-Allow-Origin"] = this.$_headers["origin"];
+                                }
+                                ControllerClassInit.setHeaders(headers)
                             }
                             ControllerClassInit[urlArrs[2]]();
                         }
@@ -520,6 +544,22 @@ export default class applicationControllerClass extends PublicController impleme
                     .success(JSON.stringify(newSendData))
             });
         }
+        this.$_public_success_log_callback({
+            log_time:Utils.dateFormat(),
+            user_id:this.userInfo && this.userInfo.get? this.userInfo.get("id") : null,
+            user_token:this.$_headers["token"],
+            url:this.$_headers["token_url"],
+            api_url:this.$_url,
+            $_method:this.$_method,
+            controller:this.__dir,
+            $methodName:this.$methodName,
+            data:{
+                $_body:this.$_body,
+                $_query:this.$_query,
+                $_params:this.$_params,
+            },
+            newSendData,
+        })
         this.$_send(newSendData);
     }
     $_error(msg:any = this.StatusCode.error.msg,sendData?:any,code:number = this.StatusCode.error.code){
@@ -680,6 +720,8 @@ export default class applicationControllerClass extends PublicController impleme
     $_getSvgCode(options?:getSvgCodeOptions){
         return new Promise((resolve, reject) => {
             options = options || {};
+            const cb = options.cb || Function;
+            const headers = options.headers || Function;
             let str = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
             let colorArr = [
                 "#000000",	"#000033",	"#000066",	"#000099",	"#0000CC",   "#0000FF",
@@ -729,7 +771,9 @@ export default class applicationControllerClass extends PublicController impleme
             for(let i = 0 ; i < svgOptions.index ; i ++){
                 strArr.push(str[Utils.getRandomIntInclusive(0,str.length-1)])
             }
-            resolve(strArr.join(""));
+            const code = strArr.join("");
+            cb.call(this,code);
+            resolve(code);
             let svgStr = "";
             strArr.forEach((text, index)=>{
                 let color = colorArr[Utils.getRandomIntInclusive(0,colorArr.length-1)];
@@ -753,8 +797,10 @@ export default class applicationControllerClass extends PublicController impleme
             ${svgStr}
             </svg>
             `;
+            const header = headers.call(this, code) || {};
             this.response.writeHead(200,{
-                "Content-Type":"image/svg+xml"
+                "Content-Type":"image/svg+xml",
+                ...header,
             });
             this.response.write(svg);
             this.response.end();
@@ -847,25 +893,75 @@ export default class applicationControllerClass extends PublicController impleme
         });
     }
 
-    readdirSync(path: string):any {
+    readdirSync(path: string,ignore?:Array<ControllerInitDataOptions_readdirSyncIgnore>, index= 0, relative_url?:string):any {
         let resUlt = [];
         resUlt = resUlt.concat(readdirSync(path).map(name=>{
+            if(index === 0){
+                relative_url = relative_url || "./"
+            }
             const childrenPath = resolve(path,name);
             const is_file = statSync(childrenPath).isFile();
             const type = is_file ? "file" : "directory";
             let children = [];
-            if(!is_file){
-                children = this.readdirSync(childrenPath);
+            if(!is_file && !(ignore && index === 0 && (<any>ignore).find(e=>e.name === name && e.type === type))){
+                children = this.readdirSync(childrenPath, ignore, index+1,relative_url+name+"/");
+                return {
+                    name:name,
+                    path:childrenPath,
+                    children,
+                    type,
+                    is_file,
+                    relative_url
+                }
             }
-            return {
-                name:name,
-                path:childrenPath,
-                children,
-                type,
-                is_file,
+            if(is_file){
+                return {
+                    name:name,
+                    path:childrenPath,
+                    children,
+                    type,
+                    is_file,
+                    relative_url
+                }
             }
-        }));
+            return false;
+        }).filter(e=>e));
         return resUlt;
+    }
+
+    $MD5(str: string): string {
+        return  crypto.createHash('md5').update(str).digest("hex");
+    }
+
+    toTree(sourceData:Array<any>,opstions?:object): Array<any>{
+        let opts:any = {
+            children:"children",
+            id:"id",
+            parent:"parent",
+            cb:new Function(),
+            ...opstions,
+        }
+        let result = []
+        if(!Array.isArray(sourceData)) {
+            return result
+        }
+        let map = {};
+        sourceData.forEach(item => {
+            delete item[opts.children];
+            map[item[opts.id]] = item;
+            if(typeof opts.cb === "function"){
+                opts.cb.call(this,item,opts);
+            }
+        });
+        sourceData.forEach(item => {
+            let parent = map[item[opts.parent]];
+            if(parent) {
+                (parent[opts.children] || (parent[opts.children] = [])).push(item);
+            } else {
+                result.push(item);
+            }
+        });
+        return result;
     }
 
 }
