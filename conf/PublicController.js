@@ -16,6 +16,12 @@ var Interceptor = /** @class */ (function () {
     Interceptor.prototype.Interceptor = function () {
         return Promise.resolve();
     };
+    /**
+     * 公共函数日志回调
+     * @param data 回调数据
+     */
+    Interceptor.prototype.$_public_success_log_callback = function (data) {
+    };
     return Interceptor;
 }());
 ;
