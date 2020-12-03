@@ -190,4 +190,17 @@ export class IndexController extends applicationController {
         })
 
     }
+
+    @method_post(IndexController,"onlyOffice")
+    onlyOffice(){
+        this.$_getRequestFormData().then(res=>{
+            console.log(this.$_body,res)
+            if(this.$_body.status === 2){
+                console.log(this.$_body.url)
+            }
+            this.$_send({
+                error:0,
+            })
+        })
+    }
 }
