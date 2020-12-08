@@ -44,6 +44,9 @@ export default class staticIndex {
                 case ".pdf":
                     this.getFileData(filePath,"application/pdf;");
                     break;
+                case ".docx":
+                    this.getFileData(filePath,"application/vnd.openxmlformats-officedocument.wordprocessingml.document;");
+                    break;
                 case ".ttf":
                     this.getFileData(filePath,"application/ttf;");
                     break;

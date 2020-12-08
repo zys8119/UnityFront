@@ -203,4 +203,32 @@ export class IndexController extends applicationController {
             })
         })
     }
+
+    onlyOfficeDocbuilder(){
+        this.$_axios({
+            url:"http://192.168.1.107:9000/docbuilder",
+            method:"post",
+            data:{
+                async:true,
+                url:"http://192.168.1.107:81/public/a.pdf"
+            }
+        }).then(res=>{
+            console.log(res.data)
+            this.$_axios({
+                url:"http://192.168.1.107:9000/ConvertService.ashx",
+                method:"post",
+                data:{
+                    async:false,
+                    filetype:"pdf",
+                    outputtype:"jpg",
+                    key:res.data.key,
+                    // key:"45",
+                    url:"http://192.168.1.107:81/public/a.pdf"
+                }
+            }).then(res=>{
+                console.log(res.data)
+                this.$_success()
+            }).catch(()=>this.$_error())
+        }).catch(()=>this.$_error())
+    }
 }
