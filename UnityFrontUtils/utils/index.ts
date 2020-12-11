@@ -187,20 +187,22 @@ export default <UtilsOptions>{
                     }));
                 Format = Format.replace(/week/g,getWeek);
                 Format = Format.replace(/sc/g,sc);
-                Format = Format.replace(/Y{4}/g,nowTimeArr[0].slice(0,4));
-                Format = Format.replace(/Y{3}/g,nowTimeArr[0].slice(0,3));
-                Format = Format.replace(/Y{2}/g,nowTimeArr[0].slice(0,2));
-                Format = Format.replace(/Y{1}/g,nowTimeArr[0].slice(0,1));
-                Format = Format.replace(/M{2}/g,nowTimeArr[1].slice(0,2));
-                Format = Format.replace(/M{1}/g,nowTimeArr[1].slice(0,1));
-                Format = Format.replace(/D{2}/g,nowTimeArr[2].slice(0,2));
-                Format = Format.replace(/D{1}/g,nowTimeArr[2].slice(0,1));
-                Format = Format.replace(/H{2}/g,nowTimeArr[3][0].slice(0,2));
-                Format = Format.replace(/H{1}/g,nowTimeArr[3][0].slice(0,1));
-                Format = Format.replace(/m{2}/g,nowTimeArr[3][1].slice(0,2));
-                Format = Format.replace(/m{1}/g,nowTimeArr[3][1].slice(0,1));
-                Format = Format.replace(/s{2}/g,nowTimeArr[3][2].slice(0,2));
-                Format = Format.replace(/s{1}/g,nowTimeArr[3][2].slice(0,1));
+                try {
+                    Format = Format.replace(/Y{4}/g,nowTimeArr[0].slice(0,4));
+                    Format = Format.replace(/Y{3}/g,nowTimeArr[0].slice(0,3));
+                    Format = Format.replace(/Y{2}/g,nowTimeArr[0].slice(0,2));
+                    Format = Format.replace(/Y{1}/g,nowTimeArr[0].slice(0,1));
+                    Format = Format.replace(/M{2}/g,nowTimeArr[1].slice(0,2));
+                    Format = Format.replace(/M{1}/g,nowTimeArr[1].slice(0,1));
+                    Format = Format.replace(/D{2}/g,nowTimeArr[2].slice(0,2));
+                    Format = Format.replace(/D{1}/g,nowTimeArr[2].slice(0,1));
+                    Format = Format.replace(/H{2}/g,nowTimeArr[3][0].slice(0,2));
+                    Format = Format.replace(/H{1}/g,nowTimeArr[3][0].slice(0,1));
+                    Format = Format.replace(/m{2}/g,nowTimeArr[3][1].slice(0,2));
+                    Format = Format.replace(/m{1}/g,nowTimeArr[3][1].slice(0,1));
+                    Format = Format.replace(/s{2}/g,nowTimeArr[3][2].slice(0,2));
+                    Format = Format.replace(/s{1}/g,nowTimeArr[3][2].slice(0,1));
+                }catch (e){}
                 break;
             case "[object Date]":
                 return this.dateFormat(newDate.getTime(),Format);
