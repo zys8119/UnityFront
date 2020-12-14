@@ -54,10 +54,10 @@ export class WebpackController extends applicationController{
                 // packageJson,
             }
             resUlt.push(item);
-            resUltMap[filePath] = true;
             if(content && filePath && !resUltMap[filePath]){
-                resUlt = resUlt.concat(this.getFileJson(item), resUltMap);
+                resUlt = resUlt.concat(this.getFileJson(item, resUltMap));
             }
+            resUltMap[filePath] = true;
         });
         return resUlt;
     }
