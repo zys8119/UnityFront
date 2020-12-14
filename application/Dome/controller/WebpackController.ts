@@ -49,9 +49,9 @@ export class WebpackController extends applicationController{
             let item = {
                 name,
                 module,
-                content,
+                filePath,
+                // content,
                 // packageJson,
-                // filePath,
             }
             resUlt.push(item);
             resUltMap[filePath] = true;
