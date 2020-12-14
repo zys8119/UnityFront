@@ -11,7 +11,7 @@ export class WebpackController extends applicationController{
         this.$_success()
     }
 
-    getFileJson(itemData:any = {}){
+    getFileJson(itemData:any = {}, resUltMap = {}){
         let utf8 = "utf8";
         let node_modules = resolve(__dirname,"../../../node_modules")
         let js = itemData.filePath || resolve(__dirname,"../../../UnityFrontUtils/server/index.js");
@@ -50,12 +50,13 @@ export class WebpackController extends applicationController{
                 name,
                 module,
                 content,
-                packageJson,
-                filePath,
+                // packageJson,
+                // filePath,
             }
             resUlt.push(item);
-            if(content && filePath){
-                resUlt = resUlt.concat(this.getFileJson(item));
+            resUltMap[filePath] = true;
+            if(content && filePath && !resUltMap[filePath]){
+                resUlt = resUlt.concat(this.getFileJson(item), resUltMap);
             }
         });
         return resUlt;
