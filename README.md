@@ -50,6 +50,8 @@
 
 ```bash
     netstat -ano | findstr 81
+    
+    tasklist|findstr 82
 ```
 
 ## 技术支持
