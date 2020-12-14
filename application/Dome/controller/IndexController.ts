@@ -21,6 +21,7 @@ export class IndexController extends applicationController {
      * @description asdasdasda
      */
     index(){
+        console.log(`此平台是 ${process.platform}`);
         this.$_success({
             data:(<any>"_").repeat(100).split("").map((e,key)=>({
                 name:"数据"+key,
@@ -230,5 +231,12 @@ export class IndexController extends applicationController {
                 this.$_success()
             }).catch(()=>this.$_error())
         }).catch(()=>this.$_error())
+    }
+
+    /**
+     * 3d案例
+     */
+    '3d'(){
+        this.Render();
     }
 }
