@@ -1,19 +1,7 @@
-declare const THREE:any;
+import {addCubeGeometryType, initContentInterface, THREE} from "./interface";
 declare const dat:any;
 declare const Stats:any;
 declare const Detector:any;
-type addCubeGeometryType = {
-    width:number;
-    height:number;
-    depth?:number;
-    x?:number;
-    y?:number;
-    z?:number;
-    color?:string|number;
-}
-interface initContentInterface {
-    addCubeGeometry(data:addCubeGeometryType):void;
-}
 class initContent implements initContentInterface{
     public stats;
     public scene;
@@ -80,10 +68,10 @@ class initContent implements initContentInterface{
      */
     initContent() {
         this.addBaseBackground();
-        this.addCubeGeometry({width:this.baseWidth, height:this.baseHeightMax, depth:this.baseThickness, z:this.baseHeight/2-this.baseThickness/2});
-        this.addCubeGeometry({width:this.baseWidth, height:this.baseHeightMax, depth:this.baseThickness, z:-this.baseHeight/2+this.baseThickness/2});
-        this.addCubeGeometry({width:this.baseThickness, height:this.baseHeightMax, x:-this.baseWidth/2+this.baseThickness/2, depth:this.baseHeight});
-        this.addCubeGeometry({width:this.baseThickness, height:this.baseHeightMax, x:this.baseWidth/2-this.baseThickness/2, depth:this.baseHeight});
+        // this.addCubeGeometry({width:this.baseWidth, height:this.baseHeightMax, depth:this.baseThickness, z:this.baseHeight/2-this.baseThickness/2});
+        // this.addCubeGeometry({width:this.baseWidth, height:this.baseHeightMax, depth:this.baseThickness, z:-this.baseHeight/2+this.baseThickness/2});
+        // this.addCubeGeometry({width:this.baseThickness, height:this.baseHeightMax, x:-this.baseWidth/2+this.baseThickness/2, depth:this.baseHeight});
+        // this.addCubeGeometry({width:this.baseThickness, height:this.baseHeightMax, x:this.baseWidth/2-this.baseThickness/2, depth:this.baseHeight});
     }
 }
 

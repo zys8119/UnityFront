@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -11,6 +12,8 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+Object.defineProperty(exports, "__esModule", { value: true });
+var interface_1 = require("./interface");
 var initContent = /** @class */ (function () {
     function initContent() {
         this.baseWidth = 500;
@@ -24,9 +27,9 @@ var initContent = /** @class */ (function () {
      */
     initContent.prototype.addBaseBackground = function () {
         // 接收阴影的片面段，也会对阴影产生一定的效果，片面段越多，阴影分辨率越清晰
-        var planeGeometry = new THREE.PlaneGeometry(this.baseWidth, this.baseHeight, this.baseWidth, this.baseHeight);
-        var planeMaterial = new THREE.MeshLambertMaterial({ color: this.baseColor });
-        var plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        var planeGeometry = new interface_1.THREE.PlaneGeometry(this.baseWidth, this.baseHeight, this.baseWidth, this.baseHeight);
+        var planeMaterial = new interface_1.THREE.MeshLambertMaterial({ color: this.baseColor });
+        var plane = new interface_1.THREE.Mesh(planeGeometry, planeMaterial);
         // 绕 x 轴旋转 -90 度
         plane.rotation.x = -0.5 * Math.PI;
         plane.receiveShadow = true;
@@ -37,12 +40,12 @@ var initContent = /** @class */ (function () {
      */
     initContent.prototype.addCubeGeometry = function (_a) {
         var width = _a.width, height = _a.height, depth = _a.depth, _b = _a.x, x = _b === void 0 ? 0 : _b, _c = _a.y, y = _c === void 0 ? 0 : _c, _d = _a.z, z = _d === void 0 ? 0 : _d, _e = _a.color, color = _e === void 0 ? '#ffffff' : _e;
-        var cubeGeometry = new THREE.CubeGeometry(width, height, depth);
-        var cubeMaterial = new THREE.MeshLambertMaterial({
+        var cubeGeometry = new interface_1.THREE.CubeGeometry(width, height, depth);
+        var cubeMaterial = new interface_1.THREE.MeshLambertMaterial({
             // color: color,
-            alphaMap: new THREE.Texture(new THREE.ImageLoader().load("/public/img/lodo_text.png"))
+            alphaMap: new interface_1.THREE.Texture(new interface_1.THREE.ImageLoader().load("/public/img/lodo_text.png"))
         });
-        var cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+        var cube = new interface_1.THREE.Mesh(cubeGeometry, cubeMaterial);
         cube.castShadow = true;
         cube.position.x = x;
         cube.position.y = cube.position.y || height / 2;
@@ -54,10 +57,10 @@ var initContent = /** @class */ (function () {
      */
     initContent.prototype.initContent = function () {
         this.addBaseBackground();
-        this.addCubeGeometry({ width: this.baseWidth, height: this.baseHeightMax, depth: this.baseThickness, z: this.baseHeight / 2 - this.baseThickness / 2 });
-        this.addCubeGeometry({ width: this.baseWidth, height: this.baseHeightMax, depth: this.baseThickness, z: -this.baseHeight / 2 + this.baseThickness / 2 });
-        this.addCubeGeometry({ width: this.baseThickness, height: this.baseHeightMax, x: -this.baseWidth / 2 + this.baseThickness / 2, depth: this.baseHeight });
-        this.addCubeGeometry({ width: this.baseThickness, height: this.baseHeightMax, x: this.baseWidth / 2 - this.baseThickness / 2, depth: this.baseHeight });
+        // this.addCubeGeometry({width:this.baseWidth, height:this.baseHeightMax, depth:this.baseThickness, z:this.baseHeight/2-this.baseThickness/2});
+        // this.addCubeGeometry({width:this.baseWidth, height:this.baseHeightMax, depth:this.baseThickness, z:-this.baseHeight/2+this.baseThickness/2});
+        // this.addCubeGeometry({width:this.baseThickness, height:this.baseHeightMax, x:-this.baseWidth/2+this.baseThickness/2, depth:this.baseHeight});
+        // this.addCubeGeometry({width:this.baseThickness, height:this.baseHeightMax, x:this.baseWidth/2-this.baseThickness/2, depth:this.baseHeight});
     };
     return initContent;
 }());
@@ -80,21 +83,21 @@ var My3D = /** @class */ (function (_super) {
      * todo 场景
      */
     My3D.prototype.initScene = function () {
-        this.scene = new THREE.Scene();
+        this.scene = new interface_1.THREE.Scene();
     };
     /**
      * todo 相机
      */
     My3D.prototype.initCamera = function () {
-        this.camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        this.camera = new interface_1.THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
         this.camera.position.set(-100, 300, 300);
-        this.camera.lookAt(new THREE.Vector3(0, 0, 0));
+        this.camera.lookAt(new interface_1.THREE.Vector3(0, 0, 0));
     };
     /**
      * todo 渲染器
      */
     My3D.prototype.initRenderer = function () {
-        this.renderer = new THREE.WebGLRenderer({ antialias: true });
+        this.renderer = new interface_1.THREE.WebGLRenderer({ antialias: true });
         // 设置渲染器的像素比例，按照设备
         this.renderer.setPixelRatio(window.devicePixelRatio);
         // 渲染背景色
@@ -104,16 +107,16 @@ var My3D = /** @class */ (function (_super) {
         // 开启阴影支持
         this.renderer.shadowMap.enabled = true;
         // 阴影类型
-        this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+        this.renderer.shadowMap.type = interface_1.THREE.PCFSoftShadowMap;
         document.body.appendChild(this.renderer.domElement);
     };
     /**
      * todo 灯光
      */
     My3D.prototype.initLight = function () {
-        this.scene.add(new THREE.AmbientLight(0xCCCCCC));
-        this.spotLight = new THREE.SpotLight();
-        this.spotLight.color = new THREE.Color(0xffffff);
+        this.scene.add(new interface_1.THREE.AmbientLight(0xCCCCCC));
+        this.spotLight = new interface_1.THREE.SpotLight();
+        this.spotLight.color = new interface_1.THREE.Color(0xffffff);
         this.spotLight.castShadow = true;
         this.spotLight.position.set(-80, 1000, -80);
         // 光的强度 默认值为1
@@ -137,17 +140,17 @@ var My3D = /** @class */ (function (_super) {
         this.spotLight.shadow.camera.fov = 40;
         this.scene.add(this.spotLight);
         // 阴影相机助手
-        this.shadowCameraHelper = new THREE.CameraHelper(this.spotLight.shadow.camera);
+        this.shadowCameraHelper = new interface_1.THREE.CameraHelper(this.spotLight.shadow.camera);
         // this.scene.add(this.shadowCameraHelper);
         // 聚光光源助手
-        this.spotLightHelper = new THREE.SpotLightHelper(this.spotLight);
+        this.spotLightHelper = new interface_1.THREE.SpotLightHelper(this.spotLight);
         // this.scene.add(this.spotLightHelper);
     };
     /**
      * todo 控制器
      */
     My3D.prototype.initControls = function () {
-        this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
+        this.controls = new interface_1.THREE.OrbitControls(this.camera, this.renderer.domElement);
         // 添加惯性
         this.controls.enableDamping = true;
         // 最大偏移角度
@@ -177,7 +180,7 @@ var My3D = /** @class */ (function (_super) {
         };
         var gui = new dat.GUI();
         gui.addColor(this.guiControls, 'spotLightColor').onChange(function (e) {
-            _this.spotLight.color = new THREE.Color(e);
+            _this.spotLight.color = new interface_1.THREE.Color(e);
         });
         gui.add(this.guiControls, 'intensity', 0, 4).onChange(function (e) {
             _this.spotLight.intensity = e;
