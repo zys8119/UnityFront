@@ -1,7 +1,7 @@
 import {applicationController, method_post} from "../../../UnityFrontUtils/controller/applicationController";
 import { ServerConfig } from "../../../UnityFrontUtils/config";
 const {resolve} = require("path");
-const {writeFileSync} = require("fs");
+const {writeFileSync, existsSync, mkdirSync} = require("fs");
 export class IndexController extends applicationController{
     constructor() {
         super();
@@ -25,6 +25,9 @@ export class IndexController extends applicationController{
             let dirName = "public/upload";
             // 文件上传路径
             let uplodPath = resolve(__dirname,"../../../",dirName);
+            if(!existsSync(uplodPath)){
+                mkdirSync(uplodPath)
+            }
             files.forEach(file=>{
                 let suffix = file.fileName.match(/\.\w*$/);
                 if(suffix && suffix[0]){
