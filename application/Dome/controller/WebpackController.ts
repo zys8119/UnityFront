@@ -8,17 +8,29 @@ export class WebpackController extends applicationController{
 
     index(){
         const getFileJson = this.getFileJson()
-        console.log(getFileJson)
+        // console.log(getFileJson)
+        debugger
         this.$_success()
     }
 
-    getFileJson(itemData:any = {}, resUltMap = {}){
+    getFileJson(itemData:any = {}, resUltMap = {}, bool?:boolean){
         let utf8 = "utf8";
         let node_modules = resolve(__dirname,"../../../node_modules")
         let js = itemData.filePath || resolve(__dirname,"../../../UnityFrontUtils/server/index.js");
         let jscontent = itemData.content ||  readFileSync(js,utf8);
         let reg = /require\((.|\n)*?\)/img;
-        let resUlt = [];
+        let resUlt = {};
+        if(!bool){
+            let def_name = js.split("\\").pop()
+            resUlt[js] = {
+                name:def_name,
+                content:jscontent,
+                packageJson:null,
+                from:null,
+                module:false,
+                filePath:js,
+            }
+        }
         (jscontent.match(reg) || []).forEach(e=>{
             let name = e.replace(/^require\(|\)$/img, "").replace(/^("|'|`)|("|'|`)$/img, "");
             let module = !name.match(/\.{1,2}\//);
@@ -53,11 +65,15 @@ export class WebpackController extends applicationController{
                 filePath,
                 content,
                 packageJson,
+                from:js,
             }
             if(content && filePath && !resUltMap[filePath]){
-                resUlt.push(item);
+                resUlt[filePath] = item;
                 resUltMap[filePath] = true;
-                resUlt = resUlt.concat(this.getFileJson(item, resUltMap));
+                resUlt = {
+                    ...resUlt,
+                    ...this.getFileJson(item, resUltMap, true)
+                };
             }
         });
         return resUlt;
