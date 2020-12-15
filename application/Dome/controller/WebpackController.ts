@@ -7,7 +7,8 @@ export class WebpackController extends applicationController{
     }
 
     index(){
-        console.log(this.getFileJson())
+        const getFileJson = this.getFileJson()
+        console.log(getFileJson)
         this.$_success()
     }
 
@@ -50,14 +51,14 @@ export class WebpackController extends applicationController{
                 name,
                 module,
                 filePath,
-                // content,
-                // packageJson,
+                content,
+                packageJson,
             }
-            resUlt.push(item);
             if(content && filePath && !resUltMap[filePath]){
+                resUlt.push(item);
+                resUltMap[filePath] = true;
                 resUlt = resUlt.concat(this.getFileJson(item, resUltMap));
             }
-            resUltMap[filePath] = true;
         });
         return resUlt;
     }
