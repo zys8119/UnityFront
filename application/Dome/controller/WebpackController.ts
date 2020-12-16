@@ -9,7 +9,6 @@ export class WebpackController extends applicationController{
     index(){
         const getFileJson = this.getFileJson()
         // console.log(getFileJson)
-        debugger
         this.$_success()
     }
 
