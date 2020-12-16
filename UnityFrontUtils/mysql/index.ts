@@ -44,7 +44,23 @@ class mysql implements SqlUtilsOptions{
         let sqlStr = ``;
         switch (typeof  sqlArr) {
             case "object":
-                sqlStr = `${Object.keys(sqlArr).map(e=>(e + ' '+type+' '+this.isString(sqlArr[e]))).join(' '+join+' ')} `;
+                sqlStr = `${Object.keys(sqlArr).map(e=>{
+                    let k = e;
+                    let separator = " ";
+                    let t_r = k.split(separator).filter(e=>e);
+                    let t = t_r.pop();
+                    let Operator = {
+                        "+":true,
+                        "-":true,
+                        "*":true,
+                        "/":true,
+                        ">":true,
+                        "<":true,
+                        ">=":true,
+                        "<=":true,
+                    }[t];
+                    return k + (Operator ? '' : (' '+ type+' '))+this.isString(sqlArr[e])
+                }).join(' '+join+' ')} `;
                 break;
             case "string":
                 sqlStr = `${sqlArr} `;
