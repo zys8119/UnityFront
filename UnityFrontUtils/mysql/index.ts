@@ -58,6 +58,7 @@ class mysql implements SqlUtilsOptions{
                         "<":true,
                         ">=":true,
                         "<=":true,
+                        "REGEXP":true,
                     }[t];
                     return k + (Operator ? '' : (' '+ type+' '))+this.isString(sqlArr[e])
                 }).join(' '+join+' ')} `;
