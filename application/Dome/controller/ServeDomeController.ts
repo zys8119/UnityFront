@@ -7,20 +7,14 @@ export class ServeDomeController extends applicationController{
 
     index(){
         this.DB()
-            .select("roles.*, roles_type.name as type_str")
-            .from("roles")
+            .select("a.*,b.*,b.id as id1, p.*")
+            .from("user as a")
             .join({
-                "roles_type":"roles.type = roles_type.id"
+                "user_roles as b":"a.id = b.user_id",
+                "roles_permission as p":"p.roles_id REGEXP 4",
             })
-            // .where({
-            //     "roles.is_del":1,
-            // })
-            .like({
-                "roles.name":"%管理%"
-            })
-            .AND()
-            .concat({
-                "roles.is_del >=": 1,
+            .where({
+                "a.status": 1,
             })
             .query()
             .then(res=>{
