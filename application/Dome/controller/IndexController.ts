@@ -201,7 +201,7 @@ export class IndexController extends applicationController {
             let filePath = path.resolve(__dirname,"../../../public",file.fileName)
             fs.writeFileSync(filePath,file.fileBuff)
             new this.$sqlModel.OnlyOfficeModel().insert({
-                name:file.fileName
+                name:file.fileName,
             }).query().then(()=>{
                 this.$_success(null,null, 0)
             }).catch(()=>{
@@ -226,14 +226,14 @@ export class IndexController extends applicationController {
      */
     @method_post(IndexController,"onlyOffice")
     onlyOffice(){
-        this.$_getRequestFormData().then(res=>{
-            console.log(this.$_body,res)
-            if(this.$_body.status === 2){
-                console.log(this.$_body.url)
+        if(this.$_body.status === 6){
+            console.log(this.$_body)
+        }
+        this.$_send({
+            error:0,
+            data:{
+                a:1
             }
-            this.$_send({
-                error:0,
-            })
         })
     }
 
