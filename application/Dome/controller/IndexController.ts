@@ -273,8 +273,6 @@ export class IndexController extends applicationController {
                 },
                 at:{
                     atMobiles:[
-                        "17858938961",// 群昵称：秦慧桦(秦慧桦)
-                        "13857483191",// 群昵称：陈周云(陈周云)
                     ],
                     isAtAll:true,
                 }
