@@ -19,7 +19,7 @@ export const mysqlConfig = <mysqlOptions>{
         database: 'test',
         prefix:""
     },
-    sqlModelAuto:false,
+    sqlModelAuto:true,
 };
 
 //服务公共设置，可写入

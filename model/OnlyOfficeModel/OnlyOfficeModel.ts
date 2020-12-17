@@ -1,7 +1,7 @@
 import PublicModel, {$sqlFieldConfigType, PublicModelInterface} from "../PublicModel";
 
 export default class extends PublicModel implements PublicModelInterface{
-    $TableName = "user";
+    $TableName = "office";
     $sqlFieldConfig:$sqlFieldConfigType = {
         id:{
             varchar:"(10)",
@@ -9,10 +9,18 @@ export default class extends PublicModel implements PublicModelInterface{
             COLLATE:'utf8_unicode_ci',
             NOT:'NULL',
             DEFAULT:`'1'`,
-            COMMENT:`'物料id'`,
+            COMMENT:`'id'`,
         },
+        name:{
+            varchar:"(255)",
+            COMMENT:`'名称'`,
+        },
+        url:{
+            varchar:"(255)",
+            COMMENT:`'文件路径'`,
+        }
     };
     'CHARACTER SET' = 'utf8';
     COLLATE = `utf8_unicode_ci`;
-    COMMENT =`'计划单BOM清单'`;
+    COMMENT =`'OnlyOfficeModel'`;
 }

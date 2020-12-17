@@ -192,6 +192,38 @@ export class IndexController extends applicationController {
 
     }
 
+    /**
+     * 获取文件上传
+     */
+    onlyOfficeFilesUpload(){
+        this.$_getRequestFormData().then(res=>{
+            let file = res.filter(e=>e.type === "file")[0];
+            let filePath = path.resolve(__dirname,"../../../public",file.fileName)
+            fs.writeFileSync(filePath,file.fileBuff)
+            new this.$sqlModel.OnlyOfficeModel().insert({
+                name:file.fileName
+            }).query().then(()=>{
+                this.$_success(null,null, 0)
+            }).catch(()=>{
+                this.$_error();
+            })
+        })
+    }
+
+    /**
+     * 获取文件列表
+     */
+    onlyOfficeFiles(){
+        new this.$sqlModel.OnlyOfficeModel().select().from().query().then(res=>{
+            this.$_success(null,res,0)
+        }).catch(()=>{
+            this.$_error();
+        })
+    }
+
+    /**
+     * 服务端保存
+     */
     @method_post(IndexController,"onlyOffice")
     onlyOffice(){
         this.$_getRequestFormData().then(res=>{
@@ -205,6 +237,9 @@ export class IndexController extends applicationController {
         })
     }
 
+    /**
+     * 文件转换
+     */
     onlyOfficeDocbuilder(){
         this.$_axios({
             url:"http://192.168.1.107:9000/docbuilder",
