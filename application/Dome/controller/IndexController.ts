@@ -239,4 +239,41 @@ export class IndexController extends applicationController {
     '3d'(){
         this.Render();
     }
+
+    /**
+     * 钉钉机器人消息发送
+     */
+    dingtalkSend(){
+        let timestamp = Date.now();
+        let access_token = "4fd7f9fed237f5ac5b72ab1ac32d069d13532a8e44aaaa4a212c0551e21df981";
+        const crypto = require('crypto');
+        const secret = "SEC949de5da0d2656f474e606de59d76a1e121bef515b8d9897c8620c9171744594";
+        const sign = crypto
+            .createHmac('sha256', secret)
+            .update(`${timestamp}\n${secret}`, "utf8")
+            .digest('base64');
+        this.$_axios({
+            url:"https://oapi.dingtalk.com/robot/send",
+            method:"post",
+            headers: {
+                'Content-Type': 'application/json; charset=utf-8'
+            },
+            params:{
+                access_token,
+                timestamp,
+                sign:encodeURIComponent(sign),
+            },
+            data:{
+                msgtype: "text",
+                text: {
+                    content: "我就是我, 是不一样的烟火"
+                }
+            }
+        }).then(res=>{
+            console.log(res.data)
+            this.$_success(res.data);
+        }).catch(err=>{
+            this.$_error(err)
+        })
+    }
 }
