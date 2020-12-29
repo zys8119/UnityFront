@@ -4,12 +4,12 @@ import { createApp } from './app'
 export class IndexController extends applicationController {
     constructor() {
         super();
-    }
-
-    index(){
         this.readdirSync(resolve(__dirname)).forEach(item=>{
             delete require.cache[item.path];
         })
+    }
+
+    index(){
         const renderer = require('vue-server-renderer').createRenderer()
         const { app, router } = createApp(this)
         router.back();

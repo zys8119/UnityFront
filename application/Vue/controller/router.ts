@@ -20,11 +20,11 @@ export function createRouter () {
                     template:`
                         <div>
                             <h1 @click="bb">{{a}}</h1>
-                            <div v-for="i in  100">{{i}}</div>
+                            <div v-for="i in  50">{{i}}</div>
                         </div>
                     `,
                     mounted() {
-                        console.log(888)
+                        console.log(888888888)
                     },
                     methods:{
                         bb(e){
