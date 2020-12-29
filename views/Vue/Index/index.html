@@ -2,46 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{{$td.title}}</title>
-    <script src="__PUBLIC__/js/vue.min.js"></script>
-    <script src="__PUBLIC__/js/app.bundle.js"></script>
-    <style>
-        a{
-            transition: width ease-in 2s revert;
-        }
-    </style>
+    <title>Vue服务端渲染</title>
 </head>
 <body>
-<div id="app">
-    <app></app>
-</div>
-<script>
-    Vue.component('app',UI);
-    var vm = new Vue({
-        components:{
-        }
-    }).$mount("#app")
-
-
-    //todo 打开一个 web socket
-    var ws = new WebSocket("ws://localhost:82/");
-
-    ws.onopen = function()
-    {
-        // Web Socket 已连接上，使用 send() 方法发送数据
-        ws.send(JSON.stringify({{$td.q}}));
-    };
-
-    ws.onmessage = function (evt)
-    {
-        var received_msg = evt.data;
-        console.log(evt,received_msg)
-    };
-
-    ws.onclose = function()
-    {
-        // 关闭 websocket
-    };
-</script>
+{{$td.app}}
 </body>
 </html>
