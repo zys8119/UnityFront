@@ -19,15 +19,17 @@ export function createRouter () {
                     },
                     template:`
                         <div>
-                            <h1>{{a}}</h1>
+                            <h1 @click="bb">{{a}}</h1>
                             <div v-for="i in  100">{{i}}</div>
                         </div>
                     `,
                     mounted() {
-                        setTimeout(()=>{
-                            this.a = 4555;
-                            console.log(66666666)
-                        }, 2000)
+                        console.log(888)
+                    },
+                    methods:{
+                        bb(e){
+                            console.log(111)
+                        }
                     }
                 }
             }

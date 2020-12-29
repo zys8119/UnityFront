@@ -1,4 +1,5 @@
 import applicationController from "../../../UnityFrontUtils/controller/applicationController";
+import { resolve } from 'path'
 import { createApp } from './app'
 export class IndexController extends applicationController {
     constructor() {
@@ -6,8 +7,12 @@ export class IndexController extends applicationController {
     }
 
     index(){
+        this.readdirSync(resolve(__dirname)).forEach(item=>{
+            delete require.cache[item.path];
+        })
         const renderer = require('vue-server-renderer').createRenderer()
         const { app, router } = createApp(this)
+        router.back();
         // 设置服务器端 router 的位置
         router.push(this.$_query.url || "/")
         // 等到 router 将可能的异步组件和钩子函数解析完
@@ -23,7 +28,12 @@ export class IndexController extends applicationController {
                     return {}
                 },
                 mounted(){},
+                methods:{},
                 ...matchedComponents[0],
+            }
+            let methods = "";
+            for(let k in appJs.methods){
+                methods += `${k}:${appJs.methods[k].toString()},`;
             }
             renderer.renderToString(app).then(html => {
                 this.Render({
@@ -32,7 +42,8 @@ export class IndexController extends applicationController {
                             template:\`${appJs.template}\`,
                             data:${appJs.data.toString()},
                             mounted:${appJs.mounted.toString()},
-                            ${appJs.render ? "render :" + appJs.render.toString() : ""}
+                            methods:{${methods}},
+                            ${appJs.render ? "render :" + appJs.render.toString() + "," : ""}
                         }
                     `,
                     html
