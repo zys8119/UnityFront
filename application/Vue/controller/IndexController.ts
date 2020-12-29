@@ -1,6 +1,4 @@
 import applicationController from "../../../UnityFrontUtils/controller/applicationController";
-import { readFileSync } from "fs"
-import { resolve } from "path"
 import { createApp } from './app'
 export class IndexController extends applicationController {
     constructor() {
@@ -9,9 +7,8 @@ export class IndexController extends applicationController {
 
     index(){
         const renderer = require('vue-server-renderer').createRenderer()
-        const { app, router } = createApp()
+        const { app, router } = createApp(this)
         // 设置服务器端 router 的位置
-        console.log(this.$_query.url)
         router.push(this.$_query.url || "/")
         // 等到 router 将可能的异步组件和钩子函数解析完
         router.onReady(() => {
@@ -20,11 +17,28 @@ export class IndexController extends applicationController {
             if (!matchedComponents.length) {
                 return this.$_error()
             }
+            const appJs = {
+                template:"",
+                data(){
+                    return {}
+                },
+                mounted(){},
+                ...matchedComponents[0],
+            }
             renderer.renderToString(app).then(html => {
                 this.Render({
-                    app:html
+                    app:`
+                        {
+                            template:\`${appJs.template}\`,
+                            data:${appJs.data.toString()},
+                            mounted:${appJs.mounted.toString()},
+                            ${appJs.render ? "render :" + appJs.render.toString() : ""}
+                        }
+                    `,
+                    html
                 })
             }).catch(err => {
+                console.log(err)
                 this.$_error()
             })
         }, this.$_error)
