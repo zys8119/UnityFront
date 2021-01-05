@@ -1,10 +1,10 @@
 <template>
     <div class="user">
         <div class="tools">
-            <span v-if="$store.state.settings.mode == 'pc'" class="item item-pro" @click="pro">
+            <!--<span v-if="$store.state.settings.mode == 'pc'" class="item item-pro" @click="pro">
                 <svg-icon name="pro" />
                 <span class="title">查看专业版</span>
-            </span>
+            </span>-->
             <el-tooltip v-if="$store.state.settings.enableNavSearch" effect="dark" content="搜索页面" placement="bottom">
                 <span class="item" @click="$eventBus.$emit('global-search-toggle')">
                     <svg-icon name="search" />

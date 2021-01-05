@@ -1,29 +1,6 @@
 <template>
     <div class="buy-it">
-        <div class="item" @click="open('http://wpa.qq.com/msgrd?v=3&uin=304327508&site=qq&menu=yes')">
-            <svg-icon name="fixed-right-qq" />
-            <span class="title">咨询</span>
-        </div>
         <template>
-            <el-popover placement="left" width="400" trigger="hover">
-                <div class="pay">
-                    <div class="wechat">
-                        <el-image src="http://hooray.gitee.io/fantastic-admin/wechat.png" />
-                    </div>
-                    <div class="alipay">
-                        <el-image src="http://hooray.gitee.io/fantastic-admin/alipay.png" />
-                    </div>
-                    <div class="info">
-                        <p>专业版售价 <b style="font-size: 18px; color: #f40;">596</b> 元</p>
-                        <p>请先加作者 QQ ：304327508 ，或者点击右侧在线咨询，然后通过上方微信或支付宝进行支付</p>
-                        <p>支付成功后需要提供一个源码接收邮箱地址，源码包含专业版<b>演示源码</b>和<b>模版源码</b></p>
-                    </div>
-                </div>
-                <div slot="reference" class="item buy">
-                    <svg-icon name="fixed-right-buy" />
-                    <span class="title">购买</span>
-                </div>
-            </el-popover>
             <div class="item doc" @click="open('https://hooray.gitee.io/fantastic-admin/')">
                 <svg-icon name="fixed-right-doc" />
                 <span class="title">文档</span>

@@ -67,49 +67,58 @@ const constantRoutes = [
     }
 ]
 
-import MultilevelMenuExample from './modules/multilevel.menu.example'
-import BreadcrumbExample from './modules/breadcrumb.example'
-import KeepAliveExample from './modules/keep.alive.example'
-import ComponentExample from './modules/component.example'
-import PermissionExample from './modules/permission.example'
-import MockExample from './modules/mock.example'
-import VideosExample from './modules/videos.example'
-import ExTernalLinkExample from './modules/external.link.example'
+import Test from './modules/test'
+// import MultilevelMenuExample from './modules/multilevel.menu.example'
+// import BreadcrumbExample from './modules/breadcrumb.example'
+// import KeepAliveExample from './modules/keep.alive.example'
+// import ComponentExample from './modules/component.example'
+// import PermissionExample from './modules/permission.example'
+// import MockExample from './modules/mock.example'
+// import VideosExample from './modules/videos.example'
+// import ExTernalLinkExample from './modules/external.link.example'
 
 // 当 children 不为空的主导航只有一项时，则隐藏
 let asyncRoutes = [
     {
         meta: {
-            title: '默认',
-            icon: 'sidebar-default'
+            title: 'asdas'
         },
         children: [
-            MultilevelMenuExample,
-            BreadcrumbExample,
-            KeepAliveExample,
-            ComponentExample,
-            PermissionExample,
-            MockExample
-        ]
-    },
-    {
-        meta: {
-            title: '教程',
-            icon: 'sidebar-videos'
-        },
-        children: [
-            ...VideosExample
-        ]
-    },
-    {
-        meta: {
-            title: '其它',
-            icon: 'sidebar-other'
-        },
-        children: [
-            ExTernalLinkExample
+            Test
         ]
     }
+    // {
+    //     meta: {
+    //         title: '默认',
+    //         icon: 'sidebar-default'
+    //     },
+    //     children: [
+    //         MultilevelMenuExample,
+    //         BreadcrumbExample,
+    //         KeepAliveExample,
+    //         ComponentExample,
+    //         PermissionExample,
+    //         MockExample
+    //     ]
+    // },
+    // {
+    //     meta: {
+    //         title: '教程',
+    //         icon: 'sidebar-videos'
+    //     },
+    //     children: [
+    //         ...VideosExample
+    //     ]
+    // },
+    // {
+    //     meta: {
+    //         title: '其它',
+    //         icon: 'sidebar-other'
+    //     },
+    //     children: [
+    //         ExTernalLinkExample
+    //     ]
+    // }
 ]
 
 const lastRoute = [{
