@@ -15,7 +15,11 @@ export default {
     },
     methods:{
         bb(a = 1){
-
+            const aa = ()=>{
+                console.log(5555, Object.assign({},{
+                    ...this.aa,
+                }))
+            }
         }
     }
 }

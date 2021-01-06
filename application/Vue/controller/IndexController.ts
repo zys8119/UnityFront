@@ -1,9 +1,8 @@
 import applicationController from "../../../UnityFrontUtils/controller/applicationController";
-import { execSync } from 'child_process'
 import { resolve } from 'path'
 import { readFileSync } from 'fs'
 import { createApp } from './app'
-import { transform, CompilerOptions } from 'typescript'
+import { CompilerOptions, ModuleKind, ScriptTarget, transpileModule } from 'typescript'
 export class IndexController extends applicationController {
     constructor() {
         super();
@@ -62,22 +61,34 @@ export class IndexController extends applicationController {
     compiler(){
         const Vue = require("vue");
         const VueLoader = require("vue-loader");
-        const ts = require("typescript");
         const vueTemplateCompiler = require("vue-template-compiler");
         const filePath = resolve(__dirname,"./aa.vue")
         const fileStr = readFileSync(filePath,"utf8");
         const data = vueTemplateCompiler.parseComponent(fileStr);
+        /**
+         * vue-loader
+         */
         // console.log(VueLoader.call({
         //     emitError:new Function,
         //     resourcePath:filePath,
         //     resourceQuery:[]
         // },fileStr))
-        // console.log(data.script.content)
-        // console.log(transform([data.script.content],[],<CompilerOptions>{
-        //     module:""
-        // }))
-        // debugger;
-        // console.log(execSync(`tsc ${data.script.content}`).toString())
+
+        /**
+         * ts 输出
+         */
+        const TranspileOutput = transpileModule(data.script.content,{
+            compilerOptions:<CompilerOptions>{
+                module:ModuleKind.None,
+                target:ScriptTarget.ES2015
+            }
+        })
+
+        console.log(TranspileOutput)
+
+        /**
+         * 获取虚拟Dom
+         */
         // const VNode = vueTemplateCompiler.compileToFunctions(data.template.content).render.call({
         //     bb:new Function(),
         //     aa:111,
@@ -89,6 +100,7 @@ export class IndexController extends applicationController {
         const render = vueTemplateCompiler.compile(data.template.content).render
         this.$_success({
             render,
+            js:TranspileOutput.outputText
         })
     }
 }
