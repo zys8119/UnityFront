@@ -79,13 +79,11 @@ export class IndexController extends applicationController {
          */
         const TranspileOutput = transpileModule(data.script.content,{
             compilerOptions:<CompilerOptions>{
-                module:ModuleKind.None,
-                target:ScriptTarget.ES2015
+                module:ModuleKind.CommonJS,
+                target:ScriptTarget.ES3
             }
         })
-
-        console.log(TranspileOutput)
-
+        console.log(TranspileOutput.outputText)
         /**
          * 获取虚拟Dom
          */
