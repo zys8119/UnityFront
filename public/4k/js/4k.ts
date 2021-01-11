@@ -1,5 +1,8 @@
+// @ts-ignore
 import { ComponentOptions, RenderContext, VNode, VNodeData } from "vue"
+// @ts-ignore
 import { CreateElement } from "vue/types/umd";
+// @ts-ignore
 import { DefaultProps } from "vue/types/options";
 import { AxiosInstance, AxiosRequestConfig } from "axios";
 declare const Vue:any;

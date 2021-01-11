@@ -2,6 +2,7 @@ import applicationController from "../../../UnityFrontUtils/controller/applicati
 import { resolve } from 'path'
 import { readFileSync } from 'fs'
 import { createApp } from './app'
+// @ts-ignore
 import { CompilerOptions, ModuleKind, ScriptTarget, transpileModule } from 'typescript'
 export class IndexController extends applicationController {
     constructor() {

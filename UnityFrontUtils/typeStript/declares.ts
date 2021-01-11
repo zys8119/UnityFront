@@ -9,6 +9,10 @@ declare const exports:any;
 declare const T:any;
 declare const global:any;
 
+declare module "three" {
+    const three:any;
+    export  = three;
+}
 declare module "crypto" {
     namespace crypto {
         interface PlatformCrypto {

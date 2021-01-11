@@ -1,17 +1,18 @@
 <template>
     <div class="aa" :a="aa" @click="bb">
-            asdasdasd
+        asdasdasd
         <el-button>asdasd</el-button>
         <bb></bb>
     </div>
 </template>
 
-<script lang="ts">
+<script>
 import bb from "../bb"
-import { ComponentOptions } from "vue"
-export default <ComponentOptions>{
+export default{
     name: "aa",
-    components:{bb},
+    components:{
+        bb
+    },
     data(){
         return {
             aa:11

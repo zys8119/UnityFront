@@ -1,5 +1,7 @@
 import { RouterOptions } from "vue-router"
+// @ts-ignore
 import {CreateElement, RenderContext, VNode} from "vue";
+// @ts-ignore
 import { DefaultProps } from "vue/types/options";
 const Vue = require('vue')
 const Router = require('vue-router')
