@@ -2,6 +2,7 @@ import {applicationController} from "../../../UnityFrontUtils/controller/applica
 import {ServerConfig} from "../../../UnityFrontUtils/config";
 const path = require("path")
 const fs = require("fs")
+const qs = require("querystring")
 export class OcrController extends applicationController{
     constructor() {
         super();
@@ -61,26 +62,22 @@ export class OcrController extends applicationController{
                 client_secret:"DPRWHVxH5olxdAg0YtnkDG0B4fULbuQc",
             }
         }).then(res=>{
-            this.$_getFileContent("http://localhost:81/public/ocr/a.jpg").then(img=>{
-                let base64 = Buffer.from(img).toString("base64");
-                this.$_axios({
-                    method:"post",
-                    url:"https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic",
-                    maxContentLength:Infinity,
-                    headers:{
-                        "Content-Type":"application/x-www-form-urlencoded"
-                    },
-                    params:{
-                        access_token:res.data.access_token,
-                    },
-                    data:{
-                        image:base64
-                    }
-                }).then(res=>{
-                    this.$_success(res.data);
-                }).catch((e)=>{
-                    this.$_error(e.message)
+            let img = fs.readFileSync(path.resolve(__dirname,"../../../"),this.$_query.url);
+            let base64 = img.toString("base64");
+            this.$_axios({
+                method:"post",
+                url:"https://aip.baidubce.com/rest/2.0/ocr/v1/general_basic",
+                params:{
+                    access_token:res.data.access_token,
+                },
+                data:qs.stringify({
+                    image:base64,
                 })
+            }).then(res=>{
+                this.$_success(res.data.words_result.map(e=>e.words));
+            }).catch((e)=>{
+                debugger;
+                this.$_error(e.message)
             })
         }).catch((e)=>{
             this.$_error(e.message)
