@@ -53,6 +53,9 @@ export class OcrController extends applicationController{
     }
 
     baiduOcr(){
+        if(!this.$_query.url){
+            this.$_error("url参数为空")
+        }
         this.$_axios({
             method:"get",
             url:"https://aip.baidubce.com/oauth/2.0/token",
@@ -62,7 +65,7 @@ export class OcrController extends applicationController{
                 client_secret:"DPRWHVxH5olxdAg0YtnkDG0B4fULbuQc",
             }
         }).then(res=>{
-            let img = fs.readFileSync(path.resolve(__dirname,"../../../"),this.$_query.url);
+            let img = fs.readFileSync(path.resolve(__dirname,"../../../",this.$_query.url));
             let base64 = img.toString("base64");
             this.$_axios({
                 method:"post",
