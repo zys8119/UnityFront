@@ -2,9 +2,9 @@ import "../typeStript"
 import {ServerConfig, TimingTaskQueue, mysqlConfig} from "../config"
 import webSocketServe from "../webSocket/serve"
 import sqlModelAuto from "./sqlModelAuto"
+import ServeInfo from "./ServeInfo"
 const http = require("http");
 const app = require('./app');
-const ncol = require('ncol');
 // sqlModelAuto
 if(mysqlConfig.sqlModelAuto){
     new sqlModelAuto();
@@ -18,7 +18,9 @@ http.createServer(app).listen({
     host: ServerConfig.host,
     port: ServerConfig.port,
 });
-ncol.info(`Server running at http://${ServerConfig.host || "localhost"}:${ServerConfig.port}/`);
+// 服务信息
+new ServeInfo().info();
+// 创建Socket
 if(ServerConfig.ws_port){
     new webSocketServe();
 }

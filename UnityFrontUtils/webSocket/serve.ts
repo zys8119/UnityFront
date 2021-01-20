@@ -21,7 +21,9 @@ export default class webSocket {
             host: ServerConfig.host,
             port: ServerConfig.ws_port,
         });
-        ncol.info(`【WS】 Server running at ws://${ServerConfig.host || "localhost"}:${ServerConfig.ws_port}/`);
+        ncol.color(function (){
+            ncol.infoBG("\n【WS】").successBG(" protocol is running, the port is ").infoBG(`(${ServerConfig.ws_port})`).log("\n")
+        })
     }
 
     onceData(socket, buffer){
