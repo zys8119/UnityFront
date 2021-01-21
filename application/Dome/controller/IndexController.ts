@@ -318,4 +318,38 @@ export class IndexController extends applicationController {
             this.$_error(err)
         })
     }
+
+    git(){
+        // 24903929a75a8cfc6077a47cd8d2c86f69034014
+        // 1c82c5ec537ad053c0cf76de02879dca365dc57a
+        // let p = path.resolve(__dirname,"../../../",".git/objects/24/903929a75a8cfc6077a47cd8d2c86f69034014");
+        // let f = fs.readFileSync(p);
+        // console.log(f)
+        // console.log(f.forEach(e=>{
+        //     console.log(e, e.toString(16), Buffer.from("张"))
+        // }))
+
+        this.$_success("a阿斯顿卡省的".split("").map(e=>this.getUnicode(e)))
+    }
+
+    getUnicode(str){
+        return [...Buffer.from(str)]
+            .map(e=> e.toString(2))
+            .join("")
+            .match(/\d{0,8}/g)
+            .filter(e=>e)
+            .map((e,i , arr)=> {
+                if(arr.length === 1){
+                    return e
+                }
+                if(arr.length === 3){
+                    return e.replace(new RegExp(`^\\d{${i === 0 ? 4 : 2}}`),"")
+                }
+                return e;
+            })
+            .join("")
+            .match(/\d{4}/g)
+            .map(e=>parseInt(e,2).toString(16))
+            .join("");
+    }
 }
