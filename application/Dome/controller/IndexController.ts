@@ -329,18 +329,18 @@ export class IndexController extends applicationController {
         //     console.log(e, e.toString(16), Buffer.from("张"))
         // }))
 
-        this.$_success("a阿斯顿卡省的".split("").map(e=>this.getUnicode(e)))
+        this.$_success("az@09xY-.阿斯顿卡省的".split("").map(e=>this.getUnicode(e)))
     }
 
     getUnicode(str){
-        return [...Buffer.from(str)]
+        let res = [...Buffer.from(str)]
             .map(e=> e.toString(2))
             .join("")
             .match(/\d{0,8}/g)
             .filter(e=>e)
             .map((e,i , arr)=> {
                 if(arr.length === 1){
-                    return e
+                    return (<any>"0").repeat(8 - e.length)+e;
                 }
                 if(arr.length === 3){
                     return e.replace(new RegExp(`^\\d{${i === 0 ? 4 : 2}}`),"")
@@ -351,5 +351,6 @@ export class IndexController extends applicationController {
             .match(/\d{4}/g)
             .map(e=>parseInt(e,2).toString(16))
             .join("");
+        return res.length < 4 ?  (<any>"0").repeat(4 - res.length)+res:res;
     }
 }
