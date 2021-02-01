@@ -353,4 +353,11 @@ export class IndexController extends applicationController {
             .join("");
         return res.length < 4 ?  (<any>"0").repeat(4 - res.length)+res:res;
     }
+
+    chart(){
+        this.$_success([
+            {value: Math.random()*100, name: '已提交', itemStyle:{color:"#4F8BFE"}},
+            {value: Math.random()*100, name: '未提交', itemStyle:{color:"#44BED9"}},
+        ],null,0)
+    }
 }
