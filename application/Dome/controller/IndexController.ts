@@ -396,6 +396,8 @@ export class IndexController extends applicationController {
             }).filter(e=>e);
             this.$_createLog(vpnLogData,"vpnLog")
             this.$_success("vpn同步成功",vpnLogData);
-        }).catch(()=>this.$_error())
+        }).catch((err)=>{
+            this.$_error(err)
+        })
     }
 }
