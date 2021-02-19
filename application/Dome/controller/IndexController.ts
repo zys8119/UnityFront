@@ -133,10 +133,4 @@ export class IndexController extends applicationController {
             pageNo:this.$_query.pageNo,
         }).then(res=>this.$_success(res)).catch(()=>this.$_error());
     }
-
-    acreatePicture(){
-        this.createPicture().then((buf:Buffer)=>{
-
-        })
-    }
 }
