@@ -964,7 +964,7 @@ export default class applicationControllerClass extends PublicController impleme
         return result;
     }
 
-    createPicture(options:createPictureOptions = {}): Promise<Buffer>{
+    $createPicture(options:createPictureOptions = {}): Promise<Buffer>{
         let opts = {
             contentType:"image/png",
             draw:new Function,

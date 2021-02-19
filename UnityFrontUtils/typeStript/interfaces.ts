@@ -432,7 +432,7 @@ export interface ControllerInitDataOptions {
      * 创建占位符图片
      * @param options 配置
      */
-    createPicture?(options:createPictureOptions):Promise<Buffer>;
+    $createPicture?(options:createPictureOptions):Promise<Buffer>;
 }
 
 export interface createPictureOptions{
