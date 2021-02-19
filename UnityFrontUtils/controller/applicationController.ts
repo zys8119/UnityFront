@@ -1028,7 +1028,10 @@ export default class applicationControllerClass extends PublicController impleme
                     }
                     resolve1(buf)
                 }).catch((err)=>{
-                    this.$_error(err.message)
+                    if(opts.binary){
+                        this.$_error(err.message)
+                    }
+                    reject(err)
                 });
             }
             if(query.url){
