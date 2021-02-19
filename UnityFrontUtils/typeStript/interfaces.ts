@@ -1,6 +1,7 @@
 import { headersType } from "./Types"
 import { AxiosStatic } from "axios"
 import {SqlModel} from "../../model/interfaces";
+import a from "../lib/formData";
 
 export interface mysqlOptions {
     //连接池
@@ -426,6 +427,19 @@ export interface ControllerInitDataOptions {
      * @param opstions 配置
      */
     toTree?(sourceData:Array<any>, opstions?:object):Array<any>;
+
+    /**
+     * 创建占位符图片
+     * @param options 配置
+     */
+    createPicture?(options:createPictureOptions):Promise<Buffer>;
+}
+
+export interface createPictureOptions{
+    [key:string]:any;
+    binary?:boolean;// 是否直接渲染图片
+    contentType?:string | "image/png";// 文件类型
+    draw?(cxt:CanvasRenderingContext2D,canvas:HTMLCanvasElement):void;// 绘制回调
 }
 
 export interface ControllerInitDataOptions_readdirSyncIgnore{
