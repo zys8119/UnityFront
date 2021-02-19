@@ -1009,15 +1009,12 @@ export default class applicationControllerClass extends PublicController impleme
                                 let measureText = cxt.measureText(textStr)
                                 cxt.fillText(textStr,(canvas.width - measureText.width)/2, canvas.height/2, canvas.width);
                             }
-                            draw(cxt,canvas)
-                            resolve({
-                                base64:canvas.toDataURL(opts.contentType).replace(new RegExp(`data:${contentType};base64,`),""),
-                            });
+                            eval(`(${draw})`)(cxt,canvas);
+                            resolve(canvas.toDataURL(contentType).replace(new RegExp(`data:${contentType.replace("/", "\\/")};base64,`),""));
                         })
-
-                    }),{query,imgBase64,contentType:opts.contentType,draw:opts.draw})
+                    }),{query,imgBase64,contentType:opts.contentType,draw:opts.draw.toString()})
                     const result = await resultHandle.jsonValue();
-                    const buf = Buffer.from(result.base64,"base64");
+                    const buf = Buffer.from(result,"base64");
                     await browser.close();
                     if (opts.binary){
                         this.response.writeHead(200,{
