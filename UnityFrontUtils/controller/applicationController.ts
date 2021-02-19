@@ -4,7 +4,7 @@ import {
     SqlUtilsOptions,
     SuccessSendDataOptions,
     StatusCodeOptions,
-    getSvgCodeOptions, ControllerInitDataOptions_readdirSyncIgnore,
+    getSvgCodeOptions, ControllerInitDataOptions_readdirSyncIgnore, createPictureOptions,
 } from "../typeStript"
 import { headersType } from "../typeStript/Types";
 import { ServerConfig, ServerPublicConfig } from "../config";
@@ -962,6 +962,86 @@ export default class applicationControllerClass extends PublicController impleme
             }
         });
         return result;
+    }
+
+    createPicture(options:createPictureOptions = {}): Promise<Buffer>{
+        let opts = {
+            contentType:"image/png",
+            draw:new Function,
+            binary:true,
+            ...options,
+        }
+        return new Promise((resolve1, reject) => {
+            const puppeteer = require('puppeteer');
+            const query = this.$_query;
+            let imgBase64 = null;
+            let chunks =[]
+            const next = ()=>{
+                puppeteer.launch().then(async browser => {
+                    const page = await browser.newPage();
+                    const resultHandle = await page.evaluateHandle(({query,imgBase64,contentType,draw})=>new Promise(resolve => {
+                        const canvas = document.createElement("canvas");
+                        canvas.width = query.w || 200;
+                        canvas.height = query.h || 200;
+                        document.body.append(canvas);
+                        const cxt = canvas.getContext("2d");
+                        cxt.fillStyle = query.fillStyle || "#909090";
+                        cxt.fillRect(0,0,canvas.width,canvas.height);
+                        new Promise(resolve2 => {
+                            if(imgBase64){
+                                let img = new Image();
+                                img.src = `data:${contentType};base64,${imgBase64}`;
+                                img.onload=()=>{
+                                    cxt.drawImage(img, 0 , 0 , canvas.width, canvas.height);
+                                    resolve2();
+                                }
+                                img.onerror = ()=>{
+                                    resolve2();
+                                }
+                            }else {
+                                resolve2();
+                            }
+                        }).then(()=>{
+                            if(query.message !== "true" || query.text){
+                                cxt.fillStyle = query.color || "#000";
+                                cxt.font = `${query.fontSize|| '18px'} sans-serif`;
+                                let textStr = query.text || (query.message !== "true" ? query.message : undefined) || `${canvas.width}X${canvas.height}`
+                                let measureText = cxt.measureText(textStr)
+                                cxt.fillText(textStr,(canvas.width - measureText.width)/2, canvas.height/2, canvas.width);
+                            }
+                            draw(cxt,canvas)
+                            resolve({
+                                base64:canvas.toDataURL(opts.contentType).replace(new RegExp(`data:${contentType};base64,`),""),
+                            });
+                        })
+
+                    }),{query,imgBase64,contentType:opts.contentType,draw:opts.draw})
+                    const result = await resultHandle.jsonValue();
+                    const buf = Buffer.from(result.base64,"base64");
+                    await browser.close();
+                    if (opts.binary){
+                        this.response.writeHead(200,{
+                            "Content-Type":opts.contentType,
+                        });
+                        this.response.write(buf);
+                        this.response.end();
+                    }
+                    resolve1(buf)
+                }).catch((err)=>{
+                    this.$_error(err.message)
+                });
+            }
+            if(query.url){
+                this.$_getFileContent(query.url,chunk=>{
+                    chunks.push(chunk)
+                },()=>{
+                    imgBase64 = Buffer.concat(chunks).toString("base64");
+                    next();
+                })
+            }else {
+                next();
+            }
+        })
     }
 
 }
