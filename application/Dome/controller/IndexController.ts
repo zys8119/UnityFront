@@ -409,70 +409,48 @@ export class IndexController extends applicationController {
      * @constructor
      */
     CreatePicture(){
+        this.$createPicture()
+    }
+
+    pdf(){
         const puppeteer = require('puppeteer');
-        const query = this.$_query;
-        let imgBase64 = null;
-        let chunks =[]
-        const next = ()=>{
-            puppeteer.launch().then(async browser => {
-                const page = await browser.newPage();
-                const resultHandle = await page.evaluateHandle(({query,imgBase64})=>new Promise(resolve => {
-                    const canvas = document.createElement("canvas");
-                    canvas.width = query.w || 200;
-                    canvas.height = query.h || 200;
-                    document.body.append(canvas);
-                    const cxt = canvas.getContext("2d");
-                    cxt.fillStyle = query.fillStyle || "#909090";
-                    cxt.fillRect(0,0,canvas.width,canvas.height);
-                    new Promise(resolve1 => {
-                        if(imgBase64){
-                            let img = new Image();
-                            img.src = `data:image/png;base64,${imgBase64}`;
-                            img.onload=()=>{
-                                cxt.drawImage(img, 0 , 0 , canvas.width, canvas.height);
-                                resolve1();
-                            }
-                            img.onerror = ()=>{
-                                resolve1();
-                            }
-                        }else {
-                            resolve1();
-                        }
-                    }).then(()=>{
-                        if(query.message !== "true" || query.text){
-                            cxt.fillStyle = query.color || "#000";
-                            cxt.font = `${query.fontSize|| '18px'} sans-serif`;
-                            let textStr = query.text || (query.message !== "true" ? query.message : undefined) || `${canvas.width}X${canvas.height}`
-                            let measureText = cxt.measureText(textStr)
-                            cxt.fillText(textStr,(canvas.width - measureText.width)/2, canvas.height/2, canvas.width);
-                        }
-                        resolve({
-                            base64:canvas.toDataURL("image/png").replace(/data:image\/png;base64,/g,""),
-                        });
-                    })
-
-                }),{query,imgBase64})
-                const result = await resultHandle.jsonValue();
-                await browser.close();
-                this.response.writeHead(200,{
-                    "Content-Type":"image/png",
-                });
-                this.response.write(Buffer.from(result.base64,"base64"));
-                this.response.end();
-            }).catch((err)=>{
-                this.$_error(err.message)
+        // (async () => {
+        //     const browser = await puppeteer.launch();
+        //     const page = await browser.newPage();
+        //     // await page.goto('https://news.ycombinator.com', {
+        //     // await page.goto('https://www.baidu.com', {
+        //     await page.goto('https://snpctest.zhijiasoft.com/media/npc_pc_new_all/#/login', {
+        //         waitUntil: 'networkidle2',
+        //     });
+        //     await page.pdf({ path: 'hn.pdf', format: 'A4' });
+        //
+        //     await browser.close();
+        //     this.$_success()
+        // })();
+        (async () => {
+            const browser = await puppeteer.launch({
+                // devtools:true,
+                // headless:false,
+                // defaultViewport:null
             });
-        }
-        if(query.url){
-            this.$_getFileContent(query.url,chunk=>{
-                chunks.push(chunk)
-            },()=>{
-                imgBase64 = Buffer.concat(chunks).toString("base64");
-                next();
+            const page = await browser.newPage();
+            await page.on("load",()=>{
+                (async ()=>{
+                    let opt = {
+                        // fullPage:true,
+                        path:'hn.pdf',
+                        format: 'A4',
+                    }
+                    await page.pdf(opt)
+                    await browser.close();
+                })()
             })
-        }else {
-            next();
-        }
+            // await page.goto("https://www.baidu.com",{
+            //     waitUntil: 'networkidle2',
+            // })
+            await page.goto("https://snpctest.zhijiasoft.com/media/npc_pc_new_all/")
 
+            this.$_success()
+        })();
     }
 }

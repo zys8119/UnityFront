@@ -13,6 +13,7 @@
     "pug": "^2.0.4"
   },
   "dependencies": {
+    "puppeteer": "^7.1.0",
     "vue-loader": "^15.9.6",
     "vue-router": "^3.4.9",
     "vue-server-renderer": "^2.6.12",
