@@ -498,11 +498,7 @@ export class IndexController extends applicationController {
         data = data.map(e=> {
             let content = null;
             if(e.type === 'stream'){
-                content = (()=>{
-                    let a = zlib.createDeflate()
-                    a.push(e.buf)
-                    return zlib.inflateSync(e.buf).toString();
-                })()
+                content = zlib.unzipSync(e.buf).toString()
             }else {
                 content = e.buf.toString()
             }
