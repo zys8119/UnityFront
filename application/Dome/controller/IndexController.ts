@@ -1,5 +1,6 @@
 import applicationController, {method_post, method_get} from "../../../UnityFrontUtils/controller/applicationController";
 import {ServerConfig, ServerPublicConfig} from "../../../UnityFrontUtils/config";
+import puppeteer from "puppeteer";
 const path = require("path")
 const fs = require("fs")
 export class IndexController extends applicationController {
@@ -413,7 +414,7 @@ export class IndexController extends applicationController {
     }
 
     pdf(){
-        const puppeteer = require('puppeteer');
+        // const puppeteer = require('puppeteer');
         // (async () => {
         //     const browser = await puppeteer.launch();
         //     const page = await browser.newPage();
@@ -452,5 +453,65 @@ export class IndexController extends applicationController {
 
             this.$_success()
         })();
+    }
+
+    /**
+     * PDF 解析
+     */
+    pdfParsing(){
+        let cont = fs.readFileSync(path.resolve(__dirname,"b.pdf"));
+        let data = [];
+        let stream = [];
+        let isStream = false;
+        this.bufferSplit(cont,"\n").forEach(e=>{
+            if(e.indexOf(Buffer.from("stream")) > -1){
+                data.push({
+                    buf:e,
+                    type:"info"
+                });
+                isStream = true;
+                if(e.indexOf(Buffer.from("endstream")) > -1){
+                    isStream = false;
+                }
+            }else {
+                if(isStream){
+                    stream.push(e)
+                }else {
+                    let itemData = {}
+                    if(stream.length === 0){
+                        itemData = {
+                            buf:e,
+                            type:"info"
+                        }
+                    }else {
+                        itemData = {
+                            buf:Buffer.concat(stream.map((e,k,a)=>(k === (a.length - 1)) ? e : Buffer.concat([e,Buffer.from("\n")]))),
+                            type:"stream"
+                        }
+                    }
+                    data.push(itemData);
+                    stream = [];
+                }
+            }
+        })
+        const zlib = require("zlib");
+        data = data.map(e=> {
+            let content = null;
+            if(e.type === 'stream'){
+                content = (()=>{
+                    let a = zlib.createDeflate()
+                    a.push(e.buf)
+                    return zlib.inflateSync(e.buf).toString();
+                })()
+            }else {
+                content = e.buf.toString()
+            }
+            return  {
+                ...e,
+                content
+            }
+        })
+        console.log(data)
+        this.$_success()
     }
 }
