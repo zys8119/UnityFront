@@ -459,7 +459,7 @@ export class IndexController extends applicationController {
      * PDF 解析
      */
     pdfParsing(){
-        let cont = fs.readFileSync(path.resolve(__dirname,"b.pdf"));
+        let cont = fs.readFileSync(path.resolve(__dirname,"a.pdf"));
         let data = [];
         let stream = [];
         let isStream = false;
@@ -498,7 +498,7 @@ export class IndexController extends applicationController {
         data = data.map(e=> {
             let content = null;
             if(e.type === 'stream'){
-                content = zlib.unzipSync(e.buf).toString()
+                content = zlib.unzipSync(e.buf).toString();
             }else {
                 content = e.buf.toString()
             }
@@ -507,7 +507,34 @@ export class IndexController extends applicationController {
                 content
             }
         })
+        let pdfObjData:any = {}
         console.log(data)
+        data.forEach(item=>{
+            let info = (pdfObjData.info = pdfObjData.info || {});
+            if(item.type === "info" && /^%PDF/.test(item.content)){
+                info.version = (item.content.match(/(\d{1,}\.\d{1,})|(\d{1,})/) || [])[0] || null;
+            }
+            else if(item.type === "info" && /^\/CreationDate/.test(item.content)){
+                info.CreationDate = ((item.content.match(/\d{1,}/) || [])[0] || "").replace(/(\d{4})(\d{2})(\d{2})/,"$1-$2-$3 ");
+            }
+            else if(item.type === "info" && /^\/ModDate/.test(item.content)){
+                info.ModDate = ((item.content.match(/\d{1,}/) || [])[0] || "").replace(/(\d{4})(\d{2})(\d{2})/,"$1-$2-$3");
+            }
+            else if(item.type === "info" && /^<<\/Creator/.test(item.content)){
+                info.Creator = item.content.replace(/<<|\/Creator/g,"")
+            }
+            else if(item.type === "info" && /^\/Producer/.test(item.content)){
+                info.Producer = item.content.replace("/Producer","")
+            }
+        })
+        console.log(pdfObjData)
+        this.$_success()
+    }
+
+    html(){
+        this.Render()
+    }
+    test(){
         this.$_success()
     }
 }
