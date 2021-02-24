@@ -1,6 +1,7 @@
 import "../typeStript"
 import fsWatch from "./fsWatch"
 import { ServerConfig } from "../config"
+import { SendDataOptions } from "../typeStript";
 const ncol = require("ncol")
 module.exports =  (request,response)=>{
     // 超时处理
@@ -18,7 +19,7 @@ module.exports =  (request,response)=>{
         }catch (e) {};
     };
     //获取最新内容
-    new Promise((resolve, reject) => {
+    new Promise<SendDataOptions>((resolve, reject) => {
         //对发送数据处理
         require('./send')(request,response).then((res)=>{
             resolve(res);

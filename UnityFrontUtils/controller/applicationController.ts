@@ -4,7 +4,7 @@ import {
     SqlUtilsOptions,
     SuccessSendDataOptions,
     StatusCodeOptions,
-    getSvgCodeOptions, ControllerInitDataOptions_readdirSyncIgnore, createPictureOptions,
+    getSvgCodeOptions, ControllerInitDataOptions_readdirSyncIgnore, createPictureOptions, RequestFormData,
 } from "../typeStript"
 import { headersType } from "../typeStript/Types";
 import { ServerConfig, ServerPublicConfig } from "../config";
@@ -717,7 +717,7 @@ export default class applicationControllerClass extends PublicController impleme
         return this.$_createEncryptKey(keyDataArr, result);
     }
 
-    $_getSvgCode(options?:getSvgCodeOptions){
+    $_getSvgCode(options?:getSvgCodeOptions):Promise<string>{
         return new Promise((resolve, reject) => {
             options = options || {};
             const cb = options.cb || Function;
@@ -842,7 +842,7 @@ export default class applicationControllerClass extends PublicController impleme
         return resUlt;
     }
 
-    $_getRequestFormData(){
+    $_getRequestFormData(): Promise<RequestFormData[]> {
         return new Promise((resolve,reject) => {
             try {
                 if(this.$_bodySource.length > 0){

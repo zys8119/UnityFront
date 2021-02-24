@@ -88,7 +88,7 @@ export default class encrypt implements encryptOptions{
             payloadData = data.payloadData ? Buffer.from(data.payloadData) : null,
             payloadLen = payloadData ? payloadData.length : 0;
 
-        let frame = [];
+        let frame:any = [];
 
         if (isFinal) frame.push((1 << 7) + opcode);
         else frame.push(opcode);

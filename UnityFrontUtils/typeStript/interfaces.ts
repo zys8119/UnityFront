@@ -396,7 +396,7 @@ export interface ControllerInitDataOptions {
     /**
      * 获取FormData及上传的文件
      */
-    $_getRequestFormData?():Promise<RequestFormData>; // 获取上传文件
+    $_getRequestFormData?():Promise<RequestFormData[]>; // 获取上传文件
 
     /**
      * Buffer分割，类似字符串的split方法

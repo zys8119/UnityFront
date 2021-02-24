@@ -84,7 +84,7 @@ class mysql implements SqlUtilsOptions{
      * @param sqlStr sql字符串
      * @param showSqlStr 是否输出sql字符串，默认不输出
      */
-    query(sqlStr?:string,showSqlStr?:boolean){
+    query(sqlStr?:string,showSqlStr?:boolean):Promise<any>{
         if(showSqlStr){this.showSqlStrBool = showSqlStr;}
         let sqlStrs = sqlStr || this.selectSql;
         try {
