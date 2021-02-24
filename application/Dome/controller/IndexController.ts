@@ -1,6 +1,5 @@
 import applicationController, {method_post, method_get} from "../../../UnityFrontUtils/controller/applicationController";
 import {ServerConfig, ServerPublicConfig} from "../../../UnityFrontUtils/config";
-import puppeteer from "puppeteer";
 const path = require("path")
 const fs = require("fs")
 export class IndexController extends applicationController {
@@ -334,7 +333,7 @@ export class IndexController extends applicationController {
     }
 
     getUnicode(str){
-        let res = [...Buffer.from(str)]
+        let res = [...(<any>Buffer.from(str))]
             .map(e=> e.toString(2))
             .join("")
             .match(/\d{0,8}/g)
