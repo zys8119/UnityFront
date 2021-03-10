@@ -536,4 +536,22 @@ export class IndexController extends applicationController {
     test(){
         this.$_success()
     }
+    print(){
+        // 查询打印机端口
+        //reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Ports" /s
+        (async ()=>{
+            var net = require('net');
+            var client = new net.Socket();
+            var buffer = fs.readFileSync(path.resolve(__dirname,"print.pdf"))
+            console.log(buffer)
+            await new Promise(resolve => {
+                client.connect(1106, "192.168.2.154", function () {
+                    client.write(buffer, function(){
+                        resolve();
+                    });
+                });
+            })
+            this.$_success()
+        })()
+    }
 }
