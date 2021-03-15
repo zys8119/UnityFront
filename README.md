@@ -6,7 +6,49 @@
 
 > node 当前依赖【v11.12.0】，其他暂未自测
 
-# 查看文档教程
+# 简单教程
+
+## 目录说明
+
+> 以下目录，新手建议只前期只需要关注Admin、application、conf、public、UnityFrontUtils->config 等项目即可
+
+```
+Admin  后台管理界面vue2.0项目
+application 后端应用
+    |_ AuthorityManagement
+    |_ conf 模块配置，系统暂用，不建议生成该模块
+    |_ route 模块配置，系统暂用，不建议生成该模块
+    |_ Doc
+    |_ Dome 项目模块目录
+        |_ conf 控制器配置，系统暂用，不建议生成该模块
+        |_ route 控制器配置，系统暂用，不建议生成该模块
+        |_ controller 项目控制器目录
+            |_ ****Controller.ts  控制器
+    |_ Upload
+    |_ User
+    // ... 更多模块
+conf 项目全局配置
+    |_ PublicController.ts 拦截器及全局公共方法注入
+    |_ StatusCode.ts 全局状态码设置
+    |_ Whitelist.ts 相关白名单配置
+Framework 项目附件，可忽略
+model 数据库数据模型
+node_modules 项目依赖
+public 项目公共开放目录，无拦截，资源直接访问，路径以 ‘/public/***/**’ 访问
+README 项目描述
+TaskQueue 项目任务处理，任务队列，默认开启日志服务
+UnityFrontUtils 后端项目底层，按需了解或二次开发
+    |_ config 项目底层配置
+views 控制器Reader渲染视图目录，结构同后端应用
+webSocket webSocket目录
+.gitignore git忽略配置
+package.json
+README.md
+tsconfig.json ts编译配置
+yarn.lock
+```
+
+# [更多教程](https://zys8119.github.io/UnityFront/#/ServiceModule)
 
 > UnityFront框架的文档介绍
 
