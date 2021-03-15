@@ -29,7 +29,7 @@ export class IndexController extends applicationController{
                 mkdirSync(uplodPath)
             }
             files.forEach(file=>{
-                let suffix = file.fileName.match(/\.\w*$/);
+                let suffix:any = file.fileName.match(/\.\w*$/);
                 if(suffix && suffix[0]){
                     suffix = suffix[0];
                 }else {

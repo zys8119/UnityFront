@@ -1,7 +1,6 @@
 import { headersType } from "./Types"
 import { AxiosStatic } from "axios"
 import {SqlModel} from "../../model/interfaces";
-import a from "../lib/formData";
 
 export interface mysqlOptions {
     //连接池
