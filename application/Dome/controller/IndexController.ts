@@ -7,18 +7,25 @@ export class IndexController extends applicationController {
         super();
     }
 
+
     index(){
         this.$_success();
     }
 
+    /**
+     */
+
     axios(){
+
         this.$_axios({
             url:"http://www.baidu.com"
         }).then(res=>{
             this.$_success(res.data);
         });
     }
-
+    /**
+     * @name dom
+     */
     dom(){
         this.$_puppeteer("https://www.baidu.com/s?ie=UTF-8&wd="+this.$_query.q,()=>new Promise(resolve=>{
             let resData = [];

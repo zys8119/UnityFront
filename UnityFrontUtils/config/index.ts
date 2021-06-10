@@ -11,21 +11,25 @@ import {
 export const mysqlConfig = <mysqlOptions>{
     createPool:{},
     options:{
-        connectionLimit : 10,
+        connectionLimit : 12*6,
         host: 'localhost',
         user: 'root',
         password: 'root',
         port: '3306',
-        database: 'test',
+        database: 'unity_front_utils_admin',
         prefix:""
     },
-    sqlModelAuto:false,
+    sqlModelAuto:true,
 };
 
 //服务公共设置，可写入
 export const ServerPublicConfig = <ServerPublicConfigOptions>{
     // 公共密钥,更换密钥可以使用控制器方法$_createEncryptKey获取随机密钥
     createEncryptKey:"0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM",
+    // token盐，用于拦截器特殊判断
+    token_salt:"UnityFrontAdmin",
+    // token有效期，默认一个月
+    token_time:1000*3600*24*30,
 };
 
 //服务设置
@@ -33,8 +37,13 @@ export const ServerConfig =  <ServerOptions>{
     port:81,
     ws_port:82,
     ws_user:{},
+    timeout:60000,
     debug:true,
     CORS:true,
+    Credentials:true,
+    DomainWhite:false,
+    token_url:true,
+    public_success_log:true,
     fsWatch:[
         //listen conf directory
         {path:path.resolve(__dirname,"../../conf"),type:"directory"},
@@ -49,7 +58,7 @@ export const ServerConfig =  <ServerOptions>{
     headers:{
         'Content-Type': 'text/json; charset=utf-8',
         'Access-Control-Allow-Origin': "*",
-        'Access-Control-Allow-Methods':'GET',
+        'Access-Control-Allow-Methods':'*',
         // 'Access-Control-Allow-Headers':'content-type',
         // 'Access-Control-Max-Age':0,//预请求缓存20天
     },
@@ -66,7 +75,7 @@ export const ServerConfig =  <ServerOptions>{
             "__PUBLIC__":"/public",
         }
     },
-    TimingTaskQueue:true,
+    TimingTaskQueue:false,
 };
 
 //定时任务设置
@@ -80,7 +89,7 @@ export const TimingTaskQueue = <TimingTaskQueueOptions>{
                     };
                 }catch (e) {}
             });
-        };
+        }
     },
     TaskQueueTime:500,
     //日志保留时间，当前默认30天

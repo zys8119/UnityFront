@@ -1,0 +1,314 @@
+/**
+ @公共方法
+ */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 10px;
+  background-color: #EFF3F7;
+}
+/*定义滚动条轨道 内阴影+圆角*/
+::-webkit-scrollbar-track {
+  border-radius: 5px;
+  background-color: #EFF3F7;
+}
+/*定义滑块 内阴影+圆角*/
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #DEDFE1;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: #afafb1;
+}
+.ellipsis-1 {
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: normal !important;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+.ZColor.default_bg {
+  background-color: #f0f0f0;
+  color: #999999;
+  padding: 2px 5px;
+  border: 1px solid #999999;
+  border-radius: 5px;
+  overflow: hidden;
+  display: inline-block;
+  cursor: pointer;
+}
+.ZColor.default_bg:hover,
+.ZColor.default_bg:active,
+.ZColor.default_bg:focus {
+  color: #ffffff;
+  background-color: #999999;
+  border-color: #999999;
+}
+.ZColor.default_bg_init {
+  background-color: #f0f0f0;
+  color: #999999;
+  padding: 2px 5px;
+  border: 1px solid #999999;
+  border-radius: 5px;
+  overflow: hidden;
+  display: inline-block;
+  cursor: pointer;
+  padding: 12px 20px;
+}
+.ZColor.default_bg_init:hover,
+.ZColor.default_bg_init:active,
+.ZColor.default_bg_init:focus {
+  color: #ffffff;
+  background-color: #999999;
+  border-color: #999999;
+}
+.ZColor.default {
+  color: #999999;
+}
+.ZColor.default_link {
+  color: #999999;
+  cursor: pointer;
+}
+.ZColor.default_link:hover {
+  text-decoration: underline;
+}
+.ZColor.success_bg {
+  background-color: #daeed9;
+  color: #078e00;
+  padding: 2px 5px;
+  border: 1px solid #078e00;
+  border-radius: 5px;
+  overflow: hidden;
+  display: inline-block;
+  cursor: pointer;
+}
+.ZColor.success_bg:hover,
+.ZColor.success_bg:active,
+.ZColor.success_bg:focus {
+  color: #ffffff;
+  background-color: #078e00;
+  border-color: #078e00;
+}
+.ZColor.success_bg_init {
+  background-color: #daeed9;
+  color: #078e00;
+  padding: 2px 5px;
+  border: 1px solid #078e00;
+  border-radius: 5px;
+  overflow: hidden;
+  display: inline-block;
+  cursor: pointer;
+  padding: 12px 20px;
+}
+.ZColor.success_bg_init:hover,
+.ZColor.success_bg_init:active,
+.ZColor.success_bg_init:focus {
+  color: #ffffff;
+  background-color: #078e00;
+  border-color: #078e00;
+}
+.ZColor.success {
+  color: #078e00;
+}
+.ZColor.success_link {
+  color: #078e00;
+  cursor: pointer;
+}
+.ZColor.success_link:hover {
+  text-decoration: underline;
+}
+.ZColor.delete_bg {
+  background-color: #ffd9d9;
+  color: #f00;
+  padding: 2px 5px;
+  border: 1px solid #f00;
+  border-radius: 5px;
+  overflow: hidden;
+  display: inline-block;
+  cursor: pointer;
+}
+.ZColor.delete_bg:hover,
+.ZColor.delete_bg:active,
+.ZColor.delete_bg:focus {
+  color: #ffffff;
+  background-color: #f00;
+  border-color: #f00;
+}
+.ZColor.delete_bg_init {
+  background-color: #ffd9d9;
+  color: #f00;
+  padding: 2px 5px;
+  border: 1px solid #f00;
+  border-radius: 5px;
+  overflow: hidden;
+  display: inline-block;
+  cursor: pointer;
+  padding: 12px 20px;
+}
+.ZColor.delete_bg_init:hover,
+.ZColor.delete_bg_init:active,
+.ZColor.delete_bg_init:focus {
+  color: #ffffff;
+  background-color: #f00;
+  border-color: #f00;
+}
+.ZColor.delete {
+  color: #f00;
+}
+.ZColor.delete_link {
+  color: #f00;
+  cursor: pointer;
+}
+.ZColor.delete_link:hover {
+  text-decoration: underline;
+}
+.ZColor.primary_bg {
+  background-color: #e2f0ff;
+  color: #409eff;
+  padding: 2px 5px;
+  border: 1px solid #409eff;
+  border-radius: 5px;
+  overflow: hidden;
+  display: inline-block;
+  cursor: pointer;
+}
+.ZColor.primary_bg:hover,
+.ZColor.primary_bg:active,
+.ZColor.primary_bg:focus {
+  color: #ffffff;
+  background-color: #409eff;
+  border-color: #409eff;
+}
+.ZColor.primary_bg_init {
+  background-color: #e2f0ff;
+  color: #409eff;
+  padding: 2px 5px;
+  border: 1px solid #409eff;
+  border-radius: 5px;
+  overflow: hidden;
+  display: inline-block;
+  cursor: pointer;
+  padding: 12px 20px;
+}
+.ZColor.primary_bg_init:hover,
+.ZColor.primary_bg_init:active,
+.ZColor.primary_bg_init:focus {
+  color: #ffffff;
+  background-color: #409eff;
+  border-color: #409eff;
+}
+.ZColor.primary {
+  color: #409eff;
+}
+.ZColor.primary_link {
+  color: #409eff;
+  cursor: pointer;
+}
+.ZColor.primary_link:hover {
+  text-decoration: underline;
+}
+.ZColor.orange_bg {
+  background-color: #fbe6d9;
+  color: #E15501;
+  padding: 2px 5px;
+  border: 1px solid #E15501;
+  border-radius: 5px;
+  overflow: hidden;
+  display: inline-block;
+  cursor: pointer;
+}
+.ZColor.orange_bg:hover,
+.ZColor.orange_bg:active,
+.ZColor.orange_bg:focus {
+  color: #ffffff;
+  background-color: #E15501;
+  border-color: #E15501;
+}
+.ZColor.orange_bg_init {
+  background-color: #fbe6d9;
+  color: #E15501;
+  padding: 2px 5px;
+  border: 1px solid #E15501;
+  border-radius: 5px;
+  overflow: hidden;
+  display: inline-block;
+  cursor: pointer;
+  padding: 12px 20px;
+}
+.ZColor.orange_bg_init:hover,
+.ZColor.orange_bg_init:active,
+.ZColor.orange_bg_init:focus {
+  color: #ffffff;
+  background-color: #E15501;
+  border-color: #E15501;
+}
+.ZColor.orange {
+  color: #E15501;
+}
+.ZColor.orange_link {
+  color: #E15501;
+  cursor: pointer;
+}
+.ZColor.orange_link:hover {
+  text-decoration: underline;
+}
+.ZColor.black_bg {
+  background-color: #d9d9d9;
+  color: #000000;
+  padding: 2px 5px;
+  border: 1px solid #000000;
+  border-radius: 5px;
+  overflow: hidden;
+  display: inline-block;
+  cursor: pointer;
+}
+.ZColor.black_bg:hover,
+.ZColor.black_bg:active,
+.ZColor.black_bg:focus {
+  color: #ffffff;
+  background-color: #000000;
+  border-color: #000000;
+}
+.ZColor.black_bg_init {
+  background-color: #d9d9d9;
+  color: #000000;
+  padding: 2px 5px;
+  border: 1px solid #000000;
+  border-radius: 5px;
+  overflow: hidden;
+  display: inline-block;
+  cursor: pointer;
+  padding: 12px 20px;
+}
+.ZColor.black_bg_init:hover,
+.ZColor.black_bg_init:active,
+.ZColor.black_bg_init:focus {
+  color: #ffffff;
+  background-color: #000000;
+  border-color: #000000;
+}
+.ZColor.black {
+  color: #000000;
+}
+.ZColor.black_link {
+  color: #000000;
+  cursor: pointer;
+}
+.ZColor.black_link:hover {
+  text-decoration: underline;
+}
+.t-a-c {
+  text-align: center !important;
+}
+body {
+  margin: 0;
+}
+body * {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-decoration: none;
+}
+/*# sourceMappingURL=public.css.map */

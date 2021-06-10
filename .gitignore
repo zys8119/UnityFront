@@ -12,4 +12,5 @@ package-lock.json
 /application/Dome/controller/nvidia-smi.
 /public/upload/*
 /webSocket/*.js
+dist/
 *.js.map

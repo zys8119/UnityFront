@@ -1,0 +1,705 @@
+[
+    {
+        "name": "MenuController.ts",
+        "path": "H:\\work\\UnityFront\\application\\AuthorityManagement\\controller\\MenuController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./AuthorityManagement/controller/",
+        "controller": "./AuthorityManagement/controller/MenuController.ts",
+        "url": "/AuthorityManagement/Menu",
+        "data": [
+            {
+                "name": "list",
+                "method": "get",
+                "description": "获取菜单列表",
+                "groupName": "菜单模块",
+                "body": {},
+                "params": {},
+                "query": {
+                    "type": {
+                        "type": "{number}",
+                        "description": "菜单类型"
+                    },
+                    "pageNo": {
+                        "type": "{number}",
+                        "description": "页数"
+                    },
+                    "pageSize": {
+                        "type": "{number}",
+                        "description": "每页数量"
+                    },
+                    "search": {
+                        "type": "{string}",
+                        "description": "搜素"
+                    }
+                },
+                "route": {}
+            },
+            {
+                "name": "add",
+                "method": "post",
+                "description": "新增菜单",
+                "groupName": "unknown",
+                "body": {
+                    "name": {
+                        "type": "{string}",
+                        "description": "菜单名称"
+                    },
+                    "url": {
+                        "type": "{string}",
+                        "description": "菜单访问地址"
+                    },
+                    "type": {
+                        "type": "{number}",
+                        "description": "菜单类型"
+                    },
+                    "is_child_page": {
+                        "type": "{number}",
+                        "description": "是否子页面"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "delete",
+                "method": "post",
+                "description": "删除菜单",
+                "groupName": "unknown",
+                "body": {
+                    "id": {
+                        "type": "{string}",
+                        "description": "菜单id"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "update",
+                "method": "put",
+                "description": "更新菜单",
+                "groupName": "unknown",
+                "body": {
+                    "id": {
+                        "type": "{string}",
+                        "description": "菜单id"
+                    },
+                    "name": {
+                        "type": "{string}",
+                        "description": "菜单名称"
+                    },
+                    "url": {
+                        "type": "{string}",
+                        "description": "菜单访问地址"
+                    },
+                    "is_child_page": {
+                        "type": "{number}",
+                        "description": "是否为子页面"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            }
+        ]
+    },
+    {
+        "name": "MenuTypeController.ts",
+        "path": "H:\\work\\UnityFront\\application\\AuthorityManagement\\controller\\MenuTypeController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./AuthorityManagement/controller/",
+        "controller": "./AuthorityManagement/controller/MenuTypeController.ts",
+        "url": "/AuthorityManagement/MenuType",
+        "data": [
+            {
+                "name": "list",
+                "method": "get",
+                "description": "获取菜单分类列表",
+                "groupName": "菜单类型模块",
+                "body": {},
+                "params": {},
+                "query": {
+                    "type": {
+                        "type": "{number}",
+                        "description": "菜单类型"
+                    },
+                    "pageNo": {
+                        "type": "{number}",
+                        "description": "页数"
+                    },
+                    "pageSize": {
+                        "type": "{number}",
+                        "description": "每页数量"
+                    },
+                    "search": {
+                        "type": "{string}",
+                        "description": "搜素"
+                    }
+                },
+                "route": {}
+            },
+            {
+                "name": "add",
+                "method": "post",
+                "description": "添加菜单分类",
+                "groupName": "unknown",
+                "body": {
+                    "name": {
+                        "type": "{number}",
+                        "description": "分类类型"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "update",
+                "method": "put",
+                "description": "更新菜单分类",
+                "groupName": "unknown",
+                "body": {
+                    "name": {
+                        "type": "{string}",
+                        "description": "分类名称"
+                    },
+                    "type": {
+                        "type": "{string}",
+                        "description": "分类类型"
+                    },
+                    "id": {
+                        "type": "{string}",
+                        "description": "分类id"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "delete",
+                "method": "post",
+                "description": "删除菜单分类",
+                "groupName": "unknown",
+                "body": {
+                    "id": {
+                        "type": "{string}",
+                        "description": "分类id"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            }
+        ]
+    },
+    {
+        "name": "RolesController.ts",
+        "path": "H:\\work\\UnityFront\\application\\AuthorityManagement\\controller\\RolesController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./AuthorityManagement/controller/",
+        "controller": "./AuthorityManagement/controller/RolesController.ts",
+        "url": "/AuthorityManagement/Roles",
+        "data": [
+            {
+                "name": "list",
+                "method": "get",
+                "description": "获取角色列表",
+                "groupName": "角色模块",
+                "body": {},
+                "params": {},
+                "query": {
+                    "pageNo": {
+                        "type": "{number}",
+                        "description": "页数"
+                    },
+                    "pageSize": {
+                        "type": "{number}",
+                        "description": "每页数量"
+                    },
+                    "search": {
+                        "type": "{string}",
+                        "description": "搜素"
+                    }
+                },
+                "route": {}
+            },
+            {
+                "name": "add",
+                "method": "post",
+                "description": "添加角色",
+                "groupName": "unknown",
+                "body": {
+                    "name": {
+                        "type": "{string}",
+                        "description": "角色名称"
+                    },
+                    "type": {
+                        "type": "{number}",
+                        "description": "角色类型"
+                    },
+                    "is_effective": {
+                        "type": "{number}",
+                        "description": "是否有效"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "update",
+                "method": "put",
+                "description": "更新角色",
+                "groupName": "unknown",
+                "body": {
+                    "name": {
+                        "type": "{string}",
+                        "description": "角色名称"
+                    },
+                    "type": {
+                        "type": "{number}",
+                        "description": "角色类型"
+                    },
+                    "is_effective": {
+                        "type": "{number}",
+                        "description": "是否有效"
+                    },
+                    "description": {
+                        "type": "{string}",
+                        "description": "角色描述"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "delete",
+                "method": "post",
+                "description": "删除角色",
+                "groupName": "unknown",
+                "body": {
+                    "id": {
+                        "type": "{string}",
+                        "description": "角色id"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            }
+        ]
+    },
+    {
+        "name": "RolesPermissionController.ts",
+        "path": "H:\\work\\UnityFront\\application\\AuthorityManagement\\controller\\RolesPermissionController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./AuthorityManagement/controller/",
+        "controller": "./AuthorityManagement/controller/RolesPermissionController.ts",
+        "url": "/AuthorityManagement/RolesPermission",
+        "data": [
+            {
+                "name": "get",
+                "method": "get",
+                "description": "获取角色已绑定权限",
+                "groupName": "角色权限模块",
+                "body": {},
+                "params": {},
+                "query": {
+                    "menu_id": {
+                        "type": "{number}",
+                        "description": "菜单id"
+                    },
+                    "roles_id": {
+                        "type": "{number}",
+                        "description": "角色id"
+                    }
+                },
+                "route": {}
+            },
+            {
+                "name": "update",
+                "method": "put",
+                "description": "更新角色权限",
+                "groupName": "unknown",
+                "body": {
+                    "menu_id": {
+                        "type": "{number}",
+                        "description": "菜单id"
+                    },
+                    "roles_id": {
+                        "type": "{number}",
+                        "description": "角色id"
+                    },
+                    "permission": {
+                        "type": "{Arrary<string>}",
+                        "description": "角色权限"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            }
+        ]
+    },
+    {
+        "name": "RolesTypeController.ts",
+        "path": "H:\\work\\UnityFront\\application\\AuthorityManagement\\controller\\RolesTypeController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./AuthorityManagement/controller/",
+        "controller": "./AuthorityManagement/controller/RolesTypeController.ts",
+        "url": "/AuthorityManagement/RolesType",
+        "data": [
+            {
+                "name": "list",
+                "method": "get",
+                "description": "获取角色类型列表",
+                "groupName": "角色类型模块",
+                "body": {},
+                "params": {},
+                "query": {
+                    "type": {
+                        "type": "{number}",
+                        "description": "角色类型"
+                    },
+                    "pageNo": {
+                        "type": "{number}",
+                        "description": "页数"
+                    },
+                    "pageSize": {
+                        "type": "{number}",
+                        "description": "每页数量"
+                    },
+                    "search": {
+                        "type": "{string}",
+                        "description": "搜素"
+                    }
+                },
+                "route": {}
+            },
+            {
+                "name": "add",
+                "method": "post",
+                "description": "添加角色类型",
+                "groupName": "unknown",
+                "body": {
+                    "name": {
+                        "type": "{string}",
+                        "description": "角色类型名称"
+                    },
+                    "type": {
+                        "type": "{number}",
+                        "description": "角色类型"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "update",
+                "method": "put",
+                "description": "更新角色类型",
+                "groupName": "unknown",
+                "body": {
+                    "name": {
+                        "type": "{string}",
+                        "description": "角色类型名称"
+                    },
+                    "type": {
+                        "type": "{number}",
+                        "description": "角色类型"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "delete",
+                "method": "post",
+                "description": "删除角色类型",
+                "groupName": "unknown",
+                "body": {
+                    "id": {
+                        "type": "{string}",
+                        "description": "角色类型id"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            }
+        ]
+    },
+    {
+        "name": "UserRolesController.ts",
+        "path": "H:\\work\\UnityFront\\application\\AuthorityManagement\\controller\\UserRolesController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./AuthorityManagement/controller/",
+        "controller": "./AuthorityManagement/controller/UserRolesController.ts",
+        "url": "/AuthorityManagement/UserRoles",
+        "data": [
+            {
+                "name": "update",
+                "method": "put",
+                "description": "更新用户角色",
+                "groupName": "用户角色模块",
+                "body": {
+                    "id": {
+                        "type": "{string}",
+                        "description": "用户id"
+                    },
+                    "user_roles_id": {
+                        "type": "{string}",
+                        "description": "用户角色id"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "get",
+                "method": "get",
+                "description": "获取用户已绑定角色",
+                "groupName": "unknown",
+                "body": {},
+                "params": {},
+                "query": {
+                    "user_id": {
+                        "type": "{string}",
+                        "description": "用户id"
+                    }
+                },
+                "route": {}
+            }
+        ]
+    },
+    {
+        "name": "IndexController.ts",
+        "path": "H:\\work\\UnityFront\\application\\Doc\\controller\\IndexController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./Doc/controller/",
+        "controller": "./Doc/controller/IndexController.ts",
+        "url": "/Doc/Index",
+        "data": []
+    },
+    {
+        "name": "IndexController.ts",
+        "path": "H:\\work\\UnityFront\\application\\Dome\\controller\\IndexController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./Dome/controller/",
+        "controller": "./Dome/controller/IndexController.ts",
+        "url": "/Dome/Index",
+        "data": [
+            {
+                "name": "dom",
+                "method": "unknown",
+                "description": "unknown",
+                "groupName": "unknown",
+                "body": {},
+                "params": {},
+                "query": {},
+                "route": {}
+            }
+        ]
+    },
+    {
+        "name": "IndexController.ts",
+        "path": "H:\\work\\UnityFront\\application\\Upload\\controller\\IndexController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./Upload/controller/",
+        "controller": "./Upload/controller/IndexController.ts",
+        "url": "/Upload/Index",
+        "data": [
+            {
+                "name": "index",
+                "method": "post",
+                "description": "文件上传",
+                "groupName": "文件上传",
+                "body": {
+                    "file": {
+                        "type": "{file}",
+                        "description": "文件流"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            }
+        ]
+    },
+    {
+        "name": "AuthController.ts",
+        "path": "H:\\work\\UnityFront\\application\\User\\controller\\AuthController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./User/controller/",
+        "controller": "./User/controller/AuthController.ts",
+        "url": "/User/Auth",
+        "data": [
+            {
+                "name": "register",
+                "method": "post",
+                "description": "注册",
+                "groupName": "用户模块",
+                "body": {
+                    "username": {
+                        "type": "{string}",
+                        "description": "账号"
+                    },
+                    "password": {
+                        "type": "{string}",
+                        "description": "密码"
+                    },
+                    "email": {
+                        "type": "{string}",
+                        "description": "邮箱"
+                    },
+                    "type": {
+                        "type": "{string}",
+                        "description": "操作类型，可选"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "login",
+                "method": "post",
+                "description": "登录",
+                "groupName": "unknown",
+                "body": {
+                    "username": {
+                        "type": "{string}",
+                        "description": "账号"
+                    },
+                    "password": {
+                        "type": "{string}",
+                        "description": "密码"
+                    },
+                    "code": {
+                        "type": "{string}",
+                        "description": "验证码，可选"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "updateUserInfo",
+                "method": "post",
+                "description": "更新用户信息",
+                "groupName": "unknown",
+                "body": {
+                    "id": {
+                        "type": "{string}",
+                        "description": "用户id"
+                    },
+                    "isPassword": {
+                        "type": "{bool}",
+                        "description": "是否修改密码，可选"
+                    },
+                    "password": {
+                        "type": "{string}",
+                        "description": "新密码，可选"
+                    },
+                    "(email,avatar,phone,name)": {
+                        "type": "{string}",
+                        "description": "其他修改字段"
+                    }
+                },
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "list",
+                "method": "get",
+                "description": "获取用户列表",
+                "groupName": "unknown",
+                "body": {},
+                "params": {},
+                "query": {
+                    "pageNo": {
+                        "type": "{number}",
+                        "description": "页数"
+                    },
+                    "pageSize": {
+                        "type": "{number}",
+                        "description": "每页数量"
+                    },
+                    "search": {
+                        "type": "{string}",
+                        "description": "搜素"
+                    },
+                    "type": {
+                        "type": "{number}",
+                        "description": "账号类型"
+                    }
+                },
+                "route": {}
+            },
+            {
+                "name": "delete",
+                "method": "post",
+                "description": "删除用户",
+                "groupName": "unknown",
+                "body": {},
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "getUserInfo",
+                "method": "get",
+                "description": "获取用户信息",
+                "groupName": "unknown",
+                "body": {},
+                "params": {},
+                "query": {
+                    "id": {
+                        "type": "{string}",
+                        "description": "用户id"
+                    }
+                },
+                "route": {}
+            },
+            {
+                "name": "VerificationCode",
+                "method": "get",
+                "description": "获取图形验证码",
+                "groupName": "unknown",
+                "body": {},
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "getLoginLog",
+                "method": "get",
+                "description": "获取登录日志",
+                "groupName": "unknown",
+                "body": {},
+                "params": {},
+                "query": {},
+                "route": {}
+            }
+        ]
+    }
+]

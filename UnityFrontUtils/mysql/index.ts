@@ -44,7 +44,24 @@ class mysql implements SqlUtilsOptions{
         let sqlStr = ``;
         switch (typeof  sqlArr) {
             case "object":
-                sqlStr = `${Object.keys(sqlArr).map(e=>(e + ' '+type+' '+this.isString(sqlArr[e]))).join(' '+join+' ')} `;
+                sqlStr = `${Object.keys(sqlArr).map(e=>{
+                    let k = e;
+                    let separator = " ";
+                    let t_r = k.split(separator).filter(e=>e);
+                    let t = t_r.pop();
+                    let Operator = {
+                        "+":true,
+                        "-":true,
+                        "*":true,
+                        "/":true,
+                        ">":true,
+                        "<":true,
+                        ">=":true,
+                        "<=":true,
+                        "REGEXP":true,
+                    }[t];
+                    return k + (Operator ? '' : (' '+ type+' '))+this.isString(sqlArr[e])
+                }).join(' '+join+' ')} `;
                 break;
             case "string":
                 sqlStr = `${sqlArr} `;
@@ -67,7 +84,7 @@ class mysql implements SqlUtilsOptions{
      * @param sqlStr sql字符串
      * @param showSqlStr 是否输出sql字符串，默认不输出
      */
-    query(sqlStr?:string,showSqlStr?:boolean){
+    query(sqlStr?:string,showSqlStr?:boolean):Promise<any>{
         if(showSqlStr){this.showSqlStrBool = showSqlStr;}
         let sqlStrs = sqlStr || this.selectSql;
         try {
