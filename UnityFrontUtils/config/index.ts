@@ -16,7 +16,7 @@ export const mysqlConfig = <mysqlOptions>{
         user: 'root',
         password: 'root',
         port: '3306',
-        database: 'unity_front_utils_admin',
+        database: 'log-monitoring-platform',
         prefix:""
     },
     sqlModelAuto:true,
