@@ -75,7 +75,7 @@ export class AuthController extends applicationController{
         }
         this.UserModel.select().from().where({
             username:this.$_body.username,
-            status:1,
+            status:this.$_body.status || 1,
         }).query().then((res)=>{
             if(res.length === 0){
                 this.$_error("用户不存在")
