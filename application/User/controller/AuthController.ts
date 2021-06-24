@@ -204,7 +204,7 @@ export class AuthController extends applicationController{
             id:this.$_query.id || this.userInfo.get("id"),
         }).query().then(res=>{
             let userInfo = res[0] || {}
-            this.getUserRoles(userInfo.id).then((res)=>{
+            this.getUserRoles(userInfo.id,this.$_query.is_child_page).then((res)=>{
                 this.$_success({
                     ...userInfo,
                     menus:this.toTree(res),
