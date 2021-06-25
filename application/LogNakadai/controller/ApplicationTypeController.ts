@@ -46,7 +46,7 @@ export class ApplicationTypeController extends applicationController{
             name:this.$_body.name,
             id:`${Date.now()}${parseInt((Math.random()*1000).toString())}`,
         };
-        new this.$sqlModel.MenuModel().insert(data).query()
+        new this.$sqlModel.ApplicationTypeModel().insert(data).query()
             .then(()=>this.$_success())
             .catch(()=>this.$_error());
     }
@@ -60,7 +60,7 @@ export class ApplicationTypeController extends applicationController{
     @method_post(ApplicationTypeController,"delete")
     delete(){
         if(!this.$_body.id){return this.$_error("【id】 字段必填")}
-        new this.$sqlModel.MenuModel().update({
+        new this.$sqlModel.ApplicationTypeModel().update({
             is_del:2,
         }).where({id:this.$_body.id}).query()
             .then(()=>this.$_success())
@@ -82,7 +82,7 @@ export class ApplicationTypeController extends applicationController{
         if(!this.$_body.name){return this.$_error("【name】 字段必填")}
         if(!this.$_body.url){return this.$_error("【url】 字段必填")}
         if(!this.$_body.is_child_page){return this.$_error("【is_child_page】 字段必填")}
-        new this.$sqlModel.MenuModel().update({
+        new this.$sqlModel.ApplicationTypeModel().update({
             name:this.$_body.name,
             url:this.$_body.url,
             is_child_page:this.$_body.is_child_page,
