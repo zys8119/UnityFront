@@ -27,7 +27,7 @@ export class ApplicationTypeController extends applicationController{
                     is_del:1
                 })
             })
-            .then(res=>this.$_success(this.toTree(res)))
+            .then(res=>this.$_success(res))
             .catch(()=>this.$_error());
     }
 
