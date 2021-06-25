@@ -15,5 +15,11 @@ export default class ApplicationTypeModel extends PublicModel implements PublicM
             DEFAULT:`''`,
             COMMENT:`'应用类型id'`,
         },
+        is_del:{
+            int:"(255)",
+            NOT:'NULL',
+            DEFAULT:`'1'`,
+            COMMENT:`'是否删除：1 未删除、2 已删除'`,
+        },
     }
 }
