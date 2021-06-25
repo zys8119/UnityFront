@@ -7,6 +7,7 @@ import RolesModel from "./AuthorityManagement/Roles"
 import RolesPermissionModel from "./AuthorityManagement/RolesPermissionModel"
 import UserRolesModel from "./AuthorityManagement/UserRolesModel";
 import LogModel from "./Log/LogModel";
+import ApplicationTypeModel from "./LogNakadai/ApplicationTypeModel";
 const SqlModelDefault:SqlModel = {
     UserModel:UserModel,
     MenuTypeModel:MenuTypeModel,
@@ -16,5 +17,6 @@ const SqlModelDefault:SqlModel = {
     RolesPermissionModel:RolesPermissionModel,
     UserRolesModel:UserRolesModel,
     LogModel:LogModel,
+    ApplicationTypeModel:ApplicationTypeModel,
 };
 export default SqlModelDefault;
