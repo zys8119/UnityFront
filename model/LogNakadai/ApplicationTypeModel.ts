@@ -15,6 +15,14 @@ export default class ApplicationTypeModel extends PublicModel implements PublicM
             DEFAULT:`''`,
             COMMENT:`'应用类型id'`,
         },
+        name:{
+            varchar:"(255)",
+            'CHARACTER SET':'utf8',
+            COLLATE:'utf8_unicode_ci',
+            NOT:'NULL',
+            DEFAULT:`''`,
+            COMMENT:`'应用类型名称'`,
+        },
         is_del:{
             int:"(255)",
             NOT:'NULL',

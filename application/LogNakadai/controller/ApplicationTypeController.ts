@@ -21,7 +21,7 @@ export class ApplicationTypeController extends applicationController{
      */
     @method_get(ApplicationTypeController,"list")
     list(){
-        new this.$sqlModel.MenuModel()
+        new this.$sqlModel.ApplicationTypeModel()
             .getPage(this.$_query, function (){
                 this.where({
                     is_del:1
@@ -38,26 +38,14 @@ export class ApplicationTypeController extends applicationController{
      * @name add
      * @method post
      * @body name {string} 应用类型名称
-     * @body url {string} 应用类型访问地址
-     * @body type {number} 应用类型类型
-     * @body is_child_page {number} 是否子页面
      */
     @method_post(ApplicationTypeController,"add")
     add(){
         if(!this.$_body.name){return this.$_error("【name】 字段必填")}
-        if(!this.$_body.url){return this.$_error("【url】 字段必填")}
-        if(!this.$_body.type){return this.$_error("【type】 字段必填")}
-        if(!this.$_body.is_child_page){return this.$_error("【is_child_page】 字段必填")}
         let data:any = {
             name:this.$_body.name,
-            url:this.$_body.url,
-            type:this.$_body.type,
-            is_child_page:this.$_body.is_child_page,
             id:`${Date.now()}${parseInt((Math.random()*1000).toString())}`,
         };
-        if(this.$_body.parent){
-            data.parent = this.$_body.parent;
-        }
         new this.$sqlModel.MenuModel().insert(data).query()
             .then(()=>this.$_success())
             .catch(()=>this.$_error());
