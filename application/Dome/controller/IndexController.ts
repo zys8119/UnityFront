@@ -1,6 +1,7 @@
 import applicationController, {method_post, method_get} from "../../../UnityFrontUtils/controller/applicationController";
-const path = require("path")
-const fs = require("fs")
+import {writeFileSync, readFileSync, existsSync} from "fs"
+import {resolve} from "path"
+import {merge} from "lodash"
 export class IndexController extends applicationController {
     constructor(){
         super();
@@ -73,8 +74,16 @@ export class IndexController extends applicationController {
         })
     }
 
-    async test(){
-        console.log(this.$_headers)
-        this.$_success()
+    async bookmarksSync(){
+        const file_path = resolve(__dirname,"../bookmarks/bookmarks.json");
+        let res = {};
+        if(existsSync(file_path)){
+            res = JSON.parse(readFileSync(file_path,"utf8"))
+        }
+        res = merge(res, this.$_body.bookmarks)
+        if(this.$_body.bookmarks){
+            writeFileSync(file_path, JSON.stringify(res, null, 4))
+        }
+        this.$_success(res)
     }
 }
