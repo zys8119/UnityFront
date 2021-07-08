@@ -74,6 +74,9 @@ export class IndexController extends applicationController {
         })
     }
 
+    /**
+     * chrome书签同步
+     */
     async bookmarksSync(){
         const file_path = resolve(__dirname,"../bookmarks/bookmarks.json");
         let res = {};
