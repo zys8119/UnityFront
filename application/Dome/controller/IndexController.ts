@@ -2,6 +2,8 @@ import applicationController, {method_post, method_get} from "../../../UnityFron
 import {writeFileSync, readFileSync, existsSync} from "fs"
 import {resolve} from "path"
 import {merge} from "lodash"
+import axios from "axios";
+import * as crypto from "crypto"
 export class IndexController extends applicationController {
     constructor(){
         super();
@@ -88,5 +90,74 @@ export class IndexController extends applicationController {
             writeFileSync(file_path, JSON.stringify(res, null, 4))
         }
         this.$_success(res)
+    }
+
+    async docbuilde(){
+        this.$_axios({
+            url:"http://localhost/docbuilder",
+            method:"post",
+            data:{
+                async:true,
+                url:"https://zhrd.nbrd.gov.cn/jw_files/pdf/B5C6BCB7-B5FB-11BA-C076-24BDA4EF1354-1黄军军 关于要求制定《宁波市供水用水条例》的议案.pdf"
+            }
+        }).then(res=>{
+            console.log(res.data)
+            this.$_axios({
+                url:"http://localhost/ConvertService.ashx",
+                method:"post",
+                data:{
+                    async:false,
+                    filetype:"pdf",
+                    outputtype:"jpg",
+                    key:res.data.key,
+                    // key:"45",
+                    url:"https://zhrd.nbrd.gov.cn/jw_files/pdf/B5C6BCB7-B5FB-11BA-C076-24BDA4EF1354-1黄军军 关于要求制定《宁波市供水用水条例》的议案.pdf"
+                }
+            }).then(res=>{
+                console.log(res.data)
+                this.$_success(res.data)
+            }).catch(()=>this.$_error())
+        }).catch(()=>this.$_error())
+    }
+
+    /**
+     * @天天向上人大群
+     * 钉钉机器人消息发送
+     * 开发文档：https://ding-doc.dingtalk.com/doc#/serverapi2/qf2nxq
+     */
+    async ddSendMsg(){
+        const timestamp = Date.now();
+        const access_token = "4fd7f9fed237f5ac5b72ab1ac32d069d13532a8e44aaaa4a212c0551e21df981";
+        const secret = "SEC949de5da0d2656f474e606de59d76a1e121bef515b8d9897c8620c9171744594";
+        const sign = crypto
+            .createHmac('sha256', secret)
+            .update(`${timestamp}\n${secret}`, "utf8")
+            .digest('base64');
+        this.$_axios({
+            url:"https://oapi.dingtalk.com/robot/send",
+            method:"post",
+            params:{
+                access_token,
+                timestamp,
+                sign:encodeURIComponent(sign),
+            },
+            data: {
+                // 消息类型
+                msgtype: "text",
+                text: {
+                    // 默认会被getContent替代，所以暂不建议使用
+                    content:this.$_query.content || `正式环境部署`
+                },
+                at:{
+                    atMobiles:this.$_query.at || [
+                        "17858938961",// 群昵称：秦慧桦(秦慧桦)
+                        "17600883859",// 群昵称：任众磊(任众磊)
+                        "18112916651",// 群昵称：张广响(张广响)
+                        // "13857483191",// 群昵称：陈周云(陈周云)
+                    ],
+                    isAtAll:!!this.$_query.isAtAll,
+                }
+            }
+        })
     }
 }
