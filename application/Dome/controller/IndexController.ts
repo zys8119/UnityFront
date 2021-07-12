@@ -158,6 +158,14 @@ export class IndexController extends applicationController {
                     isAtAll:!!this.$_query.isAtAll,
                 }
             }
+        }).then(res=>{
+            if(res.data && typeof res.data.errcode === "number" && res.data.errcode === 0){
+                this.$_error("【钉钉消息】发送成功")
+            }else {
+                this.$_error("【钉钉消息】发送成功",res.data)
+            }
+        }).catch(err=>{
+            this.$_error("【钉钉消息】发送成功",err.message)
         })
     }
 }
