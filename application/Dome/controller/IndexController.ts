@@ -168,4 +168,47 @@ export class IndexController extends applicationController {
             this.$_error("【钉钉消息】发送成功",err.message)
         })
     }
+
+    async test(){
+        this.$_success(await this.$_puppeteer(`https://tool.lu/videoparser`, ()=>{
+            return new Promise(resolve1 => {
+                fetch("https://tool.lu/videoparser/ajax.html", {
+                    "headers": {
+                        "accept": "application/json, text/javascript, */*; q=0.01",
+                        "accept-language": "zh-CN,zh;q=0.9",
+                        "cache-control": "no-cache",
+                        "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+                        "pragma": "no-cache",
+                        "sec-ch-ua": "\" Not;A Brand\";v=\"99\", \"Google Chrome\";v=\"91\", \"Chromium\";v=\"91\"",
+                        "sec-ch-ua-mobile": "?0",
+                        "sec-fetch-dest": "empty",
+                        "sec-fetch-mode": "cors",
+                        "sec-fetch-site": "same-origin",
+                        "x-requested-with": "XMLHttpRequest"
+                    },
+                    "referrer": "https://tool.lu/videoparser/",
+                    "referrerPolicy": "strict-origin-when-cross-origin",
+                    "body": "url=https%3A%2F%2Fv.qq.com%2Fx%2Fcover%2Fmzc00200y4wycre.html%3Freport_recomm_player%3Dptag%253Dv_qq_com%257Crtype%253Dcid%257CalgId%253D5419%257CbucketId%253DEXP%253ARERANK%253D10156%257CNRBE%253D10156%257CPROFILE%253D10156%257CSELECTOR%253D10156%257CENGINE%253D10156%257CRANK%253D10156%257CINDEX%253D10156%257CACCESS%253D10156%257Creason%253D%257CreasonType%253D%257Ccid%253Dmzc00200y4wycre%257Cvid%253D%257Cpid%253D%257Cmodule%253D%25E7%2584%25A6%25E7%2582%25B9%25E5%259B%25BE%257CpageType%253DfilmIndex%257Cseqnum%253D1911203982_1626667218.43477_8038%257Cvideo_rec_report%253Dis_insert%253A%257Cinsert_type%253A%257Cload_type%253A%257Cflow_rule_id%253A156%257Ca_exp_id%253ARERANK-10156%2523NRBE-10156%2523PROFILE-10156%2523SELECTOR-10156%2523ENGINE-10156%2523RANK-10156%2523INDEX-10156%2523ACCESS-10156%257Ca_src_key%253A100137%257Ca_seqnum%253A1911203982_1626667218.43477_8038%257Ca_area_code%253A%257Ca_scene_type%253A2%257Creturn_item_num%253A37%257Ce_module_type%253A410%257C%257Ca_module_id%253A20190423006136%257Ce_item_id%253Amzc00200y4wycre%257Ce_item_type%253A13%257Ce_item_mixid%253A%257C%257Ca_alg_id%253A5419%257Ca_alg_type%253A0%257Citem_score%253A0.003337",
+                    "method": "POST",
+                    "mode": "cors",
+                    "credentials": "include"
+                }).then((res:any)=>{
+                    res.json().then(res=>{
+                        resolve1(res)
+                    })
+                })
+            })
+        }))
+    }
+
+    async curl(){
+        if(this.$_query.url){
+            this.$_success((await this.$_axios({
+                method:"get",
+                url:this.$_query.url
+            })).data)
+        }else {
+            this.$_error()
+        }
+    }
 }
