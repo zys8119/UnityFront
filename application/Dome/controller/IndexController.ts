@@ -169,8 +169,8 @@ export class IndexController extends applicationController {
         })
     }
 
-    async test(){
-        this.$_success(await this.$_puppeteer(`https://tool.lu/videoparser`, ()=>{
+    async videoparser(){
+        this.$_success(await this.$_puppeteer(`https://tool.lu/videoparser`, (url)=>{
             return new Promise(resolve1 => {
                 fetch("https://tool.lu/videoparser/ajax.html", {
                     "headers": {
@@ -188,17 +188,19 @@ export class IndexController extends applicationController {
                     },
                     "referrer": "https://tool.lu/videoparser/",
                     "referrerPolicy": "strict-origin-when-cross-origin",
-                    "body": "url=https%3A%2F%2Fv.qq.com%2Fx%2Fcover%2Fmzc00200y4wycre.html%3Freport_recomm_player%3Dptag%253Dv_qq_com%257Crtype%253Dcid%257CalgId%253D5419%257CbucketId%253DEXP%253ARERANK%253D10156%257CNRBE%253D10156%257CPROFILE%253D10156%257CSELECTOR%253D10156%257CENGINE%253D10156%257CRANK%253D10156%257CINDEX%253D10156%257CACCESS%253D10156%257Creason%253D%257CreasonType%253D%257Ccid%253Dmzc00200y4wycre%257Cvid%253D%257Cpid%253D%257Cmodule%253D%25E7%2584%25A6%25E7%2582%25B9%25E5%259B%25BE%257CpageType%253DfilmIndex%257Cseqnum%253D1911203982_1626667218.43477_8038%257Cvideo_rec_report%253Dis_insert%253A%257Cinsert_type%253A%257Cload_type%253A%257Cflow_rule_id%253A156%257Ca_exp_id%253ARERANK-10156%2523NRBE-10156%2523PROFILE-10156%2523SELECTOR-10156%2523ENGINE-10156%2523RANK-10156%2523INDEX-10156%2523ACCESS-10156%257Ca_src_key%253A100137%257Ca_seqnum%253A1911203982_1626667218.43477_8038%257Ca_area_code%253A%257Ca_scene_type%253A2%257Creturn_item_num%253A37%257Ce_module_type%253A410%257C%257Ca_module_id%253A20190423006136%257Ce_item_id%253Amzc00200y4wycre%257Ce_item_type%253A13%257Ce_item_mixid%253A%257C%257Ca_alg_id%253A5419%257Ca_alg_type%253A0%257Citem_score%253A0.003337",
+                    "body": "url="+url,
                     "method": "POST",
                     "mode": "cors",
                     "credentials": "include"
                 }).then((res:any)=>{
                     res.json().then(res=>{
-                        resolve1(res)
+                        resolve1(res.items)
                     })
+                }).catch(err=>{
+                    resolve1("请求错误")
                 })
             })
-        }))
+        },this.$_query.url))
     }
 
     async curl(){
