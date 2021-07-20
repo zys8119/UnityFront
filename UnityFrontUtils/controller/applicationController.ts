@@ -580,7 +580,7 @@ export default class applicationControllerClass extends PublicController impleme
         }
         this.$_success(msg,sendData,code,true)
     }
-    $_puppeteer(url:string,jsContent:any){
+    $_puppeteer(url:string,jsContent:any,...extData){
         // "puppeteer": "^2.0.0"
         const puppeteer = require('puppeteer');
         return new Promise((resolve, reject) => {
@@ -590,7 +590,7 @@ export default class applicationControllerClass extends PublicController impleme
                     await page.goto(url);
                     const resultHandle = await page.evaluateHandle(
                         js => js,
-                        await page.evaluateHandle(jsContent)
+                        await page.evaluateHandle(jsContent,...extData)
                     );
                     const result = await resultHandle.jsonValue();
                     await browser.close();
