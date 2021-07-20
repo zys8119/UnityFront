@@ -585,7 +585,13 @@ export default class applicationControllerClass extends PublicController impleme
         const puppeteer = require('puppeteer');
         return new Promise((resolve, reject) => {
             try {
-                puppeteer.launch().then(async browser => {
+                let launchConfig = {}
+                if(Object.prototype.toString.call(jsContent) === "[object Object]"){
+                    const {jsContentFn,...launchConfigArgs} = jsContent;
+                    launchConfig = launchConfigArgs;
+                    jsContent = jsContentFn;
+                }
+                puppeteer.launch(launchConfig).then(async browser => {
                     const page = await browser.newPage();
                     await page.goto(url);
                     const resultHandle = await page.evaluateHandle(
