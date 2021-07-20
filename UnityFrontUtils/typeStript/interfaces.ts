@@ -322,8 +322,9 @@ export interface ControllerInitDataOptions {
     $_error?(msg?:any,sendData?:any,code?:number):void;// 错误返回工具
     /**
      * puppeteer 爬虫
-     * @param url
-     * @param jsContent
+     * @param url 页面url
+     * @param jsContent js上下文
+     * @param extData 额外数据
      * @return Promise
      * //=============示例========================
      this.puppeteer('http://www.baidu.com',()=>new Promise((resolve, reject) => {
@@ -336,7 +337,7 @@ export interface ControllerInitDataOptions {
         })
      *
      */
-    $_puppeteer?(url:string,jsContent:any):Promise<any>; // 谷歌爬虫
+    $_puppeteer?(url:string,jsContent:any,...extData:any):Promise<any>; // 谷歌爬虫
     /**
      * 获取文件流
      * @param fileUrl {string} 文件路径
