@@ -76,9 +76,16 @@ export default class staticIndex {
     }
     async sendStatic(ContentType,data, fileType, filePath){
         const gzip:any = await new Promise(resolve => {
-            if(/Desktop.framework.js.gz$/.test(filePath)){
+            if(/(Desktop.framework.js.gz|Desktop.data.gz|Desktop.wasm.gz)$/.test(filePath)){
                 ContentType = "application/javascript";
-                let tmpPath = path.resolve(__dirname,"tmp.txt");
+                if(/Desktop.wasm.gz$/.test(filePath)){
+                    ContentType = "application/wasm";
+                }
+                if(/Desktop.data.gz$/.test(filePath)){
+                    ContentType = null;
+                }
+                console.log(filePath)
+                let tmpPath = path.resolve(__dirname,Date.now().toString()+"tmp.gz");
                 let tmp = fs.createWriteStream(tmpPath);
                 tmp.on("close",()=>{
                     resolve({
@@ -93,16 +100,21 @@ export default class staticIndex {
             }
         })
         if(gzip){
-            ContentType = gzip.ContentType
+            if(gzip.ContentType){
+                ContentType = gzip.ContentType
+            }
             data = gzip.buff
+        }
+        let headers = {
+            ...ServerConfig.headers,
+        }
+        if(ContentType){
+            headers['Content-Type'] = `${ContentType} charset=utf-8`;
         }
         this.ControllerInitData.$_send({
             data,
             RequestStatus:ServerConfig.RequestStatus,
-            headers:{
-                ...ServerConfig.headers,
-                'Content-Type':ContentType ? `${ContentType} charset=utf-8` : null,
-            },
+            headers,
         });
     }
 
