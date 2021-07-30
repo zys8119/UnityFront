@@ -1,6 +1,7 @@
 import {ServerConfig} from "../config";
 import {ControllerInitDataOptions} from "../typeStript";
 import Utils from "../utils";
+const zlib = require("zlib");
 const path = require("path");
 const fs = require("fs");
 export default class staticIndex {
@@ -12,6 +13,9 @@ export default class staticIndex {
             switch(path.parse(ControllerInitData.$_url).ext){
                 case ".css":
                     this.getFileData(filePath,"text/css;","utf8");
+                    break;
+                case ".gz":
+                    this.getFileData(filePath,null,"utf8",".gz");
                     break;
                 case ".js":
                     this.getFileData(filePath,"application/javascript;","utf8");
@@ -70,15 +74,35 @@ export default class staticIndex {
             }
         });
     }
-
-    sendStatic(ContentType,data){
+    async sendStatic(ContentType,data, fileType, filePath){
+        const gzip:any = await new Promise(resolve => {
+            if(/Desktop.framework.js.gz$/.test(filePath)){
+                ContentType = "application/javascript";
+                let tmpPath = path.resolve(__dirname,"tmp.txt");
+                let tmp = fs.createWriteStream(tmpPath);
+                tmp.on("close",()=>{
+                    resolve({
+                        ContentType,
+                        buff:fs.readFileSync(tmpPath)
+                    });
+                    fs.rmSync(tmpPath)
+                })
+                fs.createReadStream(filePath).pipe(zlib.createGunzip()).pipe(tmp);
+            }else {
+                resolve(null)
+            }
+        })
+        if(gzip){
+            ContentType = gzip.ContentType
+            data = gzip.buff
+        }
         this.ControllerInitData.$_send({
             data,
             RequestStatus:ServerConfig.RequestStatus,
             headers:{
                 ...ServerConfig.headers,
-                'Content-Type':`${ContentType} charset=utf-8`,
-            }
+                'Content-Type':ContentType ? `${ContentType} charset=utf-8` : null,
+            },
         });
     }
 
@@ -94,7 +118,7 @@ export default class staticIndex {
                     data = Utils.replaceUrlVars(ServerConfig,data);
                     break;
             };
-            this.sendStatic(ContentType,data);
+            this.sendStatic(ContentType,data,fileType, filePath);
         });
     }
 }

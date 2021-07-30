@@ -213,4 +213,9 @@ export class IndexController extends applicationController {
             this.$_error()
         }
     }
+
+    async test(){
+        console.log(this.$_headers)
+        this.$_success()
+    }
 }
