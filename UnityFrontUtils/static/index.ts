@@ -84,21 +84,26 @@ export default class staticIndex {
                 if(/Desktop.data.gz$/.test(filePath)){
                     ContentType = null;
                 }
-                console.log(filePath)
                 let tmpPath = path.resolve(__dirname,Date.now().toString()+"tmp.gz");
                 let tmp = fs.createWriteStream(tmpPath);
                 tmp.on("close",()=>{
-                    resolve({
-                        ContentType,
-                        buff:fs.readFileSync(tmpPath)
-                    });
-                    fs.rmSync(tmpPath)
+                    let buff = fs.readFileSync(tmpPath);
+                    setTimeout(()=>{
+                        fs.rmSync(tmpPath);
+                        setTimeout(()=>{
+                            resolve({
+                                ContentType,
+                                buff:buff
+                            });
+                        })
+                    })
                 })
                 fs.createReadStream(filePath).pipe(zlib.createGunzip()).pipe(tmp);
             }else {
                 resolve(null)
             }
         })
+        console.log(555)
         if(gzip){
             if(gzip.ContentType){
                 ContentType = gzip.ContentType
@@ -111,6 +116,7 @@ export default class staticIndex {
         if(ContentType){
             headers['Content-Type'] = `${ContentType} charset=utf-8`;
         }
+        console.log(data,filePath)
         this.ControllerInitData.$_send({
             data,
             RequestStatus:ServerConfig.RequestStatus,
