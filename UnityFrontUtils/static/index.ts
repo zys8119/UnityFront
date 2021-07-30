@@ -15,7 +15,7 @@ export default class staticIndex {
                     this.getFileData(filePath,"text/css;","utf8");
                     break;
                 case ".gz":
-                    this.getFileData(filePath,null,"utf8",".gz");
+                    this.getFileData(filePath,null,null,".gz");
                     break;
                 case ".js":
                     this.getFileData(filePath,"application/javascript;","utf8");
@@ -77,12 +77,14 @@ export default class staticIndex {
     async sendStatic(ContentType,data, fileType, filePath){
         const gzip:any = await new Promise(resolve => {
             if(/(Desktop.framework.js.gz|Desktop.data.gz|Desktop.wasm.gz)$/.test(filePath)){
-                ContentType = "application/javascript";
+                ContentType = "application/javascript;";
                 if(/Desktop.wasm.gz$/.test(filePath)){
-                    ContentType = "application/wasm";
+                    ContentType = "application/wasm;";
                 }
                 if(/Desktop.data.gz$/.test(filePath)){
                     ContentType = null;
+                    resolve();
+                    return;
                 }
                 let tmpPath = path.resolve(__dirname,Date.now().toString()+"tmp.gz");
                 let tmp = fs.createWriteStream(tmpPath);
@@ -96,27 +98,37 @@ export default class staticIndex {
                                 buff:buff
                             });
                         })
+
                     })
                 })
                 fs.createReadStream(filePath).pipe(zlib.createGunzip()).pipe(tmp);
             }else {
-                resolve(null)
+                resolve()
             }
         })
-        console.log(555)
         if(gzip){
             if(gzip.ContentType){
                 ContentType = gzip.ContentType
             }
-            data = gzip.buff
+            if(gzip.buff){
+                data = gzip.buff
+            }
         }
         let headers = {
             ...ServerConfig.headers,
         }
         if(ContentType){
-            headers['Content-Type'] = `${ContentType} charset=utf-8`;
+            if(fileType === ".gz"){
+                headers['Content-Type'] = ContentType;
+            }else {
+                headers['Content-Type'] = `${ContentType} charset=utf-8`;
+            }
+        }else {
+            delete headers['Content-Type'];
         }
-        console.log(data,filePath)
+        if(fileType === ".gz" && !/(Desktop.framework.js.gz|Desktop.wasm.gz)$/.test(filePath)){
+            headers['Content-Encoding'] = "gzip";
+        }
         this.ControllerInitData.$_send({
             data,
             RequestStatus:ServerConfig.RequestStatus,
