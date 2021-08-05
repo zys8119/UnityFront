@@ -1,6 +1,6 @@
 import {applicationController} from "../../../UnityFrontUtils/controller/applicationController";
 import {resolve} from "path"
-import {readFileSync,createWriteStream} from "fs"
+import {readFileSync,createWriteStream,createReadStream} from "fs"
 import {inflateSync,deflateSync} from "zlib"
 import {set,merge} from "lodash"
 export class PdfController extends applicationController {
@@ -29,12 +29,14 @@ export class PdfController extends applicationController {
             }
         });
         let content = (buffStr.split(mark))[1];
-        if(key === "11 0 obj"){
+        if(key === "7 0 obj"){
             // console.log(111,inflateSync(Buffer.from(deflateSync("张云山").toString("hex"),'hex') ).toString())
             let c= this.bufferSplit(buff,"stream")[1];
             c = this.bufferSplit(c,"end")[0];
+            console.log(JSON.stringify(c.toString()))
             c = Buffer.concat(this.bufferSplit(c,"\n").slice(1,5));
-            console.log(deflateSync(c))
+            console.log(inflateSync(c))
+            console.log(createReadStream(inflateSync(c)).pipe(createWriteStream(resolve(__dirname,"./aa.txt"))))
         }
         return {
             buff,
