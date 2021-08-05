@@ -1,26 +1,30 @@
 import {applicationController} from "../../../UnityFrontUtils/controller/applicationController";
 import {resolve} from "path"
 import {readFileSync} from "fs"
+import {set,merge} from "lodash"
 export class PdfController extends applicationController {
-    filePath = resolve(__dirname,"../../../public/a.pdf");
+    filePath = resolve(__dirname,"../../../public/1.pdf");
     fileBuff = readFileSync(this.filePath);
     fileBuffSplitArray = this.bufferSplit(this.fileBuff,"endobj").map((buff, index)=>{
         let buffStr = buff.toString();
         let key = (buffStr.match(/^\d*\s*\d*\sobj/img) || [])[0];
-        let mark = (buffStr.match(/<<.*>>/img) || [])[0];
+        let mark = (buffStr.match(/<<(.|\n)*>>/img) || [])[0];
         let markMap = {};
         let keyOld = [];
         (mark || "").split("/").forEach(it=>{
-            if(it.indexOf("<<")){
-                keyOld.push(it)
-            }
-            if(it.indexOf(">>")){
-                keyOld.pop()
-            }
-            if(keyOld[key.length - 1]){
-
+            let getKeyVal = this.getKey(it);
+            if(keyOld[keyOld.length - 1]){
+                markMap = merge(markMap,set({},keyOld.join(".")+"."+getKeyVal.key,getKeyVal.val))
             }else{
-                markMap[it] = true;
+                if(it && it.replace(/\n/img,"") !== "<<"){
+                    markMap[getKeyVal.key] = getKeyVal.val;
+                }
+            }
+            if(it.indexOf("<<") > -1 && it.replace(/\n/img,"") !== "<<"){
+                keyOld.push(getKeyVal.key)
+            }
+            if(it.indexOf(">>") > -1){
+                keyOld.pop()
             }
         });
         let content = (buffStr.split(mark))[1];
@@ -38,7 +42,19 @@ export class PdfController extends applicationController {
     }
 
     index(){
-        console.log(this.fileBuffSplitArray[this.fileBuffSplitArray.length - 2])
+        console.log(this.fileBuffSplitArray)
         this.$_success(this.filePath);
+    }
+
+    getKey(key){
+        try{
+            const arr = key.replace(/\n|>>|<</img,"").split(" ")
+            return {
+                key:arr[0],
+                val:arr.slice(1).join(" "),
+            };
+        }catch(e){
+            return {key,val:key};
+        }
     }
 }
