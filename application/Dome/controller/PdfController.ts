@@ -1,6 +1,7 @@
 import {applicationController} from "../../../UnityFrontUtils/controller/applicationController";
 import {resolve} from "path"
-import {readFileSync} from "fs"
+import {readFileSync,createWriteStream} from "fs"
+import {inflateSync,deflateSync} from "zlib"
 import {set,merge} from "lodash"
 export class PdfController extends applicationController {
     filePath = resolve(__dirname,"../../../public/1.pdf");
@@ -28,6 +29,13 @@ export class PdfController extends applicationController {
             }
         });
         let content = (buffStr.split(mark))[1];
+        if(key === "11 0 obj"){
+            // console.log(111,inflateSync(Buffer.from(deflateSync("张云山").toString("hex"),'hex') ).toString())
+            let c= this.bufferSplit(buff,"stream")[1];
+            c = this.bufferSplit(c,"end")[0];
+            c = Buffer.concat(this.bufferSplit(c,"\n").slice(1,5));
+            console.log(deflateSync(c))
+        }
         return {
             buff,
             buffStr,
@@ -42,7 +50,7 @@ export class PdfController extends applicationController {
     }
 
     index(){
-        console.log(this.fileBuffSplitArray)
+        // console.log(this.fileBuffSplitArray)
         this.$_success(this.filePath);
     }
 
