@@ -75,9 +75,12 @@ export class PdfController extends applicationController {
 
     async index(){
         this.$_success(await new Promise(resolve1 => {
-            let obj = this.fileBuffSplitArray.filter(e=>e.key === "7 0 obj")[0];
-            let stream = obj.stream
-            writeFileSync(resolve(__dirname,"a.jpg"),stream)
+            this.fileBuffSplitArray.forEach((obj,k)=>{
+                let stream = obj.stream;
+                if(stream){
+                    writeFileSync(resolve(__dirname,"a_"+k+".jpg"),stream)
+                }
+            });
             resolve1()
         }));
     }
