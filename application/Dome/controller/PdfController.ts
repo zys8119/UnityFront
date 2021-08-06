@@ -1,7 +1,7 @@
 import {applicationController} from "../../../UnityFrontUtils/controller/applicationController";
 import {resolve} from "path"
-import {readFileSync,createWriteStream,createReadStream} from "fs"
-import {inflateSync,deflateSync} from "zlib"
+import {readFileSync, createWriteStream, createReadStream, writeFile, writeFileSync} from "fs"
+import {inflateSync,deflateSync, brotliCompressSync, createGunzip, inflateRawSync, createInflate} from "zlib"
 import {set,merge} from "lodash"
 export class PdfController extends applicationController {
     filePath = resolve(__dirname,"../../../public/1.pdf");
@@ -10,7 +10,7 @@ export class PdfController extends applicationController {
         let buffStr = buff.toString();
         let key = (buffStr.match(/^\d*\s*\d*\sobj/img) || [])[0];
         let mark = (buffStr.match(/<<(.|\n)*>>/img) || [])[0];
-        let markMap = {};
+        let markMap:any = {};
         let keyOld = [];
         (mark || "").split("/").forEach(it=>{
             let getKeyVal = this.getKey(it);
@@ -29,31 +29,31 @@ export class PdfController extends applicationController {
             }
         });
         let content = (buffStr.split(mark))[1];
-        if(key === "7 0 obj"){
-            // console.log(111,inflateSync(Buffer.from(deflateSync("张云山").toString("hex"),'hex') ).toString())
-            let c= this.bufferSplit(buff,"stream")[1];
-            c = this.bufferSplit(c,"end")[0];
-            console.log(JSON.stringify(c.toString()))
-            c = Buffer.concat(this.bufferSplit(c,"\n").slice(1,5));
-            console.log(inflateSync(c))
-            console.log(createReadStream(inflateSync(c)).pipe(createWriteStream(resolve(__dirname,"./aa.txt"))))
-        }
-        return {
+        let stream:Buffer = null;
+        try{
+            stream = this.bufferSplit(buff,"stream")[1];
+            stream = this.bufferSplit(stream,"end")[0];
+            stream = Buffer.concat(this.bufferSplit(stream,"\n").slice(1,5))
+        }catch(e){}
+        const result = {
             buff,
             buffStr,
             key,
             mark,
             markMap,
-            content
+            content,
+            stream
         }
+        return result
     });
     constructor(){
         super()
     }
 
-    index(){
-        // console.log(this.fileBuffSplitArray)
-        this.$_success(this.filePath);
+    async index(){
+        console.log(this.fileBuffSplitArray[10])
+        console.log(<any>this.fileBuffSplitArray[10].stream.toString("ascii"))
+        this.$_success();
     }
 
     getKey(key){
