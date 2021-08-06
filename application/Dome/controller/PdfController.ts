@@ -1,10 +1,10 @@
 import {applicationController} from "../../../UnityFrontUtils/controller/applicationController";
 import {resolve} from "path"
-import {readFileSync, createWriteStream, createReadStream, writeFile, writeFileSync} from "fs"
-import {inflateSync,deflateSync, brotliCompressSync, createGunzip, inflateRawSync, createInflate} from "zlib"
+import {readFileSync, writeFileSync} from "fs"
+import {inflateSync, deflateSync} from "zlib"
 import {set,merge} from "lodash"
 export class PdfController extends applicationController {
-    filePath = resolve(__dirname,"../../../public/1.pdf");
+    filePath = resolve(__dirname,"../../../public/a.pdf");
     fileBuff = readFileSync(this.filePath);
     fileBuffSplitArray = this.bufferSplit(this.fileBuff,"endobj").map((buff, index)=>{
         let buffStr = buff.toString();
@@ -29,11 +29,32 @@ export class PdfController extends applicationController {
             }
         });
         let content = (buffStr.split(mark))[1];
-        let stream:Buffer = null;
+        let stream:any = null;
         try{
-            stream = this.bufferSplit(buff,"stream")[1];
-            stream = this.bufferSplit(stream,"end")[0];
-            stream = Buffer.concat(this.bufferSplit(stream,"\n").slice(1,5))
+            stream = this.bufferSplit(buff,"stream")[1]
+            stream = this.bufferSplit(stream,"\r\n")
+            stream = stream.slice(1,stream.length - 1)
+            stream = stream.map((e,k,a)=>{
+                if(k < a.length - 1){
+                    return Buffer.concat([e,Buffer.from("\r\n")])
+                }else{
+                    return e;
+                }
+            });
+            stream = Buffer.concat(stream);
+        }catch(e){}
+        let streamStr = null;
+        try{
+            streamStr = stream.toString()
+        }catch(e){}
+        let streamDecode = null;
+        let markMapKeys = Object.keys(markMap || {});
+        try{
+            if(markMapKeys.includes("DCTDecode")){
+                streamDecode = deflateSync(stream).toString()
+            }else if(markMapKeys.includes("FlateDecode")){
+                streamDecode = inflateSync(stream).toString()
+            }
         }catch(e){}
         const result = {
             buff,
@@ -42,7 +63,9 @@ export class PdfController extends applicationController {
             mark,
             markMap,
             content,
-            stream
+            stream,
+            streamStr,
+            streamDecode,
         }
         return result
     });
@@ -51,9 +74,12 @@ export class PdfController extends applicationController {
     }
 
     async index(){
-        console.log(this.fileBuffSplitArray[10])
-        console.log(<any>this.fileBuffSplitArray[10].stream.toString("ascii"))
-        this.$_success();
+        this.$_success(await new Promise(resolve1 => {
+            let obj = this.fileBuffSplitArray.filter(e=>e.key === "7 0 obj")[0];
+            let stream = obj.stream
+            writeFileSync(resolve(__dirname,"a.jpg"),stream)
+            resolve1()
+        }));
     }
 
     getKey(key){
