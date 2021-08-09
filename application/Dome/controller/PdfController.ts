@@ -1,11 +1,14 @@
 import {applicationController} from "../../../UnityFrontUtils/controller/applicationController";
 import {resolve} from "path"
 import {readFileSync, writeFileSync} from "fs"
-import {inflateSync, deflateSync} from "zlib"
+import {inflateSync, deflateSync, brotliDecompressSync, constants} from "zlib"
 import {set,merge} from "lodash"
 import {xml2json} from "xml-js"
 export class PdfController extends applicationController {
-    filePath = resolve(__dirname,"../../../public/a.pdf");
+    $_createEncryptKey(keyDataArr?: string[], result?: string): string {
+        return super.$_createEncryptKey(keyDataArr, result);
+    }
+    filePath = resolve(__dirname,"../../../public/1.pdf");
     fileBuff = readFileSync(this.filePath);
     fileBuffSplitArray = this.bufferSplit(this.fileBuff,"endobj").map((buff, index)=>{
         let buffStr = buff.toString();
@@ -35,27 +38,15 @@ export class PdfController extends applicationController {
         let stream:any = null;
         try{
             stream = this.bufferSplit(buff,"stream")[1]
-            if(isXML){
-                stream = this.bufferSplit(stream,"\n");
-                stream = stream.slice(1,stream.length - 1)
-                stream = stream.map((e,k,a)=>{
-                    if(k < a.length - 1){
-                        return Buffer.concat([e,Buffer.from("\n")])
-                    }else{
-                        return e;
-                    }
-                });
-            }else{
-                stream = this.bufferSplit(stream,"\r\n");
-                stream = stream.slice(1,stream.length - 1)
-                stream = stream.map((e,k,a)=>{
-                    if(k < a.length - 1){
-                        return Buffer.concat([e,Buffer.from("\r\n")])
-                    }else{
-                        return e;
-                    }
-                });
-            }
+            stream = this.bufferSplit(stream,"\n");
+            stream = stream.slice(1,stream.length - 1)
+            stream = stream.map((e,k,a)=>{
+                if(k < a.length - 1){
+                    return Buffer.concat([e,Buffer.from("\n")])
+                }else{
+                    return e;
+                }
+            });
             stream = Buffer.concat(stream);
         }catch(e){}
         let streamStr = null;
@@ -120,10 +111,6 @@ export class PdfController extends applicationController {
         let info:any = {};
         try{
             const Root:any = this.fileBuffSplitArray.find(e=>e.markMap && e.markMap.Root) || {};
-            console.log(Root)
-            console.log(Root.mark)
-            console.log(inflateSync(Buffer.from(Root.stream,"hex")).toString())
-            return info;
             info = Root.markMap;
             const InfoObj:any = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(Root.markMap.Info)) || {};
             /**
@@ -155,13 +142,38 @@ export class PdfController extends applicationController {
             try{
                 const Pages:any = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(RootObj.markMap.Pages)) || {};
                 info.Root.Pages = Pages.markMap;
+                Pages.markMap.Kids.match(/\d{1,}\s\d{1,}\s?R/img).forEach(res=>{
+                    const page:any = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(res)) || {};
+                    if(page?.markMap?.Resources?.Font){
+                        // const pageContent:any = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(page.markMap.Contents)) || {};
+                        const Fonts = Object.keys(page.markMap.Resources.Font).map(k=>{
+                            return this.fileBuffSplitArray.find(e=>e.key === this.getObjName(page.markMap.Resources.Font[k])) || {}
+                        });
+                        const ToUnicode = Fonts.map((e:any)=>e.markMap.ToUnicode);
+                        const ToUnicodeArr = Object.keys(ToUnicode).map(k=>{
+                            return this.fileBuffSplitArray.find(e=>e.key === this.getObjName(ToUnicode[k])) || {}
+                        });
+                        console.log(ToUnicodeArr
+                            .map((e:any)=>
+                                e.streamDecode.match(/beginbfchar(.|\n)*endbfchar/)[0]
+                                    .replace(/beginbfchar|endbfchar/img,"")
+                                    .match(/\w{1,}/img).reduce((previousValue, currentValue, currentIndex, array)=>{
+                                        if(currentIndex % 2){
+                                            return previousValue.push(Buffer.from(`\\u${currentValue}`,"utf8").toString()) && previousValue;
+                                        }else{
+                                            return previousValue
+                                        }
+                                    },[]).join("")
+                            )
+                        )
+                    }
+                })
             }catch(e){}
             /**
              * Pages
              */
             try{
                 const PageLabels :any = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(RootObj.markMap.PageLabels)) || {};
-                console.log(PageLabels)
                 info.Root.PageLabels  = PageLabels.markMap;
             }catch(e){}
         }catch(e){}
