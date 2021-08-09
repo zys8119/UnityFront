@@ -120,20 +120,49 @@ export class PdfController extends applicationController {
         let info:any = {};
         try{
             const Root:any = this.fileBuffSplitArray.find(e=>e.markMap && e.markMap.Root) || {};
-            const RootObj:any = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(Root.markMap.Root)) || {};
-            info.Root = RootObj.markMap;
-            try{
-                const Metadata:any = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(RootObj.markMap.Metadata)) || {};
-                if(Metadata.markMapKeys.includes("XML")){
-                    info.Root.Metadata = JSON.parse(xml2json(Metadata.streamStr,{
-                        compact:true,
-                        trim:true,
-                    }))
-                }
+            console.log(Root)
+            console.log(Root.mark)
+            console.log(inflateSync(Buffer.from(Root.stream,"hex")).toString())
+            return info;
+            info = Root.markMap;
+            const InfoObj:any = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(Root.markMap.Info)) || {};
+            /**
+             * 信息
+             */
+            try {
+                info.Info = InfoObj.markMap;
+                info.Info.CreationDate = this.getDate(InfoObj.markMap.CreationDate || "")
+                info.Info.ModDate = this.getDate(InfoObj.markMap.ModDate || "")
             }catch(e){}
+            const RootObj:any = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(Root.markMap.Root)) || {};
+            console.log(RootObj,"====================")
+            info.Root = RootObj.markMap;
+            /**
+             * Metadata
+             */
+            // try{
+            //     const Metadata:any = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(RootObj.markMap.Metadata)) || {};
+            //     if(Metadata.markMapKeys.includes("XML")){
+            //         info.Root.Metadata = JSON.parse(xml2json(Metadata.streamStr,{
+            //             compact:true,
+            //             trim:true,
+            //         }))
+            //     }
+            // }catch(e){}
+            /**
+             * Pages
+             */
             try{
                 const Pages:any = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(RootObj.markMap.Pages)) || {};
-                info.Pages = Pages.markMap;
+                info.Root.Pages = Pages.markMap;
+            }catch(e){}
+            /**
+             * Pages
+             */
+            try{
+                const PageLabels :any = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(RootObj.markMap.PageLabels)) || {};
+                console.log(PageLabels)
+                info.Root.PageLabels  = PageLabels.markMap;
             }catch(e){}
         }catch(e){}
 
