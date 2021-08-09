@@ -153,13 +153,15 @@ export class PdfController extends applicationController {
                         const ToUnicodeArr = Object.keys(ToUnicode).map(k=>{
                             return this.fileBuffSplitArray.find(e=>e.key === this.getObjName(ToUnicode[k])) || {}
                         });
+                        const pageContent = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(page.markMap.Contents)) || {};
+                        console.log(pageContent);
                         console.log(ToUnicodeArr
                             .map((e:any)=>
                                 e.streamDecode.match(/beginbfchar(.|\n)*endbfchar/)[0]
                                     .replace(/beginbfchar|endbfchar/img,"")
                                     .match(/\w{1,}/img).reduce((previousValue, currentValue, currentIndex, array)=>{
                                         if(currentIndex % 2){
-                                            return previousValue.push(Buffer.from(`\\u${currentValue}`,"utf8").toString()) && previousValue;
+                                            return previousValue.push(unescape(`%u${currentValue}`).toString()) && previousValue;
                                         }else{
                                             return previousValue
                                         }
