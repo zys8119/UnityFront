@@ -185,10 +185,9 @@ export class PdfController extends applicationController {
                                 fontMap[k][keyName] = it;
                             })
                         })
-                        console.log(fontMap)
                         // 内容
                         const pageContent:any = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(page.markMap.Contents)) || {};
-                        console.log(pageContent.streamDecode.split("/").map(e=>{
+                        const content = pageContent.streamDecode.split("/").map(e=>{
                             let str;
                             let k = (/(?:(\w*))/.exec(e) || [])[1];
                             let v = e.match(/\w{4}/img) || [];
@@ -196,7 +195,8 @@ export class PdfController extends applicationController {
                                 str = v.map(e=>fontMap[k][e.replace(/^0{1,}/g,"").toLocaleLowerCase()]).filter(e=>e).join("");
                             }
                             return str;
-                        }).filter(e=>e).join(""));
+                        }).filter(e=>e).join("")
+                        console.log(content);
                     }
                 })
             }catch(e){}
