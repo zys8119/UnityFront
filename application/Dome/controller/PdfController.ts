@@ -128,15 +128,20 @@ export class PdfController extends applicationController {
             /**
              * Metadata
              */
+            const Metadata:any = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(RootObj.markMap.Metadata)) || {};
             try{
-                const Metadata:any = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(RootObj.markMap.Metadata)) || {};
+
                 if(Metadata.markMapKeys.includes("XML")){
                     info.Root.Metadata = JSON.parse(xml2json(Metadata.streamStr,{
                         compact:true,
                         trim:true,
                     }))
                 }
-            }catch(e){}
+            }catch(e){
+                if(Metadata.markMapKeys.includes("FlateDecode")){
+                    info.Root.Metadata = Metadata.streamDecode
+                }
+            }
             /**
              * Pages
              */
