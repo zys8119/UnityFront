@@ -128,15 +128,15 @@ export class PdfController extends applicationController {
             /**
              * Metadata
              */
-            // try{
-            //     const Metadata:any = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(RootObj.markMap.Metadata)) || {};
-            //     if(Metadata.markMapKeys.includes("XML")){
-            //         info.Root.Metadata = JSON.parse(xml2json(Metadata.streamStr,{
-            //             compact:true,
-            //             trim:true,
-            //         }))
-            //     }
-            // }catch(e){}
+            try{
+                const Metadata:any = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(RootObj.markMap.Metadata)) || {};
+                if(Metadata.markMapKeys.includes("XML")){
+                    info.Root.Metadata = JSON.parse(xml2json(Metadata.streamStr,{
+                        compact:true,
+                        trim:true,
+                    }))
+                }
+            }catch(e){}
             /**
              * Pages
              */
@@ -196,7 +196,7 @@ export class PdfController extends applicationController {
                             }
                             return str;
                         }).filter(e=>e).join("")
-                        console.log(content);
+                        info.content = content;
                     }
                 })
             }catch(e){}
