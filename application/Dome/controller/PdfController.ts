@@ -170,33 +170,27 @@ export class PdfController extends applicationController {
                                     }
                                 },[])
                         })
-                        let fontMap = {};
-                        let indexMaps = ["0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"];
-                        let indexMap =  ["1","2","3","4","5","6","7","8","9","a","b","c","d","e","f","0"];
-                        Object.keys(page.markMap.Resources.Font).forEach((k,index)=>{
-                            fontMap[k] = {};
-                            txts[index].forEach((it,kk)=>{
-                                let s:any = indexMaps[parseInt((kk / indexMaps.length).toString())]
-                                let sn = parseInt(s)
-                                if((kk % indexMaps.length) === indexMaps.length - 1){
-                                    s = sn +1 ;
-                                }
-                                let keyName = `${s === "0" ? "":s}${indexMap[(kk % indexMaps.length)] }`;
-                                fontMap[k][keyName] = it;
-                            })
-                        })
                         // 内容
                         const pageContent:any = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(page.markMap.Contents)) || {};
-                        const content = pageContent.streamDecode.split("/").map(e=>{
-                            let str;
+                        const km = txts.reduce((previousValue, currentValue, currentIndex)=>{
+                            previousValue[`F${currentIndex+1}`] = currentValue
+                            return previousValue;
+                        },{})
+                        info.content = pageContent.streamDecode.split("/").map(e=>{
                             let k = (/(?:(\w*))/.exec(e) || [])[1];
-                            let v = e.match(/\w{4}/img) || [];
-                            if(fontMap[k]){
-                                str = v.map(e=>fontMap[k][e.replace(/^0{1,}/g,"").toLocaleLowerCase()]).filter(e=>e).join("");
-                            }
-                            return str;
-                        }).filter(e=>e).join("")
-                        info.content = content;
+                            let v = ((e.match(/<\w{1,}>/img) || []).join("").replace(/<|>/img,"").match(/\w{4}/img) || []).map(e=>parseInt(e,6));
+                            return {k,v};
+                        })
+                            .reduce((previousValue, currentValue, currentIndex)=>{
+                                if(km[currentValue.k]){
+                                    currentValue.v.forEach(vv=>{
+                                        if(km[currentValue.k][vv-1]){
+                                            previousValue += km[currentValue.k][vv-1];
+                                        }
+                                    })
+                                }
+                                return previousValue;
+                            },"");
                     }
                 })
             }catch(e){}
