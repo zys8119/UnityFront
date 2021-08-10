@@ -108,6 +108,7 @@ export class PdfController extends applicationController {
      * 获取信息
      */
     async getInfo(){
+        // console.log(this.fileBuffSplitArray.filter(e=>e.streamDecode).map(e=>e.streamDecode))
         let info:any = {};
         try{
             const Root:any = this.fileBuffSplitArray.find(e=>e.markMap && e.markMap.Root) || {};
@@ -122,7 +123,7 @@ export class PdfController extends applicationController {
                 info.Info.ModDate = this.getDate(InfoObj.markMap.ModDate || "")
             }catch(e){}
             const RootObj:any = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(Root.markMap.Root)) || {};
-            console.log(RootObj,"====================")
+            // console.log(RootObj,"====================")
             info.Root = RootObj.markMap;
             /**
              * Metadata
@@ -153,21 +154,49 @@ export class PdfController extends applicationController {
                         const ToUnicodeArr = Object.keys(ToUnicode).map(k=>{
                             return this.fileBuffSplitArray.find(e=>e.key === this.getObjName(ToUnicode[k])) || {}
                         });
-                        const pageContent = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(page.markMap.Contents)) || {};
-                        console.log(pageContent);
-                        console.log(ToUnicodeArr
-                            .map((e:any)=>
-                                e.streamDecode.match(/beginbfchar(.|\n)*endbfchar/)[0]
-                                    .replace(/beginbfchar|endbfchar/img,"")
-                                    .match(/\w{1,}/img).reduce((previousValue, currentValue, currentIndex, array)=>{
-                                        if(currentIndex % 2){
-                                            return previousValue.push(unescape(`%u${currentValue}`).toString()) && previousValue;
-                                        }else{
-                                            return previousValue
-                                        }
-                                    },[]).join("")
-                            )
-                        )
+
+                        /**
+                         * 字典处理
+                         */
+                        const txts = ToUnicodeArr
+                        .map((e:any)=>{
+                            return e.streamDecode.match(/beginbfchar(.|\n)*endbfchar/)[0]
+                                .replace(/beginbfchar|endbfchar/img,"")
+                                .match(/\w{1,}/img).reduce((previousValue, currentValue, currentIndex, array)=>{
+                                    if(currentIndex % 2 && currentValue !== "0000"){
+                                        return previousValue.push(unescape(`%u${currentValue}`).toString()) && previousValue;
+                                    }else{
+                                        return previousValue
+                                    }
+                                },[])
+                        })
+                        let fontMap = {};
+                        let indexMaps = ["0","1","2","3","4","5","6","7","8","9","a","b","c","d","e","f"];
+                        let indexMap =  ["1","2","3","4","5","6","7","8","9","a","b","c","d","e","f","0"];
+                        Object.keys(page.markMap.Resources.Font).forEach((k,index)=>{
+                            fontMap[k] = {};
+                            txts[index].forEach((it,kk)=>{
+                                let s:any = indexMaps[parseInt((kk / indexMaps.length).toString())]
+                                let sn = parseInt(s)
+                                if((kk % indexMaps.length) === indexMaps.length - 1){
+                                    s = sn +1 ;
+                                }
+                                let keyName = `${s === "0" ? "":s}${indexMap[(kk % indexMaps.length)] }`;
+                                fontMap[k][keyName] = it;
+                            })
+                        })
+                        console.log(fontMap)
+                        // 内容
+                        const pageContent:any = this.fileBuffSplitArray.find(e=>e.key === this.getObjName(page.markMap.Contents)) || {};
+                        console.log(pageContent.streamDecode.split("/").map(e=>{
+                            let str;
+                            let k = (/(?:(\w*))/.exec(e) || [])[1];
+                            let v = e.match(/\w{4}/img) || [];
+                            if(fontMap[k]){
+                                str = v.map(e=>fontMap[k][e.replace(/^0{1,}/g,"").toLocaleLowerCase()]).filter(e=>e).join("");
+                            }
+                            return str;
+                        }).filter(e=>e).join(""));
                     }
                 })
             }catch(e){}
