@@ -215,7 +215,16 @@ export class IndexController extends applicationController {
     }
 
     async test(){
-        console.log(this.$_headers)
-        this.$_success()
+        const res = await this.$_puppeteer("http://jbxww.cnnb.com.cn/",()=>new Promise(resolve1 => {
+            const data = []
+            document.querySelectorAll(".jbyw a").forEach((el:HTMLAnchorElement)=>{
+                data.push({
+                    innerText:el.innerText,
+                    herf:el.getAttribute("href")
+                })
+            })
+            resolve1(data)
+        }))
+        this.$_success(res)
     }
 }
