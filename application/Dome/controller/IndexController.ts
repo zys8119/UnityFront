@@ -230,6 +230,9 @@ export class IndexController extends applicationController {
         this.$_success(res)
     }
 
+    /**
+     * 股票平均线MACD计算
+     */
     async macd(){
         this.$_axios({
             url:`https://hq.sinajs.cn/list=sh601600`,
