@@ -2,7 +2,9 @@ import applicationController, {method_post, method_get} from "../../../UnityFron
 import {writeFileSync, readFileSync, existsSync} from "fs"
 import {resolve} from "path"
 import {merge} from "lodash"
-import axios from "axios";
+import {createReadStream,createWriteStream} from "fs"
+import {encode,decode} from "iconv-lite"
+import {inflateSync, deflateSync, createInflate, unzipSync, gunzipSync, createGunzip} from "zlib";
 import * as crypto from "crypto"
 export class IndexController extends applicationController {
     constructor(){
@@ -226,5 +228,16 @@ export class IndexController extends applicationController {
             resolve1(data)
         }))
         this.$_success(res)
+    }
+
+    async macd(){
+        this.$_axios({
+            url:`https://hq.sinajs.cn/list=sh601600`,
+            method:"get",
+            responseType:"arraybuffer"
+        }).catch(()=>this.$_error()).then((res:any)=>{
+            const data = decode(res.data,"GBK").match(/"(.|\n)*"/)[0].match(/[^"]*?,/img).map(e=>e.replace(",",""))
+            this.$_success(data)
+        })
     }
 }

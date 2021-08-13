@@ -34,7 +34,7 @@ export const ServerConfig =  <ServerOptions>{
     ws_port:82,
     ws_user:{},
     timeout:0,
-    debug:false,
+    debug:true,
     CORS:true,
     Credentials:false,
     fsWatch:[
