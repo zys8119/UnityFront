@@ -7,6 +7,16 @@ import {encode,decode} from "iconv-lite"
 import {inflateSync, deflateSync, createInflate, unzipSync, gunzipSync, createGunzip} from "zlib";
 import * as crypto from "crypto"
 export class IndexController extends applicationController {
+    macdNameMap = ["股票名字",
+        "今日开盘价",
+        "昨日收盘价",
+        "当前价格",
+        "今日最高价",
+        "今日最低价",
+        "竞买价，即“买一”报价",
+        "竞卖价，即“卖一”报价",
+        "成交的股票数，由于股票交易以一百股为基本单位，所以在使用时，通常把该值除以一百",
+        "成交金额，单位为“元”，为了一目了然，通常以“万元”为成交金额的单位，所以通常把该值除以一万","日期","时间"]
     constructor(){
         super();
     }
@@ -235,12 +245,20 @@ export class IndexController extends applicationController {
      */
     async macd(){
         this.$_axios({
-            url:`https://hq.sinajs.cn/list=sh601600`,
+            url:`https://hq.sinajs.cn/list=sh601600,sh600928`,
             method:"get",
             responseType:"arraybuffer"
         }).catch(()=>this.$_error()).then((res:any)=>{
             const data = decode(res.data,"GBK").match(/"(.|\n)*"/)[0].match(/[^"]*?,/img).map(e=>e.replace(",",""))
-            this.$_success(data)
+            let resUlt = [];
+            let resUltItem = {};
+            data.forEach((it,key)=>{
+                if((key % 33) === 0){
+                    resUltItem = {}
+                }
+            })
+            console.log(data.slice(0,33))
+            this.$_success(resUlt)
         })
     }
 }
