@@ -22,15 +22,20 @@ export class ApplicationTypeController extends applicationController{
     @method_get(ApplicationTypeController,"list")
     list(){
         new this.$sqlModel.ApplicationTypeModel()
-            .getPage(this.$_query, function (){
-                this.where({
-                    is_del:1
+            .getPage({
+                ...this.$_query,
+                like:{
+                    name:true,
+                }
+            },  function(){
+                this.AND().concat({
+                    is_del:1,
                 })
             })
             .then(res=>{
                 this.$_success(res)
             })
-            .catch(()=>this.$_error());
+            .catch((err)=>this.$_error(err));
     }
 
     /**
