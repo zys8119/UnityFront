@@ -23,7 +23,7 @@ export default {
         }
     },
     mounted() {
-        let type = this.row.type === 0 ? this.row.type+1:this.row.type;
+        let type = this.row.type+1;
         this.apis.AuthorityManagement.RolesType.list({
             type
         }).then(res=>{
