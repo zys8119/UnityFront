@@ -85,12 +85,8 @@ export class ApplicationTypeController extends applicationController{
     update(){
         if(!this.$_body.id){return this.$_error("【id】 字段必填")}
         if(!this.$_body.name){return this.$_error("【name】 字段必填")}
-        if(!this.$_body.url){return this.$_error("【url】 字段必填")}
-        if(!this.$_body.is_child_page){return this.$_error("【is_child_page】 字段必填")}
         new this.$sqlModel.ApplicationTypeModel().update({
             name:this.$_body.name,
-            url:this.$_body.url,
-            is_child_page:this.$_body.is_child_page,
         }).where({id:this.$_body.id}).query()
             .then(()=>this.$_success())
             .catch(()=>this.$_error());
