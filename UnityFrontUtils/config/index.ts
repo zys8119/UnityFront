@@ -42,7 +42,7 @@ export const ServerConfig =  <ServerOptions>{
     CORS:true,
     Credentials:true,
     DomainWhite:false,
-    token_url:true,
+    token_url:false,
     public_success_log:true,
     fsWatch:[
         //listen conf directory
