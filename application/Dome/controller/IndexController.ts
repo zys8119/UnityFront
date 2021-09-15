@@ -1,10 +1,8 @@
-import applicationController, {method_post, method_get} from "../../../UnityFrontUtils/controller/applicationController";
+import applicationController from "../../../UnityFrontUtils/controller/applicationController";
 import {writeFileSync, readFileSync, existsSync} from "fs"
 import {resolve} from "path"
 import {merge} from "lodash"
-import {createReadStream,createWriteStream} from "fs"
-import {encode,decode} from "iconv-lite"
-import {inflateSync, deflateSync, createInflate, unzipSync, gunzipSync, createGunzip} from "zlib";
+import {decode} from "iconv-lite"
 import * as crypto from "crypto"
 export class IndexController extends applicationController {
     macdNameMap = ["股票名字",
@@ -260,5 +258,49 @@ export class IndexController extends applicationController {
             console.log(data.slice(0,33))
             this.$_success(resUlt)
         })
+    }
+    async getContent(res, resArr){
+        if(res.length > 0){
+            resArr.push(await this.$_puppeteer(res[0].href,(it)=>new Promise(resolve1 => {
+                resolve1({
+                    title:it.innerText,
+                    content:(<HTMLDivElement>document.querySelector("#zjneirong")).innerText,
+                })
+            }),res[0]));
+            return await this.getContent(res.slice(1),resArr);
+        }else{
+            return await Promise.resolve(resArr);
+        }
+        
+    }
+
+    /**
+     * 逍遥兵王，洛天归来，小说最新章节txt下载
+     */
+    async luotian(){
+        const url = "http://www.bxwx333.org/txt/368055-true-130/";
+        const res = await this.$_puppeteer(url,({start, end})=>new Promise(resolve1 => {
+            setTimeout( ()=>{
+                const data = []
+                document.querySelectorAll("#list_dl a").forEach((el:HTMLAnchorElement)=>{
+                    data.push({
+                        innerText:el.innerText,
+                        href:el.getAttribute("href")
+                    })
+                })
+                if(end){
+                    resolve1(data.filter((e,k)=>(k > (+start || 0) - 2) && k < +end))
+                }else{
+                    resolve1(data.filter((e,k)=>k > (+start || 0) - 2))
+                }
+            },1000)
+        }),{start:this.$_query.start,end:this.$_query.end});
+        const texts:any = await this.getContent(res, []);
+        this.setHeaders({
+            "Content-Type":"text/plain; charset=utf-8",
+            "Content-Disposition":"attachment; filename="+encodeURIComponent(`洛天归来(${this.$_query.start || 0}) ${new Date().toLocaleDateString()}`)+".txt",
+        })
+        this.setRequestStatus(200)
+        this.$_send(Buffer.from(texts.map((e:any)=>e.title+"\n\n"+e.content).join("\n\n\n\n\n")));
     }
 }
