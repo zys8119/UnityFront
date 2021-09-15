@@ -259,19 +259,28 @@ export class IndexController extends applicationController {
             this.$_success(resUlt)
         })
     }
-    async getContent(res, resArr){
+
+    /**
+     * 获取小说内容
+     * @param res
+     * @param resArr
+     */
+    async getLuotianContent(res, resArr, source){
         if(res.length > 0){
+            console.log(`【${res[0].innerText}】正在下载`)
             resArr.push(await this.$_puppeteer(res[0].href,(it)=>new Promise(resolve1 => {
                 resolve1({
                     title:it.innerText,
                     content:(<HTMLDivElement>document.querySelector("#zjneirong")).innerText,
                 })
             }),res[0]));
-            return await this.getContent(res.slice(1),resArr);
+            console.log(`【${res[0].innerText}】下载完成,当前进度：${((source.length - res.length)/source.length*100).toFixed(2)}%`);
+            console.log("----------------------------------------------------")
+            return await this.getLuotianContent(res.slice(1),resArr,source);
         }else{
+            console.info("下载完成。")
             return await Promise.resolve(resArr);
         }
-        
     }
 
     /**
@@ -295,7 +304,7 @@ export class IndexController extends applicationController {
                 }
             },1000)
         }),{start:this.$_query.start,end:this.$_query.end});
-        const texts:any = await this.getContent(res, []);
+        const texts:any = await this.getLuotianContent(res, [],res);
         this.setHeaders({
             "Content-Type":"text/plain; charset=utf-8",
             "Content-Disposition":"attachment; filename="+encodeURIComponent(`洛天归来(${this.$_query.start || 0}) ${new Date().toLocaleDateString()}`)+".txt",
