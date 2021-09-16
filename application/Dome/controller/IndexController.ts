@@ -268,15 +268,23 @@ export class IndexController extends applicationController {
     async getLuotianContent(res, resArr, source){
         if(res.length > 0){
             console.log(`【${res[0].innerText}】正在下载`)
-            resArr.push(await this.$_puppeteer(res[0].href,(it)=>new Promise(resolve1 => {
+            const concurrentIndex = this.$_query.concurrent || 3;
+            const resUltArr = await Promise.all(res.slice(0,concurrentIndex).map(it=>this.$_puppeteer(it.href,(it)=>new Promise(resolve1 => {
                 resolve1({
                     title:it.innerText,
                     content:(<HTMLDivElement>document.querySelector("#zjneirong")).innerText,
                 })
-            }),res[0]));
+            }),it)))
+            resArr = resArr.concat(resUltArr)
+            // resArr.push(await this.$_puppeteer(res[0].href,(it)=>new Promise(resolve1 => {
+            //     resolve1({
+            //         title:it.innerText,
+            //         content:(<HTMLDivElement>document.querySelector("#zjneirong")).innerText,
+            //     })
+            // }),res[0]));
             console.log(`【${res[0].innerText}】下载完成,当前进度：${((source.length - res.length)/source.length*100).toFixed(2)}%`);
             console.log("----------------------------------------------------")
-            return await this.getLuotianContent(res.slice(1),resArr,source);
+            return await this.getLuotianContent(res.slice(concurrentIndex),resArr,source);
         }else{
             console.info("下载完成。")
             return await Promise.resolve(resArr);
@@ -285,6 +293,9 @@ export class IndexController extends applicationController {
 
     /**
      * 逍遥兵王，洛天归来，小说最新章节txt下载
+     * @query start {number} 开始章数
+     * @query end {number} 结束章数，可不填，不填则自动下载到最新章节
+     * @concurrent concurrent {number} 结束章数，可不填，默认每次3章节下载
      */
     async luotian(){
         const url = "http://www.bxwx333.org/txt/368055-true-130/";
