@@ -290,7 +290,7 @@ export class IndexController extends applicationController {
      * 逍遥兵王，洛天归来，小说最新章节txt下载
      * @query start {number} 开始章数
      * @query end {number} 结束章数，可不填，不填则自动下载到最新章节
-     * @concurrent concurrent {number} 结束章数，可不填，默认每次3章节下载
+     * @query concurrent {number} 结束章数，可不填，默认每次3章节下载
      */
     async luotian(){
         console.time("下载花费时间")
