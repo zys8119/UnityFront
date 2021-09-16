@@ -277,6 +277,7 @@ export class IndexController extends applicationController {
             }),it)))
             resArr = resArr.concat(resUltArr)
             console.log(`【${res[0].innerText}】至【后${concurrentIndex}章节】 下载完成,当前进度：${((source.length - res.length)/source.length*100).toFixed(2)}%`);
+            console.timeLog("下载花费时间")
             console.log("----------------------------------------------------")
             return await this.getLuotianContent(res.slice(concurrentIndex),resArr,source);
         }else{
@@ -292,6 +293,7 @@ export class IndexController extends applicationController {
      * @concurrent concurrent {number} 结束章数，可不填，默认每次3章节下载
      */
     async luotian(){
+        console.time("下载花费时间")
         const url = "http://www.bxwx333.org/txt/368055-true-130/";
         const res = await this.$_puppeteer(url,({start, end})=>new Promise(resolve1 => {
             setTimeout( ()=>{
@@ -310,6 +312,7 @@ export class IndexController extends applicationController {
             },1000)
         }),{start:this.$_query.start,end:this.$_query.end});
         const texts:any = await this.getLuotianContent(res, [],res);
+        console.timeEnd("下载花费时间")
         this.setHeaders({
             "Content-Type":"text/plain; charset=utf-8",
             "Content-Disposition":"attachment; filename="+encodeURIComponent(`洛天归来(${this.$_query.start || 0}) ${new Date().toLocaleDateString()}`)+".txt",
