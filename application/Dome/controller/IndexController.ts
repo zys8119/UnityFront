@@ -267,8 +267,8 @@ export class IndexController extends applicationController {
      */
     async getLuotianContent(res, resArr, source){
         if(res.length > 0){
-            console.log(`【${res[0].innerText}】正在下载`)
             const concurrentIndex = this.$_query.concurrent || 3;
+            console.log(`【${res[0].innerText}】至【后${concurrentIndex}章节】 正在下载`)
             const resUltArr = await Promise.all(res.slice(0,concurrentIndex).map(it=>this.$_puppeteer(it.href,(it)=>new Promise(resolve1 => {
                 resolve1({
                     title:it.innerText,
@@ -276,13 +276,7 @@ export class IndexController extends applicationController {
                 })
             }),it)))
             resArr = resArr.concat(resUltArr)
-            // resArr.push(await this.$_puppeteer(res[0].href,(it)=>new Promise(resolve1 => {
-            //     resolve1({
-            //         title:it.innerText,
-            //         content:(<HTMLDivElement>document.querySelector("#zjneirong")).innerText,
-            //     })
-            // }),res[0]));
-            console.log(`【${res[0].innerText}】下载完成,当前进度：${((source.length - res.length)/source.length*100).toFixed(2)}%`);
+            console.log(`【${res[0].innerText}】至【后${concurrentIndex}章节】 下载完成,当前进度：${((source.length - res.length)/source.length*100).toFixed(2)}%`);
             console.log("----------------------------------------------------")
             return await this.getLuotianContent(res.slice(concurrentIndex),resArr,source);
         }else{
