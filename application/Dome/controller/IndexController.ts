@@ -320,4 +320,9 @@ export class IndexController extends applicationController {
         this.setRequestStatus(200)
         this.$_send(Buffer.from(texts.map((e:any)=>e.title+"\n\n"+e.content).join("\n\n\n\n\n")));
     }
+
+    async test2(){
+        const result = await Promise.all(<any>new Array(1).fill("https://dss1.bdstatic.com/kvoZeXSm1A5BphGlnYG/skin/120.jpg?2").map(url=>this.$_getFileContent(url)))
+        this.$_success()
+    }
 }
