@@ -325,4 +325,17 @@ export class IndexController extends applicationController {
         const result = await Promise.all(<any>new Array(1).fill("https://dss1.bdstatic.com/kvoZeXSm1A5BphGlnYG/skin/120.jpg?2").map(url=>this.$_getFileContent(url)))
         this.$_success()
     }
+
+    async test3(){
+        this.$_axios({
+            url:"https://api.weixin.qq.com/cgi-bin/token",
+            params:{
+                grant_type:"client_credential",
+                appid:"wx0b6174e8d3087840",
+                secret:"c84d0f37ae82239a400921f43839e14c"
+            }
+        }).then(res=>{
+            this.$_success(res.data)
+        })
+    }
 }
