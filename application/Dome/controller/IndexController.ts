@@ -294,7 +294,7 @@ export class IndexController extends applicationController {
      */
     async luotian(){
         console.time("下载花费时间")
-        const url = "http://www.bxwx333.org/txt/368055-true-130/";
+        const url = this.$_query.url || "http://www.bxwx333.org/txt/368055-true-130/";
         const res = await this.$_puppeteer(url,({start, end})=>new Promise(resolve1 => {
             setTimeout( ()=>{
                 const data = []
