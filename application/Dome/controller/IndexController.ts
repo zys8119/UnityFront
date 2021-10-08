@@ -315,7 +315,7 @@ export class IndexController extends applicationController {
         console.timeEnd("下载花费时间")
         this.setHeaders({
             "Content-Type":"text/plain; charset=utf-8",
-            "Content-Disposition":"attachment; filename="+encodeURIComponent(`洛天归来(${this.$_query.start || 0}) ${new Date().toLocaleDateString()}`)+".txt",
+            "Content-Disposition":"attachment; filename="+encodeURIComponent(`${this.$_query.name || "洛天归来"}(${this.$_query.start || 0}) ${new Date().toLocaleDateString()}`)+".txt",
         })
         this.setRequestStatus(200)
         this.$_send(Buffer.from(texts.map((e:any)=>e.title+"\n\n"+e.content).join("\n\n\n\n\n")));
