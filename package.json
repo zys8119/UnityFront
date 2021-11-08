@@ -16,11 +16,10 @@
   "dependencies": {
     "@types/lodash": "^4.14.171",
     "iconv-lite": "^0.6.3",
-    "ipp": "^2.0.1",
     "lodash": "^4.17.21",
     "node-wifi": "^2.0.14",
     "pdfkit": "^0.11.0",
-    "puppeteer": "^7.1.0",
+    "puppeteer": "^11.0.0",
     "vue-loader": "^15.9.6",
     "vue-router": "^3.4.9",
     "vue-server-renderer": "^2.6.12",
