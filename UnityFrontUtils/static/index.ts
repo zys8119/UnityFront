@@ -83,7 +83,7 @@ export default class staticIndex {
                 }
                 if(/Desktop.data.gz$/.test(filePath)){
                     ContentType = null;
-                    resolve();
+                    resolve(null);
                     return;
                 }
                 let tmpPath = path.resolve(__dirname,Date.now().toString()+"tmp.gz");
@@ -103,7 +103,7 @@ export default class staticIndex {
                 })
                 fs.createReadStream(filePath).pipe(zlib.createGunzip()).pipe(tmp);
             }else {
-                resolve()
+                resolve(null)
             }
         })
         if(gzip){

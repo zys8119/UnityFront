@@ -7,7 +7,7 @@ export class main extends applicationController{
 
     index(){
         new Promise((resolve,reject) => {
-            resolve();
+            resolve(null);
         }).then(()=>{
             //控制器url路由解析
             this.UrlParse();

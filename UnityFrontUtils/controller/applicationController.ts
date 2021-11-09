@@ -999,13 +999,13 @@ export default class applicationControllerClass extends PublicController impleme
                                 img.src = `data:${contentType};base64,${imgBase64}`;
                                 img.onload=()=>{
                                     cxt.drawImage(img, 0 , 0 , canvas.width, canvas.height);
-                                    resolve2();
+                                    resolve2(null);
                                 }
                                 img.onerror = ()=>{
-                                    resolve2();
+                                    resolve2(null);
                                 }
                             }else {
-                                resolve2();
+                                resolve2(null);
                             }
                         }).then(()=>{
                             if(query.message !== "true" || query.text){
