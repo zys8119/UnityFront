@@ -5,9 +5,9 @@ import {createHash} from "crypto";
 export class WexinController extends applicationController {
     private UpdateInterval = 86400000;// 更新间隔时间，默认一天更新一次
     // 公众号appid
-    appid = "wx0b6174e8d3087840";
+    appid = "";
     // 公众号密钥
-    secret = "c84d0f37ae82239a400921f43839e14c";
+    secret = "";
     constructor() {
         super();
     }
