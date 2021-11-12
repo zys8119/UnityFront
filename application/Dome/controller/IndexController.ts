@@ -135,8 +135,22 @@ export class IndexController extends applicationController {
             this.$_error()
         }
     }
-
     async test(){
-        this.$_success()
+        const aes = require("../../../public/aes.js")
+        const res = await this.$_axios({
+            method:"post",
+            url:"http://192.168.110.1/cgi-bin/luci/api/auth",
+            data:{
+                "method": "login",
+                "params": {
+                    "password": aes.enc("123456", "RjYkhwzx$2018!").replace(/\s+/g, ''),
+                    "username": "admin",
+                    "time": Date.now(),
+                    "encry": true,
+                    "limit": false
+                }
+            }
+        })
+        this.$_success(res.data)
     }
 }
