@@ -313,7 +313,7 @@ export default class applicationControllerClass extends PublicController impleme
             const suffix = ({
                 "development":".ts",
                 "production":".js",
-            })[process.env.NODE_ENV] || '.ts';;
+            })[process.env.NODE_ENV] || '.ts';
             const ControllerPath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"Controller",urlArrs[1]+"Controller"+suffix);
             if(!fs.existsSync(ControllerPath)){
                 Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
