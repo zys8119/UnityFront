@@ -310,7 +310,13 @@ export default class applicationControllerClass extends PublicController impleme
             };
 
             //todo 判断控制器2
-            let ControllerPath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"Controller",urlArrs[1]+"Controller.js");
+            const suffix = ({
+                "development":".ts",
+                "production":".js",
+            })[process.env.NODE_ENV] || '.ts';
+            console.log(process.env.NODE_ENV)
+            console.log(suffix);
+            const ControllerPath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"Controller",urlArrs[1]+"Controller"+suffix);
             if(!fs.existsSync(ControllerPath)){
                 Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
                     title:`控制器【${urlArrs[1]}】不存在`,
@@ -993,7 +999,7 @@ export default class applicationControllerClass extends PublicController impleme
                         const cxt = canvas.getContext("2d");
                         cxt.fillStyle = query.fillStyle || "#909090";
                         cxt.fillRect(0,0,canvas.width,canvas.height);
-                        new Promise(resolve2 => {
+                        new Promise<void>(resolve2 => {
                             if(imgBase64){
                                 let img = new Image();
                                 img.src = `data:${contentType};base64,${imgBase64}`;
