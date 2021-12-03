@@ -310,7 +310,13 @@ export default class applicationControllerClass extends PublicController impleme
             };
 
             //todo 判断控制器2
-            let ControllerPath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"Controller",urlArrs[1]+"Controller.ts");
+            const suffix = ({
+                "development":".ts",
+                "production":".js",
+            })[process.env.NODE_ENV] || '.ts';
+            console.log(process.env.NODE_ENV)
+            console.log(suffix);
+            const ControllerPath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"Controller",urlArrs[1]+"Controller"+suffix);
             if(!fs.existsSync(ControllerPath)){
                 Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
                     title:`控制器【${urlArrs[1]}】不存在`,

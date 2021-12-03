@@ -10,10 +10,12 @@ import {
     rmdirSync,
     createReadStream,
     createWriteStream,
-    ReadStream
+    readFileSync,
 } from "fs"
 import {resolve} from "path"
-import {execSync} from "child_process"
+import {create as tsNode} from "ts-node"
+import {minify} from "uglify-js"
+import packageJson from "../../package.json"
 const ncol = require("ncol");
 const url = resolve(__dirname,"../../");
 const dist = resolve(__dirname,"../../dist");
@@ -54,19 +56,19 @@ if(!existsSync(dist)){
 const CopyFile = function (files, cb){
     const item = files.splice(0,1)[0];
     if(item){
-        let relative_url = resolve(dist,item.relative_url);
-        let path = resolve(relative_url,item.name);
+        const relative_url = resolve(dist,item.relative_url);
+        const path = resolve(relative_url,item.name);
+        const file_url = resolve(url,item.relative_url,item.name);
         if(item.is_file){
             // 排除ts
-            const file_url = resolve(url,item.relative_url,item.name);
-            let file:ReadStream = null;
             if(!/\.ts$/.test(item.name) || Config.allFiles.some(e=>file_url.indexOf(resolve(url,e.name)) === 0)){
-                file = createReadStream(file_url);
+                createReadStream(file_url).pipe(createWriteStream(path));
             }else {
-                file = <ReadStream>execSync("ts-node "+file_url);
-                console.log()
+                const fileContent = tsNode({
+                    dir:item.relative_url
+                }).compile(readFileSync(file_url,"utf-8"), item.name);
+                createWriteStream(path.replace(/\.ts$/,".js")).write(minify(fileContent).code);
             }
-            file.pipe(createWriteStream(path));
         }else {
             if(!existsSync(path)){
                 mkdirSync(path);
@@ -82,6 +84,23 @@ const CopyFile = function (files, cb){
     }
 }
 CopyFile(files, ()=>{
+    /**
+     * package.json 处理
+     */
+    const packageJsonCopy = JSON.parse(JSON.stringify(packageJson))
+    packageJsonCopy.scripts = (<any>Object).fromEntries(
+        Object.keys(packageJsonCopy.scripts)
+            .filter(e=>["start", "server","ws"].includes(e))
+            .map(e=>[e,packageJsonCopy.scripts[e].replace(/ts-node/,"node")
+                .replace(/\.ts/,".js")])
+    )
+    createWriteStream(resolve(dist,"package.json")).write(Buffer.from(JSON.stringify(packageJsonCopy, null, 4)));
+    /**
+     * 设置环境变量
+     */
+    const envFilePath = resolve(dist,"UnityFrontUtils/server/env.js");
+    const cxt = (<any>readFileSync(envFilePath,"utf-8")).replace(/NODE_ENV.*?".*?"/img,`NODE_ENV = "production"`);
+    createWriteStream(envFilePath).write(cxt);
     ncol.successBG("打包完成。")
 });
 
