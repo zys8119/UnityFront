@@ -1,5 +1,3 @@
-import a from "../lib/formData";
-
 interface progressClass{
     fmt:fmtType;
 }

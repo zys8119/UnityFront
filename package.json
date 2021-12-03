@@ -2,9 +2,9 @@
   "scripts": {
     "start": "npm run serve",
     "serve": "ts-node UnityFrontUtils/server/index.ts",
-    "ws": "node UnityFrontUtils/webSocket/serve.js",
-    "build": "node UnityFrontUtils/build/serve.js",
-    "build_api": "node UnityFrontUtils/build/api/apiServe.js"
+    "ws": "ts-node UnityFrontUtils/webSocket/serve.ts",
+    "build": "ts-node UnityFrontUtils/build/serve.ts",
+    "build_api": "ts-node UnityFrontUtils/build/api/apiServe.ts"
   },
   "devDependencies": {
     "@types/node": "^14.14.31",
