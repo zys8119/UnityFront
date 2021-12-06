@@ -90,7 +90,7 @@ CopyFile(files, ()=>{
     const packageJsonCopy = JSON.parse(JSON.stringify(packageJson))
     packageJsonCopy.scripts = (<any>Object).fromEntries(
         Object.keys(packageJsonCopy.scripts)
-            .filter(e=>["start", "server","ws"].includes(e))
+            .filter(e=>["start", "serve","ws"].includes(e))
             .map(e=>[e,packageJsonCopy.scripts[e].replace(/ts-node/,"node")
                 .replace(/\.ts/,".js")])
     )
