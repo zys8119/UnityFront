@@ -14,6 +14,7 @@ export class IconfontController extends applicationController{
                 let bool = false
                 page.on("response", async e=>{
                     if(/detail\.json/.test(e.url()) && bool){
+                        // 返回项目数据
                         try {
                             const icons = (await e.json()).data.icons
                             await page.evaluateHandle(function (icons){
@@ -26,21 +27,20 @@ export class IconfontController extends applicationController{
                     }
                 })
                 // 输入密码
-                await new Promise(r=>setTimeout(r,1000))
-                console.log(1)
+                await new Promise(r=>setTimeout(r,500))
                 await page.type("#userid",this.$_query.userid,{delay:0});
                 await page.type("#password",this.$_query.password, {delay:0});
                 await page.tap("#login-form > div:nth-child(4) > button");
-                await new Promise(r=>setTimeout(r,1000))
-                console.log(2)
+                // 登陆成功跳转
+                await new Promise(r=>setTimeout(r,3000))
+                // 进入项目管理
                 await page.hover("#magix_vf_header > header > div > nav > ul > li:nth-child(4)")
                 await page.tap("#magix_vf_header > header > div > nav > ul > li:nth-child(4) > ul > li:nth-child(4) > a")
-                await new Promise(r=>setTimeout(r,1000))
-                console.log(3)
+                await new Promise(r=>setTimeout(r,3000))
+                // 选中指定项目
                 await page.tap("#mx_16 > div.page-manage-left > div > div:nth-child(2) > div.nav-lists.J_scorll_project_corp > div:nth-child(3)")
                 bool = true;
-                console.log(4)
-                await new Promise(r=>setTimeout(r,1000))
+                await new Promise(r=>setTimeout(r,500))
                 console.log(5)
             },
             jsContentFn:()=>{
