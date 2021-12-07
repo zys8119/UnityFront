@@ -10,6 +10,7 @@ export class IconfontController extends applicationController{
             jsContentFn:any
             jsContentBeforeFn:any
         }>{
+            slowMo:10,
             jsContentBeforeFn:async (page:Page)=>{
                 let bool = false
                 page.on("response", async e=>{
@@ -20,7 +21,7 @@ export class IconfontController extends applicationController{
                             await page.evaluateHandle(function (icons){
                                 (<any>window).$_puppeteer = icons
                             }, icons)
-                            console.log(icons)
+                            console.log("返回项目数据")
                         }catch (e){
                             console.error(e.message)
                         }
@@ -31,14 +32,17 @@ export class IconfontController extends applicationController{
                 await page.type("#userid",this.$_query.userid,{delay:0});
                 await page.type("#password",this.$_query.password, {delay:0});
                 await page.tap("#login-form > div:nth-child(4) > button");
+                console.log("登陆")
                 // 登陆成功跳转
-                await new Promise(r=>setTimeout(r,3000))
+                await new Promise(r=>setTimeout(r,500))
                 // 进入项目管理
                 await page.hover("#magix_vf_header > header > div > nav > ul > li:nth-child(4)")
                 await page.tap("#magix_vf_header > header > div > nav > ul > li:nth-child(4) > ul > li:nth-child(4) > a")
-                await new Promise(r=>setTimeout(r,3000))
+                await new Promise(r=>setTimeout(r,6000))
+                console.log("进入项目管理")
                 // 选中指定项目
                 await page.tap("#mx_16 > div.page-manage-left > div > div:nth-child(2) > div.nav-lists.J_scorll_project_corp > div:nth-child(3)")
+                console.log("选中指定项目")
                 bool = true;
                 await new Promise(r=>setTimeout(r,500))
                 console.log(5)
