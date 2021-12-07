@@ -590,18 +590,33 @@ export default class applicationControllerClass extends PublicController impleme
         return new Promise((resolve, reject) => {
             try {
                 let launchConfig = {}
+                let goto = async (page:any, browser:any)=>{};
+                let jsContentBefore = async (page:any, browser:any)=>{};
+                let jsContentAfter = async (page:any, browser:any)=>{};
                 if(Object.prototype.toString.call(jsContent) === "[object Object]"){
-                    const {jsContentFn,...launchConfigArgs} = jsContent;
+                    const {
+                        jsContentFn,
+                        gotoFn = async (page:any, browser:any)=>{},
+                        jsContentBeforeFn = async (page:any, browser:any)=>{},
+                        jsContentAfterFn = async (page:any, browser:any)=>{},
+                        ...launchConfigArgs
+                    } = jsContent;
                     launchConfig = launchConfigArgs;
                     jsContent = jsContentFn;
+                    goto = gotoFn;
+                    jsContentBefore = jsContentBeforeFn;
+                    jsContentAfter = jsContentAfterFn;
                 }
                 puppeteer.launch(launchConfig).then(async browser => {
                     const page = await browser.newPage();
+                    await goto(page, browser)
                     await page.goto(url);
+                    await jsContentBefore(page, browser);
                     const resultHandle = await page.evaluateHandle(
                         js => js,
                         await page.evaluateHandle(jsContent,...extData)
                     );
+                    await jsContentAfter(page, browser);
                     const result = await resultHandle.jsonValue();
                     await browser.close();
                     resolve(result);
@@ -610,34 +625,6 @@ export default class applicationControllerClass extends PublicController impleme
                 });
             }catch (err) {
                 reject(err.message)
-            }
-        });
-    }
-    $_getFileContent(fileUrl:string,callBcak?:any,callBackEnd?:any){
-        return new Promise((resolve, reject) => {
-            try {
-                let resultChunk = '';
-                let httpObj = http;
-                if(fileUrl.match(/^https/)){
-                    httpObj = https;
-                }
-                httpObj.get(fileUrl,res=>{
-                    res.on('data', (chunk) => {
-                        resultChunk += chunk;
-                        if(callBcak){callBcak(chunk)};
-                    });
-                    res.on('end', () => {
-                        if(callBackEnd){callBackEnd(resultChunk)};
-                        resolve(resultChunk);
-                    });
-                    res.on('error', err => {
-                        reject(err.message);
-                    });
-                }).on('error', (err) => {
-                    reject(err.message);
-                });
-            }catch (err) {
-                reject(err.message);
             }
         });
     }
