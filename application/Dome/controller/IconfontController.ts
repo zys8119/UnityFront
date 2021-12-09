@@ -61,8 +61,10 @@ export class IconfontController extends applicationController{
         await this.$_puppeteer("http://www.beiwaionline.com/index.htm",<LaunchOptions & BrowserLaunchArgumentOptions & BrowserConnectOptions & {
             jsContentFn:any
             jsContentBeforeFn:any
+            resultFilterFn:any
         }>{
             headless:false,
+            devtools:true,
             jsContentFn:()=>Promise.resolve(null)
         })
         this.$_success()
