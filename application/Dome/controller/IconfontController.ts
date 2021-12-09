@@ -1,5 +1,5 @@
 import {applicationController} from "../../../UnityFrontUtils/controller/applicationController";
-import {LaunchOptions, BrowserLaunchArgumentOptions, BrowserConnectOptions, Page} from "puppeteer"
+import {LaunchOptions, BrowserLaunchArgumentOptions, BrowserConnectOptions, Page, Browser} from "puppeteer"
 export class IconfontController extends applicationController{
     constructor() {
         super();
@@ -65,7 +65,12 @@ export class IconfontController extends applicationController{
         }>{
             headless:false,
             devtools:true,
-            jsContentFn:()=>Promise.resolve(null)
+            jsContentFn:()=>Promise.resolve(null),
+            resultFilterFn:(async (result:any, next:any,  page:Page, browser:Browser)=>{
+                console.log(result)
+                await browser.close();
+                next(result);
+            })
         })
         this.$_success()
     }
