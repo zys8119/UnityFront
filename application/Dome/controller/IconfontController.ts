@@ -65,9 +65,20 @@ export class IconfontController extends applicationController{
         }>{
             headless:false,
             devtools:true,
+            defaultViewport:{
+                width:1920,
+                height:1080
+            },
+            args:['--start-maximized'],
             jsContentFn:()=>Promise.resolve(null),
+            jsContentBeforeFn:(async (page:Page, browser:Browser)=>{
+                await page.type("#main > div.login > div.loginbo > table > tbody > tr:nth-child(1) > td:nth-child(2) > input", this.$_query.username)
+                await page.type("#main > div.login > div.loginbo > table > tbody > tr:nth-child(2) > td:nth-child(2) > div > input", this.$_query.password)
+                await page.tap("#main > div.login > div.loginbo > table > tbody > tr:nth-child(3) > td > input[type=image]:nth-child(1)")
+                await new Promise(resolve => setTimeout(resolve,1000))
+                await page.tap("#suckertree1 > li:nth-child(3) > ul > li:nth-child(1)")
+            }),
             resultFilterFn:(async (result:any, next:any,  page:Page, browser:Browser)=>{
-                console.log(result)
                 await browser.close();
                 next(result);
             })
