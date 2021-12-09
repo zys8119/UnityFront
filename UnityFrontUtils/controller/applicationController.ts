@@ -593,20 +593,30 @@ export default class applicationControllerClass extends PublicController impleme
                 let goto = async (page:any, browser:any)=>{};
                 let jsContentBefore = async (page:any, browser:any)=>{};
                 let jsContentAfter = async (page:any, browser:any)=>{};
+                let resultFilter = async (result:any, next:any,  page:any, browser:any)=>{
+                    await browser.close();
+                    next(result);
+                };
                 if(Object.prototype.toString.call(jsContent) === "[object Object]"){
                     const {
                         jsContentFn,
                         gotoFn = async (page:any, browser:any)=>{},
                         jsContentBeforeFn = async (page:any, browser:any)=>{},
                         jsContentAfterFn = async (page:any, browser:any)=>{},
+                        resultFilterFn = async (result:any, next:any,  page:any, browser:any)=>{
+                            await browser.close();
+                            next(result);
+                        },
                         ...launchConfigArgs
                     } = jsContent;
                     launchConfig = launchConfigArgs;
                     jsContent = jsContentFn;
+                    resultFilter = resultFilterFn;
                     goto = gotoFn;
                     jsContentBefore = jsContentBeforeFn;
                     jsContentAfter = jsContentAfterFn;
                 }
+                jsContent = jsContent || (()=>Promise.resolve(null));
                 puppeteer.launch(launchConfig).then(async browser => {
                     const page = await browser.newPage();
                     await goto(page, browser)
@@ -618,8 +628,7 @@ export default class applicationControllerClass extends PublicController impleme
                     );
                     await jsContentAfter(page, browser);
                     const result = await resultHandle.jsonValue();
-                    await browser.close();
-                    resolve(result);
+                    await resultFilter(result,resolve, page, browser);
                 }).catch(err=>{
                     reject(err.message)
                 });
