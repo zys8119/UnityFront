@@ -56,4 +56,15 @@ export class IconfontController extends applicationController{
         console.log(res,666)
         this.$_success(res)
     }
+
+    async beiwai(){
+        await this.$_puppeteer("http://www.beiwaionline.com/index.htm",<LaunchOptions & BrowserLaunchArgumentOptions & BrowserConnectOptions & {
+            jsContentFn:any
+            jsContentBeforeFn:any
+        }>{
+            headless:false,
+            jsContentFn:()=>Promise.resolve(null)
+        })
+        this.$_success()
+    }
 }
