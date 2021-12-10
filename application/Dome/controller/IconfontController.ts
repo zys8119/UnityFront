@@ -102,7 +102,6 @@ export class IconfontController extends applicationController{
                 courseElementId: config.courseElementId
             }
         })).data
-        console.log(res)
         const res2 = (await this.$_axios({
             method:"post",
             url:"https://study.ebeiwai.com/ws/studyservice/sendLearnDetailToMassdataTmp",
@@ -126,7 +125,6 @@ export class IconfontController extends applicationController{
                 return result;
             }
         })).data
-        console.log(res2)
         console.log(index, times, index < times,learnDetails)
         console.log(res, res2)
         if(lastLearnTime < times){
