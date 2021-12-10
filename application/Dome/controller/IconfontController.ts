@@ -1,5 +1,6 @@
 import {applicationController} from "../../../UnityFrontUtils/controller/applicationController";
 import {LaunchOptions, BrowserLaunchArgumentOptions, BrowserConnectOptions, Page, Browser} from "puppeteer"
+import {parse} from "url"
 export class IconfontController extends applicationController{
     constructor() {
         super();
@@ -55,5 +56,101 @@ export class IconfontController extends applicationController{
         })
         console.log(res,666)
         this.$_success(res)
+    }
+
+    async beiwai(index = 0){
+        const item = {
+            "outlineCode": "1627536666051",
+            "curriculumCode": "ZK_BWME3020_20210730203203938",
+            "parentCode": "1594610914500628978",
+            "name": "第2节 网站界面设计框架与流程",
+            "outlineOrder": 605,
+            "nodeType": "resource",
+            "type": 400004,
+            "src": "proxy/resource/590540681223606272",
+            "times": 5.32,
+            "id": "167018",
+            "tid": "1685013",
+            "suffix": "_360p.m3u8",
+            "courseElementId": 1685013,
+            "courseElementState": "0",
+            "learnerCourseId": 4812739
+        }
+        const config = {
+            userId: 629700,
+            learnCourseId: item.learnerCourseId,
+            courseElementId: item.courseElementId,
+            loginName: "张云山",
+            orgCode: "beiwaionline",
+            learnerCourseId: item.learnerCourseId,
+            clientSource: 190010110,
+            stayTime:60,
+        }
+        const learnDetails = new Array(config.stayTime).fill(0).map((e,k)=>k+index);
+        const times = item.times*60;
+        const lastLearnTime = index + config.stayTime;
+        const res = (await this.$_axios({
+            method:"post",
+            url:"https://study.ebeiwai.com/ws/studyservice/sendLearnDetailToMassdataTmp",
+            params:{
+                userId: config.userId,
+                loginName:config.loginName,
+                orgCode: config.orgCode,
+                learnerCourseId: config.learnerCourseId,
+                clientSource: config.clientSource,
+                stayTime: config.stayTime,
+                courseElementId: config.courseElementId
+            }
+        })).data
+        console.log(res)
+        const res2 = (await this.$_axios({
+            method:"post",
+            url:"https://study.ebeiwai.com/ws/studyservice/sendLearnDetailToMassdataTmp",
+            params:{
+                userId: config.userId,
+                loginName:config.loginName,
+                orgCode: config.orgCode,
+                learnerCourseId: config.learnerCourseId,
+                clientSource: config.clientSource,
+                lastLearnTime,
+                learnDetails,
+                courseElementId: config.courseElementId,
+            },
+            paramsSerializer(params){
+                const result = Object.entries(params).map(([k,v]:[string,Array<number> & string])=>{
+                    if(Object.prototype.toString.call(v) === "[object Array]"){
+                        return v.map(e=>encodeURI(`${k}[]=${e}`)).join("")
+                    }
+                    return `${k}=${encodeURI(v)}`
+                }).join("&");
+                return result;
+            }
+        })).data
+        console.log(res2)
+        console.log(index, times, index < times,learnDetails)
+        console.log(res, res2)
+        if(lastLearnTime < times){
+            await this.beiwai(lastLearnTime)
+        }else {
+            this.$_success("学习完成");
+        }
+
+
+        // const res3 = (await this.$_axios({
+        //     method:"post",
+        //     url:"https://study.ebeiwai.com/ws/studyservice/getStandedCourseOutline",
+        //     params:{
+        //         code: "ZK_BWME3020_20210730203203938",
+        //         type: 1,
+        //         courseId: 4204,
+        //         learnCourseId: 4812739,
+        //     }
+        // })).data
+        // console.log(this.toTree(res3.outlines,{
+        //     id:"outlineCode",
+        //     parent:"parentCode",
+        // }));
+        // console.log(JSON.stringify(res3.outlines.find(e=>e.outlineCode === "1627536666051"),null, 4))
+
     }
 }
