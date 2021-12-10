@@ -89,32 +89,36 @@ export class IconfontController extends applicationController{
         const learnDetails = new Array(config.stayTime).fill(0).map((e,k)=>k+index);
         const times = item.times*60;
         const lastLearnTime = index + config.stayTime;
+        const params = {
+            userId: config.userId,
+            loginName:config.loginName,
+            orgCode: config.orgCode,
+            learnerCourseId: config.learnerCourseId,
+            clientSource: config.clientSource,
+            stayTime: config.stayTime,
+            courseElementId: config.courseElementId
+        }
+        console.log(params)
         const res = (await this.$_axios({
             method:"post",
             url:"https://study.ebeiwai.com/ws/studyservice/sendLearnDetailToMassdataTmp",
-            params:{
-                userId: config.userId,
-                loginName:config.loginName,
-                orgCode: config.orgCode,
-                learnerCourseId: config.learnerCourseId,
-                clientSource: config.clientSource,
-                stayTime: config.stayTime,
-                courseElementId: config.courseElementId
-            }
+            params
         })).data
+        const params2 = {
+            userId: config.userId,
+            loginName:config.loginName,
+            orgCode: config.orgCode,
+            learnerCourseId: config.learnerCourseId,
+            clientSource: config.clientSource,
+            lastLearnTime,
+            learnDetails,
+            courseElementId: config.courseElementId,
+        }
+        console.log(params2)
         const res2 = (await this.$_axios({
             method:"post",
             url:"https://study.ebeiwai.com/ws/studyservice/sendLearnDetailToMassdataTmp",
-            params:{
-                userId: config.userId,
-                loginName:config.loginName,
-                orgCode: config.orgCode,
-                learnerCourseId: config.learnerCourseId,
-                clientSource: config.clientSource,
-                lastLearnTime,
-                learnDetails,
-                courseElementId: config.courseElementId,
-            },
+            params:params2,
             paramsSerializer(params){
                 const result = Object.entries(params).map(([k,v]:[string,Array<number> & string])=>{
                     if(Object.prototype.toString.call(v) === "[object Array]"){
@@ -127,6 +131,7 @@ export class IconfontController extends applicationController{
         })).data
         console.log(index, times, index < times,learnDetails)
         console.log(res, res2)
+        console.log("=============================================")
         if(lastLearnTime < times){
             await this.beiwai(lastLearnTime)
         }else {
