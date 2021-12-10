@@ -59,6 +59,7 @@ export class IconfontController extends applicationController{
     }
 
     async beiwai(index = 0){
+        console.log("=============================================")
         const item = {
             "outlineCode": "1627536666051",
             "curriculumCode": "ZK_BWME3020_20210730203203938",
@@ -131,7 +132,6 @@ export class IconfontController extends applicationController{
         })).data
         console.log(index, times, index < times,learnDetails)
         console.log(res, res2)
-        console.log("=============================================")
         if(lastLearnTime < times){
             await this.beiwai(lastLearnTime)
         }else {
