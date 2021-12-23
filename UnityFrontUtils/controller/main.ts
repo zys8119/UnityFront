@@ -11,7 +11,7 @@ export class main extends applicationController{
         }).then(()=>{
             //控制器url路由解析
             this.UrlParse();
-        }).catch(()=>{
+        }).catch((err)=>{
             this.setHeaders({
                 "Access-Control-Allow-Headers":"*",
             })
@@ -24,7 +24,7 @@ export class main extends applicationController{
                 }
             }
             if(next){
-                this.$_success(null,null,0);
+                this.$_error(err.message || "系统繁忙！",null,0);
             }
         })
     }
