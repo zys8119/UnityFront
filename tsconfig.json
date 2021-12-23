@@ -5,7 +5,8 @@
     "experimentalDecorators": true,
     "resolveJsonModule": true,
     "esModuleInterop": true,
-    "lib": [
+      "noEmitOnError": true,
+      "lib": [
       "ES5",
       "ES6",
       "ES7",

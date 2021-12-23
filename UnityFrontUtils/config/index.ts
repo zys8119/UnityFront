@@ -14,7 +14,7 @@ export const mysqlConfig = <mysqlOptions>{
         connectionLimit : 10,
         host: 'localhost',
         user: 'root',
-        password: 'root',
+        password: 'rootroot',
         port: '3306',
         database: 'unity_front_utils_admin',
         prefix:""

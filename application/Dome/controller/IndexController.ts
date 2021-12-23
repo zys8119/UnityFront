@@ -150,4 +150,17 @@ export class IndexController extends applicationController {
         })
         this.$_success(res.data)
     }
+
+    async test2(){
+        try {
+            let res:Array<any> = [];
+            await this.DB().aa();
+            res = await this.DB().select().from("test").query()
+            this.$_success(res)
+        }catch (e){
+            console.log(e, 11111)
+            this.$_error("asdas")
+        }
+
+    }
 }
