@@ -59,22 +59,22 @@ export class IconfontController extends applicationController{
     }
 
     async beiwai(index = 0){
-        console.log("=============================================")
+        // console.log("=============================================")
         const item = {
-            "outlineCode": "1627536666051",
+            "outlineCode": "1627536666047",
             "curriculumCode": "ZK_BWME3020_20210730203203938",
             "parentCode": "1594610914500628978",
-            "name": "第2节 网站界面设计框架与流程",
-            "outlineOrder": 605,
+            "name": "第5节 网站信息架构与交互设计",
+            "outlineOrder": 611,
             "nodeType": "resource",
             "type": 400004,
-            "src": "proxy/resource/590540681223606272",
-            "times": 5.32,
-            "id": "167018",
-            "tid": "1685013",
+            "src": "proxy/resource/591568463508541440",
+            "times": 31.5,
+            "id": "167053",
+            "tid": "1685018",
             "suffix": "_360p.m3u8",
-            "courseElementId": 1685013,
-            "courseElementState": "0",
+            "courseElementId": 1685018,
+            "courseElementState": "1",
             "learnerCourseId": 4812739
         }
         const config = {
@@ -87,9 +87,23 @@ export class IconfontController extends applicationController{
             clientSource: 190010110,
             stayTime:60,
         }
-        const learnDetails = new Array(config.stayTime).fill(0).map((e,k)=>k+index);
+        const headers = {
+            origin: "https://study.ebeiwai.com",
+        }
+        const findLastLearnTime = (await this.$_axios({
+            method:"post",
+            url:"https://study.ebeiwai.com/api/studyservice/findLastLearnTime",
+            headers,
+            params:{
+                userId:config.userId,
+                learnCourseId:config.learnCourseId,
+                courseElementId:config.courseElementId,
+            },
+        })).data
+        const currIndex = index + (index === 0 ? 0 :1);
+        const learnDetails = new Array(config.stayTime).fill(0).map((e,k)=>k+currIndex);
         const times = item.times*60;
-        const lastLearnTime = index + config.stayTime;
+        const lastLearnTime = currIndex + config.stayTime;
         const params = {
             userId: config.userId,
             loginName:config.loginName,
@@ -99,11 +113,11 @@ export class IconfontController extends applicationController{
             stayTime: config.stayTime,
             courseElementId: config.courseElementId
         }
-        console.log(params)
         const res = (await this.$_axios({
             method:"post",
             url:"https://study.ebeiwai.com/ws/studyservice/sendLearnDetailToMassdataTmp",
-            params
+            params,
+            headers,
         })).data
         const params2 = {
             userId: config.userId,
@@ -115,11 +129,12 @@ export class IconfontController extends applicationController{
             learnDetails,
             courseElementId: config.courseElementId,
         }
-        console.log(params2)
+        // console.log(params2)
         const res2 = (await this.$_axios({
             method:"post",
             url:"https://study.ebeiwai.com/ws/studyservice/sendLearnDetailToMassdataTmp",
             params:params2,
+            headers,
             paramsSerializer(params){
                 const result = Object.entries(params).map(([k,v]:[string,Array<number> & string])=>{
                     if(Object.prototype.toString.call(v) === "[object Array]"){
@@ -130,30 +145,38 @@ export class IconfontController extends applicationController{
                 return result;
             }
         })).data
-        console.log(index, times, index < times,learnDetails)
-        console.log(res, res2)
+        console.log({
+            item:findLastLearnTime.item,
+            ...params,
+            ...params2,
+            res,
+            res2,
+        })
         if(lastLearnTime < times){
-            await this.beiwai(lastLearnTime)
+            return await this.beiwai(lastLearnTime)
         }else {
             this.$_success("学习完成");
         }
+    }
 
-
-        // const res3 = (await this.$_axios({
-        //     method:"post",
-        //     url:"https://study.ebeiwai.com/ws/studyservice/getStandedCourseOutline",
-        //     params:{
-        //         code: "ZK_BWME3020_20210730203203938",
-        //         type: 1,
-        //         courseId: 4204,
-        //         learnCourseId: 4812739,
-        //     }
-        // })).data
-        // console.log(this.toTree(res3.outlines,{
-        //     id:"outlineCode",
-        //     parent:"parentCode",
-        // }));
-        // console.log(JSON.stringify(res3.outlines.find(e=>e.outlineCode === "1627536666051"),null, 4))
-
+    async beiwaicourse(){
+        const res3 = (await this.$_axios({
+            method:"post",
+            url:"https://study.ebeiwai.com/ws/studyservice/getStandedCourseOutline",
+            params:{
+                code: "ZK_BWME3020_20210730203203938",
+                type: 1,
+                courseId: 4204,
+                learnCourseId: 4812739,
+            },
+        })).data
+        console.log(JSON.stringify(res3.outlines
+            .find(e=>e.outlineCode === "1627536111167"), null, 4));
+        const tree = this.toTree(res3.outlines,{
+            id:"outlineCode",
+            parent:"parentCode",
+        })
+        console.log(tree)
+        this.$_success();
     }
 }

@@ -2,6 +2,38 @@
 # yarn lockfile v1
 
 
+"@cspotcode/source-map-consumer@0.8.0":
+  "integrity" "sha512-41qniHzTU8yAGbCp04ohlmSrZf8bkf/iJsl3V0dRGsQN/5GFfx+LbCSsCpp2gqrqjTVg/K6O8ycoV35JIwAzAg=="
+  "resolved" "https://registry.npmjs.org/@cspotcode/source-map-consumer/-/source-map-consumer-0.8.0.tgz"
+  "version" "0.8.0"
+
+"@cspotcode/source-map-support@0.7.0":
+  "integrity" "sha512-X4xqRHqN8ACt2aHVe51OxeA2HjbcL4MqFqXkrmQszJ1NOUuUu5u6Vqx/0lZSVNku7velL5FC/s5uEAj1lsBMhA=="
+  "resolved" "https://registry.npmjs.org/@cspotcode/source-map-support/-/source-map-support-0.7.0.tgz"
+  "version" "0.7.0"
+  dependencies:
+    "@cspotcode/source-map-consumer" "0.8.0"
+
+"@tsconfig/node10@^1.0.7":
+  "integrity" "sha512-6XFfSQmMgq0CFLY1MslA/CPUfhIL919M1rMsa5lP2P097N2Wd1sSX0tx1u4olM16fLNhtHZpRhedZJphNJqmZg=="
+  "resolved" "https://registry.npmjs.org/@tsconfig/node10/-/node10-1.0.8.tgz"
+  "version" "1.0.8"
+
+"@tsconfig/node12@^1.0.7":
+  "integrity" "sha512-/yBMcem+fbvhSREH+s14YJi18sp7J9jpuhYByADT2rypfajMZZN4WQ6zBGgBKp53NKmqI36wFYDb3yaMPurITw=="
+  "resolved" "https://registry.npmjs.org/@tsconfig/node12/-/node12-1.0.9.tgz"
+  "version" "1.0.9"
+
+"@tsconfig/node14@^1.0.0":
+  "integrity" "sha512-509r2+yARFfHHE7T6Puu2jjkoycftovhXRqW328PDXTVGKihlb1P8Z9mMZH04ebyajfRY7dedfGynlrFHJUQCg=="
+  "resolved" "https://registry.npmjs.org/@tsconfig/node14/-/node14-1.0.1.tgz"
+  "version" "1.0.1"
+
+"@tsconfig/node16@^1.0.2":
+  "integrity" "sha512-eZxlbI8GZscaGS7kkc/trHTT5xgrjH3/1n2JDwusC9iahPKWMRvRjJSAN5mCXviuTGQ/lHnhvv8Q1YTpnfz9gA=="
+  "resolved" "https://registry.npmjs.org/@tsconfig/node16/-/node16-1.0.2.tgz"
+  "version" "1.0.2"
+
 "@types/babel-types@*", "@types/babel-types@^7.0.0":
   "integrity" "sha1-Zn6xZA6AOUNgKAVXN9K5mG7jNuM="
   "resolved" "http://r.cnpmjs.org/@types/babel-types/download/@types/babel-types-7.0.7.tgz"
@@ -49,6 +81,13 @@
   "integrity" "sha512-vFHy/ezP5qI0rFgJ7aQnjDXwAMrG0KqqIH7tQG5PPv3BWBayOPIQNBjVc/P6hhdZfMx51REc6tfDNXHUio893g=="
   "resolved" "https://registry.npmjs.org/@types/node/-/node-14.14.31.tgz"
   "version" "14.14.31"
+
+"@types/uglify-js@^3.13.1":
+  "integrity" "sha512-O3MmRAk6ZuAKa9CHgg0Pr0+lUOqoMLpc9AS4R8ano2auvsg7IE8syF3Xh/NPr26TWklxYcqoEEFdzLLs1fV9PQ=="
+  "resolved" "https://registry.npmjs.org/@types/uglify-js/-/uglify-js-3.13.1.tgz"
+  "version" "3.13.1"
+  dependencies:
+    "source-map" "^0.6.1"
 
 "@types/yauzl@^2.9.1":
   "integrity" "sha512-8uALY5LTvSuHgloDVUvWP3pIauILm+8/0pDMokuDYIoNsOkSwd5AiHBTSEJjKTDcZr5z8UpgOWZkxBF4iJftoA=="
@@ -230,6 +269,11 @@
   "resolved" "https://registry.npmjs.org/acorn-walk/-/acorn-walk-7.2.0.tgz"
   "version" "7.2.0"
 
+"acorn-walk@^8.1.1":
+  "integrity" "sha512-k+iyHEuPgSw6SbuDpGQM+06HQUa04DZ3o+F6CSzXMvvI5KMvnaEqXe+YVe555R9nn6GPt404fos4wcgpw12SDA=="
+  "resolved" "https://registry.npmjs.org/acorn-walk/-/acorn-walk-8.2.0.tgz"
+  "version" "8.2.0"
+
 "acorn@^3.1.0":
   "integrity" "sha1-ReN/s56No/JbruP/U2niu18iAXo="
   "resolved" "http://r.cnpmjs.org/acorn/download/acorn-3.3.0.tgz"
@@ -249,11 +293,6 @@
   "integrity" "sha512-yXbYeFy+jUuYd3/CDcg2NkIYE991XYX/bje7LmjJigUciaeO1JR4XxXgCIV1/Zc/dRuFEyw1L0pbA+qynJkW5Q=="
   "resolved" "https://registry.npmjs.org/acorn/-/acorn-8.5.0.tgz"
   "version" "8.5.0"
-
-"aes-js@^3.1.2":
-  "integrity" "sha512-e5pEa2kBnBOgR4Y/p20pskXI74UEz7de8ZGVo58asOtvSVG5YAbJeELPZxOmt+Bnz3rX753YKhfIn4X4l1PPRQ=="
-  "resolved" "https://registry.npmjs.org/aes-js/-/aes-js-3.1.2.tgz"
-  "version" "3.1.2"
 
 "agent-base@6":
   "integrity" "sha512-RZNwNclF7+MS/8bDg70amg32dyeZGZxiDuQmZxKLAlQjr3jGyLx+4Kkk58UO7D2QdgFIQCovuSuZESne6RG6XQ=="
@@ -307,6 +346,11 @@
   "version" "3.2.1"
   dependencies:
     "color-convert" "^1.9.0"
+
+"arg@^4.1.0":
+  "integrity" "sha512-58S9QDqG0Xx27YwPSt9fJxivjYl432YCwfDMfZ+71RAqUrZef7LrKQZ3LHLOwCS4FLNBplP533Zx895SeOCHvA=="
+  "resolved" "https://registry.npmjs.org/arg/-/arg-4.1.3.tgz"
+  "version" "4.1.3"
 
 "array-back@^1.0.3", "array-back@^1.0.4":
   "integrity" "sha1-ZEun8JX3/898Q7Xw3DnTwfA8Bjs="
@@ -661,6 +705,11 @@
   "resolved" "http://r.cnpmjs.org/core-util-is/download/core-util-is-1.0.2.tgz"
   "version" "1.0.2"
 
+"create-require@^1.1.0":
+  "integrity" "sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ=="
+  "resolved" "https://registry.npmjs.org/create-require/-/create-require-1.1.1.tgz"
+  "version" "1.1.1"
+
 "crypto-js@^3.1.9-1":
   "integrity" "sha512-DIT51nX0dCfKltpRiXV+/TVZq+Qq2NgF4644+K7Ttnla7zEzqc+kjJyiB96BHNyUTBxyjzRcZYpUdZa+QAqi6Q=="
   "resolved" "https://registry.npmjs.org/crypto-js/-/crypto-js-3.3.0.tgz"
@@ -774,6 +823,11 @@
   "integrity" "sha512-ED3jP8saaweFTjeGX8HQPjeC1YYyZs98jGNZx6IiBvxW7JG5v492kamAQB3m2wop07CvU/RQmzcKr6bgcC5D/Q=="
   "resolved" "https://registry.npmjs.org/dfa/-/dfa-1.2.0.tgz"
   "version" "1.2.0"
+
+"diff@^4.0.1":
+  "integrity" "sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A=="
+  "resolved" "https://registry.npmjs.org/diff/-/diff-4.0.2.tgz"
+  "version" "4.0.2"
 
 "doctypes@^1.1.0":
   "integrity" "sha1-6oCxBqh1OHdOijpKWv4pPeSJ4Kk="
@@ -1404,6 +1458,11 @@
   "version" "0.25.1"
   dependencies:
     "sourcemap-codec" "^1.4.1"
+
+"make-error@^1.1.1":
+  "integrity" "sha512-s8UhlNe7vPKomQhC1qFelMokr/Sc3AgNbso3n74mVPA5LTZwkB9NlXf4XPamLxJE8h0gh73rM94xvwRT2CVInw=="
+  "resolved" "https://registry.npmjs.org/make-error/-/make-error-1.3.6.tgz"
+  "version" "1.3.6"
 
 "merge-source-map@^1.1.0":
   "integrity" "sha512-Qkcp7P2ygktpMPh2mCQZaf3jhN6D3Z/qVZHSdWvQ+2Ef5HgRAPBO57A77+ENm0CPx2+1Ce/MYKi3ymqdfuqibw=="
@@ -2051,12 +2110,7 @@
   "resolved" "https://registry.npmjs.org/source-map/-/source-map-0.5.7.tgz"
   "version" "0.5.7"
 
-"source-map@^0.6.0":
-  "integrity" "sha512-UjgapumWlbMhkBgzT7Ykc5YXUT46F0iKu8SGXq0bcwP5dz/h0Plj6enJqjz1Zbq2l5WaqYnrVbwWOWMyF3F47g=="
-  "resolved" "https://registry.npmjs.org/source-map/-/source-map-0.6.1.tgz"
-  "version" "0.6.1"
-
-"source-map@^0.6.1", "source-map@~0.6.1":
+"source-map@^0.6.0", "source-map@^0.6.1", "source-map@~0.6.0", "source-map@~0.6.1":
   "integrity" "sha1-dHIq8y6WFOnCh6jQu95IteLxomM="
   "resolved" "http://r.cnpmjs.org/source-map/download/source-map-0.6.1.tgz"
   "version" "0.6.1"
@@ -2072,11 +2126,6 @@
   "integrity" "sha1-igOdLRAh0i0eoUyA2OpGi6LvP8w="
   "resolved" "http://r.cnpmjs.org/source-map/download/source-map-0.5.7.tgz"
   "version" "0.5.7"
-
-"source-map@~0.6.0":
-  "integrity" "sha1-dHIq8y6WFOnCh6jQu95IteLxomM="
-  "resolved" "http://r.cnpmjs.org/source-map/download/source-map-0.6.1.tgz"
-  "version" "0.6.1"
 
 "source-map@~0.7.2":
   "integrity" "sha512-CkCj6giN3S+n9qrYiBTX5gystlENnRW5jZeNLHpe6aue+SrHcG5VYwujhW9s4dY31mEGsxBDrHR6oI69fTXsaQ=="
@@ -2264,6 +2313,24 @@
   "resolved" "https://registry.npmjs.org/tr46/-/tr46-0.0.3.tgz"
   "version" "0.0.3"
 
+"ts-node@^10.4.0":
+  "integrity" "sha512-g0FlPvvCXSIO1JDF6S232P5jPYqBkRL9qly81ZgAOSU7rwI0stphCgd2kLiCrU9DjQCrJMWEqcNSjQL02s6d8A=="
+  "resolved" "https://registry.npmjs.org/ts-node/-/ts-node-10.4.0.tgz"
+  "version" "10.4.0"
+  dependencies:
+    "@cspotcode/source-map-support" "0.7.0"
+    "@tsconfig/node10" "^1.0.7"
+    "@tsconfig/node12" "^1.0.7"
+    "@tsconfig/node14" "^1.0.0"
+    "@tsconfig/node16" "^1.0.2"
+    "acorn" "^8.4.1"
+    "acorn-walk" "^8.1.1"
+    "arg" "^4.1.0"
+    "create-require" "^1.1.0"
+    "diff" "^4.0.1"
+    "make-error" "^1.1.1"
+    "yn" "3.1.1"
+
 "type-check@~0.3.2":
   "integrity" "sha1-WITKtRLPHTVeP7eE8wgEsrUg23I="
   "resolved" "https://registry.npmjs.org/type-check/-/type-check-0.3.2.tgz"
@@ -2286,6 +2353,11 @@
   "resolved" "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
   "version" "0.0.6"
 
+"typescript@^4.5.2", "typescript@>=2.7":
+  "integrity" "sha512-eVYaEHALSt+s9LbvgEv4Ef+Tdq7hBiIZgii12xXJnukryt3pMgJf6aKhoCZ3FWQsu6sydEnkg11fYXLzhLBjeQ=="
+  "resolved" "https://registry.npmjs.org/typescript/-/typescript-4.5.3.tgz"
+  "version" "4.5.3"
+
 "typical@^2.6.0", "typical@^2.6.1":
   "integrity" "sha1-XAgOXWYcu+OCWdLnCjxyU+hziB0="
   "resolved" "https://registry.nlark.com/typical/download/typical-2.6.1.tgz?cache=0&sync_timestamp=1623236099033&other_urls=https%3A%2F%2Fregistry.nlark.com%2Ftypical%2Fdownload%2Ftypical-2.6.1.tgz"
@@ -2300,6 +2372,11 @@
     "yargs" "~3.10.0"
   optionalDependencies:
     "uglify-to-browserify" "~1.0.0"
+
+"uglify-js@^3.14.4":
+  "integrity" "sha512-AbiSR44J0GoCeV81+oxcy/jDOElO2Bx3d0MfQCUShq7JRXaM4KtQopZsq2vFv8bCq2yMaGrw1FgygUd03RyRDA=="
+  "resolved" "https://registry.npmjs.org/uglify-js/-/uglify-js-3.14.4.tgz"
+  "version" "3.14.4"
 
 "uglify-to-browserify@~1.0.0":
   "integrity" "sha1-bgkk1r2mta/jSeOabWMoUKD4grc="
@@ -2362,19 +2439,6 @@
   "integrity" "sha1-RQ1Nyfpw3nMnYvvS1KKJgUGaDM8="
   "resolved" "http://r.cnpmjs.org/util-deprecate/download/util-deprecate-1.0.2.tgz"
   "version" "1.0.2"
-
-"vod-fp-mux@^1.2.6":
-  "integrity" "sha512-24ZN7lN7p85HlZDzCQwlAu2xJ8ejlAALbQHsXBt8sPHq2dLP23mslDkKF1Q2Ew/yv1ewvQFduAFOoD8A4GkuLg=="
-  "resolved" "https://registry.npmjs.org/vod-fp-mux/-/vod-fp-mux-1.2.6.tgz"
-  "version" "1.2.6"
-  dependencies:
-    "aes-js" "^3.1.2"
-    "vod-fp-utility" "^1.2.4"
-
-"vod-fp-utility@^1.2.4":
-  "integrity" "sha512-vNf7XEDK2+6tJB6nIB7HXPtmNB1okKEsuWcBHUnOqRhYEuVutHbnOYxHcBHnGc8wzq9cLumCY5UWALWu7SPJlw=="
-  "resolved" "https://registry.npmjs.org/vod-fp-utility/-/vod-fp-utility-1.2.4.tgz"
-  "version" "1.2.4"
 
 "void-elements@^2.0.1":
   "integrity" "sha1-wGavtYK7HLQSjWDqkjkulNXp2+w="
@@ -2573,6 +2637,11 @@
   dependencies:
     "buffer-crc32" "~0.2.3"
     "fd-slicer" "~1.1.0"
+
+"yn@3.1.1":
+  "integrity" "sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q=="
+  "resolved" "https://registry.npmjs.org/yn/-/yn-3.1.1.tgz"
+  "version" "3.1.1"
 
 "yocto-queue@^0.1.0":
   "integrity" "sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q=="
