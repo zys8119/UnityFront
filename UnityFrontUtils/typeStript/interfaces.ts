@@ -228,7 +228,7 @@ export interface ControllerInitDataOptions {
     $_send?(sendData:any):any;//发送数据的方法
     $_RequestStatus?:number;// 请求状态设置
     $_RequestHeaders?:headersType;//headers头设置
-    $mysql?(optionsConfig?:object,isEnd?:boolean):SqlUtilsOptions;//sql工具
+    $mysql?(optionsConfig?:object,isEnd?:boolean,ControllerInitDataOptions?:ControllerInitDataOptions):SqlUtilsOptions;//sql工具
     $sqlModel?:SqlModel;//sql模型
     __dir?:string;//当前控制器位置
     $_params?:any;//url Params 数据
