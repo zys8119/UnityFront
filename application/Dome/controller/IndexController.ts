@@ -152,6 +152,7 @@ export class IndexController extends applicationController {
     }
 
     async test2(){
-        this.$_success("asdas")
+        const res = await this.DB().select().from("test").query()
+        this.$_success(res)
     }
 }
