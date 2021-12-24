@@ -113,7 +113,7 @@ export default class applicationControllerClass extends PublicController impleme
     $_send?(sendData:any):any;
     $_RequestStatus:number;
     $_RequestHeaders:headersType;
-    $mysql?(optionsConfig?:object,isEnd?:boolean):SqlUtilsOptions;
+    $mysql?(optionsConfig?:object,isEnd?:boolean,applicationControllerClass?:applicationControllerClass):SqlUtilsOptions;
     $sqlModel?:SqlModel;
     __dir:string;
     $_params:any;
@@ -130,7 +130,7 @@ export default class applicationControllerClass extends PublicController impleme
         this.$_RequestStatus = Status;
     }
     DB(optionsConfig?:mysqlOptionsOptions,isEnd?:boolean){
-        return this.$mysql(optionsConfig,isEnd);
+        return this.$mysql(optionsConfig,isEnd,this);
     }
     Render(TemplatePath?:any,TemplateData?:object,bool?:boolean){
         TemplateData = TemplateData || {};

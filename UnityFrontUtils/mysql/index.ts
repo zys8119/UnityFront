@@ -1,6 +1,8 @@
 import "../typeStript"
 import {mysqlConfig, ServerConfig} from "../config"
 import {SqlUtilsOptions, getPagePageConfigType} from "../typeStript";
+import applicationControllerClass from "../controller/applicationController";
+
 let mysqlTool = require('mysql');
 let ncol = require('ncol');
 class mysql implements SqlUtilsOptions{
@@ -8,7 +10,9 @@ class mysql implements SqlUtilsOptions{
     private selectSql = '';
     private showSqlStrBool = false;
     private isEnd = false;
-    constructor(optionsConfig:object,isEnd?:boolean){
+    private applicationController:applicationControllerClass;
+    constructor(optionsConfig:object,isEnd?:boolean, applicationController?:applicationControllerClass){
+        this.applicationController = applicationController;
         this.selectSql = '';
         this.isEnd = isEnd;
         let options = JSON.parse(JSON.stringify(mysqlConfig.options));
@@ -124,6 +128,9 @@ class mysql implements SqlUtilsOptions{
                 resolve(results);
                 this.end();
             });
+        }).catch(err=>{
+            this.applicationController.$_error(err);
+            return err;
         })
     }
 

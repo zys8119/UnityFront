@@ -24,7 +24,8 @@ export class main extends applicationController{
                 }
             }
             if(next){
-                this.$_error(err.message || "系统繁忙！",null,0);
+                console.error(err.message)
+                this.$_error("系统繁忙！")
             }
         })
     }
