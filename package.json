@@ -1,10 +1,10 @@
 {
   "scripts": {
     "start": "npm run serve",
-    "serve": "ts-node --log-error UnityFrontUtils/server/index.ts",
-    "ws": "ts-node --log-error UnityFrontUtils/webSocket/serve.ts",
-    "build": "ts-node --log-error UnityFrontUtils/build/serve.ts",
-    "build_api": "ts-node --log-error UnityFrontUtils/build/api/apiServe.ts"
+    "serve": "ts-node UnityFrontUtils/server/index.ts",
+    "ws": "ts-node UnityFrontUtils/webSocket/serve.ts",
+    "build": "ts-node UnityFrontUtils/build/serve.ts",
+    "build_api": "ts-node UnityFrontUtils/build/api/apiServe.ts"
   },
   "devDependencies": {
     "@types/node": "^14.14.31",
