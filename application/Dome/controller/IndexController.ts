@@ -1,5 +1,6 @@
 import applicationController from "../../../UnityFrontUtils/controller/applicationController";
 import * as crypto from "crypto"
+import {extend} from "lodash";
 export class IndexController extends applicationController {
     constructor(){
         super();
@@ -152,7 +153,17 @@ export class IndexController extends applicationController {
     }
 
     async test2(){
-        const res = await this.DB().select().from("test").query()
+        const res:Array<{id:number}> = await this.DB().select().from("test").query();
+        if(res.length > 0)
+            await this.DB().delete().from("test").where(`id in (${res.map(e=>e.id).join(",")})`,false, "in").query()
         this.$_success(res)
+    }
+
+    async test3(){
+        this.$_success(await Promise.all(new Array(10000).fill(0).map(()=>{
+            return this.DB().insert("test",{
+                name:Math.random()*10000
+            }).query()
+        })))
     }
 }
