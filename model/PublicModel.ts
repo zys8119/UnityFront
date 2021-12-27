@@ -60,11 +60,11 @@ export default class extends mysql implements PublicModelInterface{
         return super.update(TabelName || this.$TableName, newData, showSqlStr);
     }
 
-    insert(TabelName?: string, ArrData: any = [], insertMore?: boolean, showSqlStr?: boolean, indexMore?: number, indexMaxMore?: number): this {
+    insert(TabelName: string, ArrData: any = [], insertMore?: boolean, showSqlStr?: boolean, indexMore?: number, indexMaxMore?: number, parentData: any = []): this {
         if(Object.prototype.toString.call(TabelName) === "[object Object]"){
             ArrData = TabelName;
             TabelName = null;
         }
-        return super.insert(TabelName || this.$TableName, ArrData, insertMore, showSqlStr, indexMore, indexMaxMore);
+        return super.insert(TabelName || this.$TableName, ArrData, insertMore, showSqlStr, indexMore, indexMaxMore, parentData);
     }
 }
