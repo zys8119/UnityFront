@@ -281,8 +281,10 @@ class mysql implements SqlUtilsOptions{
      * @param insertMore 是否插入多条数据
      * @param indexMore  当前多条索引
      * @param indexMaxMore 总条数
+     * @param parentData 多条数据的上级数据
+     * @param keyNameMap 多数据keyName映射集合
      */
-    insert(TabelName:string,ArrData:any = [],insertMore?:boolean,showSqlStr?:boolean,indexMore?:number,indexMaxMore?:number,parentData:any = []){
+    insert(TabelName:string,ArrData:any = [],insertMore?:boolean,showSqlStr?:boolean,indexMore?:number,indexMaxMore?:number,parentData:any = [], keyNameMap:any = null){
         if(showSqlStr){this.showSqlStrBool = showSqlStr;}
         let MoreStr = "";
         if(insertMore){
@@ -297,7 +299,10 @@ class mysql implements SqlUtilsOptions{
             case "[object Array]":
                 //多条数据
                 if(ArrData.map(e=>typeof e).some(e=>e == 'object')){
-                    ArrData.forEach((e,index)=>this.insert(null,e,true,false, index,ArrData.length, ArrData))
+                    const currKeyNameMap =  [...(new Set(ArrData.reduce((a,b)=>{
+                        return a.concat(Object.keys(b));
+                    },[])))];
+                    ArrData.forEach((e,index)=>this.insert(null,e,true,false, index,ArrData.length, ArrData, currKeyNameMap))
                 }else {
                     let keyNames = `VALUES `;
                     if(insertMore && indexMore > 0){
@@ -308,11 +313,7 @@ class mysql implements SqlUtilsOptions{
                 break;
             case "[object Object]":
                 let keyNames = `(${Object.keys(ArrData).join(",")}) VALUES `;
-                let keyNameMap:any = null;
                 if(insertMore){
-                    keyNameMap = [...(new Set(parentData.reduce((a,b)=>{
-                        return a.concat(Object.keys(b));
-                    },[])))]
                     keyNames = `(${keyNameMap.join(",")}) VALUES `;
                     if(indexMore > 0){
                         keyNames = "";

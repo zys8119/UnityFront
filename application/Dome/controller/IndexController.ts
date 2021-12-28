@@ -11,11 +11,8 @@ export class IndexController extends applicationController {
         // await this.DB().insert("test",new Array(1000).fill(0).map(()=>({
         //     name:"asdasda",
         // }))).query()
-        const res = await this.DB().select("id").from("test").query()
         await this.DB().delete().from("test").where({
-            "id in ":`<%(${res.map(e=>e.id)})`,
-            name:"asdasda",
-            b:"AAAAAAAA",
+            "id > ":`0`,
         }).query()
         this.$_success();
     }
