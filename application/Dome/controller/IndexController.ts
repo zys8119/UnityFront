@@ -160,10 +160,11 @@ export class IndexController extends applicationController {
     }
 
     async test3(){
-        this.$_success(await Promise.all(new Array(10000).fill(0).map(()=>{
-            return this.DB().insert("test",{
-                name:Math.random()*10000
-            }).query()
-        })))
+        const data = new Array(1).fill(0).map((e,b)=>({
+            name:Math.random()*10000,
+            b
+        }))
+        await this.DB().insert("test",data).query()
+        this.$_success()
     }
 }
