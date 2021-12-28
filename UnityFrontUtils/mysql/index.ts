@@ -33,6 +33,12 @@ class mysql implements SqlUtilsOptions{
      */
     private isString(data:any){
         if(typeof data == 'string'){
+            data = data
+                .replace(/'/img,`\\'`)
+                .replace(/"/img,`\\"`)
+                .replace(/\\/img,`\\\\`)
+                .replace(/_/img,`\\_`)
+                .replace(/%/img,`\\%`)
             const reg = /<%((.|\n)*)%>/img;
             if(reg.test(data)){
                 return data.replace(reg," $1")
