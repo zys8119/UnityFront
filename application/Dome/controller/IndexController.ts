@@ -8,17 +8,15 @@ export class IndexController extends applicationController {
     }
 
     async index(){
-        await this.DB().insert("test",[
-            {name:2, b:"asdas"},
-            {name:1},
-            {name:1},
-            {name:1},
-            {name:1, b:"asdas"},
-        ]).query()
-        await this.DB().insert("test", {
-            b:"AAAAAAAA"
+        // await this.DB().insert("test",new Array(1000).fill(0).map(()=>({
+        //     name:"asdasda",
+        // }))).query()
+        const res = await this.DB().select("id").from("test").query()
+        await this.DB().delete().from("test").where({
+            "id in ":`<%(${res.map(e=>e.id)})`,
+            name:"asdasda",
+            b:"AAAAAAAA",
         }).query()
-        // await this.DB().select().from("test").query();
         this.$_success();
     }
 }

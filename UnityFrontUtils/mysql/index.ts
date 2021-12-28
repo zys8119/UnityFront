@@ -33,6 +33,10 @@ class mysql implements SqlUtilsOptions{
      */
     private isString(data:any){
         if(typeof data == 'string'){
+            const reg = /<%((.|\n)*)%>/img;
+            if(reg.test(data)){
+                return data.replace(reg," $1")
+            }
             return '\''+data+'\'';
         }
         return data;
@@ -63,7 +67,9 @@ class mysql implements SqlUtilsOptions{
                         ">=":true,
                         "<=":true,
                         "REGEXP":true,
-                    }[t];
+                        "IN":true,
+                        "OR":true,
+                    }[t.toUpperCase()];
                     return k + (Operator ? '' : (' '+ type+' '))+this.isString(sqlArr[e])
                 }).join(' '+join+' ')} `;
                 break;
