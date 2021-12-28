@@ -153,14 +153,15 @@ export class IndexController extends applicationController {
     }
 
     async test2(){
-        const res:Array<{id:number}> = await this.DB().select().from("test").query();
-        if(res.length > 0)
-            await this.DB().delete().from("test").where(`id in (${res.map(e=>e.id).join(",")})`,false, "in").query()
-        this.$_success(res)
+        const res:Array<{id:number}> = await this.DB().select().from("test").where({
+            "name REGEXP ":"17560",
+        }).asc("name").query();
+        console.log(res)
+        this.$_success()
     }
 
     async test3(){
-        const data = new Array(1).fill(0).map((e,b)=>({
+        const data = new Array(100000).fill(0).map((e,b)=>({
             name:Math.random()*10000,
             b
         }))
