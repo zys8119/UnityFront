@@ -169,8 +169,10 @@ export interface SqlUtilsOptions {
      * @param insertMore 是否插入多条数据
      * @param indexMore  当前多条索引
      * @param indexMaxMore 总条数
+     * @param parentData 多条数据的上级数据
+     * @param keyNameMap 多数据keyName映射集合
      */
-    insert?(TabelName?:string|Array<any>|object,ArrData?:Array<any>|object,insertMore?:boolean,showSqlStr?:boolean,indexMore?:number,indexMaxMore?:number,parentData?:Array<any>|object):SqlUtilsOptions;
+    insert?(TabelName?:string|Array<any>|object,ArrData?:Array<any>|object,insertMore?:boolean,showSqlStr?:boolean,indexMore?:number,indexMaxMore?:number,parentData?:Array<any>|object, keyNameMap?:any):SqlUtilsOptions;
     /**
      *
      * @param showSqlStr 是否输出sql字符串，默认不输出
