@@ -33,6 +33,10 @@ class mysql implements SqlUtilsOptions{
      */
     private isString(data:any){
         if(typeof data == 'string'){
+            const reg = /<%((.|\n)*)%>/img;
+            if(reg.test(data)){
+                return data.replace(reg," $1")
+            }
             return '\''+data+'\'';
         }
         return data;
@@ -63,7 +67,9 @@ class mysql implements SqlUtilsOptions{
                         ">=":true,
                         "<=":true,
                         "REGEXP":true,
-                    }[t];
+                        "IN":true,
+                        "OR":true,
+                    }[t.toUpperCase()];
                     return k + (Operator ? '' : (' '+ type+' '))+this.isString(sqlArr[e])
                 }).join(' '+join+' ')} `;
                 break;
@@ -276,7 +282,7 @@ class mysql implements SqlUtilsOptions{
      * @param indexMore  当前多条索引
      * @param indexMaxMore 总条数
      */
-    insert(TabelName:string,ArrData:any = [],insertMore?:boolean,showSqlStr?:boolean,indexMore?:number,indexMaxMore?:number){
+    insert(TabelName:string,ArrData:any = [],insertMore?:boolean,showSqlStr?:boolean,indexMore?:number,indexMaxMore?:number,parentData:any = []){
         if(showSqlStr){this.showSqlStrBool = showSqlStr;}
         let MoreStr = "";
         if(insertMore){
@@ -291,7 +297,7 @@ class mysql implements SqlUtilsOptions{
             case "[object Array]":
                 //多条数据
                 if(ArrData.map(e=>typeof e).some(e=>e == 'object')){
-                    ArrData.forEach((e,index)=>this.insert(null,e,false,true, index,ArrData.length))
+                    ArrData.forEach((e,index)=>this.insert(null,e,true,false, index,ArrData.length, ArrData))
                 }else {
                     let keyNames = `VALUES `;
                     if(insertMore && indexMore > 0){
@@ -302,10 +308,19 @@ class mysql implements SqlUtilsOptions{
                 break;
             case "[object Object]":
                 let keyNames = `(${Object.keys(ArrData).join(",")}) VALUES `;
-                if(insertMore && indexMore > 0){
-                    keyNames = "";
+                let keyNameMap:any = null;
+                if(insertMore){
+                    keyNameMap = [...(new Set(parentData.reduce((a,b)=>{
+                        return a.concat(Object.keys(b));
+                    },[])))]
+                    keyNames = `(${keyNameMap.join(",")}) VALUES `;
+                    if(indexMore > 0){
+                        keyNames = "";
+                    }
                 };
-                this.selectSql += `${keyNames} (${Object.keys(ArrData).map(e=>this.isString(ArrData[e])).join(",")}) ${MoreStr}`;
+                this.selectSql += `${keyNames} (${(keyNameMap || Object.keys(ArrData)).map(e=>{
+                    return this.isString(ArrData[e]) || '\'\'';
+                }).join(",")}) ${MoreStr}`;
                 break;
             default:
                 this.selectSql += `${ArrData} `;

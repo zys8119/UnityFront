@@ -170,7 +170,7 @@ export interface SqlUtilsOptions {
      * @param indexMore  当前多条索引
      * @param indexMaxMore 总条数
      */
-    insert?(TabelName?:string|Array<any>|object,ArrData?:Array<any>|object,insertMore?:boolean,showSqlStr?:boolean,indexMore?:number,indexMaxMore?:number):SqlUtilsOptions;
+    insert?(TabelName?:string|Array<any>|object,ArrData?:Array<any>|object,insertMore?:boolean,showSqlStr?:boolean,indexMore?:number,indexMaxMore?:number,parentData?:Array<any>|object):SqlUtilsOptions;
     /**
      *
      * @param showSqlStr 是否输出sql字符串，默认不输出
