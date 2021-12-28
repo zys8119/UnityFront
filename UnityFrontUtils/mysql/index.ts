@@ -31,18 +31,31 @@ class mysql implements SqlUtilsOptions{
     /**
      * @param data 需要处理的数据
      */
-    private isString(data:any){
+    private isString(data:any, type?:string){
         if(typeof data == 'string'){
+            const reg = /<%((.|\n)*)?%>/img;
+            if(reg.test(data)){
+                data =  data.replace(reg," $1")
+            }
             data = data
+                .replace(/\\/img,`\\\\\\\\`)
+                .replace(/\//img,`\\/`)
                 .replace(/'/img,`\\'`)
                 .replace(/"/img,`\\"`)
-                .replace(/\\/img,`\\\\`)
                 .replace(/_/img,`\\_`)
-                .replace(/%/img,`\\%`)
-            const reg = /<%((.|\n)*)%>/img;
-            if(reg.test(data)){
-                return data.replace(reg," $1")
+            if(type.toLowerCase() !== "like"){
+                data = data.replace(/%/img,`\\\%`)
+            }else {
+                data = data.match(/%[^%]{0,}/img).reduce((a,b,i,arr)=>{
+                    if([0,arr.length -1].includes(i)){
+                        a += b;
+                    }else {
+                        a += b.replace(/%/img,`\\\%`);
+                    }
+                    return a;
+                },"")
             }
+
             return '\''+data+'\'';
         }
         return data;
@@ -76,7 +89,7 @@ class mysql implements SqlUtilsOptions{
                         "IN":true,
                         "OR":true,
                     }[t.toUpperCase()];
-                    return k + (Operator ? '' : (' '+ type+' '))+this.isString(sqlArr[e])
+                    return k + (Operator ? '' : (' '+ type+' '))+this.isString(sqlArr[e], type)
                 }).join(' '+join+' ')} `;
                 break;
             case "string":
