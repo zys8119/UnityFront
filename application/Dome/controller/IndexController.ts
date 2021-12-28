@@ -153,19 +153,8 @@ export class IndexController extends applicationController {
     }
 
     async test2(){
-        const res:Array<{id:number}> = await this.DB().select().from("test").where({
-            "name REGEXP ":"17560",
-        }).asc("name").query();
-        console.log(res)
-        this.$_success()
-    }
-
-    async test3(){
-        const data = new Array(100000).fill(0).map((e,b)=>({
-            name:Math.random()*10000,
-            b
-        }))
-        await this.DB().insert("test",data).query()
-        this.$_success()
+        const res = await this.DB().select().from("test").like({
+            name:`%${this.$_query.a}%`}).query()
+        this.$_success(res)
     }
 }
