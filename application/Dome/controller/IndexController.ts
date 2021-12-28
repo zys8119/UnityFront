@@ -153,8 +153,12 @@ export class IndexController extends applicationController {
     }
 
     async test2(){
+        console.log(this.$_query)
         const res = await this.DB().select().from("test").like({
-            name:`%${this.$_query.a}%`}).query()
+            name:`%${this.$_query.a}%`,
+            // name:this.$_query.a,
+        }).query()
         this.$_success(res)
+        // this.$_success()
     }
 }
