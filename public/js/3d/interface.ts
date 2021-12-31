@@ -1,9 +1,7 @@
 import * as _THREE from 'three';
-import THREE_MODEL from 'THREE_MODEL';
 
-export const THREE = {
+export const THREE:any = {
     ..._THREE,
-    ...THREE_MODEL
 }
 export type addCubeGeometryType = {
     width:number;

@@ -26,7 +26,7 @@ class initContent implements initContentInterface{
         // 接收阴影的片面段，也会对阴影产生一定的效果，片面段越多，阴影分辨率越清晰
         let planeGeometry = new THREE.PlaneGeometry(this.baseWidth, this.baseHeight,this.baseWidth, this.baseHeight);
         let planeMaterial = new THREE.MeshLambertMaterial({color: this.baseColor});
-        let plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        let plane:any = new THREE.Mesh(planeGeometry, planeMaterial);
 
         // 绕 x 轴旋转 -90 度
         plane.rotation.x = -0.5 * Math.PI;
@@ -54,7 +54,7 @@ class initContent implements initContentInterface{
                 new THREE.ImageLoader().load("/public/img/lodo_text.png")
             )
         });
-        let cube = new THREE.Mesh(cubeGeometry, cubeMaterial);
+        let cube:any = new THREE.Mesh(cubeGeometry, cubeMaterial);
         cube.castShadow = true;
         cube.position.x = x;
         cube.position.y = cube.position.y || height/2;

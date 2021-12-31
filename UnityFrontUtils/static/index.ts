@@ -1,24 +1,31 @@
+import {create as tsNode} from "ts-node";
 import {ServerConfig} from "../config";
 import {ControllerInitDataOptions} from "../typeStript";
 import Utils from "../utils";
+import gulp from "gulp";
+import ts from "gulp-typescript";
+import {errors} from "puppeteer";
 const zlib = require("zlib");
 const path = require("path");
 const fs = require("fs");
+const ncol = require("ncol");
 export default class staticIndex {
     private ControllerInitData:ControllerInitDataOptions;
     constructor(ControllerInitData:ControllerInitDataOptions,next:Function){
         this.ControllerInitData = ControllerInitData;
         if(ControllerInitData.$_url.indexOf("/public") == 0){
             let filePath = path.resolve(__dirname,"../../","./"+ControllerInitData.$_url);
-            switch(path.parse(ControllerInitData.$_url).ext){
+            const suffix = path.parse(ControllerInitData.$_url).ext;
+            switch(suffix){
                 case ".css":
                     this.getFileData(filePath,"text/css;","utf8");
                     break;
                 case ".gz":
                     this.getFileData(filePath,null,null,".gz");
                     break;
+                case ".ts":
                 case ".js":
-                    this.getFileData(filePath,"application/javascript;","utf8");
+                    this.getFileData(filePath,"application/javascript;","utf8", suffix);
                     break;
                 case ".png":
                     this.getFileData(filePath,"image/png;");
@@ -142,13 +149,61 @@ export default class staticIndex {
                 this.send404();
                 return;
             }
+            let isAsync = false;
             switch (fileType) {
                 case ".html":
                 case ".htm":
                     data = Utils.replaceUrlVars(ServerConfig,data);
                     break;
+                case ".ts":
+                    isAsync = true;
+                    try {
+                        const gulp = require("gulp");
+                        const ts = require("gulp-typescript");
+                        const tsProject = ts.createProject({
+                        });
+                        // const uglify = require('gulp-uglify')
+                        const babel = require("gulp-babel");
+                        const umd = require("gulp-umd");
+                        const file = gulp.src(filePath)
+                            .pipe(tsProject())
+                            .js
+                            .pipe(babel({
+                                presets: ["@babel/preset-env"]
+                            }))
+                            .pipe(umd())
+                            // .pipe(uglify())
+                        let chunks = [];
+                        file.on("error",error=>{
+                            console.log(error)
+                        })
+                        file.on("data",chunk=>{
+                            console.log(222)
+                            chunks.push(chunk._contents)
+                        })
+                        file.on("end", ()=>{
+                            console.log(2333)
+                            console.log(Buffer.concat(chunks).toString())
+                            if(ServerConfig.debug){
+                                ncol.color(()=>{
+                                    ncol.successBG("【ts-node】")
+                                        .info(`【编译】`)
+                                        .log(`【静态资源】`)
+                                        .success(JSON.stringify(filePath))
+                                });
+                            }
+                            this.sendStatic(ContentType,data,fileType, filePath);
+                        })
+                    }catch (e){
+                        console.log(e)
+                    }
+
+
+                    break;
             };
-            this.sendStatic(ContentType,data,fileType, filePath);
+            if(!isAsync){
+                this.sendStatic(ContentType,data,fileType, filePath);
+            }
         });
     }
 }

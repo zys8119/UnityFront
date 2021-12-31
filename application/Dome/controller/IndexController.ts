@@ -158,4 +158,8 @@ export class IndexController extends applicationController {
         }).query()
         this.$_success(res)
     }
+
+    async '3d'(){
+        this.Render()
+    }
 }
