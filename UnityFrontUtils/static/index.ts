@@ -159,8 +159,11 @@ export default class staticIndex {
                     isAsync = true;
                     try {
                         const gulp = require("gulp");
-                        const ts = require("gulp-typescript");
-                        const tsProject = ts.createProject({
+                        const gulpTs = require("gulp-typescript");
+                        const ts = require("typescript");
+                        const tsProject = gulpTs.createProject({
+                            module:"CommonJS",
+                            // target:"es2015",
                         });
                         // const uglify = require('gulp-uglify')
                         const babel = require("gulp-babel");
@@ -171,19 +174,49 @@ export default class staticIndex {
                             .pipe(babel({
                                 presets: ["@babel/preset-env"]
                             }))
-                            .pipe(umd())
+                            .pipe(umd({
+                                exports: function (file) {
+                                    return JSON.stringify(null);
+                                },
+                                dependencies: function(file) {
+                                    return [
+                                        {
+                                            name: 'exports',
+                                            amd: 'exports',
+                                            cjs: 'exports',
+                                            param: 'exports',
+                                            global: `Object`,
+                                        },
+                                        {
+                                            name: 'require',
+                                            amd: 'require',
+                                            cjs: 'require',
+                                            param: 'require',
+                                            global: `eval(\`(${(function (url){
+                                                var  _contents = fetch(url+'.ts')
+                                                _contents.then(res=>{
+                                                    res.text().then(res=>{
+
+                                                        console.log(res)
+                                                    })
+                                                })
+                                                console.log(_contents)
+                                                return _contents
+                                            }).toString()})\`)`,
+                                        },
+                                    ];
+                                }
+                            }))
                             // .pipe(uglify())
                         let chunks = [];
                         file.on("error",error=>{
                             console.log(error)
                         })
                         file.on("data",chunk=>{
-                            console.log(222)
                             chunks.push(chunk._contents)
                         })
                         file.on("end", ()=>{
-                            console.log(2333)
-                            console.log(Buffer.concat(chunks).toString())
+                            data = Buffer.concat(chunks).toString();
                             if(ServerConfig.debug){
                                 ncol.color(()=>{
                                     ncol.successBG("【ts-node】")
