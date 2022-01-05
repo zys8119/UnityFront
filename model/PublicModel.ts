@@ -21,6 +21,7 @@ export type $sqlFieldConfigType = {
     'varchar'?:string | '(255)';
     'text'?:string | '';
     'int'?:string | '(10)';
+    'longtext'?:string | '';
 
     'CHARACTER SET'?:string | 'utf8';// 编码
     COLLATE?:string | 'utf8_unicode_ci';// 编码

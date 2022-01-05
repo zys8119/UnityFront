@@ -10,6 +10,16 @@ export class ApiController extends applicationController{
     }
 
     async getSignInList(){
-        this.$_success([])
+        this.$_success([
+            {
+                nickname:"asdasd",
+                headimgurl:null,
+                wall:"1",
+                openid:"1"}
+        ])
+    }
+
+    async wallChange(){
+        this.$_success()
     }
 }
