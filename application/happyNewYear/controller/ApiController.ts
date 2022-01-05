@@ -5,18 +5,24 @@ export class ApiController extends applicationController{
         super();
     }
 
-    index(){
+    async index(){
+        // await new this.$sqlModel.happyNewYear().insert(null,[
+        //     {
+        //         nickname:"nickname",
+        //         headimgurl:"",
+        //         wall:"0",
+        //         openid:"0"
+        //     }
+        // ], true).query(null, true)
+        await this.DB().insert("happyNewYear",[
+            {nickname:"asdasda"}
+        ]).query(null, true)
         this.$_success()
     }
 
     async getSignInList(){
-        this.$_success([
-            {
-                nickname:"asdasd",
-                headimgurl:null,
-                wall:"1",
-                openid:"1"}
-        ])
+
+        this.$_success(await new this.$sqlModel.happyNewYear().select().from().query())
     }
 
     async wallChange(){
