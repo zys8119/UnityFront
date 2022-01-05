@@ -43,17 +43,20 @@ class mysql implements SqlUtilsOptions{
                 .replace(/'/img,`\\'`)
                 .replace(/"/img,`\\"`)
                 .replace(/_/img,`\\_`)
-            if(type.toLowerCase() !== "like"){
+            if(type && type.toLowerCase() !== "like"){
                 data = data.replace(/%/img,`\\\%`)
             }else {
-                data = data.match(/%[^%]{0,}/img).reduce((a,b,i,arr)=>{
-                    if([0,arr.length -1].includes(i)){
-                        a += b;
-                    }else {
-                        a += b.replace(/%/img,`\\\%`);
-                    }
-                    return a;
-                },"")
+                const matchData = data.match(/%[^%]{0,}/img)
+                if(matchData){
+                    data = matchData.reduce((a,b,i,arr)=>{
+                        if([0,arr.length -1].includes(i)){
+                            a += b;
+                        }else {
+                            a += b.replace(/%/img,`\\\%`);
+                        }
+                        return a;
+                    },"")
+                }
             }
 
             return '\''+data+'\'';
