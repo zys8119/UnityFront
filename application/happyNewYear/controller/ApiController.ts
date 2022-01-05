@@ -16,12 +16,11 @@ export class ApiController extends applicationController{
         // ], true).query(null, true)
         await this.DB().insert("happyNewYear",[
             {nickname:"asdasda"}
-        ]).query(null, true)
+        ]).query()
         this.$_success()
     }
 
     async getSignInList(){
-
         this.$_success(await new this.$sqlModel.happyNewYear().select().from().query())
     }
 

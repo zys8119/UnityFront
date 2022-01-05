@@ -26,7 +26,7 @@ export default class extends PublicModel implements PublicModelInterface{
         },
         wall:{
             varchar:"(255)",
-            DEFAULT:`'0'`,
+            DEFAULT:`'1'`,
             NOT:'NULL',
             COMMENT:`'是否展现签到墙'`
         }
