@@ -19,7 +19,7 @@ export const mysqlConfig = <mysqlOptions>{
         database: 'unity_front_utils_admin',
         prefix:""
     },
-    sqlModelAuto:true,
+    sqlModelAuto:false,
 };
 
 //服务公共设置，可写入

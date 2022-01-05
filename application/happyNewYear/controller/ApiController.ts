@@ -6,16 +6,12 @@ export class ApiController extends applicationController{
     }
 
     async index(){
-        // await new this.$sqlModel.happyNewYear().insert(null,[
-        //     {
-        //         nickname:"nickname",
-        //         headimgurl:"",
-        //         wall:"0",
-        //         openid:"0"
-        //     }
-        // ], true).query(null, true)
         await this.DB().insert("happyNewYear",[
-            {nickname:"asdasda"}
+            {
+                nickname:"测试用户"+Date.now(),
+                openid:Date.now(),
+                headimgurl:null,
+            }
         ]).query()
         this.$_success()
     }
@@ -25,6 +21,12 @@ export class ApiController extends applicationController{
     }
 
     async wallChange(){
+        await new this.$sqlModel.happyNewYear().update({
+            wall:0,
+        }).where({
+            openid:this.$_body.openid
+        }).query()
+        console.log(this.$_body)
         this.$_success()
     }
 }
