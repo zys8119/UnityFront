@@ -1,10 +1,6 @@
-import {create as tsNode} from "ts-node";
 import {ServerConfig} from "../config";
 import {ControllerInitDataOptions} from "../typeStript";
 import Utils from "../utils";
-import gulp from "gulp";
-import ts from "gulp-typescript";
-import {errors} from "puppeteer";
 const zlib = require("zlib");
 const path = require("path");
 const fs = require("fs");
@@ -162,7 +158,8 @@ export default class staticIndex {
                         const gulpTs = require("gulp-typescript");
                         const ts = require("typescript");
                         const tsProject = gulpTs.createProject({
-                            module:"CommonJS",
+                            module:"commonjs",
+                            moduleResolution:"node"
                             // target:"es2015",
                         });
                         // const uglify = require('gulp-uglify')
@@ -175,10 +172,25 @@ export default class staticIndex {
                                 presets: ["@babel/preset-env"]
                             }))
                             .pipe(umd({
-                                exports: function (file) {
+                                exports (file) {
                                     return JSON.stringify(null);
                                 },
-                                dependencies: function(file) {
+                                dependencies:(file)=> {
+                                    const requires = (file._contents.toString().match(/require\(.*?\)/img) || []).map(s=>{
+                                        const url = s.replace(/require|\(|\)|'|"/img,"")+'.ts';
+                                        if(/^\./.test(url)){
+                                            return [s,path.resolve(filePath,"..", url).match(/\/public.*/)[0]]
+                                        }else {
+                                            return null;
+                                        }
+                                    }).reduce((a,b)=>{
+                                        if(!a[b[0]]){
+                                            console.log(this.ControllerInitData.$_getFileContent(b[1]))
+                                            a[b[0]] = b[1];
+                                        }
+                                        return a;
+                                    },{});
+                                    console.log(requires)
                                     return [
                                         {
                                             name: 'exports',
@@ -192,17 +204,7 @@ export default class staticIndex {
                                             amd: 'require',
                                             cjs: 'require',
                                             param: 'require',
-                                            global: `eval(\`(${(function (url){
-                                                var  _contents = fetch(url+'.ts')
-                                                _contents.then(res=>{
-                                                    res.text().then(res=>{
-
-                                                        console.log(res)
-                                                    })
-                                                })
-                                                console.log(_contents)
-                                                return _contents
-                                            }).toString()})\`)`,
+                                            global: `1`,
                                         },
                                     ];
                                 }
