@@ -637,6 +637,36 @@ export default class applicationControllerClass extends PublicController impleme
             }
         });
     }
+
+    $_getFileContent(fileUrl:string,callBcak?:any,callBackEnd?:any){
+        return new Promise((resolve, reject) => {
+            try {
+                let resultChunk = '';
+                let httpObj = http;
+                if(fileUrl.match(/^https/)){
+                    httpObj = https;
+                }
+                httpObj.get(fileUrl,res=>{
+                    res.on('data', (chunk) => {
+                        resultChunk += chunk;
+                        if(callBcak){callBcak(chunk)};
+                    });
+                    res.on('end', () => {
+                        if(callBackEnd){callBackEnd(resultChunk)};
+                        resolve(resultChunk);
+                    });
+                    res.on('error', err => {
+                        reject(err.message);
+                    });
+                }).on('error', (err) => {
+                    reject(err.message);
+                });
+            }catch (err) {
+                reject(err.message);
+            }
+        });
+    }
+
     $_fileStreamDownload(fileUrl:string,filename?:any,download?:any, callBcak?:any){
         switch (typeof  filename) {
             case 'function':
