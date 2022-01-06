@@ -35,7 +35,6 @@ export class ApiController extends applicationController{
         }).where({
             openid:this.$_body.openid
         }).query()
-        console.log(this.$_body)
         this.$_success()
     }
 

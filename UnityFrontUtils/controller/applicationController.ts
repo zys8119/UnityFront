@@ -545,7 +545,7 @@ export default class applicationControllerClass extends PublicController impleme
                 ncol.successBG("【响应】")
                     .info(`【${this.$_method}】`)
                     .log(`【${this.$_url}】`)
-                    .success(JSON.stringify(newSendData))
+                    // .success(JSON.stringify(newSendData))
             });
         }
         this.$_public_success_log_callback({
