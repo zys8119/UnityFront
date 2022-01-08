@@ -166,10 +166,16 @@ export class IndexController extends applicationController {
         this.Render()
     }
 
+    /**
+     * 敏感词检测测试
+     */
     async keywords (){
         this.$_success("sadsa",null,0);
     }
 
+    /**
+     * 获取敏感词
+     */
     async gwKkeywords (){
         const filePath = path.resolve(ServerConfig.Template.publicPath,"keywords");
         this.$_success({
