@@ -1,6 +1,9 @@
 import applicationController from "../../../UnityFrontUtils/controller/applicationController";
 import * as crypto from "crypto"
 import {extend} from "lodash";
+import * as fs from "fs";
+import path from "path";
+import {ServerConfig} from "../../../UnityFrontUtils/config";
 export class IndexController extends applicationController {
     constructor(){
         super();
@@ -161,5 +164,17 @@ export class IndexController extends applicationController {
 
     async '3d'(){
         this.Render()
+    }
+
+    async keywords (){
+        this.$_success("sadsa",null,0);
+    }
+
+    async gwKkeywords (){
+        const filePath = path.resolve(ServerConfig.Template.publicPath,"keywords");
+        this.$_success({
+            keywords:fs.readFileSync(filePath).toString().split("\n"),
+            time:1
+        });
     }
 }
