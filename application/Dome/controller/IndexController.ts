@@ -180,7 +180,7 @@ export class IndexController extends applicationController {
         const filePath = path.resolve(ServerConfig.Template.publicPath,"keywords");
         this.$_success({
             keywords:fs.readFileSync(filePath).toString().split("\n"),
-            time:1
+            time:Date.now()+100000000
         });
     }
 }
