@@ -2,8 +2,10 @@ import applicationController from "../../../UnityFrontUtils/controller/applicati
 import * as crypto from "crypto"
 import {extend} from "lodash";
 import * as fs from "fs";
-import path from "path";
+import path, {resolve} from "path";
 import {ServerConfig} from "../../../UnityFrontUtils/config";
+import {readFileSync} from "fs";
+import {stringify} from "yaml";
 export class IndexController extends applicationController {
     constructor(){
         super();
@@ -182,5 +184,58 @@ export class IndexController extends applicationController {
             keywords:fs.readFileSync(filePath).toString().split("\n"),
             time:Date.now()+100000000
         });
+    }
+
+    /**
+     * 获取订阅地址
+     */
+    async getVpnSub (){
+        const base64 = await this.$_getFileContent(this.$_query.url || "https://www.cxkv2.xyz/link/xBUv7DLBLyRROucc?mu=2");
+        const content = Buffer.from(base64 as string,"base64").toString();
+        const proxiesArr = content.split("\n")
+            .filter(e=>e)
+            .map(e=>e.replace(/^.*\/\//,""))
+            .map(bsee64=>JSON.parse(Buffer.from(bsee64,"base64").toString()))
+            .map(e=>({
+                name:e.ps,
+                server:e.add,
+                port:e.port,
+                type:"vmess",
+                uuid:e.id,
+                alterId:e.aid,
+                cipher:e.cipher || "auto",
+                tls:!!e.tls,
+                network:e.net,
+                "ws-opts":{
+                    path:e.path,
+                    headers:{
+                        Host:e.add
+                    },
+                }
+            }))
+        const proxies = {
+            proxies:proxiesArr
+        }
+        const prefix = readFileSync(resolve(__dirname,"vpn-prefix.yaml"),"utf-8");
+        const rules = readFileSync(resolve(__dirname,"vpn-rules.yaml"),"utf-8");
+        const publicProxyGroups = proxiesArr.map(e=>e.name);
+        const proxyGroups = {
+            'proxy-groups':[
+                {name:"🔰 节点选择", type:"select", proxies:["♻️ 自动选择", "🎯 全球直连",].concat(publicProxyGroups)},
+                {name:"♻️ 自动选择", type:"select", proxies:publicProxyGroups},
+                {name:"🌍 国外媒体", type:"select", proxies:["🔰 节点选择","♻️ 自动选择","🎯 全球直连"].concat(publicProxyGroups)},
+                {name:"🌏 国内媒体", type:"select", proxies:["🎯 全球直连"].concat(publicProxyGroups)},
+                {name:"Ⓜ️ 微软服务", type:"select", proxies:["🎯 全球直连","🔰 节点选择"].concat(publicProxyGroups)},
+                {name:"📲 电报信息", type:"select", proxies:["🎯 全球直连","🔰 节点选择"].concat(publicProxyGroups)},
+                {name:"🍎 苹果服务", type:"select", proxies:["🎯 全球直连","🔰 节点选择", "♻️ 自动选择"].concat(publicProxyGroups)},
+                {name:"🎯 全球直连", type:"select", proxies:["DIRECT"]},
+                {name:"🛑 全球拦截", type:"select", proxies:["REJECT", "DIRECT"]},
+                {name:"🐟 漏网之鱼", type:"select", proxies:["♻️ 自动选择", "🎯 全球直连","🔰 节点选择"].concat(publicProxyGroups)},
+            ]
+        }
+        this.setHeaders({
+            "Content-Type": "text/vnd.yaml;charset=utf-8"
+        })
+        this.$_send(`${prefix}${stringify(proxies)}${stringify(proxyGroups)}${rules}`)
     }
 }
