@@ -190,52 +190,100 @@ export class IndexController extends applicationController {
      * 获取订阅地址
      */
     async getVpnSub (){
-        const base64 = await this.$_getFileContent(this.$_query.url || "https://www.cxkv2.xyz/link/xBUv7DLBLyRROucc?mu=2");
-        const content = Buffer.from(base64 as string,"base64").toString();
-        const proxiesArr = content.split("\n")
-            .filter(e=>e)
-            .map(e=>e.replace(/^.*\/\//,""))
-            .map(bsee64=>JSON.parse(Buffer.from(bsee64,"base64").toString()))
-            .map(e=>({
-                name:e.ps,
-                server:e.add,
-                port:e.port,
-                type:"vmess",
-                uuid:e.id,
-                alterId:e.aid,
-                cipher:e.cipher || "auto",
-                tls:!!e.tls,
-                network:e.net,
-                "ws-opts":{
-                    path:e.path,
-                    headers:{
-                        Host:e.add
-                    },
-                }
-            }))
-        const proxies = {
-            proxies:proxiesArr
+        try {
+            const base64 = await this.$_getFileContent(this.$_query.url || "https://www.cxkv2.xyz/link/xBUv7DLBLyRROucc?mu=2");
+            const content = Buffer.from(base64 as string,"base64").toString().split("\n");
+            const notVmess = !!this.$_query.notVmess;
+            const notSS = !!this.$_query.notSS;
+            const proxiesArr = content
+                .filter(e=>e)
+                .map<any>(e=>{
+                    const reg = /^.*?\/\//
+                    return {
+                        type:((e.match(reg) || [])[0] || "").replace(/\/|:/g,""),
+                        str:e.replace(reg,"")
+                    };
+                })
+                .map(({type, str})=>{
+                    switch (type.toLowerCase()) {
+                        case "vmess":
+                            if(notVmess){return  null;}
+                            const e = JSON.parse(Buffer.from(str,"base64").toString())
+                            return {
+                                name:e.ps,
+                                server:e.add,
+                                port:e.port,
+                                type,
+                                uuid:e.id,
+                                alterId:e.aid,
+                                cipher:e.cipher || "auto",
+                                tls:!!e.tls,
+                                network:e.net,
+                                "ws-opts":{
+                                    path:e.path,
+                                    headers:{
+                                        Host:e.add
+                                    },
+                                }
+                            };
+                        case "ss":
+                            if(notSS){return  null;}
+                            const result = str.split("#").filter(e=>e).map(e=>decodeURIComponent(e)).reduce((a:any,b,k)=>{
+                                if(k === 0){
+                                    const c = b.split("@").filter(e=>e);
+                                    const decryption = Buffer.from(c[0],"base64").toString();
+                                    a = {
+                                        ...a,
+                                        server:(c[1] || "").replace(/:.*$/,""),
+                                        port:Number((c[1] || "").replace(/.*?:/,"")),
+                                        type,
+                                        cipher:decryption.replace(/:.*$/,""),
+                                        password:decryption.replace(/.*?:/,""),
+                                    }
+                                }else {
+                                    a = {
+                                        name:b,
+                                        ...a,
+                                    };
+                                }
+                                return a;
+                            }, {})
+                            return result;
+                        case "ssr":
+                            // console.log(Buffer.from(str,"base64").toString().split(":"), str)
+                            return null
+                        default:
+                            // console.log(`【${type}】`,str)
+                            return null
+                    }
+                }).filter(e=>e)
+            const proxies = {
+                proxies:proxiesArr
+            }
+            const prefix = readFileSync(resolve(__dirname,"vpn-prefix.yaml"),"utf-8");
+            const rules = readFileSync(resolve(__dirname,"vpn-rules.yaml"),"utf-8");
+            const publicProxyGroups = proxiesArr.map<any>(e=>e.name);
+            const proxyGroups = {
+                'proxy-groups':[
+                    {name:"🔰 节点选择", type:"select", proxies:["♻️ 自动选择", "🎯 全球直连",].concat(publicProxyGroups)},
+                    {name:"♻️ 自动选择", type:"select", proxies:publicProxyGroups},
+                    {name:"🌍 国外媒体", type:"select", proxies:["🔰 节点选择","♻️ 自动选择","🎯 全球直连"].concat(publicProxyGroups)},
+                    {name:"🌏 国内媒体", type:"select", proxies:["🎯 全球直连"].concat(publicProxyGroups)},
+                    {name:"Ⓜ️ 微软服务", type:"select", proxies:["🎯 全球直连","🔰 节点选择"].concat(publicProxyGroups)},
+                    {name:"📲 电报信息", type:"select", proxies:["🎯 全球直连","🔰 节点选择"].concat(publicProxyGroups)},
+                    {name:"🍎 苹果服务", type:"select", proxies:["🎯 全球直连","🔰 节点选择", "♻️ 自动选择"].concat(publicProxyGroups)},
+                    {name:"🎯 全球直连", type:"select", proxies:["DIRECT"]},
+                    {name:"🛑 全球拦截", type:"select", proxies:["REJECT", "DIRECT"]},
+                    {name:"🐟 漏网之鱼", type:"select", proxies:["♻️ 自动选择", "🎯 全球直连","🔰 节点选择"].concat(publicProxyGroups)},
+                ]
+            }
+            this.setHeaders({
+                "Content-Type": "text/vnd.yaml;charset=utf-8"
+            })
+            this.$_send(`${prefix}${stringify(proxies)}${stringify(proxyGroups)}${rules}`)
+        }catch (e){
+            this.$_error(e.message)
         }
-        const prefix = readFileSync(resolve(__dirname,"vpn-prefix.yaml"),"utf-8");
-        const rules = readFileSync(resolve(__dirname,"vpn-rules.yaml"),"utf-8");
-        const publicProxyGroups = proxiesArr.map(e=>e.name);
-        const proxyGroups = {
-            'proxy-groups':[
-                {name:"🔰 节点选择", type:"select", proxies:["♻️ 自动选择", "🎯 全球直连",].concat(publicProxyGroups)},
-                {name:"♻️ 自动选择", type:"select", proxies:publicProxyGroups},
-                {name:"🌍 国外媒体", type:"select", proxies:["🔰 节点选择","♻️ 自动选择","🎯 全球直连"].concat(publicProxyGroups)},
-                {name:"🌏 国内媒体", type:"select", proxies:["🎯 全球直连"].concat(publicProxyGroups)},
-                {name:"Ⓜ️ 微软服务", type:"select", proxies:["🎯 全球直连","🔰 节点选择"].concat(publicProxyGroups)},
-                {name:"📲 电报信息", type:"select", proxies:["🎯 全球直连","🔰 节点选择"].concat(publicProxyGroups)},
-                {name:"🍎 苹果服务", type:"select", proxies:["🎯 全球直连","🔰 节点选择", "♻️ 自动选择"].concat(publicProxyGroups)},
-                {name:"🎯 全球直连", type:"select", proxies:["DIRECT"]},
-                {name:"🛑 全球拦截", type:"select", proxies:["REJECT", "DIRECT"]},
-                {name:"🐟 漏网之鱼", type:"select", proxies:["♻️ 自动选择", "🎯 全球直连","🔰 节点选择"].concat(publicProxyGroups)},
-            ]
-        }
-        this.setHeaders({
-            "Content-Type": "text/vnd.yaml;charset=utf-8"
-        })
-        this.$_send(`${prefix}${stringify(proxies)}${stringify(proxyGroups)}${rules}`)
+
     }
 }
