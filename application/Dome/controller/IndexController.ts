@@ -191,10 +191,19 @@ export class IndexController extends applicationController {
      */
     async getVpnSub (){
         try {
-            const base64 = await this.$_getFileContent(this.$_query.url || "https://www.cxkv2.xyz/link/xBUv7DLBLyRROucc?mu=2");
+            const config = {
+                erye:{
+                    url:"https://jiang.netlify.app/",
+                    notVmess:true,
+                }
+            }[this.$_query.type] || {
+                url:"https://www.cxkv2.xyz/link/xBUv7DLBLyRROucc?mu=2",
+                notSS:true,
+            }
+            const base64 = await this.$_getFileContent(this.$_query.url || config.url);
             const content = Buffer.from(base64 as string,"base64").toString().split("\n");
-            const notVmess = !!this.$_query.notVmess;
-            const notSS = !!this.$_query.notSS;
+            const notVmess = config.notVmess || !!this.$_query.notVmess;
+            const notSS = config.notSS || !!this.$_query.notSS;
             const proxiesArr = content
                 .filter(e=>e)
                 .map<any>(e=>{
