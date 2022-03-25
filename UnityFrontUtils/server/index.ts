@@ -1,3 +1,4 @@
+#!/usr/bin/env ts-node
 import "../typeStript"
 import "./env"
 import {ServerConfig, TimingTaskQueue, mysqlConfig} from "../config"

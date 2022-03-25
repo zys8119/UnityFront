@@ -1,4 +1,8 @@
 {
+  "version": "0.0.0",
+  "bin": {
+    "uf": "./UnityFrontUtils/server/index.ts"
+  },
   "scripts": {
     "start": "npm run serve",
     "serve": "ts-node UnityFrontUtils/server/index.ts",
