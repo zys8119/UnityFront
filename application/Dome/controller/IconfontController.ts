@@ -47,6 +47,7 @@ export class IconfontController extends applicationController{
                 contentArrs.push(data)
                 return contentArrs.join("\n");
             })(readFileSync(main,"utf-8")))
+            writeFileSync(resolve(src,"aa.tsx"),"asdas")
 
             this.$_success("更新成功")
         }catch (e){
