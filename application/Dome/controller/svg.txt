@@ -1,7 +1,7 @@
 import {defineComponent} from "vue"
 export default defineComponent({
-    name:<% name %>,
+    name:"<%= name %>",
     render(){
-        return (<% svg %>)
+        return (<%= svg %>)
     }
 })
