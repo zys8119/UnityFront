@@ -1,6 +1,6 @@
 {
   "name": "uf-node",
-  "version": "0.0.11",
+  "version": "0.0.12",
   "bin": {
     "uf": "./UnityFrontUtils/server/index.ts",
     "uf-install": "./UnityFrontUtils/server/install.ts",
