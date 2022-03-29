@@ -2,9 +2,64 @@ import {applicationController} from "../../../UnityFrontUtils/controller/applica
 import puppeteer, {
     Page,
 } from "puppeteer"
+import {resolve} from "path"
+import {readFileSync, writeFileSync} from "fs";
+// const root = resolve(process.cwd(),"../packages/icons");
+const root = resolve("/Users/zhangyunshan/work/wisdom-plus/icons","../packages/icons");
+const config = resolve(root, "config.json");
+const src = resolve(root, "src");
+const main = resolve(root, "index.tsx");
 export class IconfontController extends applicationController{
     constructor() {
         super();
+    }
+
+    async setConfigs(){
+        try {
+            const data = {
+                "id": 2892818,
+                "name": "删除",
+                "status": 1,
+                "is_private": null,
+                "category_id": "1",
+                "slug": "删除",
+                "unicode": "58949",
+                "width": 1024,
+                "height": 1024,
+                "defs": null,
+                "path_attributes": "",
+                "fills": null,
+                "font_class": "changyonggoupiaorenshanchu",
+                "user_id": 204163,
+                "repositorie_id": 39146,
+                "updated_at": "2017-09-13T07:52:16.000Z",
+                "created_at": "2017-09-13T07:35:44.000Z",
+                "deleted_at": null,
+                "show_svg": "<svg class=\"icon\" style=\"width: 1em;height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;\" viewBox=\"0 0 1024 1024\" version=\"1.1\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M96 320a32 32 0 1 1 0-64h832a32 32 0 0 1 0 64H96z m736 0h64v448a160 160 0 0 1-160 160H288a160 160 0 0 1-160-160V320h64v96H128v-96h64v448a96 96 0 0 0 96 96h448a96 96 0 0 0 96-96V320z m-512 112a32 32 0 0 1 64 0v320a32 32 0 0 1-64 0v-320z m320 0a32 32 0 0 1 64 0v320a32 32 0 0 1-64 0v-320zM288 256H224V192a96 96 0 0 1 96-96h384a96 96 0 0 1 96 96v64h-64V224h64v32h-64V192a32 32 0 0 0-32-32H320a32 32 0 0 0-32 32v64z\" /></svg>"
+            }
+            const json = JSON.parse(readFileSync(config,"utf-8"));
+            // json数据
+            json[data.id] = data;
+            writeFileSync(config,JSON.stringify(json))
+            writeFileSync(main, ((content:any)=>{
+                const data = `export { default as DateRangeOutlined } from "./src/DateRangeOutlined${parseInt(String(Math.random()*10000)).toString()}"`
+                const contentArrs = content.split("\n").filter(e=>e && e !== data);
+                contentArrs.push(data)
+                return contentArrs.join("\n");
+            })(readFileSync(main,"utf-8")))
+
+            this.$_success("更新成功")
+        }catch (e){
+            this.$_error(e.message)
+        }
+    }
+
+    async getConfigs(){
+        try {
+            this.$_success(JSON.parse(readFileSync(config,"utf-8")))
+        }catch (e){
+            this.$_error(e.message)
+        }
     }
 
     async search(){
