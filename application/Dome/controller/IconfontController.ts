@@ -7,8 +7,20 @@ export class IconfontController extends applicationController{
         super();
     }
 
-    async pageSuccess(){
-        this.$_success()
+    async search(){
+        this.$_success(await this.$_puppeteer("https://www.iconfont.cn/search/index?searchType=icon&q=%E5%88%A0%E9%99%A4", {
+            headless:false,
+            devtools:true,
+            gotoFn:async (page,browser, resolve)=>{
+                page.on("response",async res=>{
+                    switch (true){
+                        case /search\.json/.test(res.url()):
+                            resolve((await res.json()).data.icons)
+                            break;
+                    }
+                })
+            },
+        }))
     }
 
     async index(){

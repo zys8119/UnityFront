@@ -15,6 +15,7 @@ import PublicController from "../../conf/PublicController";
 import { SqlModel } from "../../model/interfaces";
 import { resolve } from "path";
 import {readdirSync, statSync} from "fs";
+import {Browser, BrowserLaunchArgumentOptions, Page} from "puppeteer";
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
@@ -584,15 +585,21 @@ export default class applicationControllerClass extends PublicController impleme
         }
         this.$_success(msg,sendData,code,true)
     }
-    $_puppeteer(url:string,jsContent:any,...extData){
+    $_puppeteer(url:string,jsContent?:(()=>Promise<any>) | Partial<{
+        jsContentFn:()=>Promise<any>;
+        gotoFn:(page:Page, browser:Browser,resolve:(result?:any)=>any)=>Promise<any>
+        jsContentBeforeFn:(page:Page, browser:Browser,resolve:(result?:any)=>any)=>Promise<any>
+        jsContentAfterFn:(page:Page, browser:Browser,resolve:(result?:any)=>any)=>Promise<any>
+        resultFilterFn:<T = any>(result:T, resolve:(result?:T)=>void,  page:Page, browser:Browser)=>Promise<any>
+    } | BrowserLaunchArgumentOptions>,...extData){
         // "puppeteer": "^2.0.0"
         const puppeteer = require('puppeteer');
         return new Promise((resolve, reject) => {
             try {
                 let launchConfig = {}
-                let goto = async (page:any, browser:any)=>{};
-                let jsContentBefore = async (page:any, browser:any)=>{};
-                let jsContentAfter = async (page:any, browser:any)=>{};
+                let goto = async (page:any, browser:any,resolve:(result?:any)=>any)=>{};
+                let jsContentBefore = async (page:any, browser:any,resolve:(result?:any)=>any)=>{};
+                let jsContentAfter = async (page:any, browser:any,resolve:(result?:any)=>any)=>{};
                 let resultFilter = async (result:any, next:any,  page:any, browser:any)=>{
                     await browser.close();
                     next(result);
@@ -600,7 +607,7 @@ export default class applicationControllerClass extends PublicController impleme
                 if(Object.prototype.toString.call(jsContent) === "[object Object]"){
                     const {
                         jsContentFn,
-                        gotoFn = async (page:any, browser:any)=>{},
+                        gotoFn = async (page, browser)=>{},
                         jsContentBeforeFn = async (page:any, browser:any)=>{},
                         jsContentAfterFn = async (page:any, browser:any)=>{},
                         resultFilterFn = async (result:any, next:any,  page:any, browser:any)=>{
@@ -608,7 +615,7 @@ export default class applicationControllerClass extends PublicController impleme
                             next(result);
                         },
                         ...launchConfigArgs
-                    } = jsContent;
+                    }:any = jsContent;
                     launchConfig = launchConfigArgs;
                     jsContent = jsContentFn;
                     resultFilter = resultFilterFn;
@@ -619,14 +626,14 @@ export default class applicationControllerClass extends PublicController impleme
                 jsContent = jsContent || (()=>Promise.resolve(null));
                 puppeteer.launch(launchConfig).then(async browser => {
                     const page = await browser.newPage();
-                    await goto(page, browser)
+                    await goto(page, browser, resolve)
                     await page.goto(url);
-                    await jsContentBefore(page, browser);
+                    await jsContentBefore(page, browser,resolve);
                     const resultHandle = await page.evaluateHandle(
                         js => js,
                         await page.evaluateHandle(jsContent,...extData)
                     );
-                    await jsContentAfter(page, browser);
+                    await jsContentAfter(page, browser,resolve);
                     const result = await resultHandle.jsonValue();
                     await resultFilter(result,resolve, page, browser);
                 }).catch(err=>{
