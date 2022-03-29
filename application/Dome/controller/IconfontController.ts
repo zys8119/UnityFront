@@ -14,7 +14,7 @@ export class IconfontController extends applicationController{
                     switch (true){
                         case /search\.json/.test(res.url()):
                             const result = (await res.json()).data.icons;
-                            browser.close()
+                            await browser.close()
                             resolve(result)
                             break;
                     }
