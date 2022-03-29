@@ -1,9 +1,9 @@
 {
   "name": "uf-node",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "bin": {
     "uf": "./UnityFrontUtils/server/index.ts",
-    "uf-install": "./node_modules/puppeteer/install.js",
+    "uf-install": "node ./node_modules/puppeteer/install.js",
     "ts-node": "./node_modules/ts-node/dist/bin.js"
   },
   "scripts": {
