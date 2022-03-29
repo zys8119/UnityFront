@@ -13,11 +13,14 @@ export class IconfontController extends applicationController{
                 page.on("response",async res=>{
                     switch (true){
                         case /search\.json/.test(res.url()):
-                            resolve((await res.json()).data.icons)
+                            const result = (await res.json()).data.icons;
+                            browser.close()
+                            resolve(result)
                             break;
                     }
                 })
             },
+            resultFilterFn:async ()=>{}
         }))
     }
 
