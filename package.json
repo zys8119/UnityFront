@@ -1,9 +1,9 @@
 {
   "name": "uf-node",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "bin": {
     "uf": "./UnityFrontUtils/server/index.ts",
-    "uf-install": "node ./node_modules/puppeteer/install.js",
+    "uf-install": "./UnityFrontUtils/server/install.ts",
     "ts-node": "./node_modules/ts-node/dist/bin.js"
   },
   "scripts": {
@@ -11,6 +11,7 @@
     "serve": "ts-node UnityFrontUtils/server/index.ts",
     "ws": "ts-node UnityFrontUtils/webSocket/serve.ts",
     "build": "ts-node UnityFrontUtils/build/serve.ts",
+    "install": "ts-node UnityFrontUtils/server/install.ts",
     "build_api": "ts-node UnityFrontUtils/build/api/apiServe.ts"
   },
   "dependencies": {
