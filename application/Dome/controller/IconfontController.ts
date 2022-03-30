@@ -3,7 +3,7 @@ import puppeteer, {
     Page,
 } from "puppeteer"
 import {resolve} from "path"
-import {readFileSync, writeFileSync} from "fs";
+import {readFileSync, unlinkSync, writeFileSync, existsSync, readdirSync, statSync, rmdirSync, mkdirSync} from "fs";
 import {template} from "lodash";
 const root = resolve(process.cwd(),"../packages/icons");
 // const root = resolve("/Users/zhangyunshan/work/wisdom-plus/icons","../packages/icons");
@@ -14,32 +14,95 @@ export class IconfontController extends applicationController{
     constructor() {
         super();
     }
-
-    async setConfigs(){
-        try {
-            const data = this.$_body;
-            const name = data.font_class.toUpperCase()
-            const json = JSON.parse(readFileSync(config,"utf-8"));
-            // json数据
-            json[data.id] = data;
-            writeFileSync(config,JSON.stringify(json))
-            writeFileSync(main, ((content:any)=>{
-                const data = `export { default as ${name} } from "./src/${name}"`
-                const contentArrs = content.split("\n").filter(e=>e && e !== data);
-                contentArrs.push(data)
-                return contentArrs.join("\n");
-            })(readFileSync(main,"utf-8")))
-            const svgTemp = readFileSync(resolve(__dirname,'./svg.txt'), "utf-8")
-            writeFileSync(resolve(src,`${name}.tsx`),template(svgTemp)({
-                name,
-                svg:data.show_svg
+    async deleteFolder(path) {
+        let files = [];
+        if( existsSync(path) ) {
+            files = readdirSync(path);
+            await Promise.all(files.map(file=>{
+                return new Promise<void>(resolve1=>{
+                    let curPath = path + "/" + file;
+                    if(statSync(curPath).isDirectory()) {
+                        this.deleteFolder(curPath);
+                    } else {
+                        unlinkSync(curPath);
+                    }
+                    resolve1();
+                })
             }))
-            this.$_success("更新成功")
+            rmdirSync(path);
+            if(!existsSync(path)){
+                mkdirSync(path);
+            }
+        }
+    }
+
+    /**
+     * 同步配置
+     */
+    async synchronousConfigs(){
+        try {
+            // 删除目录资源
+            await this.deleteFolder(src);
+            const json = JSON.parse(readFileSync(config,"utf-8"));
+            for (let icon in json){
+                await this.setConfigs(json[icon])
+            }
+            this.$_success("同步成功")
         }catch (e){
             this.$_error(e.message)
         }
     }
 
+    /**
+     * 更新配置，is_delete_wp_icon 为true 则是删除图标
+     */
+    async setConfigs(bodyData){
+        try {
+            const {is_delete_wp_icon, ...data} = bodyData || this.$_body;
+            const name = data.font_class.toUpperCase()
+            // json数据
+            const json = JSON.parse(readFileSync(config,"utf-8"));
+            if(is_delete_wp_icon){
+                // 删除
+                delete json[data.id];
+            }else {
+                // 添加
+                json[data.id] = data;
+            }
+            writeFileSync(config,JSON.stringify(json))
+            writeFileSync(main, ((content:any)=>{
+                const data = `export { default as ${name} } from "./src/${name}"`
+                const contentArrs = content.split("\n").filter(e=>e && e !== data);
+                if(!is_delete_wp_icon){
+                    contentArrs.push(data)
+                }
+                return contentArrs.join("\n");
+            })(readFileSync(main,"utf-8")))
+            const iconPath = resolve(src,`${name}.tsx`)
+            if(is_delete_wp_icon){
+                if(existsSync(iconPath)){
+                    unlinkSync(iconPath);
+                }
+            }else {
+                const svgTemp = readFileSync(resolve(__dirname,'./svg.txt'), "utf-8")
+                writeFileSync(iconPath,template(svgTemp)({
+                    name,
+                    svg:data.show_svg
+                }))
+            }
+            if(!bodyData){
+                this.$_success("更新成功")
+            }
+        }catch (e){
+            if(!bodyData){
+                this.$_error(e.message)
+            }
+        }
+    }
+
+    /**
+     * 获取配置
+     */
     async getConfigs(){
         try {
             this.$_success(JSON.parse(readFileSync(config,"utf-8")))
@@ -48,6 +111,9 @@ export class IconfontController extends applicationController{
         }
     }
 
+    /**
+     * 搜索阿里图标
+     */
     async search(){
         try {
             this.$_puppeteer("https://www.iconfont.cn/search/index?searchType=icon&q="+(this.$_query.search || ''), {
@@ -80,7 +146,10 @@ export class IconfontController extends applicationController{
         }
     }
 
-    async index(){
+    /**
+     * 获取我的阿里图标字体项目，需要提供账号密码及对应项目名称
+     */
+    async getMyIconfont(){
         const {username, password, projectName} = this.$_query;
         if(!username || !password || ! projectName){
             return this.$_error("参数有误")
