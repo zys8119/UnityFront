@@ -3,7 +3,7 @@ const toHump = (name)=> {
         return (letter|| "").toUpperCase();
     }
     return name.toLowerCase()
-        .replace(/ /g,"")
+        .replace(/ |(\_|\-){1,}$/g,"")
         .replace(/\_{1,}/g,"_")
         .replace(/\-{1,}/g,"-")
         .replace(/\_(.)/g, replaceCallback)
@@ -11,4 +11,5 @@ const toHump = (name)=> {
         .replace(/^(.)/g, (all,letter)=>(letter || "").toUpperCase());
 }
 console.log(toHump("asdasd_as_dass  das-asaa"))
-console.log(toHump("jiehunzheng----WPmzkwmdmwmg"))
+console.log(toHump("jiehunzheng----WPmzkwmdmwmg---"))
+console.log(toHump("jiehunzheng----WPmzkwmdmwmg___"))

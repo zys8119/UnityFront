@@ -41,7 +41,7 @@ export class IconfontController extends applicationController{
             return (letter|| "").toUpperCase();
         }
         return name.toLowerCase()
-            .replace(/ /g,"")
+            .replace(/ |(\_|\-){1,}$/g,"")
             .replace(/\_{1,}/g,"_")
             .replace(/\-{1,}/g,"-")
             .replace(/\_(.)/g, replaceCallback)
