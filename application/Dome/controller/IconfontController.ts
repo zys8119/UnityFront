@@ -59,7 +59,7 @@ export class IconfontController extends applicationController{
     async setConfigs(bodyData){
         try {
             const {is_delete_wp_icon, ...data} = bodyData || this.$_body;
-            data.font_class = data.font_class.toUpperCase()+Buffer.from(String(data.id)).toString("base64").replace(/=/img,"").toUpperCase()
+            data.font_class = bodyData ? data.font_class : data.font_class.toUpperCase()+Buffer.from(String(data.id)).toString("base64").replace(/=/img,"").toUpperCase()
             const name = data.font_class;
             // json数据
             const json = JSON.parse(readFileSync(config,"utf-8"));
