@@ -40,16 +40,19 @@ export class IconfontController extends applicationController{
         const replaceCallback = (all, letter)=>{
             return (letter|| "").toUpperCase();
         }
-        return name
+        return name.toLowerCase()
             .replace(/ /g,"")
+            .replace(/\_{1,}/g,"_")
+            .replace(/\-{1,}/g,"-")
             .replace(/\_(.)/g, replaceCallback)
-            .replace(/-(.)/g, replaceCallback);
+            .replace(/\-(.)/g, replaceCallback)
+            .replace(/^(.)/g, (all,letter)=>(letter || "").toUpperCase());
     }
 
     createIconName(data){
-        const prefix =  this.toHump(data.font_class.toLowerCase());
-        const suffix =  Buffer.from(String(data.id)).toString("base64").replace(/=/img,"").toLowerCase();
-        return `${prefix}WP${suffix}`
+        const prefix =  this.toHump(data.font_class);
+        const suffix =  this.toHump(Buffer.from(String(data.id)).toString("base64").replace(/=/img,""));
+        return `Wp${prefix}${suffix}`
     }
 
     /**
