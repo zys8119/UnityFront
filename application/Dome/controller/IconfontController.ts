@@ -79,14 +79,10 @@ export class IconfontController extends applicationController{
                 if(!is_delete_wp_icon){
                     contentArrs.push(data)
                 }
-                console.log(contentArrs)
-                console.log(data)
                 return contentArrs.join("\n");
             })(readFileSync(main,"utf-8")))
             const iconPath = resolve(src,`${name}.tsx`)
             if(is_delete_wp_icon){
-                console.log(iconPath)
-                console.log(existsSync(iconPath))
                 if(existsSync(iconPath)){
                     unlinkSync(iconPath);
                 }
