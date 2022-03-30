@@ -5,7 +5,6 @@ import puppeteer, {
 import {resolve} from "path"
 import {readFileSync, unlinkSync, writeFileSync, existsSync, readdirSync, statSync, rmdirSync, mkdirSync} from "fs";
 import {template} from "lodash";
-import {parse} from "url";
 const root = resolve(process.cwd(),"../packages/icons");
 // const root = resolve("/Users/zhangyunshan/work/wisdom-plus/icons","../packages/icons");
 const config = resolve(root, "config.json");
@@ -37,6 +36,22 @@ export class IconfontController extends applicationController{
         }
     }
 
+    toHump(name) {
+        const replaceCallback = (all, letter)=>{
+            return (letter|| "").toUpperCase();
+        }
+        return name
+            .replace(/ /g,"")
+            .replace(/\_(.)/g, replaceCallback)
+            .replace(/-(.)/g, replaceCallback);
+    }
+
+    createIconName(data){
+        const prefix =  this.toHump(data.font_class.toLowerCase());
+        const suffix =  Buffer.from(String(data.id)).toString("base64").replace(/=/img,"").toLowerCase();
+        return `${prefix}WP${suffix}`
+    }
+
     /**
      * 同步配置
      */
@@ -61,7 +76,7 @@ export class IconfontController extends applicationController{
     async setConfigs(bodyData){
         try {
             const {is_delete_wp_icon, ...data} = bodyData || this.$_body;
-            data.font_class = (bodyData || is_delete_wp_icon)  ? data.font_class : data.font_class.toUpperCase()+Buffer.from(String(data.id)).toString("base64").replace(/=/img,"").toUpperCase()
+            data.font_class = (bodyData || is_delete_wp_icon)  ? data.font_class : this.createIconName(data)
             const name = data.font_class;
             // json数据
             const json = JSON.parse(readFileSync(config,"utf-8"));

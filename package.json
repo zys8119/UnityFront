@@ -1,6 +1,6 @@
 {
   "name": "uf-node",
-  "version": "0.0.23",
+  "version": "0.0.24",
   "bin": {
     "uf": "./UnityFrontUtils/server/index.ts",
     "uf-install": "./UnityFrontUtils/server/install.ts",
@@ -12,7 +12,8 @@
     "ws": "ts-node UnityFrontUtils/webSocket/serve.ts",
     "build": "ts-node UnityFrontUtils/build/serve.ts",
     "install": "ts-node UnityFrontUtils/server/install.ts",
-    "build_api": "ts-node UnityFrontUtils/build/api/apiServe.ts"
+    "build_api": "ts-node UnityFrontUtils/build/api/apiServe.ts",
+    "test": "ts-node test.ts"
   },
   "dependencies": {
     "@types/lodash": "^4.14.180",
