@@ -119,7 +119,7 @@ export class IconfontController extends applicationController{
      */
     async search(){
         try {
-            this.$_puppeteer(`https://www.iconfont.cn/search/index?searchType=icon&${new URLSearchParams(this.$_query).toString()}`, {
+            this.$_puppeteer(`https://www.iconfont.cn/search/index?searchType=icon&${decodeURIComponent(new URLSearchParams(this.$_query).toString())}`, {
                 gotoFn:async (page,browser, resolve)=>{
                     page.on("response",async res=>{
                         switch (true){
