@@ -70,7 +70,7 @@ export class IconfontController extends applicationController{
                 // 添加
                 json[data.id] = data;
             }
-            writeFileSync(config,JSON.stringify(json))
+            writeFileSync(config,JSON.stringify(json, null, 4))
             writeFileSync(main, ((content:any)=>{
                 const data = `export { default as ${name} } from "./src/${name}"`
                 const contentArrs = content.split("\n").filter(e=>e && e !== data);
