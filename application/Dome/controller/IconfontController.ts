@@ -139,6 +139,7 @@ export class IconfontController extends applicationController{
             }).then(res=>{
                 this.$_success(res)
             }).catch(err=>{
+                console.log(err)
                 this.$_error(err.message)
             })
         }catch (err){
@@ -238,6 +239,7 @@ export class IconfontController extends applicationController{
                     await page.tap("#login-form > div:nth-child(4) > button");
                     console.log("登陆成功")
                 }).catch(err=>{
+                    console.log(err)
                     console.log(err.message, 33333)
                 })
             }).catch(err=>{
