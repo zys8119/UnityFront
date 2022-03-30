@@ -5,6 +5,7 @@ import puppeteer, {
 import {resolve} from "path"
 import {readFileSync, unlinkSync, writeFileSync, existsSync, readdirSync, statSync, rmdirSync, mkdirSync} from "fs";
 import {template} from "lodash";
+import {parse} from "url";
 const root = resolve(process.cwd(),"../packages/icons");
 // const root = resolve("/Users/zhangyunshan/work/wisdom-plus/icons","../packages/icons");
 const config = resolve(root, "config.json");
@@ -78,10 +79,14 @@ export class IconfontController extends applicationController{
                 if(!is_delete_wp_icon){
                     contentArrs.push(data)
                 }
+                console.log(contentArrs)
+                console.log(data)
                 return contentArrs.join("\n");
             })(readFileSync(main,"utf-8")))
             const iconPath = resolve(src,`${name}.tsx`)
             if(is_delete_wp_icon){
+                console.log(iconPath)
+                console.log(existsSync(iconPath))
                 if(existsSync(iconPath)){
                     unlinkSync(iconPath);
                 }
@@ -118,14 +123,14 @@ export class IconfontController extends applicationController{
      */
     async search(){
         try {
-            this.$_puppeteer("https://www.iconfont.cn/search/index?searchType=icon&q="+(this.$_query.search || ''), {
+            this.$_puppeteer(`https://www.iconfont.cn/search/index?searchType=icon&${new URLSearchParams(this.$_query).toString()}`, {
                 gotoFn:async (page,browser, resolve)=>{
                     page.on("response",async res=>{
                         switch (true){
                             case /search\.json/.test(res.url()):
                                 let result = [];
                                 try {
-                                    result = (await res.json()).data.icons
+                                    result = (await res.json()).data
                                 }catch (e) {
                                     console.log(e)
                                 }
