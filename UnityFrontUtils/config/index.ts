@@ -70,7 +70,7 @@ export const ServerConfig =  merge(<ServerOptions>{
     },
     Template:{
         viewsPath:path.resolve(__dirname,"../../views"),
-        applicationPath:path.resolve(process.cwd(),"./application"),
+        applicationPath:path.resolve(__dirname,"../../application"),
         publicPath:path.resolve(__dirname,"../../public"),
         TemplatePath:path.resolve(__dirname,"../Template"),
         TemplateErrorPath:path.resolve(__dirname,"../Template/TemplateError.html"),
