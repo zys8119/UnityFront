@@ -49,10 +49,10 @@ export class IconfontController extends applicationController{
             .replace(/^(.)/g, (all,letter)=>(letter || "").toUpperCase());
     }
 
-    createIconName(data){
+    createIconName(data, prefixStr?:string){
         const prefix =  this.toHump(data.font_class);
         const suffix =  this.toHump(Buffer.from(String(data.id)).toString("base64").replace(/=/img,""));
-        return `Wp${prefix}${suffix}`
+        return `${prefixStr || ''}${prefix}${suffix}`
     }
 
     /**
@@ -78,8 +78,8 @@ export class IconfontController extends applicationController{
      */
     async setConfigs(bodyData){
         try {
-            const {is_delete_wp_icon, ...data} = (bodyData || this.$_body);
-            data.font_class = (bodyData || is_delete_wp_icon)  ? data.font_class : this.createIconName(data)
+            const {is_delete_wp_icon, wp_icon_prefix, ...data} = (bodyData || this.$_body);
+            data.font_class = (bodyData || is_delete_wp_icon)  ? data.font_class : this.createIconName(data, wp_icon_prefix || "Wp")
             const name = data.font_class;
             // json数据
             const json = JSON.parse(readFileSync(config,"utf-8"));
