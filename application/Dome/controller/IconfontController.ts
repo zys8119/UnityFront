@@ -78,7 +78,7 @@ export class IconfontController extends applicationController{
      */
     async setConfigs(bodyData){
         try {
-            const {is_delete_wp_icon, ...data} = bodyData || this.$_body;
+            const {is_delete_wp_icon, ...data} = (bodyData || this.$_body);
             data.font_class = (bodyData || is_delete_wp_icon)  ? data.font_class : this.createIconName(data)
             const name = data.font_class;
             // json数据
@@ -92,10 +92,10 @@ export class IconfontController extends applicationController{
             }
             writeFileSync(config,JSON.stringify(json, null, 4))
             writeFileSync(main, ((content:any)=>{
-                const data = `export { default as ${name} } from "./src/${name}"`
-                const contentArrs = content.split("\n").filter(e=>e && e !== data);
+                const IconExportInfo = `export { default as ${name} } from "./src/${name}" // ${data.name}`
+                const contentArrs = content.split("\n").filter(e=>e && e !== IconExportInfo);
                 if(!is_delete_wp_icon){
-                    contentArrs.push(data)
+                    contentArrs.push(IconExportInfo)
                 }
                 return contentArrs.join("\n");
             })(readFileSync(main,"utf-8")))
