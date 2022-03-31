@@ -1,6 +1,6 @@
 {
   "name": "uf-node",
-  "version": "0.0.28",
+  "version": "0.0.29",
   "bin": {
     "uf": "./UnityFrontUtils/server/index.ts",
     "uf-install": "./UnityFrontUtils/server/install.ts",
@@ -23,6 +23,7 @@
     "lodash": "^4.17.21",
     "mysql": "^2.17.1",
     "ncol": "^0.0.7",
+    "ncommand": "^0.0.7",
     "pug": "^2.0.4",
     "puppeteer": "^11.0.0",
     "ts-node": "^10.4.0",

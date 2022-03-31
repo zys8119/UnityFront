@@ -575,10 +575,17 @@
     "safe-buffer" "5.1.2"
     "sqlstring" "2.3.1"
 
-"ncol@^0.0.7":
+"ncol@^0.0.7", "ncol@0.0.7":
   "integrity" "sha512-i2FeQ6DTG8dCglxBCdZpfTcZb0Sj8vdIF68AuSf0JJfnmhQj7PvKj13pL8qdJLxTOp+vwXucyp7zEV6ViS5fjw=="
   "resolved" "https://registry.npmmirror.com/ncol/-/ncol-0.0.7.tgz"
   "version" "0.0.7"
+
+"ncommand@^0.0.7":
+  "integrity" "sha512-MUJ0+BnSOSvOj7zXRkqtfxfN/ip4VTdb8frJ46/IX0h3xoSBF+puK6JcqOOydL4dPAtX1xuevzkFC+MVMM8uKw=="
+  "resolved" "https://registry.npmmirror.com/ncommand/-/ncommand-0.0.7.tgz"
+  "version" "0.0.7"
+  dependencies:
+    "ncol" "0.0.7"
 
 "node-fetch@2.6.5":
   "integrity" "sha512-mmlIVHJEu5rnIxgEgez6b9GgWXbkZj5YZ7fx+2r94a2E+Uirsp6HsPTPlomfdHtpt/B0cdKviwkoaM6pyvUOpQ=="
