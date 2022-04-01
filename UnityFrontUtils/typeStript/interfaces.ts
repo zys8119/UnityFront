@@ -1,7 +1,6 @@
 import { headersType } from "./Types"
 import { AxiosStatic } from "axios"
 import {SqlModel} from "../../model/interfaces";
-import a from "../lib/formData";
 
 export interface mysqlOptions {
     //连接池
@@ -38,6 +37,9 @@ export interface ServerOptions {
     headers?:headersType;//header参数
     Template?:ServerOptions_Template;//模板相关配置
     TimingTaskQueue?:boolean;//是否开启定时任务
+    publicStaticProcess?:{
+        [key:string]:()=>void;
+    };//静态资源进程拦截
 }
 
 export interface ServerOptions_fsWatch {

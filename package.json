@@ -8,13 +8,14 @@
   },
   "scripts": {
     "start": "npm run serve",
-    "serve": "ts-node UnityFrontUtils/server/index.ts",
+    "serve": "ts-node UnityFrontUtils/server/index.ts -config ./uf.config.ts",
     "ws": "ts-node UnityFrontUtils/webSocket/serve.ts",
     "build": "ts-node UnityFrontUtils/build/serve.ts",
     "install": "ts-node UnityFrontUtils/server/install.ts",
     "build_api": "ts-node UnityFrontUtils/build/api/apiServe.ts",
     "test": "ts-node test.ts"
   },
+  "types": "./UnityFrontUtils/typeStript.ts",
   "dependencies": {
     "@types/lodash": "^4.14.180",
     "@types/node": "^14.14.31",

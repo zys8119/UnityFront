@@ -1,14 +1,19 @@
 import {ServerConfig} from "../config";
 import {ControllerInitDataOptions} from "../typeStript";
 import Utils from "../utils";
-const path = require("path");
-const fs = require("fs");
+import path from "path";
+import fs from "fs";
 export default class staticIndex {
     private ControllerInitData:ControllerInitDataOptions;
     constructor(ControllerInitData:ControllerInitDataOptions,next:Function){
         this.ControllerInitData = ControllerInitData;
         if(ControllerInitData.$_url.indexOf("/public") == 0){
             let filePath = path.resolve(__dirname,"../../","./"+ControllerInitData.$_url);
+            const publicPath = path.resolve(ServerConfig.Template.publicPath,"../"+ControllerInitData.$_url);
+            if(fs.existsSync(publicPath)){
+                filePath = publicPath
+            }
+            console.log(ServerConfig.publicStaticProcess);
             switch(path.parse(ControllerInitData.$_url).ext){
                 case ".css":
                     this.getFileData(filePath,"text/css;","utf8");
