@@ -10,7 +10,15 @@ import {
     ServerPublicConfigOptions
 } from "../typeStript";
 
-const custoConfig = ((configPath)=>{
+import runBinServe from "../server/binServe"
+(async ()=>{
+
+})()
+
+const custoConfig = (()=>{
+    // 运行命令后交互
+    runBinServe();
+    const configPath = process.env.ufConfigPath;
     try {
         if(configPath){
             return require(path.resolve(process.cwd(),configPath))
@@ -21,7 +29,8 @@ const custoConfig = ((configPath)=>{
         ncol.error(e)
         process.exit()
     }
-})(process.env.ufConfigPath)
+
+})()
 //数据库配置
 export const mysqlConfig = merge(<mysqlOptions>{
     createPool:{},
@@ -119,4 +128,3 @@ export const TimingTaskQueue = merge(<TimingTaskQueueOptions>{
 export const GlobalPropertiesConfig:GlobalPropertiesType = merge(<GlobalPropertiesType>{
 
 },custoConfig.GlobalPropertiesConfig as GlobalPropertiesType)
-

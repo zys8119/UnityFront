@@ -1,11 +1,6 @@
 #!/usr/bin/env ts-node
 import "../typeStript"
 import "./env"
-import binServe from "./binServe"
-(async ()=>{
-    // 运行命令后交互
-    if(await binServe()){process.exit()}
-})()
 import {ServerConfig, TimingTaskQueue, mysqlConfig} from "../config"
 import webSocketServe from "../webSocket/serve"
 import sqlModelAuto from "./sqlModelAuto"
@@ -31,5 +26,3 @@ new ServeInfo().info();
 if(ServerConfig.ws_port){
     new webSocketServe();
 }
-
-
