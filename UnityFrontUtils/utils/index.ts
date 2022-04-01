@@ -124,6 +124,17 @@ export default <UtilsOptions>{
                     break;
                 case "index":
                     break;
+                case "$_globalProperties":
+                    try {
+                        let globalProperties = ControllerInitData[keyName] || {};
+                        for (let k in globalProperties){
+                            if(Object.prototype.toString.call(globalProperties[k]) === '[object Function]'){
+                                globalProperties[k] = globalProperties[k].bind(ControllerClassObj.prototype)
+                            }
+                        }
+                        ControllerClassObj.prototype[keyName] = globalProperties
+                    }catch (e){ }
+                    break
                 default:
                     ControllerClassObj.prototype[keyName] = ControllerInitData[keyName];
                     break;

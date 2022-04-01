@@ -11,7 +11,7 @@ export default class controller{
      * @param response //返回
      * @param ControllerInitData //控制器初始化数据
      */
-    constructor(request:any, response:any,ControllerInitData:ControllerInitDataOptions){
+    constructor(request:any, response:any,ControllerInitData:Partial<ControllerInitDataOptions>){
         switch (ControllerInitData.$_url) {
             case "/":
                 this.ControllerParamesInit(request, response,ControllerInitData);

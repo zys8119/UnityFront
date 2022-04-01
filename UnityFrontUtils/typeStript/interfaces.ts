@@ -281,6 +281,11 @@ export interface ControllerInitDataOptions {
         urlArrs:TT;
     };// UrlParams解析
     /**
+     * 执行控制器方法
+     * @constructor
+     */
+    runControllerClassFunInit?(data:any):void
+    /**
      * 控制器及url解析
      * @constructor
      */
