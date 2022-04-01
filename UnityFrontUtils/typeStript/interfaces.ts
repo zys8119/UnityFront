@@ -1,6 +1,7 @@
 import { headersType } from "./Types"
 import { AxiosStatic } from "axios"
 import {SqlModel} from "../../model/interfaces";
+import StaticClass from "../../UnityFrontUtils/static";
 
 export interface mysqlOptions {
     //连接池
@@ -38,7 +39,7 @@ export interface ServerOptions {
     Template?:ServerOptions_Template;//模板相关配置
     TimingTaskQueue?:boolean;//是否开启定时任务
     publicStaticProcess?:{
-        [key:string]:()=>void;
+        [key:string]:(this:StaticClass,filePath:string)=>void;
     };//静态资源进程拦截
 }
 

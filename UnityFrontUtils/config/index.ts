@@ -82,11 +82,7 @@ export const ServerConfig =  merge(<ServerOptions>{
         }
     },
     TimingTaskQueue:true,
-    publicStaticProcess:{
-        ".ico"(){
-            console.log(1111)
-        }
-    }
+    publicStaticProcess:{}
 }, custoConfig.default);
 
 //定时任务设置
