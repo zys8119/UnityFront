@@ -15,6 +15,7 @@
     "build_api": "ts-node UnityFrontUtils/build/api/apiServe.ts",
     "test": "ts-node test.ts"
   },
+  "main": "./main.ts",
   "types": "./UnityFrontUtils/typeStript.ts",
   "dependencies": {
     "@types/lodash": "^4.14.180",
