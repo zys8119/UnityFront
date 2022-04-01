@@ -117,10 +117,6 @@ export const TimingTaskQueue = merge(<TimingTaskQueueOptions>{
 // 全局方法
 
 export const GlobalPropertiesConfig:GlobalPropertiesType = merge(<GlobalPropertiesType>{
-    as(){
-        const a:any = {};
-        console.log(a.b.v.c)
-        console.log(this.$_success("Asdas"), 1111);
-    }
+
 },custoConfig.GlobalPropertiesConfig as GlobalPropertiesType)
 
