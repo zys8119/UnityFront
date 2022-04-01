@@ -6,6 +6,7 @@ import {
     StatusCodeOptions,
     getSvgCodeOptions, ControllerInitDataOptions_readdirSyncIgnore, createPictureOptions, RequestFormData,
 } from "../typeStript"
+import {BrowserLaunchArgumentOptions, Page, Browser} from "puppeteer";
 import { headersType } from "../typeStript/Types";
 import { ServerConfig, ServerPublicConfig } from "../config";
 import { AxiosStatic } from "axios";
