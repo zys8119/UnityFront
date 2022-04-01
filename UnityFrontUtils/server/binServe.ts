@@ -1,5 +1,4 @@
 import {version} from "../../package.json"
-import {resolve as pathResolve} from "path"
 const command = require("ncommand")
 export default async ()=>{
     return new Promise<boolean | void>(resolve=>{
