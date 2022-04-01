@@ -1,7 +1,7 @@
 const { parse } = require('url');
 import bodyData from "./bodyData"
 import UnityFrontController from "../controller/controller"
-import { ServerConfig } from "../config"
+import { ServerConfig, GlobalPropertiesConfig } from "../config"
 import StatusCode from "../../conf/StatusCode"
 import mysql from "../mysql"
 import SqlModel from "../../model/SqlModel"
@@ -39,6 +39,7 @@ module.exports = (request,response)=>{
                 StatusCode:StatusCode,
                 $_axios:Axios,
                 $_cookies:Utils.getCookies(request),
+                $_globalProperties:GlobalPropertiesConfig
             });
         });
     })

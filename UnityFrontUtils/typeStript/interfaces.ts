@@ -217,6 +217,10 @@ export interface SqlUtilsOptions {
     join?(data:object|string,showSqlStr?:boolean):SqlUtilsOptions;
 }
 
+export type GlobalPropertiesType = {
+    [key:string]:(this:ControllerInitDataOptions, ...args:any[])=>any | number | null | unknown | boolean | string | symbol
+}
+
 export interface ControllerInitDataOptions {
     [key:string]:any;
     request?:any;//请求体
@@ -243,6 +247,7 @@ export interface ControllerInitDataOptions {
     StatusCode?:StatusCodeOptions;//公共状态码定义
     $_axios?:AxiosStatic;//axios请求工具
     $_cookies?:any;//cookies
+    $_globalProperties?:GlobalPropertiesType;//全局属性配置
     setHeaders?(Headers:headersType):void;//设置返回头
     setRequestStatus?(Status:number):void;// 设置http 状态码
     Interceptor?():Promise<any>;// 全局拦截器

@@ -4,7 +4,11 @@ import {
     SqlUtilsOptions,
     SuccessSendDataOptions,
     StatusCodeOptions,
-    getSvgCodeOptions, ControllerInitDataOptions_readdirSyncIgnore, createPictureOptions, RequestFormData,
+    getSvgCodeOptions,
+    ControllerInitDataOptions_readdirSyncIgnore,
+    createPictureOptions,
+    RequestFormData,
+    GlobalPropertiesType,
 } from "../typeStript"
 import {BrowserLaunchArgumentOptions, Page, Browser} from "puppeteer";
 import { headersType } from "../typeStript/Types";
@@ -124,6 +128,7 @@ export default class applicationControllerClass extends PublicController impleme
     StatusCode:StatusCodeOptions;
     $_axios:AxiosStatic;
     $_cookies:any;
+    $_globalProperties:GlobalPropertiesType;
     setHeaders(Headers:headersType = {}){
         this.$_RequestHeaders = (<any>Object).assign(JSON.parse(JSON.stringify(this.$_RequestHeaders)),Headers);
     }

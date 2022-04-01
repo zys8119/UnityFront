@@ -6,6 +6,7 @@ import {
     mysqlOptions,
     ServerOptions,
     TimingTaskQueueOptions,
+    GlobalPropertiesType,
     ServerPublicConfigOptions
 } from "../typeStript";
 
@@ -111,3 +112,13 @@ export const TimingTaskQueue = merge(<TimingTaskQueueOptions>{
     // ClearLogTimeFrame:0,
     ClearLogTimeFrame:20000,
 }, custoConfig.TimingTaskQueue)
+
+
+// 全局方法
+
+export const GlobalPropertiesConfig:GlobalPropertiesType = merge(<GlobalPropertiesType>{
+    as(){
+        console.log(this);
+    }
+},custoConfig.GlobalPropertiesConfig as GlobalPropertiesType)
+
