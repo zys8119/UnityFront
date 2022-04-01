@@ -1,6 +1,6 @@
 {
   "name": "uf-node",
-  "version": "0.0.31",
+  "version": "0.0.32",
   "bin": {
     "uf": "./UnityFrontUtils/server/index.ts",
     "uf-install": "./UnityFrontUtils/server/install.ts",
@@ -8,15 +8,15 @@
   },
   "scripts": {
     "start": "npm run serve",
-    "serve": "ts-node UnityFrontUtils/server/index.ts -config ./uf.config.ts",
+    "serve": "ts-node UnityFrontUtils/server/index.ts",
     "ws": "ts-node UnityFrontUtils/webSocket/serve.ts",
     "build": "ts-node UnityFrontUtils/build/serve.ts",
     "install": "ts-node UnityFrontUtils/server/install.ts",
     "build_api": "ts-node UnityFrontUtils/build/api/apiServe.ts",
     "test": "ts-node test.ts"
   },
-  "main": "./main.ts",
-  "types": "./UnityFrontUtils/typeStript.ts",
+  "main": "main.ts",
+  "types": "UnityFrontUtils/typeStript/index.ts",
   "dependencies": {
     "@types/lodash": "^4.14.180",
     "@types/node": "^14.14.31",
