@@ -67,18 +67,19 @@ export default ()=>{
                     callback:function(a, arg) {
                         const projectName = arg[0] || "newProject";
                         copyFiless(projectName, null,(files:any) => {
-                            return files.filter(e=>!(new RegExp([
+                            const results = files.filter(e=>!(new RegExp([
                                 "uf-node.*node_modules",
                                 "\\.idea",
                                 "\\.git",
                                 "DS_Store",
-                                "application",
+                                "application[^Controller]",
                                 "Framework",
                                 "binServe\\.ts",
                                 "log",
                                 "lodo_text.png",
                                 projectName,
                             ].join("|")).test(e)))
+                            return results
                         })
                     }
                 })
