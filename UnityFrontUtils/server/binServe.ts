@@ -74,9 +74,7 @@ export default ()=>{
                                 "DS_Store",
                                 "application[^Controller]",
                                 "Framework",
-                                "binServe\\.ts",
                                 "log",
-                                "lodo_text.png",
                                 projectName,
                             ].join("|")).test(e)))
                             return results

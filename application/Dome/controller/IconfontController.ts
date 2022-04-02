@@ -8,6 +8,9 @@ import {readFileSync, unlinkSync, writeFileSync, existsSync, readdirSync, statSy
 import {template} from "lodash";
 const root = resolve(process.cwd(),"../packages/icons");
 // const root = resolve("/Users/zhangyunshan/work/wisdom-plus/icons","../packages/icons");
+if(!existsSync(root)){
+    utils.mkdirSync(root)
+}
 const config = resolve(root, "config.json");
 const src = resolve(root, "src");
 const main = resolve(root, "index.tsx");
