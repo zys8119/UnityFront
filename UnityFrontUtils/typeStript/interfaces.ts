@@ -572,6 +572,12 @@ export interface UtilsOptions {
     deleteFolder(dirPath:string, isAsync?:boolean, isRoot?:boolean):Promise<void> | void;
 
     /**
+     * 创建文件夹
+     * @param dirpath
+     */
+    mkdirSync(dirpath:string):void
+
+    /**
      * 拷贝目录
      * @param dirPath
      * @param targetPath

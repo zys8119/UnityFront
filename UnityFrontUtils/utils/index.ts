@@ -277,7 +277,9 @@ export default <UtilsOptions>{
             }
         }
     },
-
+    mkdirSync(dirpath) {
+        // console.log(path.parse(dirpath))
+    },
     copyDirSync(dirPath:string, targetPath:string, callback?:(file:string|string[], targetFile?:string)=>void | boolean, isGetFiles?:boolean){
         const root = resolve(dirPath,"..");
         let files = this.getJsonFiles(dirPath)
@@ -291,9 +293,8 @@ export default <UtilsOptions>{
             const relativePath = file.replace(resolve(root,basename(dirPath)),".")
             const target = resolve(targetPath, relativePath);
             const dir = resolve(target,"..");
-            console.log(dir)
             if(!existsSync(dir)){
-                // mkdirSync(dir)
+                this.mkdirSync(dir);
             }
             // copyFileSync(file, target)
             if(Object.prototype.toString.call(callback) === '[object Function]'){
