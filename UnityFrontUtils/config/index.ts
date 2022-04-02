@@ -1,14 +1,38 @@
 import TaskQueue from "../../TaskQueue/index"
+import {merge} from "lodash"
 const path = require("path");
+const ncol = require("ncol");
 import {
     mysqlOptions,
     ServerOptions,
     TimingTaskQueueOptions,
+    GlobalPropertiesType,
     ServerPublicConfigOptions
 } from "../typeStript";
 
+import runBinServe from "../server/binServe"
+(async ()=>{
+
+})()
+
+const custoConfig = (()=>{
+    // 运行命令后交互
+    runBinServe();
+    const configPath = process.env.ufConfigPath;
+    try {
+        if(configPath){
+            return require(path.resolve(process.cwd(),configPath))
+        }else {
+            return {}
+        }
+    }catch (e) {
+        ncol.error(e)
+        process.exit()
+    }
+
+})()
 //数据库配置
-export const mysqlConfig = <mysqlOptions>{
+export const mysqlConfig = merge(<mysqlOptions>{
     createPool:{},
     options:{
         connectionLimit : 10,
@@ -20,16 +44,15 @@ export const mysqlConfig = <mysqlOptions>{
         prefix:""
     },
     sqlModelAuto:false,
-};
+},custoConfig.mysqlConfig);
 
 //服务公共设置，可写入
-export const ServerPublicConfig = <ServerPublicConfigOptions>{
+export const ServerPublicConfig = merge(<ServerPublicConfigOptions>{
     // 公共密钥,更换密钥可以使用控制器方法$_createEncryptKey获取随机密钥
     createEncryptKey:"0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM",
-};
-
+}, custoConfig.ServerPublicConfig);
 //服务设置
-export const ServerConfig =  <ServerOptions>{
+export const ServerConfig =  merge(<ServerOptions>{
     port:81,
     ws_port:82,
     ws_user:{},
@@ -69,10 +92,11 @@ export const ServerConfig =  <ServerOptions>{
         }
     },
     TimingTaskQueue:true,
-};
+    publicStaticProcess:{}
+}, custoConfig.default);
 
 //定时任务设置
-export const TimingTaskQueue = <TimingTaskQueueOptions>{
+export const TimingTaskQueue = merge(<TimingTaskQueueOptions>{
     TaskQueue:()=>{
         if(Object.prototype.toString.call(TaskQueue) == '[object Array]'){
             TaskQueue.forEach((TaskItem)=>{
@@ -96,4 +120,11 @@ export const TimingTaskQueue = <TimingTaskQueueOptions>{
     //默认允许指定时间的上下范围20000毫秒
     // ClearLogTimeFrame:0,
     ClearLogTimeFrame:20000,
-}
+}, custoConfig.TimingTaskQueue)
+
+
+// 全局方法
+
+export const GlobalPropertiesConfig:GlobalPropertiesType = merge(<GlobalPropertiesType>{
+
+},custoConfig.GlobalPropertiesConfig as GlobalPropertiesType)

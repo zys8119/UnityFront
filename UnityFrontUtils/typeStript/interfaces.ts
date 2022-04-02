@@ -1,7 +1,7 @@
 import { headersType } from "./Types"
 import { AxiosStatic } from "axios"
 import {SqlModel} from "../../model/interfaces";
-import a from "../lib/formData";
+import StaticClass from "../../UnityFrontUtils/static";
 
 export interface mysqlOptions {
     //连接池
@@ -38,6 +38,9 @@ export interface ServerOptions {
     headers?:headersType;//header参数
     Template?:ServerOptions_Template;//模板相关配置
     TimingTaskQueue?:boolean;//是否开启定时任务
+    publicStaticProcess?:{
+        [key:string]:(this:StaticClass,filePath:string)=>void;
+    };//静态资源进程拦截
 }
 
 export interface ServerOptions_fsWatch {
@@ -214,6 +217,10 @@ export interface SqlUtilsOptions {
     join?(data:object|string,showSqlStr?:boolean):SqlUtilsOptions;
 }
 
+export type GlobalPropertiesType = {
+    [key:string]:(this:ControllerInitDataOptions, ...args:any[])=>any | number | null | unknown | boolean | string | symbol
+}
+
 export interface ControllerInitDataOptions {
     [key:string]:any;
     request?:any;//请求体
@@ -240,6 +247,7 @@ export interface ControllerInitDataOptions {
     StatusCode?:StatusCodeOptions;//公共状态码定义
     $_axios?:AxiosStatic;//axios请求工具
     $_cookies?:any;//cookies
+    $_globalProperties?:GlobalPropertiesType;//全局属性配置
     setHeaders?(Headers:headersType):void;//设置返回头
     setRequestStatus?(Status:number):void;// 设置http 状态码
     Interceptor?():Promise<any>;// 全局拦截器
@@ -272,6 +280,11 @@ export interface ControllerInitDataOptions {
         $$url:T;
         urlArrs:TT;
     };// UrlParams解析
+    /**
+     * 执行控制器方法
+     * @constructor
+     */
+    runControllerClassFunInit?(data:any):void
     /**
      * 控制器及url解析
      * @constructor

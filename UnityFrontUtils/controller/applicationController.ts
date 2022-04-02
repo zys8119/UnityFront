@@ -4,7 +4,11 @@ import {
     SqlUtilsOptions,
     SuccessSendDataOptions,
     StatusCodeOptions,
-    getSvgCodeOptions, ControllerInitDataOptions_readdirSyncIgnore, createPictureOptions, RequestFormData,
+    getSvgCodeOptions,
+    ControllerInitDataOptions_readdirSyncIgnore,
+    createPictureOptions,
+    RequestFormData,
+    GlobalPropertiesType,
 } from "../typeStript"
 import {BrowserLaunchArgumentOptions, Page, Browser} from "puppeteer";
 import { headersType } from "../typeStript/Types";
@@ -124,6 +128,7 @@ export default class applicationControllerClass extends PublicController impleme
     StatusCode:StatusCodeOptions;
     $_axios:AxiosStatic;
     $_cookies:any;
+    $_globalProperties:GlobalPropertiesType;
     setHeaders(Headers:headersType = {}){
         this.$_RequestHeaders = (<any>Object).assign(JSON.parse(JSON.stringify(this.$_RequestHeaders)),Headers);
     }
@@ -266,6 +271,29 @@ export default class applicationControllerClass extends PublicController impleme
         return {
             $$url,
             urlArrs,
+        }
+    }
+    async runControllerClassFunInit({ControllerClassInit, ControllerClassName, urlArrs}){
+        try {
+            await ControllerClassInit[urlArrs[2]]();
+        }catch (err) {
+            const errorMessage = err.stack
+                .replace(/\(/img,"<span>")
+                .replace(/\)/img,"</span>")
+                .split("\n")
+                .map(e=>`<div>${e}</div>`)
+                .join("");
+            Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
+                title:`拦截器错误`,
+                error:{
+                    "错误来源 -> ":ServerConfig.Template.ErrorPathSource,
+                    "模块 -> ":urlArrs[0],
+                    "控制器 -> ":ControllerClassName,
+                    "方法 -> ":urlArrs[2],
+                    "描述 -> ":`<div class='errorMessage'>${errorMessage}</div>`,
+                },
+                interceptorErr:err,
+            });
         }
     }
 
@@ -438,7 +466,11 @@ export default class applicationControllerClass extends PublicController impleme
                                 }
                                 ControllerClassInit.setHeaders(headers)
                             }
-                            ControllerClassInit[urlArrs[2]]();
+                            this.runControllerClassFunInit({
+                                ControllerClassName,
+                                ControllerClassInit,
+                                urlArrs
+                            })
                         }
                     }).catch(err=>{
                         Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
@@ -468,7 +500,11 @@ export default class applicationControllerClass extends PublicController impleme
                 }
 
             }else {
-                ControllerClassInit[urlArrs[2]]();
+                this.runControllerClassFunInit({
+                    ControllerClassName,
+                    ControllerClassInit,
+                    urlArrs
+                })
             }
         }
     }

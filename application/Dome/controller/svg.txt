@@ -1,0 +1,7 @@
+import {defineComponent} from "vue"
+export default defineComponent({
+    name:"<%= name %>",
+    render(){
+        return (<%= svg %>)
+    }
+})

@@ -5,8 +5,8 @@ import {ServerConfig, TimingTaskQueue, mysqlConfig} from "../config"
 import webSocketServe from "../webSocket/serve"
 import sqlModelAuto from "./sqlModelAuto"
 import ServeInfo from "./ServeInfo"
-const http = require("http");
-const app = require('./app');
+import http from "http"
+import app from "./app"
 // sqlModelAuto
 if(mysqlConfig.sqlModelAuto){
     new sqlModelAuto();
@@ -26,4 +26,3 @@ new ServeInfo().info();
 if(ServerConfig.ws_port){
     new webSocketServe();
 }
-

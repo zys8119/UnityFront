@@ -3,7 +3,7 @@ import fsWatch from "./fsWatch"
 import { ServerConfig } from "../config"
 import { SendDataOptions } from "../typeStript";
 const ncol = require("ncol")
-module.exports =  (request,response)=>{
+export default  (request,response)=>{
     // 超时处理
     (request.setTimeout)(ServerConfig.timeout,()=>{
         ncol.color(function (){
