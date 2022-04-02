@@ -261,6 +261,7 @@ export default <UtilsOptions>{
                     let curPath = path + "/" + file;
                     if(statSync(curPath).isDirectory()) {
                         this.deleteFolder(curPath, isAsync);
+                        rmdirSync(curPath);
                     } else {
                         unlinkSync(curPath);
                     }
@@ -278,15 +279,21 @@ export default <UtilsOptions>{
         }
     },
     mkdirSync(dirpath) {
-        // console.log(path.parse(dirpath))
+        const dirs = [];
+        let temp = dirpath
+        while (!fs.existsSync(temp)){
+            dirs.unshift(temp)
+            temp = resolve(temp,"..")
+        }
+        dirs.forEach(d=>{
+            mkdirSync(d);
+        })
     },
     copyDirSync(dirPath:string, targetPath:string, callback?:(file:string|string[], targetFile?:string)=>void | boolean, isGetFiles?:boolean){
         const root = resolve(dirPath,"..");
         let files = this.getJsonFiles(dirPath)
         if(isGetFiles && Object.prototype.toString.call(callback) === '[object Function]'){
-            if(callback(files)){
-                return;
-            }
+            files = callback(files) || files;
         }
         this.deleteFolder(targetPath, false);
         files.forEach(file=>{
@@ -296,7 +303,7 @@ export default <UtilsOptions>{
             if(!existsSync(dir)){
                 this.mkdirSync(dir);
             }
-            // copyFileSync(file, target)
+            copyFileSync(file, target)
             if(Object.prototype.toString.call(callback) === '[object Function]'){
                 callback(file, target)
             }

@@ -1,9 +1,25 @@
 import {version} from "../../package.json"
 import utils from "../utils/index";
-import {resolve, relative} from "path"
-import {copyFileSync, createReadStream, createWriteStream, existsSync, mkdirSync, readFileSync} from "fs"
+import {resolve} from "path"
 import progress from "../build/progress";
 const command = require("ncommand")
+const copyFiless = (projectName, copyTarget)=>{
+    const targetPath = resolve(process.cwd(),projectName);
+    const copyTargetPath = resolve(resolve(__dirname, "../../"), copyTarget);
+    let bar = null;
+    utils.copyDirSync(copyTargetPath, targetPath, (files:any,targetFile)=>{
+        if(!targetFile){
+            bar = new progress('进度 :bar:current/:total', { total: files.length });
+        }else {
+            if(bar){
+                bar.tick();
+                if(bar.complete){
+                    console.log("✨  Done.")
+                }
+            }
+        }
+    }, true)
+}
 export default ()=>{
     if(process.argv[2]){
         let isHelp = false;
@@ -31,48 +47,15 @@ export default ()=>{
                     }
                 })
                 .Commands({
-                    log:["-icon","...info('<projectName>')","当前目录创建图标管理项目, 默认名称：IconfontProject"],
+                    log:["-icon","...info('<projectName>')","当前目录创建图标管理项目, 默认名称：newProject"],
                     callback:function(a, arg) {
-                        const projectName = arg[0] || "IconfontProject";
-                        const targetPath = resolve(process.cwd(),projectName);
-                        const IocnfontPath = resolve(resolve(__dirname, "../../"), "./Iocnfont");
-                        let bar = null;
-                        utils.copyDirSync(IocnfontPath, targetPath, (files,targetFile)=>{
-                            if(!targetFile){
-                                bar = new progress('进度 :bar:current/:total', { total: files.length });
-                            }else {
-                                if(bar){
-                                    bar.tick();
-                                    if(bar.complete){
-                                        console.log("✨  Done.")
-                                    }
-                                }
-                            }
-                        }, true)
+                        copyFiless(arg[0] || "newProject", "./Iocnfont")
                     }
                 })
                 .Commands({
-                    log:["-app","...info('<applicationName>')","当前目录同步application代码, 默认名称：IconfontProject"],
+                    log:["-app","...info('<applicationName>')","当前目录同步application代码, 默认名称：newProject"],
                     callback:function(a, arg) {
-                        const projectName = arg[0] || "IconfontProject";
-                        const targetPath = resolve(process.cwd(),projectName);
-                        const IocnfontPath = resolve(resolve(__dirname, "../../"), "./application");
-                        // let bar = null;
-                        // utils.copyDirSync(IocnfontPath, targetPath, (files,targetFile)=>{
-                        //     if(!targetFile){
-                        //         console.log(files)
-                        //         bar = new progress('进度 :bar:current/:total', { total: files.length });
-                        //     }else {
-                        //         if(bar){
-                        //             bar.tick();
-                        //             if(bar.complete){
-                        //                 console.log("✨  Done.")
-                        //             }
-                        //         }
-                        //     }
-                        // }, true)
-                        utils.copyDirSync(IocnfontPath, targetPath)
-                        // console.log(IocnfontPath, targetPath)
+                        copyFiless(arg[0] || "newProject", "./application")
                     }
                 })
 
