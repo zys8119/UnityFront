@@ -295,18 +295,28 @@ export default <UtilsOptions>{
         if(isGetFiles && Object.prototype.toString.call(callback) === '[object Function]'){
             files = callback(files) || files;
         }
-        this.deleteFolder(targetPath, false);
+        try {
+            this.deleteFolder(targetPath, false);
+
+        }catch (e){
+            console.log(e.message)
+        }
         files.forEach(file=>{
-            const relativePath = file.replace(resolve(root,basename(dirPath)),".")
-            const target = resolve(targetPath, relativePath);
-            const dir = resolve(target,"..");
-            if(!existsSync(dir)){
-                this.mkdirSync(dir);
+            try {
+                const relativePath = file.replace(resolve(root,basename(dirPath)),".")
+                const target = resolve(targetPath, relativePath);
+                const dir = resolve(target,"..");
+                if(!existsSync(dir)){
+                    this.mkdirSync(dir);
+                }
+                copyFileSync(file, target)
+                if(Object.prototype.toString.call(callback) === '[object Function]'){
+                    callback(file, target)
+                }
+            }catch (e){
+                console.log(e.message)
             }
-            copyFileSync(file, target)
-            if(Object.prototype.toString.call(callback) === '[object Function]'){
-                callback(file, target)
-            }
+
         })
     }
 }

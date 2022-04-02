@@ -1,6 +1,6 @@
 {
   "name": "uf-node",
-  "version": "0.0.38",
+  "version": "0.0.39",
   "bin": {
     "uf": "./UnityFrontUtils/server/index.ts",
     "uf-install": "./UnityFrontUtils/server/install.ts",
@@ -14,7 +14,7 @@
     "install": "ts-node UnityFrontUtils/server/install.ts",
     "build_api": "ts-node UnityFrontUtils/build/api/apiServe.ts",
     "test": "ts-node test.ts",
-    "bin-serve-test": "ts-node UnityFrontUtils/server/index.ts -app"
+    "bin-serve-test": "ts-node UnityFrontUtils/server/index.ts create"
   },
   "main": "main.ts",
   "types": "UnityFrontUtils/typeStript/index.ts",

@@ -3,13 +3,17 @@ import utils from "../utils/index";
 import {resolve} from "path"
 import progress from "../build/progress";
 const command = require("ncommand")
-const copyFiless = (projectName, copyTarget)=>{
+const copyFiless = (projectName, copyTarget, callback?:(<T>(files:T)=>T))=>{
     const targetPath = resolve(process.cwd(),projectName);
-    const copyTargetPath = resolve(resolve(__dirname, "../../"), copyTarget);
+    const root = resolve(__dirname, "../../");
+    const copyTargetPath = copyTarget ? resolve(root, copyTarget) : root;
     let bar = null;
     utils.copyDirSync(copyTargetPath, targetPath, (files:any,targetFile)=>{
         if(!targetFile){
             bar = new progress('进度 :bar:current/:total', { total: files.length });
+            if(Object.prototype.toString.call(callback) === '[object Function]'){
+                return callback(files)
+            }
         }else {
             if(bar){
                 bar.tick();
@@ -47,7 +51,7 @@ export default ()=>{
                     }
                 })
                 .Commands({
-                    log:["-icon","...info('<projectName>')","当前目录创建图标管理项目, 默认名称：newProject"],
+                    log:["-icon","...info('<IconProjectName>')","当前目录创建图标管理项目, 默认名称：newProject"],
                     callback:function(a, arg) {
                         copyFiless(arg[0] || "newProject", "./Iocnfont")
                     }
@@ -56,6 +60,25 @@ export default ()=>{
                     log:["-app","...info('<applicationName>')","当前目录同步application代码, 默认名称：newProject"],
                     callback:function(a, arg) {
                         copyFiless(arg[0] || "newProject", "./application")
+                    }
+                })
+                .Commands({
+                    log:["create","...info('<projectName>')","当前目录创建项目, 默认名称：newProject"],
+                    callback:function(a, arg) {
+                        copyFiless(arg[0] || "newProject", null,(files:any) => {
+                            const results = files.filter(e=>!(new RegExp([
+                                "node_modules",
+                                "\\.idea",
+                                "\\.git",
+                                "DS_Store",
+                                "application",
+                                "Framework",
+                                "binServe\\.ts",
+                                "log",
+                                "lodo_text.png",
+                            ].join("|")).test(e)));
+                            return results
+                        })
                     }
                 })
 
