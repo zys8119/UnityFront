@@ -1,9 +1,7 @@
-// import "../typeStript"
 import {SendDataOptions, TemplateErrorDataOptions, UtilsOptions } from "../typeStript"
 import { ServerConfig } from "../config"
 import {copyFileSync, existsSync, mkdirSync, readdirSync, rmdirSync, statSync, unlinkSync} from "fs";
-import {resolve} from "path";
-import progress from "../build/progress";
+import {resolve, basename} from "path";
 const path = require('path');
 const fs = require("fs");
 const ncol = require('ncol');
@@ -242,7 +240,7 @@ export default <UtilsOptions>{
         return cookie;
     },
 
-    async deleteFolder(path, isAsync = true) {
+    async deleteFolder(path, isAsync = true, isRoot:boolean = true) {
         let files = [];
         if( existsSync(path) ) {
             files = readdirSync(path);
@@ -251,7 +249,7 @@ export default <UtilsOptions>{
                     return new Promise<void>(resolve1=>{
                         let curPath = path + "/" + file;
                         if(statSync(curPath).isDirectory()) {
-                            this.deleteFolder(curPath, isAsync);
+                            this.deleteFolder(curPath, isAsync, false);
                         } else {
                             unlinkSync(curPath);
                         }
@@ -270,32 +268,36 @@ export default <UtilsOptions>{
             }
 
             rmdirSync(path);
-            if(!existsSync(path)){
+            if(isRoot && !existsSync(path)){
                 mkdirSync(path);
             }
         }else {
-            mkdirSync(path);
+            if(isRoot){
+                mkdirSync(path);
+            }
         }
     },
 
     copyDirSync(dirPath:string, targetPath:string, callback?:(file:string|string[], targetFile?:string)=>void | boolean, isGetFiles?:boolean){
         const root = resolve(dirPath,"..");
-        let files = this.getJsonFiles(dirPath);
+        let files = this.getJsonFiles(dirPath)
         if(isGetFiles && Object.prototype.toString.call(callback) === '[object Function]'){
             if(callback(files)){
                 return;
             }
         }
-        this.deleteFolder(targetPath);
+        this.deleteFolder(targetPath, false);
         files.forEach(file=>{
-            const dir = resolve(targetPath, resolve(file, "..").replace(root,"."));
-            const targetFile = resolve(targetPath, file.replace(root,"."));
+            const relativePath = file.replace(resolve(root,basename(dirPath)),".")
+            const target = resolve(targetPath, relativePath);
+            const dir = resolve(target,"..");
+            console.log(dir)
             if(!existsSync(dir)){
-                mkdirSync(dir)
+                // mkdirSync(dir)
             }
-            copyFileSync(file, targetFile)
+            // copyFileSync(file, target)
             if(Object.prototype.toString.call(callback) === '[object Function]'){
-                callback(file, targetFile)
+                callback(file, target)
             }
         })
     }

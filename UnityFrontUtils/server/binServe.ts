@@ -51,6 +51,30 @@ export default ()=>{
                         }, true)
                     }
                 })
+                .Commands({
+                    log:["-app","...info('<applicationName>')","当前目录同步application代码, 默认名称：IconfontProject"],
+                    callback:function(a, arg) {
+                        const projectName = arg[0] || "IconfontProject";
+                        const targetPath = resolve(process.cwd(),projectName);
+                        const IocnfontPath = resolve(resolve(__dirname, "../../"), "./application");
+                        // let bar = null;
+                        // utils.copyDirSync(IocnfontPath, targetPath, (files,targetFile)=>{
+                        //     if(!targetFile){
+                        //         console.log(files)
+                        //         bar = new progress('进度 :bar:current/:total', { total: files.length });
+                        //     }else {
+                        //         if(bar){
+                        //             bar.tick();
+                        //             if(bar.complete){
+                        //                 console.log("✨  Done.")
+                        //             }
+                        //         }
+                        //     }
+                        // }, true)
+                        utils.copyDirSync(IocnfontPath, targetPath)
+                        // console.log(IocnfontPath, targetPath)
+                    }
+                })
 
 
 

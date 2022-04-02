@@ -41,7 +41,7 @@ export class IconfontController extends applicationController{
     async synchronousConfigs(){
         try {
             // 删除目录资源
-            await utils.deleteFolder(src, false);
+            await utils.deleteFolder(src);
             const json = JSON.parse(readFileSync(config,"utf-8"));
             writeFileSync(main, "")
             for (let icon in json){

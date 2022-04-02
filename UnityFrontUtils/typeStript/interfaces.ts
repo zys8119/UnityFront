@@ -567,8 +567,9 @@ export interface UtilsOptions {
      * 删除目录
      * @param dirPath
      * @param isAsync
+     * @param isRoot
      */
-    deleteFolder(dirPath:string, isAsync?:boolean):Promise<void> | void;
+    deleteFolder(dirPath:string, isAsync?:boolean, isRoot?:boolean):Promise<void> | void;
 
     /**
      * 拷贝目录

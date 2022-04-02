@@ -14,7 +14,7 @@
     "install": "ts-node UnityFrontUtils/server/install.ts",
     "build_api": "ts-node UnityFrontUtils/build/api/apiServe.ts",
     "test": "ts-node test.ts",
-    "bin-serve-test": "ts-node UnityFrontUtils/server/index.ts -icon"
+    "bin-serve-test": "ts-node UnityFrontUtils/server/index.ts -app"
   },
   "main": "main.ts",
   "types": "UnityFrontUtils/typeStript/index.ts",
