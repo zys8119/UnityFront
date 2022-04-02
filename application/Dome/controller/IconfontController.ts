@@ -1,4 +1,5 @@
 import {applicationController} from "../../../UnityFrontUtils/controller/applicationController";
+import utils from "../../../UnityFrontUtils/utils/index";
 import puppeteer, {
     Page,
 } from "puppeteer"
@@ -13,27 +14,6 @@ const main = resolve(root, "index.tsx");
 export class IconfontController extends applicationController{
     constructor() {
         super();
-    }
-    async deleteFolder(path) {
-        let files = [];
-        if( existsSync(path) ) {
-            files = readdirSync(path);
-            await Promise.all(files.map(file=>{
-                return new Promise<void>(resolve1=>{
-                    let curPath = path + "/" + file;
-                    if(statSync(curPath).isDirectory()) {
-                        this.deleteFolder(curPath);
-                    } else {
-                        unlinkSync(curPath);
-                    }
-                    resolve1();
-                })
-            }))
-            rmdirSync(path);
-            if(!existsSync(path)){
-                mkdirSync(path);
-            }
-        }
     }
 
     toHump(name) {
@@ -61,7 +41,7 @@ export class IconfontController extends applicationController{
     async synchronousConfigs(){
         try {
             // 删除目录资源
-            await this.deleteFolder(src);
+            await utils.deleteFolder(src, false);
             const json = JSON.parse(readFileSync(config,"utf-8"));
             writeFileSync(main, "")
             for (let icon in json){

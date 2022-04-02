@@ -562,6 +562,22 @@ export interface UtilsOptions {
      * @param request
      */
     getCookies(request):object|null;
+
+    /**
+     * 删除目录
+     * @param dirPath
+     * @param isAsync
+     */
+    deleteFolder(dirPath:string, isAsync?:boolean):Promise<void> | void;
+
+    /**
+     * 拷贝目录
+     * @param dirPath
+     * @param targetPath
+     * @param callback
+     * @param isGetFiles
+     */
+    copyDirSync(dirPath:string, targetPath:string, callback?:(file:string|string[], targetFile?:string)=>void | boolean, isGetFiles?:boolean): void;
 }
 
 export interface encryptOptions {

@@ -1,4 +1,8 @@
 import {version} from "../../package.json"
+import utils from "../utils/index";
+import {resolve, relative} from "path"
+import {copyFileSync, createReadStream, createWriteStream, existsSync, mkdirSync, readFileSync} from "fs"
+import progress from "../build/progress";
 const command = require("ncommand")
 export default ()=>{
     if(process.argv[2]){
@@ -24,6 +28,27 @@ export default ()=>{
                     callback(e, a) {
                         process.env.ufConfigPath = a[0] || "";
                         return true
+                    }
+                })
+                .Commands({
+                    log:["-icon","...info('<projectName>')","当前目录创建图标管理项目, 默认名称：IconfontProject"],
+                    callback:function(a, arg) {
+                        const projectName = arg[0] || "IconfontProject";
+                        const targetPath = resolve(process.cwd(),projectName);
+                        const IocnfontPath = resolve(resolve(__dirname, "../../"), "./Iocnfont");
+                        let bar = null;
+                        utils.copyDirSync(IocnfontPath, targetPath, (files,targetFile)=>{
+                            if(!targetFile){
+                                bar = new progress('进度 :bar:current/:total', { total: files.length });
+                            }else {
+                                if(bar){
+                                    bar.tick();
+                                    if(bar.complete){
+                                        console.log("✨  Done.")
+                                    }
+                                }
+                            }
+                        }, true)
                     }
                 })
 
