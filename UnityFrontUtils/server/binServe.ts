@@ -74,7 +74,7 @@ export default ()=>{
                                 "DS_Store",
                                 "application[^Controller]",
                                 "Framework",
-                                "log",
+                                "log[^.ts]",
                                 projectName,
                             ].join("|")).test(e)))
                             return results
