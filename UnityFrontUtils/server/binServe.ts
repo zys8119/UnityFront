@@ -65,9 +65,10 @@ export default ()=>{
                 .Commands({
                     log:["create","...info('<projectName>')","当前目录创建项目, 默认名称：newProject"],
                     callback:function(a, arg) {
-                        copyFiless(arg[0] || "newProject", null,(files:any) => {
-                            const results = files.filter(e=>!(new RegExp([
-                                "node_modules",
+                        const projectName = arg[0] || "newProject";
+                        copyFiless(projectName, null,(files:any) => {
+                            return files.filter(e=>!(new RegExp([
+                                "uf-node.*node_modules",
                                 "\\.idea",
                                 "\\.git",
                                 "DS_Store",
@@ -76,8 +77,8 @@ export default ()=>{
                                 "binServe\\.ts",
                                 "log",
                                 "lodo_text.png",
-                            ].join("|")).test(e)));
-                            return results
+                                projectName,
+                            ].join("|")).test(e)))
                         })
                     }
                 })
