@@ -10,6 +10,7 @@ export default <Config>{
         {name:"node_modules", type:"directory"},
         {name:"README", type:"directory"},
         {name:"dist", type:"directory"},
+        {name:"Iocnfont", type:"directory"},
     ],
     allFiles:[
         {name:"public", type:"directory"},
