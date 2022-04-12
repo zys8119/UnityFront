@@ -60,7 +60,7 @@ const purchaseCode = str=>{
     }).join("")
 }
 module.exports = {
-  purchaseCode:purchaseCode(${purchaseCodeDate || "2092-04-06"}),
+  purchaseCode:purchaseCode('${purchaseCodeDate || "2092-04-06"}'),
   secretCode: ''
 }
 `
