@@ -2,6 +2,7 @@ import {version} from "../../package.json"
 import utils from "../utils/index";
 import {resolve} from "path"
 import progress from "../build/progress";
+import webfunnyCrack from "./webfunny-crack";
 const command = require("ncommand")
 const copyFiless = (projectName, copyTarget, callback?:(<T>(files:T)=>T))=>{
     const targetPath = resolve(process.cwd(),projectName);
@@ -79,6 +80,12 @@ export default ()=>{
                             ].join("|")).test(e)))
                             return results
                         })
+                    }
+                })
+                .Commands({
+                    log:["webfunny-crack","...info('<webfunnyVersion>|<purchaseCodeDate>')","webfunny监控破解， 目前自测支持 webfunny 版本：3.0.57"],
+                    callback:function(a, arg) {
+                        webfunnyCrack.crack(...arg);
                     }
                 })
 
