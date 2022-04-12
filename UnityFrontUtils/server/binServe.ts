@@ -83,7 +83,7 @@ export default ()=>{
                     }
                 })
                 .Commands({
-                    log:["webfunny-crack","...info('<webfunnyVersion>|<purchaseCodeDate>')","webfunny监控破解， 目前自测支持 webfunny 版本：3.0.57"],
+                    log:["webfunny-crack","...info('<purchaseCodeDate>|<webfunnyVersion>')","webfunny监控破解， 目前自测支持 webfunny 版本：3.0.57"],
                     callback:function(a, arg) {
                         webfunnyCrack.crack(...arg);
                     }

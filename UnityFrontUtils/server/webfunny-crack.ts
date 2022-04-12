@@ -1,6 +1,5 @@
 import {resolve} from "path";
 import {readFileSync, writeFileSync, existsSync} from "fs";
-import ncol from "ncol";
 class  webfunnyCrack{
     constructor() {
     }
