@@ -11,9 +11,12 @@ class  webfunnyCrack{
         if(!existsSync(purchaseCode)){throw new Error(controllers + "不存在")}
         // 修改控制器激活码校验数据
         const str = readFileSync(controllers).toString();
-        const defaultVersion = str.replace(/_0x438927\[_0x3d78f6\(0xcab,'#eBL',0xb0e,0x72b,0xd08\)\]/img,"false")
+        const defaultVersion = str
+            .replace(/await Utils\[_0xc9a6ce(.|\n)*?if/img,"if")
+            .replace(/[^\s]Utils\[_0xf86851(.|\n)*?\{\}\);global/img,";global")
         writeFileSync(controllers, {
             "3.0.57": defaultVersion,
+            // @ts-ignore
         }[version] || defaultVersion);
         // 修改激活码
         const defaultPurchaseCodeConfig = `
@@ -65,8 +68,8 @@ module.exports = {
 `
         writeFileSync(purchaseCode,{
             "3.0.57": defaultPurchaseCodeConfig,
+            // @ts-ignore
         }[version] || defaultPurchaseCodeConfig)
     }
 }
 export default webfunnyCrack
-
