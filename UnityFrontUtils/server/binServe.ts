@@ -86,6 +86,7 @@ export default ()=>{
                     log:["webfunny-crack","...info('<purchaseCodeDate>|<webfunnyVersion>')","webfunny监控破解， 目前自测支持 webfunny 版本：3.0.57"],
                     callback:function(a, arg) {
                         webfunnyCrack.crack(...arg);
+                        console.log("破解完成")
                     }
                 })
 
