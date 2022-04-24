@@ -924,8 +924,9 @@ export default class applicationControllerClass extends PublicController impleme
     $_getRequestFormData(): Promise<RequestFormData[]> {
         return new Promise((resolve,reject) => {
             try {
-                if(this.$_bodySource.length > 0){
-                    let bodyFormData = this.bufferSplit(this.$_bodySource,"------").map(e=>{
+                const splitter = (this.request.headers['content-type'].match(/----(.*)/) || [])[1]
+                if(this.$_bodySource.length > 0 && splitter){
+                    let bodyFormData = this.bufferSplit(this.$_bodySource,splitter).map(e=>{
                         let buffArr = this.bufferSplit(e,"\r\n\r\n");
                         if(buffArr.length === 2){
                             let resUlt:any = {};
