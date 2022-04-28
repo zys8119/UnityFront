@@ -1,6 +1,6 @@
 <template>
     <div class="ContentTable" ref="contentTable_el_table">
-        <slot name="table">
+        <slot name="table" :data="ContentTableData">
             <div class="ContentTableHeader" v-if="(pagePosition == 'top' && !_currentPagination.noPage) || displayColumnShow">
                 <el-pagination  class="el-pagination top" v-if="pagePosition == 'top' && !_currentPagination.noPage"
                                 @size-change="_ContentTable_pagination_currentPaginationChange"

@@ -4,8 +4,9 @@
             <layout-filter-content>
                 <filter-content slot="filter" :config="{rightBtns:[
                     {name:'新增类型', emit:'addType'}
-                ]}" @addType="addType"></filter-content>
+                ]}" @addType="addType" @search="search" @reset="reset" v-model="params.search"></filter-content>
                 <content-table ref="table"
+                               :params="params"
                                :columns="columns"
                                :apiPath="apis.LogNakadai.ApplicationType.list"
                                @editRow="addType"
@@ -27,7 +28,8 @@ export default {
                     {name:"编辑", type:"text", className:"primary", emit:'editRow'},
                     {name:"删除", type:"text", className:"delete", emit:"delRow"}
                 ]},
-            ]
+            ],
+            params:{}
         }
     },
     mounted() {
@@ -38,6 +40,7 @@ export default {
             this.reset()
         },
         reset(){
+            this.params = {}
             this.search()
         },
         search(){

@@ -151,6 +151,14 @@ export default new vueRouter({
                                 bodyBaColor,
                             },
                             component:()=>import("@/components/view/ApplicationManagement/applicationType")
+                        },
+                        {
+                            path:"applicationManagement",
+                            title:"应用管理",
+                            meta:{
+                                bodyBaColor,
+                            },
+                            component:()=>import("@/components/view/ApplicationManagement/applicationManagement")
                         }
                     ]
                 }
