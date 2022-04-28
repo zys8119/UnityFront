@@ -1,0 +1,1 @@
+insert into log-monitoring-platform.user (id, username, name, password, phone, email, avatar, type, status) values ('671b1f4f7fbe7927ebe7740b6acf75ad', 'admin', '管理员', '21232f297a57a5a743894a0e4a801fc3', '18700000000', 'UnityFront@qq.com', 'http://localhost:81/public/upload/1651112850527-4105-1651112850527.png', 0, 1);
