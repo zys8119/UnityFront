@@ -29,5 +29,11 @@ export default class ApplicationTypeModel extends PublicModel implements PublicM
             DEFAULT:`'1'`,
             COMMENT:`'是否删除：1 未删除、2 已删除'`,
         },
+        creation_time:{
+            varchar:"(255)",
+            COMMENT:`'应用创建时间'`,
+            NOT:'NULL',
+            DEFAULT:`''`,
+        },
     }
 }

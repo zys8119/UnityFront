@@ -19,7 +19,12 @@
                                 <div class="_title">
                                     {{item.name}}
                                 </div>
-                                <div class="_icon iconfont">&#xe63a;</div>
+                                <div class="_icon iconfont" @click.stop="$router.push({
+                                    path:'/ApplicationManagement/application-management-setting',
+                                    query:{
+                                        id:item.id
+                                    }
+                                })">&#xe63a;</div>
                             </div>
                             <div class="_statistical">
                                 <div class="_statistical_item">

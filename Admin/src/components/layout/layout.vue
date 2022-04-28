@@ -43,7 +43,11 @@ import layoutAsideContentMain from "./layoutAsideContentMain"
 import layoutTabsMain from "./layoutTabsMain"
 export default {
     name: "layout",
-    components:{ layoutHeaderMain, layoutAsideContentMain, layoutTabsMain },
+    components:{
+        layoutHeaderMain,
+        layoutAsideContentMain,
+        layoutTabsMain
+    },
     computed:{
         showAside(){
             return this.airforce.menusInfo && this.airforce.menusInfo.children && this.airforce.menusInfo.children.length > 0

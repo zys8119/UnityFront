@@ -56,6 +56,7 @@ export class ApplicationController extends applicationController{
             let data:any = {
                 name:this.$_body.name,
                 id:`${Date.now()}${parseInt((Math.random()*1000).toString())}`,
+                creation_time:this.$dayjs().format().toString()
             };
             new this.$sqlModel.ApplicationModel().insert(data).query()
                 .then(()=>this.$_success())
@@ -102,6 +103,15 @@ export class ApplicationController extends applicationController{
             name:this.$_body.name,
         }).where({id:this.$_body.id}).query()
             .then(()=>this.$_success())
+            .catch(()=>this.$_error());
+    }
+
+    get(){
+        if(!this.$_query.id){return this.$_error("【id】 字段必填")}
+        new this.$sqlModel.ApplicationModel().select().from().where({
+            id:this.$_query.id,
+        }).query()
+            .then((res)=>this.$_success(res[0] || {}))
             .catch(()=>this.$_error());
     }
 }

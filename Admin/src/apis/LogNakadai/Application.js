@@ -27,4 +27,11 @@ export default {
             data,
         })
     },
+    get(data){
+        return this.axios({
+            url:"/LogNakadai/Application/get",
+            method:"get",
+            data,
+        })
+    },
 }
