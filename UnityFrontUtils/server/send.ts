@@ -29,8 +29,8 @@ module.exports = (request,response)=>{
                 },
                 $_RequestStatus:ServerConfig.RequestStatus,
                 $_RequestHeaders:ServerConfig.headers,
-                $mysql:(optionsConfig?:object,isEnd?:boolean)=>{
-                    return new mysql(optionsConfig,isEnd);
+                $mysql(optionsConfig?:object,isEnd?:boolean){
+                    return new mysql(optionsConfig,isEnd, this);
                 },
                 $sqlModel:SqlModel,
                 __dir:null,

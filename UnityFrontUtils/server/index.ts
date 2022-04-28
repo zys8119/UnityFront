@@ -1,4 +1,5 @@
 import "../typeStript"
+import "./env"
 import {ServerConfig, TimingTaskQueue, mysqlConfig} from "../config"
 import webSocketServe from "../webSocket/serve"
 import sqlModelAuto from "./sqlModelAuto"

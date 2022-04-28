@@ -1,17 +1,19 @@
 {
   "scripts": {
     "start": "npm run serve",
-    "serve": "node UnityFrontUtils/server/index.js",
-    "ws": "node UnityFrontUtils/webSocket/serve.js",
-    "build": "node UnityFrontUtils/build/serve.js",
-    "build_api": "node UnityFrontUtils/build/api/apiServe.js"
+    "serve": "ts-node UnityFrontUtils/server/index.ts",
+    "ws": "ts-node UnityFrontUtils/webSocket/serve.ts",
+    "build": "ts-node UnityFrontUtils/build/serve.ts",
+    "build_api": "ts-node UnityFrontUtils/build/api/apiServe.ts"
   },
   "devDependencies": {
+    "@types/node": "^14.14.31",
+    "@types/uglify-js": "^3.13.1",
     "axios": "^0.19.0",
     "mysql": "^2.17.1",
     "ncol": "^0.0.7",
     "pug": "^2.0.4",
-    "@types/node": "^14.14.31"
-  },
-  "dependencies": {}
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2"
+  }
 }

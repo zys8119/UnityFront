@@ -1,6 +1,8 @@
 import "../typeStript"
 import {mysqlConfig, ServerConfig} from "../config"
 import {SqlUtilsOptions, getPagePageConfigType} from "../typeStript";
+import applicationControllerClass from "../controller/applicationController";
+
 let mysqlTool = require('mysql');
 let ncol = require('ncol');
 class mysql implements SqlUtilsOptions{
@@ -8,7 +10,9 @@ class mysql implements SqlUtilsOptions{
     private selectSql = '';
     private showSqlStrBool = false;
     private isEnd = false;
-    constructor(optionsConfig:object,isEnd?:boolean){
+    private applicationController:applicationControllerClass;
+    constructor(optionsConfig:object,isEnd?:boolean, applicationController?:applicationControllerClass){
+        this.applicationController = applicationController;
         this.selectSql = '';
         this.isEnd = isEnd;
         let options = JSON.parse(JSON.stringify(mysqlConfig.options));
@@ -27,8 +31,34 @@ class mysql implements SqlUtilsOptions{
     /**
      * @param data 需要处理的数据
      */
-    private isString(data:any){
+    private isString(data:any, type?:string){
         if(typeof data == 'string'){
+            const reg = /<%((.|\n)*)?%>/img;
+            if(reg.test(data)){
+                data =  data.replace(reg," $1")
+            }
+            data = data
+                .replace(/\\/img,`\\\\\\\\`)
+                .replace(/\//img,`\\/`)
+                .replace(/'/img,`\\'`)
+                .replace(/"/img,`\\"`)
+                .replace(/_/img,`\\_`)
+            if(type && type.toLowerCase() !== "like"){
+                data = data.replace(/%/img,`\\\%`)
+            }else {
+                const matchData = data.match(/%[^%]{0,}/img)
+                if(matchData){
+                    data = matchData.reduce((a,b,i,arr)=>{
+                        if([0,arr.length -1].includes(i)){
+                            a += b;
+                        }else {
+                            a += b.replace(/%/img,`\\\%`);
+                        }
+                        return a;
+                    },"")
+                }
+            }
+
             return '\''+data+'\'';
         }
         return data;
@@ -59,8 +89,10 @@ class mysql implements SqlUtilsOptions{
                         ">=":true,
                         "<=":true,
                         "REGEXP":true,
-                    }[t];
-                    return k + (Operator ? '' : (' '+ type+' '))+this.isString(sqlArr[e])
+                        "IN":true,
+                        "OR":true,
+                    }[t.toUpperCase()];
+                    return k + (Operator ? '' : (' '+ type+' '))+this.isString(sqlArr[e], type)
                 }).join(' '+join+' ')} `;
                 break;
             case "string":
@@ -124,6 +156,9 @@ class mysql implements SqlUtilsOptions{
                 resolve(results);
                 this.end();
             });
+        }).catch(err=>{
+            this.applicationController.$_error(err);
+            return err;
         })
     }
 
@@ -268,8 +303,10 @@ class mysql implements SqlUtilsOptions{
      * @param insertMore 是否插入多条数据
      * @param indexMore  当前多条索引
      * @param indexMaxMore 总条数
+     * @param parentData 多条数据的上级数据
+     * @param keyNameMap 多数据keyName映射集合
      */
-    insert(TabelName:string,ArrData:any = [],insertMore?:boolean,showSqlStr?:boolean,indexMore?:number,indexMaxMore?:number){
+    insert(TabelName:string,ArrData:any = [],insertMore?:boolean,showSqlStr?:boolean,indexMore?:number,indexMaxMore?:number,parentData:any = [], keyNameMap:any = null){
         if(showSqlStr){this.showSqlStrBool = showSqlStr;}
         let MoreStr = "";
         if(insertMore){
@@ -284,7 +321,10 @@ class mysql implements SqlUtilsOptions{
             case "[object Array]":
                 //多条数据
                 if(ArrData.map(e=>typeof e).some(e=>e == 'object')){
-                    ArrData.forEach((e,index)=>this.insert(null,e,false,true, index,ArrData.length))
+                    const currKeyNameMap =  [...(new Set(ArrData.reduce((a,b)=>{
+                        return a.concat(Object.keys(b));
+                    },[])))];
+                    ArrData.forEach((e,index)=>this.insert(null,e,true,false, index,ArrData.length, ArrData, currKeyNameMap))
                 }else {
                     let keyNames = `VALUES `;
                     if(insertMore && indexMore > 0){
@@ -295,10 +335,15 @@ class mysql implements SqlUtilsOptions{
                 break;
             case "[object Object]":
                 let keyNames = `(${Object.keys(ArrData).join(",")}) VALUES `;
-                if(insertMore && indexMore > 0){
-                    keyNames = "";
+                if(insertMore){
+                    keyNames = `(${keyNameMap.join(",")}) VALUES `;
+                    if(indexMore > 0){
+                        keyNames = "";
+                    }
                 };
-                this.selectSql += `${keyNames} (${Object.keys(ArrData).map(e=>this.isString(ArrData[e])).join(",")}) ${MoreStr}`;
+                this.selectSql += `${keyNames} (${(keyNameMap || Object.keys(ArrData)).map(e=>{
+                    return this.isString(ArrData[e]) || '\'\'';
+                }).join(",")}) ${MoreStr}`;
                 break;
             default:
                 this.selectSql += `${ArrData} `;

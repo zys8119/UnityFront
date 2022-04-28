@@ -6,6 +6,7 @@ import {
     StatusCodeOptions,
     getSvgCodeOptions, ControllerInitDataOptions_readdirSyncIgnore, createPictureOptions, RequestFormData,
 } from "../typeStript"
+import {BrowserLaunchArgumentOptions, Page, Browser} from "puppeteer";
 import { headersType } from "../typeStript/Types";
 import { ServerConfig, ServerPublicConfig } from "../config";
 import { AxiosStatic } from "axios";
@@ -113,7 +114,7 @@ export default class applicationControllerClass extends PublicController impleme
     $_send?(sendData:any):any;
     $_RequestStatus:number;
     $_RequestHeaders:headersType;
-    $mysql?(optionsConfig?:object,isEnd?:boolean):SqlUtilsOptions;
+    $mysql?(optionsConfig?:object,isEnd?:boolean,applicationControllerClass?:applicationControllerClass):SqlUtilsOptions;
     $sqlModel?:SqlModel;
     __dir:string;
     $_params:any;
@@ -130,7 +131,7 @@ export default class applicationControllerClass extends PublicController impleme
         this.$_RequestStatus = Status;
     }
     DB(optionsConfig?:mysqlOptionsOptions,isEnd?:boolean){
-        return this.$mysql(optionsConfig,isEnd);
+        return this.$mysql(optionsConfig,isEnd,this);
     }
     Render(TemplatePath?:any,TemplateData?:object,bool?:boolean){
         TemplateData = TemplateData || {};
@@ -310,7 +311,11 @@ export default class applicationControllerClass extends PublicController impleme
             };
 
             //todo 判断控制器2
-            let ControllerPath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"Controller",urlArrs[1]+"Controller.js");
+            const suffix = ({
+                "development":".ts",
+                "production":".js",
+            })[process.env.NODE_ENV] || '.ts';
+            const ControllerPath = path.resolve(ServerConfig.Template.applicationPath,urlArrs[0],"Controller",urlArrs[1]+"Controller"+suffix);
             if(!fs.existsSync(ControllerPath)){
                 Utils.RenderTemplateError.call(this,ServerConfig.Template.TemplateErrorPath,{
                     title:`控制器【${urlArrs[1]}】不存在`,
@@ -580,21 +585,57 @@ export default class applicationControllerClass extends PublicController impleme
         }
         this.$_success(msg,sendData,code,true)
     }
-    $_puppeteer(url:string,jsContent:any){
+    $_puppeteer(url:string,jsContent?:(()=>Promise<any>) | Partial<{
+        jsContentFn:()=>Promise<any>;
+        gotoFn:(page:Page, browser:Browser,resolve:(result?:any)=>any)=>Promise<any>
+        jsContentBeforeFn:(page:Page, browser:Browser,resolve:(result?:any)=>any)=>Promise<any>
+        jsContentAfterFn:(page:Page, browser:Browser,resolve:(result?:any)=>any)=>Promise<any>
+        resultFilterFn:<T = any>(result:T, resolve:(result?:T)=>void,  page:Page, browser:Browser)=>Promise<any>
+    } | BrowserLaunchArgumentOptions>,...extData){
         // "puppeteer": "^2.0.0"
         const puppeteer = require('puppeteer');
         return new Promise((resolve, reject) => {
             try {
-                puppeteer.launch().then(async browser => {
+                let launchConfig = {}
+                let goto = async (page:any, browser:any,resolve:(result?:any)=>any)=>{};
+                let jsContentBefore = async (page:any, browser:any,resolve:(result?:any)=>any)=>{};
+                let jsContentAfter = async (page:any, browser:any,resolve:(result?:any)=>any)=>{};
+                let resultFilter = async (result:any, next:any,  page:any, browser:any)=>{
+                    await browser.close();
+                    next(result);
+                };
+                if(Object.prototype.toString.call(jsContent) === "[object Object]"){
+                    const {
+                        jsContentFn,
+                        gotoFn = async (page, browser)=>{},
+                        jsContentBeforeFn = async (page:any, browser:any)=>{},
+                        jsContentAfterFn = async (page:any, browser:any)=>{},
+                        resultFilterFn = async (result:any, next:any,  page:any, browser:any)=>{
+                            await browser.close();
+                            next(result);
+                        },
+                        ...launchConfigArgs
+                    }:any = jsContent;
+                    launchConfig = launchConfigArgs;
+                    jsContent = jsContentFn;
+                    resultFilter = resultFilterFn;
+                    goto = gotoFn;
+                    jsContentBefore = jsContentBeforeFn;
+                    jsContentAfter = jsContentAfterFn;
+                }
+                jsContent = jsContent || (()=>Promise.resolve(null));
+                puppeteer.launch(launchConfig).then(async browser => {
                     const page = await browser.newPage();
+                    await goto(page, browser, resolve)
                     await page.goto(url);
+                    await jsContentBefore(page, browser,resolve);
                     const resultHandle = await page.evaluateHandle(
                         js => js,
-                        await page.evaluateHandle(jsContent)
+                        await page.evaluateHandle(jsContent,...extData)
                     );
+                    await jsContentAfter(page, browser,resolve);
                     const result = await resultHandle.jsonValue();
-                    await browser.close();
-                    resolve(result);
+                    await resultFilter(result,resolve, page, browser);
                 }).catch(err=>{
                     reject(err.message)
                 });
@@ -603,6 +644,7 @@ export default class applicationControllerClass extends PublicController impleme
             }
         });
     }
+
     $_getFileContent(fileUrl:string,callBcak?:any,callBackEnd?:any){
         return new Promise((resolve, reject) => {
             try {
@@ -631,6 +673,7 @@ export default class applicationControllerClass extends PublicController impleme
             }
         });
     }
+
     $_fileStreamDownload(fileUrl:string,filename?:any,download?:any, callBcak?:any){
         switch (typeof  filename) {
             case 'function':
@@ -845,8 +888,9 @@ export default class applicationControllerClass extends PublicController impleme
     $_getRequestFormData(): Promise<RequestFormData[]> {
         return new Promise((resolve,reject) => {
             try {
-                if(this.$_bodySource.length > 0){
-                    let bodyFormData = this.bufferSplit(this.$_bodySource,"------").map(e=>{
+                const splitter = (this.request.headers['content-type'].match(/----(.*)/) || [])[1]
+                if(this.$_bodySource.length > 0 && splitter){
+                    let bodyFormData = this.bufferSplit(this.$_bodySource,splitter).map(e=>{
                         let buffArr = this.bufferSplit(e,"\r\n\r\n");
                         if(buffArr.length === 2){
                             let resUlt:any = {};
@@ -987,7 +1031,7 @@ export default class applicationControllerClass extends PublicController impleme
                         const cxt = canvas.getContext("2d");
                         cxt.fillStyle = query.fillStyle || "#909090";
                         cxt.fillRect(0,0,canvas.width,canvas.height);
-                        new Promise(resolve2 => {
+                        new Promise<void>(resolve2 => {
                             if(imgBase64){
                                 let img = new Image();
                                 img.src = `data:${contentType};base64,${imgBase64}`;

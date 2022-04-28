@@ -14,7 +14,7 @@ export const mysqlConfig = <mysqlOptions>{
         connectionLimit : 12*6,
         host: 'localhost',
         user: 'root',
-        password: 'root',
+        password: 'rootroot',
         port: '3306',
         database: 'log-monitoring-platform',
         prefix:""
