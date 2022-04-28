@@ -763,8 +763,8 @@ export default class applicationControllerClass extends PublicController impleme
     $_getSvgCode(options?:getSvgCodeOptions):Promise<string>{
         return new Promise((resolve, reject) => {
             options = options || {};
-            const cb = options.cb || Function;
-            const headers = options.headers || Function;
+            const cb = options.cb || new Function;
+            const headers = options.headers || new Function;
             let str = "0123456789qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
             let colorArr = [
                 "#000000",	"#000033",	"#000066",	"#000099",	"#0000CC",   "#0000FF",
