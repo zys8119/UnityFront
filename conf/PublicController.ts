@@ -67,7 +67,7 @@ class Interceptor implements ControllerInitDataOptions{
                             return Promise.reject();
                         }
                     }
-                    return new Promise((resolve, reject) => {
+                    return new Promise<void>((resolve, reject) => {
                         new this.$sqlModel.UserModel().select().from().where({
                             id:this.userInfo.get("id"),
                             status:1,
