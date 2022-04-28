@@ -169,6 +169,24 @@ export default new vueRouter({
                             component:()=>import("@/components/view/ApplicationManagement/applicationManagementSetting")
                         }
                     ]
+                },
+                {
+                    path:"Error",
+                    title:"错误",
+                    component:layoutContentMain,
+                    meta:{
+                        bodyBaColor,
+                    },
+                    children:[
+                        {
+                            path:"jsError",
+                            title:"应用类型",
+                            meta:{
+                                bodyBaColor,
+                            },
+                            component:()=>import("@/components/view/Error/jsError")
+                        },
+                    ]
                 }
             ]
         }

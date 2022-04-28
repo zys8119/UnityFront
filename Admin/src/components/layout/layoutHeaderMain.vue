@@ -102,6 +102,7 @@ export default {
         parsePath(){
             let findPath = this.$utils.findPath(this.airforce.menus,{
                 path:item=>{
+                    // console.log(item.path , this.$route.path)
                     return this.$route.path.indexOf(item.path) === 0;
                 },
             });
@@ -119,6 +120,14 @@ export default {
                 setTimeout(()=>{
                     this.$root.$emit("nodeClick", path.pop());
                 },200)
+            }else {
+                setTimeout(()=>{
+                    this.$root.$emit("nodeClick", {
+                        path:this.$route.fullPath,
+                        name:"asdas",
+                        id:null,
+                    });
+                })
             }
         }
     }
