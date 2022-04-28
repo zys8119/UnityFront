@@ -50,7 +50,8 @@ export default {
             this.apis.LogNakadai.Application.list({no_page:true}),
         ]).then(([appList])=>{
             this.appList = appList;
-            this.change(this.$route.query.id)
+            this.app_id = (appList[0] || {}).id
+            this.change(this.$route.query.id || this.app_id)
         })
     },
     methods:{
