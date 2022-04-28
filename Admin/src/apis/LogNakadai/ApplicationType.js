@@ -20,10 +20,10 @@ export default {
             data,
         })
     },
-    dalete(data){
+    delete(data){
         return this.axios({
-            url:"/LogNakadai/ApplicationType/dalete",
-            method:"dalete",
+            url:"/LogNakadai/ApplicationType/delete",
+            method:"post",
             data,
         })
     },
