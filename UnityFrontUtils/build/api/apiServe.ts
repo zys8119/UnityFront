@@ -39,7 +39,7 @@ class getFileApi {
                 let apiInfoArr = fileContent.match(/^\s{4}\/\*\*(\n|\s|.)*?\*\//img);
                 if(apiInfoArr){
                     apiInfoArr = apiInfoArr.map(item=>{
-                        let infoStrArr = item.match(/@(\n|.)*/img);
+                        let infoStrArr = item.match(/@(.)*/img);
                         return infoStrArr ? this.getApiInfo(infoStrArr) : null;
                     }).filter(e=>e);
                     let controller = file.relative_url+file.name;

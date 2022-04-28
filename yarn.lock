@@ -271,6 +271,11 @@
   dependencies:
     "node-fetch" "2.6.7"
 
+"dayjs@^1.11.1":
+  "integrity" "sha512-ER7EjqVAMkRRsxNCC5YqJ9d9VQYuWdGt7aiH2qA5R5wt8ZmWaP2dLUSIK6y/kVzLMlmh1Tvu5xUf4M/wdGJ5KA=="
+  "resolved" "https://registry.npmmirror.com/dayjs/-/dayjs-1.11.1.tgz"
+  "version" "1.11.1"
+
 "debug@^4.1.1":
   "integrity" "sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ=="
   "resolved" "https://registry.npmmirror.com/debug/-/debug-4.3.4.tgz"
