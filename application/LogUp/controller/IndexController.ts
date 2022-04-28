@@ -59,6 +59,24 @@ export class IndexController extends applicationController {
      */
     @method_get(IndexController, "get")
     async get(){
-        this.$_success();
+        try {
+            const id = this.$_query.id;
+            const res = await new this.$sqlModel.LogUpModel().getPage({
+                pageNo:this.$_query.pageNo || 0,
+                pageSize:this.$_query.pageSize || 15,
+                search:id,
+                like:{
+                    app_id:true,
+                }
+            }, null , function (){
+                this.where({
+                    app_id:id
+                })
+            })
+            console.log(res)
+            this.$_success(res.map(e=>e));
+        }catch (e) {
+            this.$_error()
+        }
     }
 }
