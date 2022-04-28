@@ -1,4 +1,4 @@
-import {applicationController, method_post} from "../../../UnityFrontUtils/controller/applicationController";
+import {applicationController, method_post, method_get} from "../../../UnityFrontUtils/controller/applicationController";
 
 export class IndexController extends applicationController {
     constructor() {
@@ -57,8 +57,8 @@ export class IndexController extends applicationController {
     /**
      * 获取日志详情
      */
-    @method_post(IndexController, "get")
+    @method_get(IndexController, "get")
     async get(){
-        
+        this.$_success();
     }
 }
