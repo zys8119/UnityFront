@@ -7,6 +7,12 @@ export class IndexController extends applicationController {
 
     /**
      * 日志上报
+     window.localStorage.LogUpUserInfo = JSON.stringify({
+        userId:null,
+        userTag:null,
+        appId:null,
+        projectVersion:null,
+    })
      */
     @method_post(IndexController, "index")
     async index(){
