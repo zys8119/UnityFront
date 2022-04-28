@@ -12,6 +12,7 @@ export interface SqlModel {
     UserRolesModel:SqlModelTable;
     LogModel:SqlModelTable;
     ApplicationTypeModel:SqlModelTable;
+    ApplicationModel:SqlModelTable;
 }
 
 export interface  SqlModelTable extends SqlUtilsOptions{

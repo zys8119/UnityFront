@@ -8,7 +8,7 @@
             </layout-filter-content>
             <content-table ref="table"
                            :columns="columns"
-                           :apiPath="apis.LogNakadai.ApplicationType.list"
+                           :apiPath="apis.LogNakadai.Application.list"
                            @editRow="addApp"
                            @delRow="delRow"
             >
@@ -55,6 +55,7 @@
                             </div>
                         </div>
                     </div>
+                    <div v-if="data.length === 0" class="noData">暂无数据</div>
                 </div>
             </content-table>
         </layout-box>
@@ -221,6 +222,12 @@ export default {
                 }
             }
         }
+    }
+    .noData{
+        text-align: center;
+        font-size: 12px;
+        color: #999999;
+        width: 100%;
     }
 }
 </style>
