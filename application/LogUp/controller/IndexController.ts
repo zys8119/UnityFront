@@ -53,4 +53,12 @@ export class IndexController extends applicationController {
             this.$_error("上报失败")
         }
     }
+
+    /**
+     * 获取日志详情
+     */
+    @method_post(IndexController, "get")
+    async get(){
+        
+    }
 }

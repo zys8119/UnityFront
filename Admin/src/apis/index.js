@@ -4,12 +4,14 @@ import upload from "./upload"
 import AuthorityManagement from "./AuthorityManagement"
 import Doc from "./Doc"
 import LogNakadai from "./LogNakadai"
+import LogUp from "./LogUp"
 const api = {
     user,
     upload,
     AuthorityManagement,
     Doc,
     LogNakadai,
+    LogUp,
 }
 const apiClass = class {
     constructor() {
