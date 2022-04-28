@@ -6,7 +6,6 @@ export class IndexController extends applicationController {
     constructor(){
         super();
     }
-
     async index(){
         // await this.DB().insert("test",new Array(1000).fill(0).map(()=>({
         //     name:"asdasda",

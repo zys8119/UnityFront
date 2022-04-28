@@ -1,6 +1,7 @@
 import { headersType } from "./Types"
 import { AxiosStatic } from "axios"
 import {SqlModel} from "../../model/interfaces";
+import dayjs from "dayjs";
 
 export interface mysqlOptions {
     //连接池
@@ -438,6 +439,11 @@ export interface ControllerInitDataOptions {
      * @param options 配置
      */
     $createPicture?(options:createPictureOptions):Promise<Buffer>;
+
+    /**
+     * dayjs
+     */
+    $dayjs?:typeof dayjs
 }
 
 export interface createPictureOptions{

@@ -16,6 +16,7 @@ import PublicController from "../../conf/PublicController";
 import { SqlModel } from "../../model/interfaces";
 import { resolve } from "path";
 import {readdirSync, statSync} from "fs";
+import dayjs from "dayjs";
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
@@ -1087,6 +1088,8 @@ export default class applicationControllerClass extends PublicController impleme
             }
         })
     }
+
+    $dayjs = dayjs
 
 }
 export const applicationController = applicationControllerClass;

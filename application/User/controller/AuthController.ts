@@ -24,7 +24,7 @@ export class AuthController extends applicationController{
      * @body email {string} 邮箱
      * @body type {string} 操作类型，可选
      */
-    @method_post(AuthController,"login")
+    @method_post(AuthController,"register")
     register(){
         if(!this.$_body.username){return this.$_error("【username】 字段必填")}
         if(!this.$_body.password){return this.$_error("【password】 字段必填")}

@@ -38,12 +38,12 @@ export const ServerConfig =  <ServerOptions>{
     ws_port:82,
     ws_user:{},
     timeout:60000,
-    debug:true,
+    debug:false,
     CORS:true,
     Credentials:true,
     DomainWhite:false,
     token_url:false,
-    public_success_log:true,
+    public_success_log:false,
     fsWatch:[
         //listen conf directory
         {path:path.resolve(__dirname,"../../conf"),type:"directory"},
