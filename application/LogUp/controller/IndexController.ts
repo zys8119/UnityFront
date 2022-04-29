@@ -60,26 +60,30 @@ export class IndexController extends applicationController {
     @method_get(IndexController, "get")
     async get(){
         try {
-            const pageNo = Number(this.$_query.pageNo) || 1
-            const pageSize = Number(this.$_query.pageSize) || 15
             if(!this.$_query.app_id){return this.$_error("字段【app_id】不存在")}
-            if(!/^[0-9]*$/.test(pageNo as any)){return this.$_error("字段【pageNo】不是数字")}
-            if(!/^[0-9]*$/.test(pageSize as any)){return this.$_error("字段【pageSize】不是数字")}
-            const res = await new this.$sqlModel.LogUpModel().query(`
-            
-            SELECT * FROM 
-                  (SELECT *,COUNT(1) OVER() AS total
-                   FROM log_up
-                   WHERE app_id = '${this.$_query.app_id}' limit ${(pageNo-1)*pageSize}, ${pageSize}) a 
-            order by creation_time desc
-            `)
+            const res = await new this.$sqlModel.LogUpModel()
+                .select(["log_info"],"total")
+                .from(" ")
+                .join(` (${
+                    new this.$sqlModel.LogUpModel()
+                        .select("*,")
+                        .COUNT()
+                        .OVER()
+                        .AS("total")
+                        .from()
+                        .where({
+                            app_id:this.$_query.app_id,
+                        })
+                        .limit("creation_time",this.getPageLimit(this.$_query.pageNo, this.$_query.pageSize), true)
+                        .getSql()
+                }) a `)
+                .query();
             this.$_success({
                 code:0,
-                list:res.map(e=>{
+                list:res.map((e)=>{
                     try {
                         return {
                             ...e,
-                            log_info:null,
                             creation_time:this.$dayjs(e.creation_time).format("YYYY-MM-DD HH:mm:ss")
                         }
                     }catch (err){
@@ -87,8 +91,8 @@ export class IndexController extends applicationController {
                         return  e;
                     }
                 }),
-                pageNo,
-                pageSize,
+                pageNo:this.$_query.pageNo,
+                pageSize:this.$_query.pageSize,
                 total: (res[0] || {}).total,
             });
         }catch (e) {

@@ -105,12 +105,25 @@ export interface SqlUtilsOptions {
      * @param TableFieldName 选择的字段名称
      * @param showSqlStr 是否输出sql字符串，默认不输出
      */
-    select?(TableFieldName?:string,showSqlStr?:boolean):SqlUtilsOptions;
+    select?(TableFieldName?:any,showSqlStr?:any):SqlUtilsOptions;
 
     /**
      * @param condition 条件
      */
     count?(condition?:any):SqlUtilsOptions;
+
+    /**
+     * @param condition 条件
+     */
+    COUNT?(condition?:any):SqlUtilsOptions;
+
+
+    OVER?():SqlUtilsOptions;
+
+    /**
+     * @param alias 条件
+     */
+    AS?(alias?:string):SqlUtilsOptions;
 
     /**
      * @param pageNo 页数
@@ -215,6 +228,11 @@ export interface SqlUtilsOptions {
      * @param showSqlStr 是否输出sql字符串，默认不输出
      */
     join?(data:object|string,showSqlStr?:boolean):SqlUtilsOptions;
+    /**
+     *
+     * @param showSqlStr 是否输出sql字符串，默认不输出
+     */
+    getSql?(showSqlStr?:boolean):string;
 }
 
 export interface ControllerInitDataOptions {
@@ -444,6 +462,15 @@ export interface ControllerInitDataOptions {
      * dayjs
      */
     $dayjs?:typeof dayjs
+
+    /**
+     * 获取分页计算
+     * @param pageNo
+     * @default 1
+     * @param pageSize
+     * @default 15
+     */
+    getPageLimit?(pageNo:number, pageSize:number):string
 }
 
 export interface createPictureOptions{

@@ -167,7 +167,7 @@ class mysql implements SqlUtilsOptions{
      * @param TableFieldName 选择的字段名称
      * @param showSqlStr 是否输出sql字符串，默认不输出
      */
-    select(TableFieldName:string = "*",showSqlStr?:boolean){
+    select(TableFieldName:any = "*",showSqlStr?:any){
         if(showSqlStr){this.showSqlStrBool = showSqlStr;}
         this.selectSql = `SELECT ${TableFieldName} `;
         return this;
@@ -175,6 +175,21 @@ class mysql implements SqlUtilsOptions{
 
     count(condition: any = "*"): SqlUtilsOptions{
         return this.select(`count(${condition}) as total`);
+    }
+
+    COUNT(condition = 1): SqlUtilsOptions{
+        this.selectSql += ` COUNT(${condition || 1}) `;
+        return this;
+    }
+
+    OVER(): SqlUtilsOptions{
+        this.selectSql += ` OVER() `;
+        return this;
+    }
+
+    AS(alias): SqlUtilsOptions{
+        this.selectSql += ` AS ${alias} `;
+        return this;
     }
 
     pagination(pageNo: number, pageSize: number = 10): SqlUtilsOptions {
@@ -430,6 +445,10 @@ class mysql implements SqlUtilsOptions{
                 break;
         }
         return this;
+    }
+
+    getSql(){
+        return this.selectSql
     }
 
 }

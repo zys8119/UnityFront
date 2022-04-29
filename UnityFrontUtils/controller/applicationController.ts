@@ -1091,5 +1091,19 @@ export default class applicationControllerClass extends PublicController impleme
 
     $dayjs = dayjs
 
+    getPageLimit(pageNo: number, pageSize: number): string {
+        const currPageNo = Number(pageNo) || 1
+        const currPageSize = Number(pageSize) || 15
+        if(!/^[0-9]*$/.test(currPageNo as any)){
+            this.$_error("字段【pageNo】不是数字")
+            throw Error("字段【pageNo】不是数字")
+        }
+        if(!/^[0-9]*$/.test(currPageSize as any)){
+            this.$_error("字段【pageSize】不是数字")
+            throw Error("字段【pageSize】不是数字")
+        }
+        return `${(currPageNo-1)*currPageSize}, ${currPageSize}`
+    }
+
 }
 export const applicationController = applicationControllerClass;

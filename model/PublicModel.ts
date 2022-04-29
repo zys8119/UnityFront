@@ -37,9 +37,23 @@ export default class extends mysql implements PublicModelInterface{
         super(optionsConfig);
     }
 
-    select(TableFieldName?: string, showSqlStr?: boolean): this {
-        if(Object.prototype.toString.call(TableFieldName) !== "[object String]"){
-            TableFieldName = Object.keys(this.$sqlFieldConfig).join(",");
+    select(TableFieldName?: any, showSqlStr?: any): this {
+        switch (Object.prototype.toString.call(TableFieldName)){
+            case "[object String]":
+                break;
+            case "[object Array]":
+                TableFieldName = Object.keys(this.$sqlFieldConfig).filter(e=>TableFieldName.indexOf(e) == -1).join(",");
+                break;
+            case "[object RegExp]":
+                TableFieldName = Object.keys(this.$sqlFieldConfig).filter(e=>TableFieldName.test(e)).join(",");
+                break;
+            default:
+                TableFieldName = Object.keys(this.$sqlFieldConfig).join(",");
+                break;
+        }
+        if(Object.prototype.toString.call(showSqlStr) == "[object String]"){
+            TableFieldName = (TableFieldName? TableFieldName+' , ' : '')+showSqlStr;
+            showSqlStr = false
         }
         return super.select(TableFieldName || "*", showSqlStr);
     }
