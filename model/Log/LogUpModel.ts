@@ -12,7 +12,7 @@ export default class extends PublicModel implements PublicModelInterface{
             COMMENT:`'日志id'`,
         },
         log_info:{
-            text:"",
+            longtext:"",
             COMMENT:`'日志数据'`,
         },
         status:{
