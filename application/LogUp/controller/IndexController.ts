@@ -35,7 +35,7 @@ export class IndexController extends applicationController {
             if(ufUserInfoArr.filter(e=>e[1] !== null).length === ufUserInfoArr.length){
                 await new this.$sqlModel.LogUpModel().insert({
                     id:Date.now(),
-                    log_info:JSON.stringify(this.$_body.errorData),
+                    log_info:Buffer.from(JSON.stringify(this.$_body.errorData)).toString("base64"),
                     creation_time:this.$dayjs().format().toString(),
                     type:this.$_body.type,
                     app_id:LogUpUserInfo.appId,
@@ -60,21 +60,37 @@ export class IndexController extends applicationController {
     @method_get(IndexController, "get")
     async get(){
         try {
-            const id = this.$_query.id;
-            const res = await new this.$sqlModel.LogUpModel().getPage({
-                pageNo:this.$_query.pageNo || 0,
-                pageSize:this.$_query.pageSize || 15,
-                search:id,
-                like:{
-                    app_id:true,
-                }
-            }, null , function (){
-                this.where({
-                    app_id:id
-                })
-            })
-            console.log(res)
-            this.$_success(res.map(e=>e));
+            const pageNo = Number(this.$_query.pageNo) || 1
+            const pageSize = Number(this.$_query.pageSize) || 15
+            if(!this.$_query.app_id){return this.$_error("字段【app_id】不存在")}
+            if(!/^[0-9]*$/.test(pageNo as any)){return this.$_error("字段【pageNo】不是数字")}
+            if(!/^[0-9]*$/.test(pageSize as any)){return this.$_error("字段【pageSize】不是数字")}
+            const res = await new this.$sqlModel.LogUpModel().query(`
+            
+            SELECT * FROM 
+                  (SELECT *,COUNT(1) OVER() AS total
+                   FROM log_up
+                   WHERE app_id = '${this.$_query.app_id}' limit ${(pageNo-1)*pageSize}, ${pageSize}) a 
+            order by creation_time desc
+            `)
+            this.$_success({
+                code:0,
+                list:res.map(e=>{
+                    try {
+                        return {
+                            ...e,
+                            log_info:null,
+                            creation_time:this.$dayjs(e.creation_time).format("YYYY-MM-DD HH:mm:ss")
+                        }
+                    }catch (err){
+                        console.log(err.message)
+                        return  e;
+                    }
+                }),
+                pageNo,
+                pageSize,
+                total: (res[0] || {}).total,
+            });
         }catch (e) {
             this.$_error()
         }

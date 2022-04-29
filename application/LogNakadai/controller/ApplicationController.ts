@@ -55,6 +55,7 @@ export class ApplicationController extends applicationController{
             if(res.length === 0) this.$_error("应用类型不存在")
             let data:any = {
                 name:this.$_body.name,
+                app_type_id:this.$_body.type,
                 id:`${Date.now()}${parseInt((Math.random()*1000).toString())}`,
                 creation_time:this.$dayjs().format().toString()
             };
