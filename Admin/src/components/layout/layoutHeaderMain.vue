@@ -121,13 +121,11 @@ export default {
                     this.$root.$emit("nodeClick", path.pop());
                 },200)
             }else {
-                setTimeout(()=>{
-                    this.$root.$emit("nodeClick", {
-                        path:this.$route.fullPath,
-                        name:"asdas",
-                        id:null,
-                    });
-                })
+                this.$root.$emit("nodeClick", {
+                    path:this.$route.fullPath,
+                    name:"asdas",
+                    id:null,
+                });
             }
         }
     }

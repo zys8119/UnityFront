@@ -124,6 +124,7 @@ export default {
 .layoutTabsMain{
     width: 100%;
     height: @layoutTabs;
+    z-index: 2;
     .layoutTabsMainContent{
         transform: @transition;
         background-color: #ffffff;

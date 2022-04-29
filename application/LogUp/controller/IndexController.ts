@@ -35,7 +35,7 @@ export class IndexController extends applicationController {
             if(ufUserInfoArr.filter(e=>e[1] !== null).length === ufUserInfoArr.length){
                 await new this.$sqlModel.LogUpModel().insert({
                     id:Date.now(),
-                    log_info:Buffer.from(JSON.stringify(this.$_body.errorData)).toString("base64"),
+                    log_info:Buffer.from(JSON.stringify(this.$_body)).toString("base64"),
                     creation_time:this.$dayjs().format().toString(),
                     type:this.$_body.type,
                     app_id:LogUpUserInfo.appId,
@@ -57,8 +57,8 @@ export class IndexController extends applicationController {
     /**
      * 获取日志详情
      */
-    @method_get(IndexController, "get")
-    async get(){
+    @method_get(IndexController, "list")
+    async list(){
         try {
             if(!this.$_query.app_id){return this.$_error("字段【app_id】不存在")}
             const res = await new this.$sqlModel.LogUpModel()
@@ -73,6 +73,7 @@ export class IndexController extends applicationController {
                         .from()
                         .where({
                             app_id:this.$_query.app_id,
+                            status:1,
                         })
                         .limit("creation_time",this.getPageLimit(this.$_query.pageNo, this.$_query.pageSize), true)
                         .getSql()
@@ -96,6 +97,42 @@ export class IndexController extends applicationController {
                 total: (res[0] || {}).total,
             });
         }catch (e) {
+            this.$_error()
+        }
+    }
+
+
+    /**
+     * 删除
+     */
+    async delete(){
+        try {
+            if(!this.$_body.id){return this.$_error("字段【id】不存在")}
+            await new this.$sqlModel.LogUpModel().update({
+                status:2,
+            }).where({
+                id:this.$_body.id
+            }).query()
+            this.$_success();
+        }catch (e){
+            this.$_error()
+        }
+    }
+
+    /**
+     * 获取详情
+     */
+    async get(){
+        try {
+            const res = (await new this.$sqlModel.LogUpModel().select().from().where({
+                id:this.$_query.id
+            }).query()).map(e=>({
+                ...e,
+                creation_time:this.$dayjs(e.creation_time).format("YYYY-MM-DD HH:mm:ss"),
+                log_info:JSON.parse(Buffer.from(e.log_info,"base64").toString())
+            }))
+            this.$_success(res[0]);
+        }catch (e){
             this.$_error()
         }
     }
