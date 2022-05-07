@@ -123,7 +123,7 @@ export class IconfontController extends applicationController{
                     "name": "@iconfont/icon",
                     "version": "0.0.1",
                     "main": "index.tsx"
-                }))
+                }, null, 4))
                 await this.synchronousConfigs(true)
             }
             this.$_success(JSON.parse(readFileSync(config,"utf-8")))
