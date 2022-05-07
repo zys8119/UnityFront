@@ -119,6 +119,11 @@ export class IconfontController extends applicationController{
         try {
             if(!existsSync(config)){
                 writeFileSync(config,JSON.stringify({}))
+                writeFileSync(resolve(config, "..","package.json"),JSON.stringify({
+                    "name": "@iconfont/icon",
+                    "version": "0.0.1",
+                    "main": "index.tsx"
+                }))
                 await this.synchronousConfigs(true)
             }
             this.$_success(JSON.parse(readFileSync(config,"utf-8")))
