@@ -78,10 +78,15 @@ export class IconfontController extends applicationController{
             }
             writeFileSync(config,JSON.stringify(json, null, 4))
             writeFileSync(main, ((content:any)=>{
-                const IconExportInfo = `import ${name}Component from "./src/${name}" // ${data.name}`
-                const contentArrs = content.split("\n").filter(e=>e && e !== IconExportInfo);
+                const IconExportInfo = `import ${name} from "./src/${name}" // ${data.name}`
+                const exportName = `${name},`
+                let contentArrs = content.split("\n").filter(e=>{
+                    return e && ![IconExportInfo, exportName].includes(e)
+                });
                 if(!is_delete_wp_icon){
                     contentArrs.unshift(IconExportInfo)
+                    const lng = contentArrs.length;
+                    contentArrs = contentArrs.slice(0,lng-1).concat([exportName]).concat([contentArrs[lng-1]])
                 }
                 return contentArrs.join("\n");
             })(readFileSync(main,"utf-8")))
