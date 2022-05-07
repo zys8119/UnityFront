@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "vite",
+    "serve": "sudo uf",
     "icons:dev": "sudo uf & vite",
     "icons:sync": "ts-node iconsSync.ts"
   },
@@ -11,6 +13,16 @@
   "license": "ISC",
   "devDependencies": {
     "github-markdown-css": "^5.1.0",
-    "vite-plugin-md": "^0.12.4"
+    "vite-plugin-md": "^0.12.4",
+    "wisdom-plus": "git+https://gitlab.zhijiasoft.com/vue3-base-framework/wisdom-plus-release.git"
+  },
+  "dependencies": {
+    "@vitejs/plugin-vue": "^2.3.2",
+    "@vitejs/plugin-vue-jsx": "^1.3.10",
+    "@vueuse/core": "^8.4.2",
+    "sass": "^1.51.0",
+    "vite": "^2.9.8",
+    "vue": "^3.2.33",
+    "vue-router": "^4.0.15"
   }
 }

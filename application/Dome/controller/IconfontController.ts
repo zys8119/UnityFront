@@ -6,7 +6,8 @@ import puppeteer, {
 import {resolve} from "path"
 import {readFileSync, unlinkSync, writeFileSync, existsSync, readdirSync, statSync, rmdirSync, mkdirSync} from "fs";
 import {template} from "lodash";
-const root = resolve(process.cwd(),"../packages/icons");
+// const root = resolve(process.cwd(),"../packages/icons");
+const root = resolve(process.cwd(),"./packages/icons");
 // const root = resolve("/Users/zhangyunshan/work/wisdom-plus/icons","../packages/icons");
 if(!existsSync(root)){
     utils.mkdirSync(root)
@@ -41,16 +42,18 @@ export class IconfontController extends applicationController{
     /**
      * 同步配置
      */
-    async synchronousConfigs(){
+    async synchronousConfigs(bool:boolean){
         try {
             // 删除目录资源
             await utils.deleteFolder(src);
             const json = JSON.parse(readFileSync(config,"utf-8"));
-            writeFileSync(main, "")
+            writeFileSync(main, "export {\n}")
             for (let icon in json){
                 await this.setConfigs(json[icon])
             }
-            this.$_success("同步成功")
+            if(!bool){
+                this.$_success("同步成功")
+            }
         }catch (e){
             this.$_error(e.message)
         }
@@ -75,10 +78,10 @@ export class IconfontController extends applicationController{
             }
             writeFileSync(config,JSON.stringify(json, null, 4))
             writeFileSync(main, ((content:any)=>{
-                const IconExportInfo = `export { default as ${name} } from "./src/${name}" // ${data.name}`
+                const IconExportInfo = `import ${name}Component from "./src/${name}" // ${data.name}`
                 const contentArrs = content.split("\n").filter(e=>e && e !== IconExportInfo);
                 if(!is_delete_wp_icon){
-                    contentArrs.push(IconExportInfo)
+                    contentArrs.unshift(IconExportInfo)
                 }
                 return contentArrs.join("\n");
             })(readFileSync(main,"utf-8")))
@@ -109,6 +112,10 @@ export class IconfontController extends applicationController{
      */
     async getConfigs(){
         try {
+            if(!existsSync(config)){
+                writeFileSync(config,JSON.stringify({}))
+                await this.synchronousConfigs(true)
+            }
             this.$_success(JSON.parse(readFileSync(config,"utf-8")))
         }catch (e){
             this.$_error(e.message)

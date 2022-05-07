@@ -5,7 +5,7 @@ import {
     WpEllipsis,
     Dialog,
     WpPagination
-} from "@wisdom-plus/components"
+} from "wisdom-plus"
 import {getConfigs, setConfigs, Icon, synchronousConfigs, searchIcon} from "../../config"
 import {useClipboard} from "@vueuse/core"
 

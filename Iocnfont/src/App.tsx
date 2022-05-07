@@ -1,6 +1,6 @@
 import {defineComponent, ref, h, provide, toRefs} from "vue"
-import {WpImage, WpInput} from "@wisdom-plus/components";
-import logo from "../../wisdom-plus.png";
+import {WpImage, WpInput} from "wisdom-plus";
+import logo from "wisdom-plus/wisdom-plus.png";
 import {useScroll} from "@vueuse/core";
 
 export default defineComponent({
