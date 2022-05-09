@@ -13,4 +13,5 @@ package-lock.json
 /public/upload/*
 /webSocket/*.js
 dist/
+packages/
 *.js.map
