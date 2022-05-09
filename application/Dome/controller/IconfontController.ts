@@ -6,8 +6,8 @@ import puppeteer, {
 import {resolve} from "path"
 import {readFileSync, unlinkSync, writeFileSync, existsSync, readdirSync, statSync, rmdirSync, mkdirSync} from "fs";
 import {template} from "lodash";
-// const root = resolve(process.cwd(),"../packages/icons");
-const root = resolve(process.cwd(),"./packages/icons");
+const root = resolve(process.cwd(),"../packages/icons");
+// const root = resolve(process.cwd(),"./packages/icons");
 // const root = resolve("/Users/zhangyunshan/work/wisdom-plus/icons","../packages/icons");
 if(!existsSync(root)){
     utils.mkdirSync(root)
