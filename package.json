@@ -1,9 +1,8 @@
 {
   "name": "uf-node",
-  "version": "0.0.48",
+  "version": "0.0.49",
   "bin": {
-    "uf": "./UnityFrontUtils/server/index.ts",
-    "uf-install": "./UnityFrontUtils/server/install.ts"
+    "uf": "./UnityFrontUtils/server/index.ts"
   },
   "scripts": {
     "start": "npm run serve",

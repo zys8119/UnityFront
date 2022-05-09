@@ -89,6 +89,12 @@ export default ()=>{
                         console.log("破解完成")
                     }
                 })
+                .Commands({
+                    log:["-install-chromium","安装chromium"],
+                    callback:function(a, arg) {
+                        require("puppeteer/install.js")
+                    }
+                })
 
 
 
