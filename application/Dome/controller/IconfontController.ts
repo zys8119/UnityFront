@@ -74,7 +74,10 @@ export class IconfontController extends applicationController{
                 delete json[data.id];
             }else {
                 // 添加
-                json[data.id] = data;
+                json[data.id] = {
+                    wp_icon_prefix,
+                    ...data
+                };
             }
             writeFileSync(config,JSON.stringify(json, null, 4))
             writeFileSync(main, ((content:any)=>{
