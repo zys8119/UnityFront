@@ -282,6 +282,13 @@
   "resolved" "https://registry.npmjs.org/create-require/-/create-require-1.1.1.tgz"
   "version" "1.1.1"
 
+"cross-fetch@3.1.5":
+  "integrity" "sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw=="
+  "resolved" "https://registry.npmjs.org/cross-fetch/-/cross-fetch-3.1.5.tgz"
+  "version" "3.1.5"
+  dependencies:
+    "node-fetch" "2.6.7"
+
 "debug@^4.1.1":
   "integrity" "sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ=="
   "resolved" "https://registry.npmmirror.com/debug/-/debug-4.3.4.tgz"
@@ -296,16 +303,9 @@
   dependencies:
     "ms" "2.0.0"
 
-"debug@4.3.2":
-  "integrity" "sha512-mOp8wKcvj7XxC78zLgw/ZA+6TSgkoE2C/ienthhRD298T7UNwAg9diBpLRxC0mOezLl4B0xV7M0cCO6P/O0Xhw=="
-  "resolved" "https://registry.npmmirror.com/debug/-/debug-4.3.2.tgz"
-  "version" "4.3.2"
-  dependencies:
-    "ms" "2.1.2"
-
-"debug@4":
+"debug@4", "debug@4.3.4":
   "integrity" "sha512-PRWFHuSU3eDtQJPvnNY7Jcket1j0t5OuOsFzPPzsekD52Zl8qUfFIPEiswXqIvHWGVHOgX+7G/vCNNhehwxfkQ=="
-  "resolved" "https://registry.npmmirror.com/debug/-/debug-4.3.4.tgz"
+  "resolved" "https://registry.npmjs.org/debug/-/debug-4.3.4.tgz"
   "version" "4.3.4"
   dependencies:
     "ms" "2.1.2"
@@ -315,10 +315,10 @@
   "resolved" "https://registry.npmjs.org/decamelize/-/decamelize-1.2.0.tgz"
   "version" "1.2.0"
 
-"devtools-protocol@0.0.901419":
-  "integrity" "sha512-4INMPwNm9XRpBukhNbF7OB6fNTTCaI8pzy/fXg0xQzAy5h3zL1P8xT3QazgKqBrb/hAYwIBizqDBZ7GtJE74QQ=="
-  "resolved" "https://registry.npmmirror.com/devtools-protocol/-/devtools-protocol-0.0.901419.tgz"
-  "version" "0.0.901419"
+"devtools-protocol@0.0.981744":
+  "integrity" "sha512-0cuGS8+jhR67Fy7qG3i3Pc7Aw494sb9yG9QgpG97SFVWwolgYjlhJg7n+UaHxOQT30d1TYu/EYe9k01ivLErIg=="
+  "resolved" "https://registry.npmjs.org/devtools-protocol/-/devtools-protocol-0.0.981744.tgz"
+  "version" "0.0.981744"
 
 "diff@^4.0.1":
   "integrity" "sha512-58lmxKSA4BNyLz+HHMUzlOEpg09FV+ev6ZMe3vJihgdxzgcwZ8VoEEPmALCZG9LmqfVoNMMKpttIYTVG6uDY7A=="
@@ -437,10 +437,10 @@
   dependencies:
     "function-bind" "^1.1.1"
 
-"https-proxy-agent@5.0.0":
-  "integrity" "sha512-EkYm5BcKUGiduxzSt3Eppko+PiNWNEpa4ySk9vTC6wDsQJW9rHSa+UhGNJoRYp7bz6Ht1eaRIa6QaJqO5rCFbA=="
-  "resolved" "https://registry.npmmirror.com/https-proxy-agent/-/https-proxy-agent-5.0.0.tgz"
-  "version" "5.0.0"
+"https-proxy-agent@5.0.1":
+  "integrity" "sha512-dFcAjpTQFgoLMzC2VwU+C/CbS7uRL0lWmxDITmqm7C+7F0Odmj6s9l6alZc6AELXhrnggM2CeWSXHGOdX2YtwA=="
+  "resolved" "https://registry.npmjs.org/https-proxy-agent/-/https-proxy-agent-5.0.1.tgz"
+  "version" "5.0.1"
   dependencies:
     "agent-base" "6"
     "debug" "4"
@@ -567,7 +567,7 @@
 
 "ms@2.1.2":
   "integrity" "sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w=="
-  "resolved" "https://registry.npmmirror.com/ms/-/ms-2.1.2.tgz"
+  "resolved" "https://registry.npmjs.org/ms/-/ms-2.1.2.tgz"
   "version" "2.1.2"
 
 "mysql@^2.17.1":
@@ -592,10 +592,10 @@
   dependencies:
     "ncol" "0.0.7"
 
-"node-fetch@2.6.5":
-  "integrity" "sha512-mmlIVHJEu5rnIxgEgez6b9GgWXbkZj5YZ7fx+2r94a2E+Uirsp6HsPTPlomfdHtpt/B0cdKviwkoaM6pyvUOpQ=="
-  "resolved" "https://registry.npmmirror.com/node-fetch/-/node-fetch-2.6.5.tgz"
-  "version" "2.6.5"
+"node-fetch@2.6.7":
+  "integrity" "sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ=="
+  "resolved" "https://registry.npmjs.org/node-fetch/-/node-fetch-2.6.7.tgz"
+  "version" "2.6.7"
   dependencies:
     "whatwg-url" "^5.0.0"
 
@@ -792,23 +792,23 @@
     "end-of-stream" "^1.1.0"
     "once" "^1.3.1"
 
-"puppeteer@^11.0.0":
-  "integrity" "sha512-6rPFqN1ABjn4shgOICGDBITTRV09EjXVqhDERBDKwCLz0UyBxeeBH6Ay0vQUJ84VACmlxwzOIzVEJXThcF3aNg=="
-  "resolved" "https://registry.npmmirror.com/puppeteer/-/puppeteer-11.0.0.tgz"
-  "version" "11.0.0"
+"puppeteer-core@^13.7.0":
+  "integrity" "sha512-rXja4vcnAzFAP1OVLq/5dWNfwBGuzcOARJ6qGV7oAZhnLmVRU8G5MsdeQEAOy332ZhkIOnn9jp15R89LKHyp2Q=="
+  "resolved" "https://registry.npmjs.org/puppeteer-core/-/puppeteer-core-13.7.0.tgz"
+  "version" "13.7.0"
   dependencies:
-    "debug" "4.3.2"
-    "devtools-protocol" "0.0.901419"
+    "cross-fetch" "3.1.5"
+    "debug" "4.3.4"
+    "devtools-protocol" "0.0.981744"
     "extract-zip" "2.0.1"
-    "https-proxy-agent" "5.0.0"
-    "node-fetch" "2.6.5"
+    "https-proxy-agent" "5.0.1"
     "pkg-dir" "4.2.0"
     "progress" "2.0.3"
     "proxy-from-env" "1.1.0"
     "rimraf" "3.0.2"
     "tar-fs" "2.1.1"
     "unbzip2-stream" "1.4.3"
-    "ws" "8.2.3"
+    "ws" "8.5.0"
 
 "readable-stream@^3.1.1":
   "integrity" "sha512-BViHy7LKeTz4oNnkcLJ+lVSL6vpiFeX6/d3oSH8zCW7UxP2onchk+vTGB143xuFjHS3deTgkKoXXymXqymiIdA=="
@@ -1038,10 +1038,10 @@
   "resolved" "https://registry.npmmirror.com/wrappy/-/wrappy-1.0.2.tgz"
   "version" "1.0.2"
 
-"ws@8.2.3":
-  "integrity" "sha512-wBuoj1BDpC6ZQ1B7DWQBYVLphPWkm8i9Y0/3YdHjHKHiohOJ1ws+3OccDWtH+PoC9DZD5WOTrJvNbWvjS6JWaA=="
-  "resolved" "https://registry.npmmirror.com/ws/-/ws-8.2.3.tgz"
-  "version" "8.2.3"
+"ws@8.5.0":
+  "integrity" "sha512-BWX0SWVgLPzYwF8lTzEy1egjhS4S4OEAHfsO8o65WOVsrnSRGaSiUaa9e0ggGlkMTtBlmOpEXiie9RUcBO86qg=="
+  "resolved" "https://registry.npmjs.org/ws/-/ws-8.5.0.tgz"
+  "version" "8.5.0"
 
 "yargs@~3.10.0":
   "integrity" "sha1-9+572FfdfB0tOMDnTvvWgdFDH9E="

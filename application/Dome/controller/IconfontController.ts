@@ -2,7 +2,7 @@ import {applicationController} from "../../../UnityFrontUtils/controller/applica
 import utils from "../../../UnityFrontUtils/utils/index";
 import puppeteer, {
     Page,
-} from "puppeteer"
+} from "puppeteer-core"
 import {resolve} from "path"
 import {readFileSync, unlinkSync, writeFileSync, existsSync, readdirSync, statSync, rmdirSync, mkdirSync} from "fs";
 import {template} from "lodash";
@@ -182,7 +182,7 @@ export class IconfontController extends applicationController{
         let manageUrl = null;
         let projectUrl = null;
         try {
-            const puppeteer = require('puppeteer');
+            const puppeteer = require('puppeteer-core');
             const load = async (page, selectors)=> {
                 return await page.evaluateHandle((selectors)=>{
                     return new Promise<void>(resolve=>{

@@ -10,7 +10,7 @@ import {
     RequestFormData,
     GlobalPropertiesType,
 } from "../typeStript"
-import {BrowserLaunchArgumentOptions, Page, Browser} from "puppeteer";
+import {BrowserLaunchArgumentOptions, Page, Browser} from "puppeteer-core";
 import { headersType } from "../typeStript/Types";
 import { ServerConfig, ServerPublicConfig } from "../config";
 import { AxiosStatic } from "axios";
@@ -629,7 +629,7 @@ export default class applicationControllerClass extends PublicController impleme
         resultFilterFn:<T = any>(result:T, resolve:(result?:T)=>void,  page:Page, browser:Browser)=>Promise<any>
     } | BrowserLaunchArgumentOptions>,...extData){
         // "puppeteer": "^2.0.0"
-        const puppeteer = require('puppeteer');
+        const puppeteer = require('puppeteer-core');
         return new Promise((resolve, reject) => {
             try {
                 let launchConfig = {}
@@ -1052,7 +1052,7 @@ export default class applicationControllerClass extends PublicController impleme
             ...options,
         }
         return new Promise((resolve1, reject) => {
-            const puppeteer = require('puppeteer');
+            const puppeteer = require('puppeteer-core');
             const query = this.$_query;
             let imgBase64 = null;
             let chunks =[]
