@@ -3,8 +3,7 @@
   "version": "0.0.47",
   "bin": {
     "uf": "./UnityFrontUtils/server/index.ts",
-    "uf-install": "./UnityFrontUtils/server/install.ts",
-    "ts-node": "./node_modules/ts-node/dist/bin.js"
+    "uf-install": "./UnityFrontUtils/server/install.ts"
   },
   "scripts": {
     "start": "npm run serve",
