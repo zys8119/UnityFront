@@ -93,13 +93,15 @@ CopyFile(files, ()=>{
     packageJsonCopy.scripts = (<any>Object).fromEntries(
         Object.keys(packageJsonCopy.scripts)
             .filter(e=>["start", "serve", "ws", "install"].includes(e))
-            .map(e=>[e,packageJsonCopy.scripts[e].replace(/ts-node/,"node")
+            .map(e=>[e,packageJsonCopy.scripts[e]
+                .replace(/ts-node/,"node")
                 .replace(/\.ts/,".js")])
     )
     packageJsonCopy.bin = (<any>Object).fromEntries(
         Object.keys(packageJsonCopy.bin)
             .filter(e=>["uf", "uf-install"].includes(e))
-            .map(e=>[e,packageJsonCopy.bin[e].replace(/\./,"node .")
+            .map(e=>[e,packageJsonCopy.bin[e]
+                // .replace(/\./,"node .")
                 .replace(/\.ts/,".js")])
     )
     packageJsonCopy.main = packageJsonCopy.main.replace(/\.ts/,".js")
