@@ -1,6 +1,6 @@
 # uf-node
 
-# UnityFront 服务框架
+> UnityFront 服务框架
 
 ```shell
 Commands 
@@ -11,3 +11,7 @@ Commands
     create <projectName> 当前目录创建项目, 默认名称：newProject
     webfunny-crack <purchaseCodeDate>|<webfunnyVersion> webfunny监控破解， 目前自测支持 webfunny 版本：3.0.57
 ```
+
+## 注意事项
+
+本服务依赖 ts-node 即使用前先安装 `npm i ts-node -g`
