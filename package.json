@@ -7,7 +7,7 @@
   },
   "scripts": {
     "start": "npm run serve",
-    "serve": "ts-node UnityFrontUtils/server/index.ts",
+    "serve": "ts-node UnityFrontUtils/server/index.ts -h",
     "ws": "ts-node UnityFrontUtils/webSocket/serve.ts",
     "build": "ts-node UnityFrontUtils/build/serve.ts",
     "install": "ts-node UnityFrontUtils/server/install.ts",
