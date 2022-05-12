@@ -1,5 +1,6 @@
 import {applicationController} from "../../../UnityFrontUtils/controller/applicationController";
-
+import {writeFileSync} from "fs"
+import {resolve} from "path"
 export class XsController extends applicationController{
     constructor() {
         super();
@@ -39,12 +40,14 @@ export class XsController extends applicationController{
         },{start:this.$_query.start,end:this.$_query.end});
         const texts:any = await this.getLuotianContent(res, [],res);
         console.timeEnd("下载花费时间")
+        const resContent = Buffer.from(texts.map((e:any)=>e.title+"\n\n"+e.content).join("\n\n\n\n\n"))
+        writeFileSync(resolve(__dirname,new Date().toLocaleDateString()+".txt"), resContent)
         this.setHeaders({
             "Content-Type":"text/plain; charset=utf-8",
             "Content-Disposition":"attachment; filename="+encodeURIComponent(`${this.$_query.name || "洛天归来"}(${this.$_query.start || 0}) ${new Date().toLocaleDateString()}`)+".txt",
         })
         this.setRequestStatus(200)
-        this.$_send(Buffer.from(texts.map((e:any)=>e.title+"\n\n"+e.content).join("\n\n\n\n\n")));
+        this.$_send(resContent);
     }
 
 
