@@ -1,4 +1,5 @@
 import {applicationController} from "../../../UnityFrontUtils/controller/applicationController";
+import puppeteer from "puppeteer"
 import {writeFileSync} from "fs"
 import {resolve} from "path"
 export class XsController extends applicationController{
@@ -16,28 +17,54 @@ export class XsController extends applicationController{
         console.time("下载花费时间")
         const url = this.$_query.url || "http://www.bxwx333.org/txt/368055-true-130/";
         // @ts-ignore
-        const res = await this.$_puppeteer(url,{
-            jsContentFn:({start, end}:any)=>new Promise(resolve1 => {
-                setTimeout( ()=>{
-                    const data = []
-                    document.querySelectorAll("#list_dl a").forEach((el:HTMLAnchorElement)=>{
-                        data.push({
-                            innerText:el.innerText,
-                            href:el.getAttribute("href")
-                        })
-                    })
-                    if(end){
-                        resolve1(data.filter((e,k)=>(k > (+start || 0) - 2) && k < +end))
-                    }else{
-                        resolve1(data.filter((e,k)=>k > (+start || 0) - 2))
-                    }
-                },1000)
-            }),
-            resultFilterFn:async (result:any, next:any,  page:any, browser:any)=>{
-                await browser.close();
-                return next(result)
-            }
-        },{start:this.$_query.start,end:this.$_query.end});
+        // const res = await this.$_puppeteer(url,{
+        //     jsContentFn:({start, end}:any)=>new Promise(resolve1 => {
+        //         setTimeout( ()=>{
+        //             const data = []
+        //             document.querySelectorAll("#list_dl a").forEach((el:HTMLAnchorElement)=>{
+        //                 data.push({
+        //                     innerText:el.innerText,
+        //                     href:el.getAttribute("href")
+        //                 })
+        //             })
+        //             if(end){
+        //                 resolve1(data.filter((e,k)=>(k > (+start || 0) - 2) && k < +end))
+        //             }else{
+        //                 resolve1(data.filter((e,k)=>k > (+start || 0) - 2))
+        //             }
+        //         },1000)
+        //     }),
+        //     resultFilterFn:async (result:any, next:any,  page:any, browser:any)=>{
+        //         await browser.close();
+        //         return next(result)
+        //     }
+        // },{start:this.$_query.start,end:this.$_query.end});
+        const browser = await puppeteer.launch({
+            // headless:false,
+            // devtools:true
+        })
+        const page = await browser.newPage()
+        await page.goto(url)
+        const resultHandle = await page.evaluateHandle(({start, end})=>{
+            const data = []
+            document.querySelectorAll("#list_dl a").forEach((el:HTMLAnchorElement)=>{
+                data.push({
+                    innerText:el.innerText,
+                    href:el.getAttribute("href")
+                })
+            })
+            return Promise.resolve(data.filter((e,k)=>{
+                start = (+start || 0);
+                end = +end;
+                if(end){
+                    return k > (start - 2) && k < end
+                }else{
+                    return k > start - 2
+                }
+            }))
+        },{start:this.$_query.start,end:this.$_query.end})
+        const res = await resultHandle.jsonValue();
+        await browser.close()
         const texts:any = await this.getLuotianContent(res, [],res);
         console.timeEnd("下载花费时间")
         const resContent = Buffer.from(texts.map((e:any)=>e.title+"\n\n"+e.content).join("\n\n\n\n\n"))
@@ -61,7 +88,6 @@ export class XsController extends applicationController{
             const concurrentIndex = this.$_query.concurrent || 3;
             const awaitData = res.slice(0,concurrentIndex)
             console.log(`【${res[0].innerText}】至【后${concurrentIndex}章节】 正在下载`)
-            const puppeteer = require("puppeteer")
             const browser = await puppeteer.launch({})
             const resUltArr = await Promise.all(awaitData.map( async it=>{
                 const page = await browser.newPage();
