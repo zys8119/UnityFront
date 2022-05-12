@@ -622,7 +622,7 @@ export default class applicationControllerClass extends PublicController impleme
         this.$_success(msg,sendData,code,true)
     }
     $_puppeteer(url:string,jsContent?:(()=>Promise<any>) | Partial<{
-        jsContentFn:()=>Promise<any>;
+        jsContentFn:(...args:any[])=>Promise<any>;
         gotoFn:(page:Page, browser:Browser,resolve:(result?:any)=>any)=>Promise<any>
         jsContentBeforeFn:(page:Page, browser:Browser,resolve:(result?:any)=>any)=>Promise<any>
         jsContentAfterFn:(page:Page, browser:Browser,resolve:(result?:any)=>any)=>Promise<any>
