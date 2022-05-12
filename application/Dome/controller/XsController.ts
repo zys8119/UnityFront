@@ -14,6 +14,7 @@ export class XsController extends applicationController{
     async index(){
         console.time("下载花费时间")
         const url = this.$_query.url || "http://www.bxwx333.org/txt/368055-true-130/";
+        // @ts-ignore
         const res = await this.$_puppeteer(url,({start, end})=>new Promise(resolve1 => {
             setTimeout( ()=>{
                 const data = []
@@ -50,6 +51,7 @@ export class XsController extends applicationController{
         if(res.length > 0){
             const concurrentIndex = this.$_query.concurrent || 3;
             console.log(`【${res[0].innerText}】至【后${concurrentIndex}章节】 正在下载`)
+            // @ts-ignore
             const resUltArr = await Promise.all(res.slice(0,concurrentIndex).map(it=>this.$_puppeteer(it.href,(it)=>new Promise(resolve1 => {
                 resolve1({
                     title:it.innerText,

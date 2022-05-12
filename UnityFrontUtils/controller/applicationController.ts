@@ -277,7 +277,7 @@ export default class applicationControllerClass extends PublicController impleme
         try {
             await ControllerClassInit[urlArrs[2]]();
         }catch (err) {
-            const errorMessage = err.stack
+            const errorMessage = (Object.prototype.toString.call(err.stack) === '[object String]' ? err.stack : "")
                 .replace(/\(/img,"<span>")
                 .replace(/\)/img,"</span>")
                 .split("\n")
