@@ -62,7 +62,9 @@ export class XsController extends applicationController{
             const browser = await puppeteer.launch({})
             const resUltArr = await Promise.all(awaitData.map( async it=>{
                 const page = await browser.newPage();
-                await page.goto(it.href)
+                await page.goto(it.href,{
+                    timeout:0,
+                })
                 const resultHandle = await page.evaluateHandle((it)=>new Promise(resolve => {
                     resolve({
                         title:it.innerText,
