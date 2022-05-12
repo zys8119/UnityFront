@@ -16,33 +16,7 @@ export class XsController extends applicationController{
     async index(){
         console.time("下载花费时间")
         const url = this.$_query.url || "http://www.bxwx333.org/txt/368055-true-130/";
-        // @ts-ignore
-        // const res = await this.$_puppeteer(url,{
-        //     jsContentFn:({start, end}:any)=>new Promise(resolve1 => {
-        //         setTimeout( ()=>{
-        //             const data = []
-        //             document.querySelectorAll("#list_dl a").forEach((el:HTMLAnchorElement)=>{
-        //                 data.push({
-        //                     innerText:el.innerText,
-        //                     href:el.getAttribute("href")
-        //                 })
-        //             })
-        //             if(end){
-        //                 resolve1(data.filter((e,k)=>(k > (+start || 0) - 2) && k < +end))
-        //             }else{
-        //                 resolve1(data.filter((e,k)=>k > (+start || 0) - 2))
-        //             }
-        //         },1000)
-        //     }),
-        //     resultFilterFn:async (result:any, next:any,  page:any, browser:any)=>{
-        //         await browser.close();
-        //         return next(result)
-        //     }
-        // },{start:this.$_query.start,end:this.$_query.end});
-        const browser = await puppeteer.launch({
-            // headless:false,
-            // devtools:true
-        })
+        const browser = await puppeteer.launch({})
         const page = await browser.newPage()
         await page.goto(url)
         const resultHandle = await page.evaluateHandle(({start, end})=>{
