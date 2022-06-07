@@ -17,8 +17,8 @@ export class XsController extends applicationController{
         console.time("下载花费时间")
         const url = this.$_query.url || "http://www.bxwx333.org/txt/368055-true-130/";
         const browser = await puppeteer.launch({
-            headless:false,
-            devtools:true
+            // headless:false,
+            // devtools:true
         })
         const page = await browser.newPage()
         page.on("response", async event => {
