@@ -16,39 +16,48 @@ export class XsController extends applicationController{
     async index(){
         console.time("下载花费时间")
         const url = this.$_query.url || "http://www.bxwx333.org/txt/368055-true-130/";
-        const browser = await puppeteer.launch({})
-        const page = await browser.newPage()
-        await page.goto(url)
-        const resultHandle = await page.evaluateHandle(({start, end})=>{
-            const data = []
-            document.querySelectorAll("#list_dl a").forEach((el:HTMLAnchorElement)=>{
-                data.push({
-                    innerText:el.innerText,
-                    href:el.getAttribute("href")
-                })
-            })
-            return Promise.resolve(data.filter((e,k)=>{
-                start = (+start || 0);
-                end = +end;
-                if(end){
-                    return k > (start - 2) && k < end
-                }else{
-                    return k > start - 2
-                }
-            }))
-        },{start:this.$_query.start,end:this.$_query.end})
-        const res = await resultHandle.jsonValue();
-        await browser.close()
-        const texts:any = await this.getLuotianContent(res, [],res);
-        console.timeEnd("下载花费时间")
-        const resContent = Buffer.from(texts.map((e:any)=>e.title+"\n\n"+e.content).join("\n\n\n\n\n"))
-        writeFileSync(resolve(__dirname, Date.now().toString()+".txt"), resContent)
-        this.setHeaders({
-            "Content-Type":"text/plain; charset=utf-8",
-            "Content-Disposition":"attachment; filename="+encodeURIComponent(`${this.$_query.name || "洛天归来"}(${this.$_query.start || 0}) ${new Date().toLocaleDateString()}`)+".txt",
+        const browser = await puppeteer.launch({
+            headless:false,
+            devtools:true
         })
-        this.setRequestStatus(200)
-        this.$_send(resContent);
+        const page = await browser.newPage()
+        page.on("response", async event => {
+            if(/zj\.ashx$/.test(event.url())){
+                const resultHandle = await page.evaluateHandle(({start, end})=>{
+                    const data = []
+                    document.querySelectorAll("#list_dl a").forEach((el:HTMLAnchorElement)=>{
+                        data.push({
+                            innerText:el.innerText,
+                            href:el.getAttribute("href")
+                        })
+                    })
+                    return Promise.resolve(data.filter((e,k)=>{
+                        start = (+start || 0);
+                        end = +end;
+                        if(end){
+                            return k > (start - 2) && k < end
+                        }else{
+                            return k > start - 2
+                        }
+                    }))
+                },{start:this.$_query.start,end:this.$_query.end})
+                const res = await resultHandle.jsonValue();
+                await browser.close()
+                const texts:any = await this.getLuotianContent(res, [],res);
+                console.timeEnd("下载花费时间")
+                const resContent = Buffer.from(texts.map((e:any)=>e.title+"\n\n"+e.content).join("\n\n\n\n\n"))
+                writeFileSync(resolve(__dirname, Date.now().toString()+".txt"), resContent)
+                this.setHeaders({
+                    "Content-Type":"text/plain; charset=utf-8",
+                    "Content-Disposition":"attachment; filename="+encodeURIComponent(`${this.$_query.name || "洛天归来"}(${this.$_query.start || 0}) ${new Date().toLocaleDateString()}`)+".txt",
+                })
+                this.setRequestStatus(200)
+                this.$_send(resContent);
+            }
+        })
+        await page.goto(url)
+
+
     }
 
 
