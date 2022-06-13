@@ -23,9 +23,11 @@ export class XsController extends applicationController{
         const page = await browser.newPage()
         page.on("response", async event => {
             if(/zj\.ashx$/.test(event.url())){
-                const resultHandle = await page.evaluateHandle(({start, end})=>{
+                const resultHandle = await page.evaluateHandle(({start, end, text})=>{
                     const data = []
-                    document.querySelectorAll("#list_dl a").forEach((el:HTMLAnchorElement)=>{
+                    const div = document.createElement("div")
+                    div.innerHTML = text;
+                    div.querySelectorAll("a").forEach((el:HTMLAnchorElement)=>{
                         data.push({
                             innerText:el.innerText,
                             href:el.getAttribute("href")
@@ -40,7 +42,7 @@ export class XsController extends applicationController{
                             return k > start - 2
                         }
                     }))
-                },{start:this.$_query.start,end:this.$_query.end})
+                },{start:this.$_query.start,end:this.$_query.end, text:await event.text()})
                 const res = await resultHandle.jsonValue();
                 await browser.close()
                 const texts:any = await this.getLuotianContent(res, [],res);
