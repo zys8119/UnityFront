@@ -48,10 +48,11 @@ export class XsController extends applicationController{
                 const texts:any = await this.getLuotianContent(res, [],res);
                 console.timeEnd("下载花费时间")
                 const resContent = Buffer.from(texts.map((e:any)=>e.title+"\n\n"+e.content).join("\n\n\n\n\n"))
-                writeFileSync(resolve(__dirname, Date.now().toString()+".txt"), resContent)
+                const filename = encodeURIComponent(`${this.$_query.name || "洛天归来"}(${this.$_query.start || 0}) ${new Date().toLocaleDateString()}`)
+                writeFileSync(resolve(__dirname, filename + Date.now().toString()+".txt"), resContent)
                 this.setHeaders({
                     "Content-Type":"text/plain; charset=utf-8",
-                    "Content-Disposition":"attachment; filename="+encodeURIComponent(`${this.$_query.name || "洛天归来"}(${this.$_query.start || 0}) ${new Date().toLocaleDateString()}`)+".txt",
+                    "Content-Disposition":"attachment; filename="+filename+".txt",
                 })
                 this.setRequestStatus(200)
                 this.$_send(resContent);
