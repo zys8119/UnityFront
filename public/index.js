@@ -6,12 +6,40 @@
 // @author       You
 // @require      https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.18.2/babel.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/6.16.0/polyfill.js
-// @match        *://www.npmjs.com/*
+// @match
+// @include         *://www.npmjs.com/*
+// @include         *://www.github.com/*
 // @icon         <$ICON$>
 // ==/UserScript==
 window.addEventListener('load',()=>{
+    const urls = [
+        /www\.(geihub|npmjs)\.com/
+    ]
+    if(!urls.some(reg=>reg.test(location.href))){
+        return
+    }
     (async ()=>{
         const lang = {
+            "Pull requests":"拉取请求",
+            "Issues":"问题",
+            "Marketplace":"市场",
+            "Explore":"探索",
+            "Overview":"概述",
+            "Repositories":"存储库",
+            "Projects":"项目",
+            "Stars":"星星",
+            "followers":"追随者",
+            "following":"跟随",
+            "Achievements":"成就",
+            "Organizations":"组织",
+            "Pinned":"固定",
+            "Customize your pins":"定制您的针",
+            "sign out":"退出登录",
+            "Add Organization":"添加组织",
+            "Access Tokens":"访问令牌",
+            "Billing Info":"年代计费信息",
+            "Account":"账号",
+            "Profile":"配置文件",
             "Products":"产品",
             "Pro":"专业版",
             "Teams":"团队",
@@ -40,8 +68,7 @@ window.addEventListener('load',()=>{
             "Popularity":"人气",
             "Quality":"质量",
             "Maintenance":"维护",
-            "Packages":"套餐",
-            "Packages":"套餐",
+            "Packages":"包",
             "Search":"搜索"
         }
         const regs = Object.entries(lang).map(e=>[new RegExp(e[0],"img"), e[1]]);
