@@ -45,6 +45,8 @@ export default class staticIndex {
                         break;
                     case ".htm":
                         this.getFileData(filePath,"text/html;","utf8",".htm");
+                    case ".json":
+                        this.getFileData(filePath,"application/json;","utf8",".json");
                         break;
                     default:
                         this.send404();

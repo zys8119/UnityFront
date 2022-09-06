@@ -2,10 +2,14 @@ import applicationController from "../../../UnityFrontUtils/controller/applicati
 import * as crypto from "crypto"
 import {extend} from "lodash";
 import * as fs from "fs";
+import {parse} from "node:querystring";
 import path, {resolve} from "path";
 import {ServerConfig} from "../../../UnityFrontUtils/config";
 import {readFileSync} from "fs";
 import {stringify} from "yaml";
+import puppeteer, {Browser} from "puppeteer";
+import {sync} from "fast-glob";
+import {mkdirSync, writeFileSync} from "fs-extra";
 export class IndexController extends applicationController {
     constructor(){
         super();
@@ -295,4 +299,31 @@ export class IndexController extends applicationController {
         }
 
     }
+
+
+    /**
+     * 高德地图离线资源获取
+     */
+    async getAMapOfflineResources(){
+        try {
+            const browser = await puppeteer.launch({
+            })
+            const page = await browser.newPage()
+            await page.goto("http://localhost:81/Dome/Index/getAMapOfflineResources")
+        }catch (e) {
+            this.$_error(e.message)
+        }
+
+    }
+
+    async protobuf(){
+        const protobuf = require("protobufjs");
+        // const buff = readFileSync(resolve(__dirname, '1660117265968'))
+        // console.log(buff)
+        // const root = protobuf.loadSync(resolve(__dirname, '1660117265968'))
+        // console.log(root)
+        console.log(protobuf.Root);
+        this.$_success()
+    }
+
 }
