@@ -13,7 +13,7 @@
 // ==/UserScript==
 window.addEventListener('load',()=>{
     const urls = [
-        /www\.(git|npmjs)\.com/
+        /www\.(github|npmjs)\.com/
     ]
     if(!urls.some(reg=>reg.test(location.href))){
         return
