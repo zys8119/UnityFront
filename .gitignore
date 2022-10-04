@@ -11,6 +11,9 @@ package-lock.json
 /UnityFrontUtils/log
 /application/Dome/controller/nvidia-smi.
 /public/upload/*
+/public/*.vue.js
+/Front/**/*.vue.js
 /webSocket/*.js
 dist/
 *.js.map
+/application/**/*.txt

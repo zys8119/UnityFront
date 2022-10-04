@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>服务器错误</title>
+    <style>
+        pre{
+            background-color: #e5e5e5;
+            padding: 15px;
+            overflow: auto;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        .content{
+            width: 80%;
+            margin: auto;
+        }
+        h1{
+            padding-bottom: 30px;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .errorMessage{
+            margin-left: 100px;
+            color: #7d7d7d;
+            font-size: 14px;
+        }
+        .errorMessage span{
+            color: #0041b0;
+            text-decoration: underline;
+        }
+        .errorMessage > *:nth-child(1){
+            color: #f00;
+            font-size: 16px;
+        }
+        .errorMessage > *:nth-child(1) span{
+            color: #f00 !important;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="content">
+        <h1>{{title}}</h1>
+        <p class="msg">ERROR:</p>
+        {{error}}
+    </div>
+
+</body>
+</html>

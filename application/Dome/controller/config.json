@@ -1,0 +1,269 @@
+{
+    "webapi//maps": {
+        "dirs": [
+            "webapi"
+        ],
+        "fileName": "maps",
+        "url": "https://webapi.amap.com/maps?callback=___onAPILoaded&v=2.0&key=392d52cc1535e162f0eba5b118cd1c49&plugin=AMap.Geocoder,AMap.MoveAnimation",
+        "headers": {
+            "date": "Tue, 09 Aug 2022 08:39:27 GMT",
+            "content-encoding": "gzip",
+            "server": "Tengine",
+            "etag": "W/35628ff71f2a27c2bc73af4e3a4214dc",
+            "vary": "Accept-Encoding",
+            "access-control-allow-methods": "*",
+            "content-type": "application/javascript;charset=utf-8",
+            "access-control-allow-origin": "*",
+            "x-server-id": "72446e765a0ee479614554419edfe3ec15581c9f5ba7852c3b0b53c82165fbe484a5d848ba9f3278a30891e97ac3cbae",
+            "cache-control": "max-age=0",
+            "transfer-encoding": "chunked",
+            "x-readtime": "8",
+            "connection": "close",
+            "access-control-allow-headers": "*"
+        }
+    },
+    "restapi//v3/log/init": {
+        "dirs": [
+            "restapi",
+            "v3",
+            "log"
+        ],
+        "fileName": "init",
+        "url": "https://restapi.amap.com/v3/log/init?platform=JS&s=rsv3&logversion=2.0&product=JsInit&key=392d52cc1535e162f0eba5b118cd1c49&t=1660034366126&sdkversion=2.0&appname=http%253A%252F%252Flocalhost%253A8888%252F%2523%252Fsmart-control%252Fhome&csid=8AACF9FB-9900-49F3-B475-206FFAA8C404&resolution=1920*1080&mob=0&vt=1&dpr=1&scale=1&detect=false&callback=jsonp_73151_1660034366126_",
+        "headers": {
+            "date": "Tue, 09 Aug 2022 08:39:28 GMT",
+            "content-encoding": "gzip",
+            "sc": "0.002",
+            "server": "Tengine",
+            "vary": "Accept-Encoding",
+            "access-control-allow-methods": "*",
+            "content-type": "application/octet-stream",
+            "access-control-allow-origin": "*",
+            "transfer-encoding": "chunked",
+            "connection": "close",
+            "gsid": "033040107165166003436831800012810780040",
+            "access-control-allow-headers": "DNT,X-CustomHeader,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,key,x-biz,x-info,platinfo,encr,enginever,gzipped,poiid"
+        }
+    },
+    "vdata//style_icon/2.0/icon-normal-big.png": {
+        "dirs": [
+            "vdata",
+            "style_icon",
+            "2.0"
+        ],
+        "fileName": "icon-normal-big.png",
+        "url": "https://vdata.amap.com/style_icon/2.0/icon-normal-big.png",
+        "headers": {
+            "date": "Tue, 09 Aug 2022 08:39:28 GMT",
+            "content-encoding": "gzip",
+            "vary": "Accept-Encoding",
+            "x-readtime": "0",
+            "gsid": "033032077007166003436841200011310233031, 033032077007166003436841200011310233031",
+            "sc": "0.002",
+            "server": "Tengine",
+            "etag": "W/20220222",
+            "strict-transport-security": "max-age=0",
+            "access-control-allow-methods": "*",
+            "content-type": "image/png",
+            "access-control-allow-origin": "*",
+            "x-server-id": "72446e765a0ee4796debbc165d940c10b41774c7fd55942cf0d08efd08af7eeb240a0f83357699dae1ed465f5285687b",
+            "cache-control": "max-age=0",
+            "timing-allow-origin": "*",
+            "access-control-allow-headers": "*",
+            "eagleeye-traceid": "21203f3a16600343684116570ec099"
+        }
+    },
+    "webapi//theme/v2.0/logo@1x.png": {
+        "dirs": [
+            "webapi",
+            "theme",
+            "v2.0"
+        ],
+        "fileName": "logo@1x.png",
+        "url": "https://webapi.amap.com/theme/v2.0/logo@1x.png",
+        "headers": {
+            "date": "Tue, 09 Aug 2022 08:39:28 GMT",
+            "last-modified": "Wed, 03 Aug 2022 09:10:31 GMT",
+            "server": "Tengine",
+            "etag": "\"62ea3b87-739\"",
+            "access-control-allow-methods": "*",
+            "content-type": "image/png",
+            "access-control-allow-origin": "*",
+            "connection": "close",
+            "accept-ranges": "bytes",
+            "access-control-allow-headers": "*",
+            "content-length": "1849"
+        }
+    },
+    "vdata//style_icon/2.0/icon-biz-big.png": {
+        "dirs": [
+            "vdata",
+            "style_icon",
+            "2.0"
+        ],
+        "fileName": "icon-biz-big.png",
+        "url": "https://vdata.amap.com/style_icon/2.0/icon-biz-big.png",
+        "headers": {
+            "date": "Tue, 09 Aug 2022 08:39:28 GMT",
+            "content-encoding": "gzip",
+            "vary": "Accept-Encoding",
+            "x-readtime": "0",
+            "gsid": "033040002055166003436841200011240999484, 033040002055166003436841200011240999484",
+            "sc": "0.007",
+            "server": "Tengine",
+            "etag": "W/20220222",
+            "strict-transport-security": "max-age=0",
+            "access-control-allow-methods": "*",
+            "content-type": "image/png",
+            "access-control-allow-origin": "*",
+            "x-server-id": "72446e765a0ee4796debbc165d940c107a4c4c0a39accebf2296c125de795d92240a0f83357699dae1ed465f5285687b",
+            "cache-control": "max-age=0",
+            "timing-allow-origin": "*",
+            "access-control-allow-headers": "*",
+            "eagleeye-traceid": "21203f3a16600343684116569ec099"
+        }
+    },
+    "webapi//mapsplugin": {
+        "dirs": [
+            "webapi"
+        ],
+        "fileName": "mapsplugin",
+        "url": "https://webapi.amap.com/mapsplugin?v=2.0.5.8&cls=WebGLRender&key=392d52cc1535e162f0eba5b118cd1c49",
+        "headers": {
+            "date": "Tue, 09 Aug 2022 08:39:28 GMT",
+            "content-encoding": "gzip",
+            "server": "Tengine",
+            "etag": "W/d38ff522d1797a1ff0b026b52508ab03",
+            "access-control-allow-methods": "*",
+            "content-type": "application/javascript;charset=utf-8",
+            "access-control-allow-origin": "*",
+            "x-server-id": "72446e765a0ee479614554419edfe3ec04429069654514881ed10824a97f19b484a5d848ba9f3278a30891e97ac3cbae",
+            "cache-control": "max-age=0",
+            "x-readtime": "1",
+            "connection": "close",
+            "accept-ranges": "bytes",
+            "access-control-allow-headers": "*",
+            "content-length": "121474"
+        }
+    },
+    "vdata//style/2.0.1": {
+        "dirs": [
+            "vdata",
+            "style"
+        ],
+        "fileName": "2.0.1",
+        "url": "https://vdata.amap.com/style/2.0.1",
+        "headers": {
+            "date": "Tue, 09 Aug 2022 08:39:28 GMT",
+            "content-encoding": "gzip",
+            "x-readtime": "0",
+            "gsid": "033045090036166003436841200011280654851, 033045090036166003436841200011280654851",
+            "content-length": "15305",
+            "sc": "0.015",
+            "server": "Tengine",
+            "etag": "W/20220222",
+            "strict-transport-security": "max-age=0",
+            "access-control-allow-methods": "*",
+            "content-type": "application/x-protobuf",
+            "access-control-allow-origin": "*",
+            "x-server-id": "72446e765a0ee4796debbc165d940c10d93577603bd9bc9b4433a9e29b7e8d53240a0f83357699dae1ed465f5285687b",
+            "cache-control": "max-age=0",
+            "accept-ranges": "bytes",
+            "timing-allow-origin": "*",
+            "access-control-allow-headers": "*",
+            "eagleeye-traceid": "21203f3a16600343684116567ec099"
+        }
+    },
+    "vdata//nebula/v2": {
+        "dirs": [
+            "vdata",
+            "nebula"
+        ],
+        "fileName": "v2",
+        "url": "https://vdata.amap.com/nebula/v2?key=392d52cc1535e162f0eba5b118cd1c49&flds=road,building,region&t=14,13744,5480,2;14,13744,5479,2&p=3",
+        "headers": {
+            "date": "Tue, 09 Aug 2022 08:39:28 GMT",
+            "content-encoding": "gzip",
+            "vary": "Accept-Encoding",
+            "x-powered-by": "ring/1.0.0",
+            "x-readtime": "10",
+            "last-modified": "Mon, 08 Aug 2022 01:55:00 GMT",
+            "gsid": "033045090036166003436841500011270654857, 033045090036166003436841500011270654857",
+            "sc": "0.013",
+            "server": "Tengine",
+            "strict-transport-security": "max-age=0",
+            "access-control-allow-methods": "*",
+            "content-type": "application/x-protobuf",
+            "access-control-allow-origin": "*",
+            "x-server-id": "72446e765a0ee4796debbc165d940c10959e07179c14882457ee5489d6fe0ec9240a0f83357699dae1ed465f5285687b",
+            "cache-control": "max-age=0",
+            "timing-allow-origin": "*",
+            "access-control-allow-headers": "*",
+            "eagleeye-traceid": "21203f3a16600343684116568ec099"
+        }
+    },
+    "webapi//v4/map/styles2": {
+        "dirs": [
+            "webapi",
+            "v4",
+            "map"
+        ],
+        "fileName": "styles2",
+        "url": "https://webapi.amap.com/v4/map/styles2?styleid=4e2b25e3d8c02f4e838379883b8773a2&s=rsv3&key=392d52cc1535e162f0eba5b118cd1c49&callback=jsonp_467264_1660034366511_",
+        "headers": {
+            "date": "Tue, 09 Aug 2022 08:39:28 GMT",
+            "content-encoding": "gzip",
+            "server": "Tengine",
+            "vary": "Accept-Encoding",
+            "access-control-allow-methods": "*",
+            "content-type": "application/javascript;charset=utf-8",
+            "access-control-allow-origin": "*",
+            "x-server-id": "72446e765a0ee479614554419edfe3ec0442906965451488dc66c834e8b037f884a5d848ba9f3278a30891e97ac3cbae",
+            "cache-control": "max-age=0",
+            "transfer-encoding": "chunked",
+            "x-readtime": "22",
+            "connection": "close",
+            "access-control-allow-headers": "*"
+        }
+    },
+    "a//jsapi_demos/static/demo-center-v2/car.png": {
+        "dirs": [
+            "a",
+            "jsapi_demos",
+            "static",
+            "demo-center-v2"
+        ],
+        "fileName": "car.png",
+        "url": "https://a.amap.com/jsapi_demos/static/demo-center-v2/car.png",
+        "headers": {
+            "date": "Tue, 09 Aug 2022 08:39:30 GMT",
+            "via": "cache72.l2cn2655[34,33,304-0,M], cache68.l2cn2655[34,0], vcache29.cn3841[42,42,200-0,H], vcache26.cn3841[46,0]",
+            "vary": "Origin",
+            "x-oss-request-id": "62F21D42F689FE343007BB64",
+            "content-md5": "hJmi/pNYtUskVwHhmEEdbQ==",
+            "age": "0",
+            "x-cache": "HIT TCP_REFRESH_HIT dirn:4:239714669",
+            "x-oss-cdn-auth": "success",
+            "x-swift-cachetime": "60",
+            "x-swift-savetime": "Tue, 09 Aug 2022 08:39:30 GMT",
+            "content-length": "5850",
+            "x-oss-object-type": "Normal",
+            "last-modified": "Tue, 31 Mar 2020 14:56:29 GMT",
+            "server": "Tengine",
+            "x-oss-server-side-encryption": "AES256",
+            "etag": "\"8499A2FE9358B54B245701E198411D6D\"",
+            "access-control-max-age": "0",
+            "access-control-allow-methods": "GET, POST, PUT, HEAD",
+            "content-type": "image/png",
+            "access-control-allow-origin": "*",
+            "cache-control": "max-age=2592000 ,s-maxage=120",
+            "x-oss-storage-class": "Standard",
+            "accept-ranges": "bytes",
+            "timing-allow-origin": "*",
+            "x-oss-hash-crc64ecma": "2578846732955279866",
+            "eagleid": "3ad80dae16600343700373545e",
+            "x-oss-server-time": "5",
+            "ali-swift-global-savetime": "1660034370"
+        }
+    }
+}

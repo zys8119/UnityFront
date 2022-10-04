@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue 服务端渲染</title>
+    <script src="__PUBLIC__/js/vue.js"></script>
+    <style>
+        a{
+            transition: width ease-in 2s revert;
+        }
+    </style>
+</head>
+<body>
+<div id="app">{{$td.html}}</div>
+<script>
+    var vm = new Vue({{$td.app}}).$mount("#app")
+</script>
+</body>
+</html>

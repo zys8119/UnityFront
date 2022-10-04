@@ -1,0 +1,33 @@
+[
+    {
+        "name": "IndexController.ts",
+        "path": "/Users/zhangyunshan/work/UnityFrontServe/application/Dome/controller/IndexController.ts",
+        "type": "file",
+        "is_file": true,
+        "relative_url": "./Dome/controller/",
+        "controller": "./Dome/controller/IndexController.ts",
+        "url": "/Dome/Index",
+        "data": [
+            {
+                "name": "index\n     * @body aa {object|any} 参数a\n     * @params b {object} 参数b\n     * @query b {object} 参数b\n     * @query bb {object}\n     * @query dd 参数b\n     * @route /Dome/urlParams/:id/:b\n     * @method post\n     * @description asdasdasda\n     */",
+                "method": "unknown",
+                "description": "unknown",
+                "groupName": "unknown",
+                "body": {},
+                "params": {},
+                "query": {},
+                "route": {}
+            },
+            {
+                "name": "dom\n     */",
+                "method": "unknown",
+                "description": "unknown",
+                "groupName": "unknown",
+                "body": {},
+                "params": {},
+                "query": {},
+                "route": {}
+            }
+        ]
+    }
+]
