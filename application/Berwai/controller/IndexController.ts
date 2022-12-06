@@ -36,7 +36,25 @@ export class IndexController extends applicationController{
                 a.push.apply(a, div.querySelectorAll('td a'))
                 return a.map(e=>({code:(e.getAttribute('onclick') || '').replace(/^.+,|\).+/g,''), name:e.innerText})).filter(e=>new RegExp(reg, "img").test(e.name))
             })
-        },this.$_query.reg || '国际金融')).jsonValue()
+        },this.$_query.reg || '国际金融')).jsonValue();
+        if(this.$_body.reg_name){
+            const reg_name = this.$_body.reg_name
+            const results = {}
+            let index = 0
+            while (index < reg_name.length){
+                results[reg_name[index]] = await this.getCourseAnswer(page, reg_name[index])
+                index++
+            }
+            res = results
+        }else {
+            res = await this.getCourseAnswer( page, this.$_query.reg_name || '4.1 练习')
+        }
+        await browser.close()
+        this.$_success(res)
+    }
+
+    async getCourseAnswer (page, reg_name){
+        let res:any = null
         console.log("课程", res)
         await page.goto(`https://appd10.beiwaionline.com/learnerfore/learnerfore/gotoStudyCenter/${res[0].code}`)
         await page.tap("body > div:nth-child(1) > div.href-btn > button")
@@ -48,14 +66,14 @@ export class IndexController extends applicationController{
                     name:e.innerText
                 }
             }).filter(e=>new RegExp(reg, 'img').test(e.name))
-        },this.$_query.reg_name || '4.1 练习')).jsonValue()
+        },reg_name)).jsonValue()
         console.log("练习栏目", res)
         await page.goto(res[0].url)
         await page.waitForSelector("#app > div > div.content > div.content-part > div > iframe")
-        res = await (await page.evaluateHandle((reg)=>{
+        res = await (await page.evaluateHandle(()=>{
             const a:HTMLIFrameElement = document.querySelector("#app > div > div.content > div.content-part > div > iframe")
             return a.src
-        },this.$_query.reg2 || '4.1 练习')).jsonValue()
+        })).jsonValue()
         const pageUrl = res
         console.log("练习页面地址", res)
         await page.goto(res)
@@ -104,7 +122,6 @@ export class IndexController extends applicationController{
             return Array.apply(Array, document.querySelectorAll(".analysis-true")).map(e=>({value:e.innerText, name:e.parentNode.parentNode.querySelector('.question .question').innerText}))
         })).jsonValue()
         console.log("最终答案", res)
-        await browser.close()
-        this.$_success(res)
+        return res
     }
 }
