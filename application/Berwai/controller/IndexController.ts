@@ -56,6 +56,7 @@ export class IndexController extends applicationController{
             const a:HTMLIFrameElement = document.querySelector("#app > div > div.content > div.content-part > div > iframe")
             return a.src
         },this.$_query.reg2 || '4.1 练习')).jsonValue()
+        const pageUrl = res
         console.log("练习页面地址", res)
         await page.goto(res)
         res = await (await page.evaluateHandle((reg)=>{
@@ -73,7 +74,7 @@ export class IndexController extends applicationController{
                 return /您访问的页面出错了/.test(text)
             })
         }, res.code)).jsonValue()
-        console.log("判断是否存在答案", !res)
+        console.log("判断是否存在答案", res)
         if(res){
             // 答案不存在
             await page.waitForSelector("#submitRecord")
@@ -84,21 +85,24 @@ export class IndexController extends applicationController{
             console.log("提交的练习数据", res)
             res = await (await page.evaluateHandle((data)=>{
                 const formData = new FormData()
-                Object.entries(data).forEach(([a,b])=>{
-                    formData.append(a, b as any)
+                Object.entries(data).forEach(ee=>{
+                    // @ts-ignore
+                    formData.append(ee[0], ee[1])
                 })
                 return fetch("https://quiz.ebeiwai.com/fore/orgquiz/saveLearnerAnswer", {
                     "body":formData ,
                     "method": "POST",
                 }).then(res=>{
                     return res.json()
-                });
+                })
             }, res)).jsonValue()
             console.log("提交练习的接口响应", res)
+            await page.goto(pageUrl)
         }
-        res = await (await page.evaluateHandle((code)=>{
+        await page.waitForSelector(".header")
+        res = await (await page.evaluateHandle(()=>{
             return Array.apply(Array, document.querySelectorAll(".analysis-true")).map(e=>({value:e.innerText, name:e.parentNode.parentNode.querySelector('.question .question').innerText}))
-        }, res.code)).jsonValue()
+        })).jsonValue()
         console.log("最终答案", res)
         await browser.close()
         this.$_success(res)
