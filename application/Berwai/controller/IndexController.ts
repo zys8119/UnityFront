@@ -37,6 +37,7 @@ export class IndexController extends applicationController{
                 return a.map(e=>({code:(e.getAttribute('onclick') || '').replace(/^.+,|\).+/g,''), name:e.innerText})).filter(e=>new RegExp(reg, "img").test(e.name))
             })
         },this.$_query.reg || '国际金融')).jsonValue();
+        let res = null
         if(this.$_body.reg_name){
             const reg_name = this.$_body.reg_name
             console.log(reg_name)
