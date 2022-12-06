@@ -53,8 +53,8 @@ export const ServerPublicConfig = merge(<ServerPublicConfigOptions>{
 }, custoConfig.ServerPublicConfig);
 //服务设置
 export const ServerConfig =  merge(<ServerOptions>{
-    port:81,
-    ws_port:82,
+    port:88,
+    ws_port:89,
     ws_user:{},
     timeout:0,
     debug:true,
