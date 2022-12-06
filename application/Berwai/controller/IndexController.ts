@@ -23,7 +23,7 @@ export class IndexController extends applicationController{
         await page.type("#content3 > div > table > tbody > tr:nth-child(2) > td:nth-child(2) > input[type=password]", this.$_query.password)
         await page.tap("#content3 > div > table > tbody > tr:nth-child(1) > td:nth-child(3) > a > img")
         await page.waitForSelector('body > div.content_box2 > div.sidebar > div.information > table > tbody > tr:nth-child(1) > td:nth-child(1) > img')
-        let res:any = await (await page.evaluateHandle((reg)=>{
+        const courseInof:any = await (await page.evaluateHandle((reg)=>{
             return fetch("https://appd10.beiwaionline.com/learnerfore/learnerfore/listyouhua", {
                 "body": "pageNum=1",
                 "method": "POST",
@@ -39,23 +39,24 @@ export class IndexController extends applicationController{
         },this.$_query.reg || '国际金融')).jsonValue();
         if(this.$_body.reg_name){
             const reg_name = this.$_body.reg_name
+            console.log(reg_name)
             const results = {}
             let index = 0
             while (index < reg_name.length){
-                results[reg_name[index]] = await this.getCourseAnswer(page, reg_name[index])
+                results[reg_name[index]] = await this.getCourseAnswer(courseInof, page, reg_name[index])
                 index++
             }
             res = results
         }else {
-            res = await this.getCourseAnswer( page, this.$_query.reg_name || '4.1 练习')
+            res = await this.getCourseAnswer( courseInof, page, this.$_query.reg_name || '4.1 练习')
         }
         await browser.close()
         this.$_success(res)
     }
 
-    async getCourseAnswer (page, reg_name){
-        let res:any = null
-        console.log("课程", res)
+    async getCourseAnswer (courseInof, page, reg_name){
+        let res:any = courseInof
+        console.log("课程", courseInof)
         await page.goto(`https://appd10.beiwaionline.com/learnerfore/learnerfore/gotoStudyCenter/${res[0].code}`)
         await page.tap("body > div:nth-child(1) > div.href-btn > button")
         await page.waitForSelector("#contentFclearId > aside > hgroup.course_details > title")
